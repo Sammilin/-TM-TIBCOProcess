@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output"
+	 xmlns:ns0="http://www.trendmicro.com/ESB/schemas/Common"
+	 targetNamespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/Common" schemaLocation="../../../XSD/Common/common.xsd"/>
+	<xs:element name="SMF">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SMFHeader" type="ns0:TrendESBCommonHeader"/>
+				<xs:element name="SMFBody" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Rows" type="SearchCustomerType" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="SearchCustomerType">
+		<xs:sequence>
+			<xs:element name="Row" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Score" type="xs:string"/>
+						<xs:element name="Gold_ID" type="xs:string"/>
+						<xs:element name="NAV_ID" type="xs:string"/>
+						<xs:element name="Name" type="xs:string"/>
+						<xs:element name="Address" type="xs:string"/>
+						<xs:element name="City" type="xs:string"/>
+						<xs:element name="Country_Code" type="xs:string"/>
+						<xs:element name="PostCode" type="xs:string"/>
+						<xs:element name="Contact" type="xs:string"/>
+						<xs:element name="E-Mail" type="xs:string"/>
+						<xs:element name="Phone_No" type="xs:string"/>
+						<xs:element name="Reseller" type="xs:string"/>
+						<xs:element name="End_Customer" type="xs:string"/>
+						<xs:element name="Distributor" type="xs:string"/>
+						<xs:element name="ResultCount" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

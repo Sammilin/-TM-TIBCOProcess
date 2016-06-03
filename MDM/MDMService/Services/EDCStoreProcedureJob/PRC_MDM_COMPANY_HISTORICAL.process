@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="www.tibco.com/plugin/Timer" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns22="http://www.trendmicro.com/ESB/schemas/Common" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns7="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Input">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Input" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Input.xsd"/>
+    <pd:name>Services/EDCStoreProcedureJob/PRC_MDM_COMPANY_HISTORICAL.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>220</pd:startX>
+    <pd:startY>98</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>844</pd:endX>
+    <pd:endY>98</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1370602748079</pd:targetNamespace>
+    <pd:activity name="Log Start">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>345</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Call EDC Stroe Procedure Job - PRC_MDM_COMPANY_HISTORICAL Start&quot;"/>
+                </message>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.CriticalSectionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>444</pd:x>
+        <pd:y>16</pd:y>
+        <pd:width>134</pd:width>
+        <pd:height>142</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>criticalSection</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:scope>single</pd:scope>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SQL Direct</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SQL Direct</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="SQL Direct">
+            <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+            <pd:x>509</pd:x>
+            <pd:y>94</pd:y>
+            <config>
+                <timeout>%%Services/EDCStoreProcedureJob/PRC_MDM_CHECK_LOG/TimeInterval%%</timeout>
+                <commit>false</commit>
+                <maxRows>0</maxRows>
+                <jdbcSharedConfig>/Resources/Database/JDBC Connection SSIS.sharedjdbc</jdbcSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <jdbcGeneralActivityInput>
+                    <statement>
+                        <xsl:value-of select="&quot;USE [EMEA_MDM_FUZZY_SOURCE]; EXEC [MDM_MATCH].[PRC_MDM_COMPANY_HISTORICAL]&quot;"/>
+                    </statement>
+                </jdbcGeneralActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>429</pd:x>
+        <pd:y>210</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>685</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ns12:SMFHeader>
+                    <ns22:MessageKey>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </ns22:MessageKey>
+                    <ns22:ServiceName>
+                        <xsl:value-of select="&quot;PRC_MDM_COMPANY_HISTORICAL&quot;"/>
+                    </ns22:ServiceName>
+                    <ns22:ServiceVersion>
+                        <xsl:value-of select="&quot;N/A&quot;"/>
+                    </ns22:ServiceVersion>
+                    <ns22:SourceID>
+                        <xsl:value-of select="&quot;N/A&quot;"/>
+                    </ns22:SourceID>
+                    <ns22:SourceIP>
+                        <xsl:value-of select="&quot;N/A&quot;"/>
+                    </ns22:SourceIP>
+                    <ns22:RsTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns22:RsTimestamp>
+                </ns12:SMFHeader>
+                <ns6:Error>
+                    <ns6:src>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                    </ns6:src>
+                    <ns6:error_code>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                    </ns6:error_code>
+                    <ns6:error_message>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                    </ns6:error_message>
+                    <ns6:stack_trace>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                    </ns6:stack_trace>
+                </ns6:Error>
+                <Retry>
+                    <xsl:value-of select="0"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log End">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>658</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Call EDC Stroe Procedure Job - PRC_MDM_COMPANY_HISTORICAL End&quot;"/>
+                </message>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Log Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Log End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log End</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Log Start</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

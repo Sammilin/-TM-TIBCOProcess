@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Utilities/Java/getSignatureCode.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="binaryContent" type="xsd:base64Binary"/>
+                    <xsd:element name="messageDigest" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>143</pd:startX>
+    <pd:startY>80</pd:startY>
+    <pd:returnBindings>
+        <signatureCode>
+            <xsl:value-of select="$Java-Code/javaCodeActivityOutput/signatureCode"/>
+        </signatureCode>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="signatureCode" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>424</pd:endX>
+    <pd:endY>82</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1277724365325</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>270</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <fileName>getSignatureCodeJavaCode</fileName>
+            <packageName>Utilities.Java.getSignatureCode</packageName>
+            <fullsource>package Utilities.Java.getSignatureCode;
+import java.util.*;
+import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+public class getSignatureCodeJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected byte[] input = null;
+	protected String messageDigest = "";
+	protected String signatureCode = "";
+	public byte[] getinput() {
+		return input;
+	}
+	public void setinput(byte[] val) {
+		input = val;
+	}
+	public String getmessageDigest() {
+		return messageDigest;
+	}
+	public void setmessageDigest(String val) {
+		messageDigest = val;
+	}
+	public String getsignatureCode() {
+		return signatureCode;
+	}
+	public void setsignatureCode(String val) {
+		signatureCode = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public getSignatureCodeJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : byte[] input
+	In  : String messageDigest
+	Out : String signatureCode
+* Available Variables: DO NOT MODIFY *****/
+	MessageDigest md = null;
+	String valueAfterMD="";
+	try {
+		md = MessageDigest.getInstance(getmessageDigest());
+
+	} catch (NoSuchAlgorithmException e) {
+	        setsignatureCode(e.getMessage());
+	}
+	        
+	 try {
+
+	        md.update(getinput());
+	            
+	        byte[] array = md.digest();
+	        StringBuffer sb = new StringBuffer();
+	        for (int j = 0; j &lt; array.length; ++j) {
+	                 int b = array[j] &amp; 0xFF;
+	                 if (b &lt; 0x10) sb.append('0');
+	                 sb.append(Integer.toHexString(b));
+	         }
+	            
+	         valueAfterMD = sb.toString();
+	            
+	   } catch (Exception e) {
+	            setsignatureCode(e.getMessage());
+	   }  
+	         setsignatureCode(valueAfterMD);
+}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>signatureCode</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>input</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>messageDigest</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>getSignatureCodeJavaCode</name>
+                    <byteCode>yv66vgAAADEAUwkAFgAvCQAWADAJABYAMQoAFwAyCAAzCgAWADQKADUANgcANwoACAA4CgAWADkKABYAOgoANQA7CgA1ADwHAD0KAA4AMgoADgA+CgA/AEAKAA4AQQoADgBCBwBDCgAUADgHAEQHAEUBAAVpbnB1dAEAAltCAQANbWVzc2FnZURpZ2VzdAEAEkxqYXZhL2xhbmcvU3RyaW5nOwEADXNpZ25hdHVyZUNvZGUBAAhnZXRpbnB1dAEABCgpW0IBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAIc2V0aW5wdXQBAAUoW0IpVgEAEGdldG1lc3NhZ2VEaWdlc3QBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEAEHNldG1lc3NhZ2VEaWdlc3QBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBABBnZXRzaWduYXR1cmVDb2RlAQAQc2V0c2lnbmF0dXJlQ29kZQEABjxpbml0PgEAAygpVgEABmludm9rZQEACkV4Y2VwdGlvbnMBAApTb3VyY2VGaWxlAQAdZ2V0U2lnbmF0dXJlQ29kZUphdmFDb2RlLmphdmEMABgAGQwAGgAbDAAcABsMACkAKgEAAAwAIwAkBwBGDABHAEgBACZqYXZhL3NlY3VyaXR5L05vU3VjaEFsZ29yaXRobUV4Y2VwdGlvbgwASQAkDAAoACYMAB0AHgwASgAiDABLAB4BABZqYXZhL2xhbmcvU3RyaW5nQnVmZmVyDABMAE0HAE4MAE8AUAwATABRDABSACQBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQA4VXRpbGl0aWVzL0phdmEvZ2V0U2lnbmF0dXJlQ29kZS9nZXRTaWduYXR1cmVDb2RlSmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQAbamF2YS9zZWN1cml0eS9NZXNzYWdlRGlnZXN0AQALZ2V0SW5zdGFuY2UBADEoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL3NlY3VyaXR5L01lc3NhZ2VEaWdlc3Q7AQAKZ2V0TWVzc2FnZQEABnVwZGF0ZQEABmRpZ2VzdAEABmFwcGVuZAEAGyhDKUxqYXZhL2xhbmcvU3RyaW5nQnVmZmVyOwEAEWphdmEvbGFuZy9JbnRlZ2VyAQALdG9IZXhTdHJpbmcBABUoSSlMamF2YS9sYW5nL1N0cmluZzsBACwoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nQnVmZmVyOwEACHRvU3RyaW5nACEAFgAXAAAAAwAEABgAGQAAAAQAGgAbAAAABAAcABsAAAAIAAEAHQAeAAEAHwAAAB0AAQABAAAABSq0AAGwAAAAAQAgAAAABgABAAAADAABACEAIgABAB8AAAAiAAIAAgAAAAYqK7UAAbEAAAABACAAAAAKAAIAAAAPAAUAEAABACMAJAABAB8AAAAdAAEAAQAAAAUqtAACsAAAAAEAIAAAAAYAAQAAABIAAQAlACYAAQAfAAAAIgACAAIAAAAGKiu1AAKxAAAAAQAgAAAACgACAAAAFQAFABYAAQAnACQAAQAfAAAAHQABAAEAAAAFKrQAA7AAAAABACAAAAAGAAEAAAAYAAEAKAAmAAEAHwAAACIAAgACAAAABiortQADsQAAAAEAIAAAAAoAAgAAABsABQAcAAEAKQAqAAEAHwAAAD4AAgABAAAAFiq3AAQqAbUAASoSBbUAAioSBbUAA7EAAAABACAAAAAWAAUAAAAeAAQACAAJAAkADwAKABUAHwABACsAKgACAB8AAADvAAIABwAAAHsBTBIFTSq2AAa4AAdMpwAMTiottgAJtgAKKyq2AAu2AAwrtgANTrsADlm3AA86BAM2BRUFLb6iAC0tFQUzEQD/fjYGFQYQEKIACxkEEDC2ABBXGQQVBrgAEbYAEleEBQGn/9IZBLYAE02nAAxOKi22ABW2AAoqLLYACrEAAgAFAA0AEAAIABkAaQBsABQAAQAgAAAAUgAUAAAAJgACACcABQApAA0ALQAQACsAEQAsABkAMQAhADMAJgA0AC8ANQA5ADYAQwA3AFIAOABdADUAYwA7AGkAPwBsAD0AbQA+AHUAQAB6AEEALAAAAAQAAQAUAAEALQAAAAIALg==</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <input>
+                    <xsl:value-of select="$Start/group/binaryContent"/>
+                </input>
+                <messageDigest>
+                    <xsl:value-of select="$Start/group/messageDigest"/>
+                </messageDigest>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

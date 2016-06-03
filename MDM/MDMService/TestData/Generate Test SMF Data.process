@@ -1,0 +1,1004 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.trendmicro.com/ESB/schemas/Common" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <pd:name>TestData/Generate Test SMF Data.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="gold_id" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>105</pd:startX>
+    <pd:startY>143</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>678</pd:endX>
+    <pd:endY>117</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1355226528158</pd:targetNamespace>
+    <pd:activity name="JDBC Query Company_ID_Mapping">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>214</pd:x>
+        <pd:y>153</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT * FROM EMEA_MDM.VIEW_COMPANY_ID_MAPPING WHERE gold_id=?</statement>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>gold_id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>nav_id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>teo_id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>sfdc_partner_id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ral_id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>gold_id</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <gold_id>
+                    <xsl:value-of select="$Start/root/gold_id"/>
+                </gold_id>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JDBC Query MDM Main">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>336</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT * FROM EMEA_MDM.VIEW_COMPANY_COMPLETE WHERE gold_id=?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>gold_id</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>gold_id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>company_name</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>company_address</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>company_address_line2</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>country</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>county</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>city</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>post_code</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>currency_code</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>language_code</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>segment</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>primary_email</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>primary_phone_no</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>primary_fax_no</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>is_reseller</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>is_enduser</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>is_distributor</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>created</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>created_by</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>last_upd</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>last_upd_by</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>source_id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>sub_region</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>reporting_country</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>company_website</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>is_directCustomer</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>duns</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>transition_id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>1</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>uniqueidentifier</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>company_tier</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>datasource</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>mergedto_source_id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>company_status</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>aka</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>match_name</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>company_address_line3</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>vat_number</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>master_customer_no</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>company_facebook</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>nav_id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <gold_id>
+                    <xsl:value-of select="$Start/root/gold_id"/>
+                </gold_id>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JDBC Query SFDC Customer">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>336</pd:x>
+        <pd:y>221</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT * FROM EMEA_MDM.VIEW_SFDC_CUSTOMER WHERE SfdcPartnerId=?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>SfdcPartnerId</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>SfdcPartnerId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AccountName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AccountType</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AKA</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>VatNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MainPhoneNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Fax</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Country</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Website</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>EmailDomain</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NavisionID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUNS</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUNSDirectParent</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUNSGlobalParent</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BillingCity</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BillingCountry</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BillingPostalCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BillingState</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BillingStreet</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ParentAccount</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PartnerTier</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MergedToSfdcPartnerId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>RecordType</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LastModifiedDate</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MdmPartnerId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AccountOtherType</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AccountStatus</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUNSName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Active</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <SfdcPartnerId>
+                    <xsl:choose>
+                        <xsl:when test="exists($JDBC-Query-Company_ID_Mapping/resultSet/Record[1]/sfdc_partner_id)">
+                            <xsl:value-of select="$JDBC-Query-Company_ID_Mapping/resultSet/Record[1]/sfdc_partner_id"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </SfdcPartnerId>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>500</pd:x>
+        <pd:y>213</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:SMF>
+                <pfx:SMFHeader>
+                    <ns2:MessageKey>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </ns2:MessageKey>
+                    <ns2:ServiceName>
+                        <xsl:value-of select="&quot;UpdateSfCust&quot;"/>
+                    </ns2:ServiceName>
+                    <ns2:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns2:ServiceVersion>
+                    <ns2:SourceID>
+                        <xsl:value-of select="&quot;SFDC&quot;"/>
+                    </ns2:SourceID>
+                    <ns2:RqTimestamp>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, tib:current-dateTime-timezone(0, 0))"/>
+                    </ns2:RqTimestamp>
+                </pfx:SMFHeader>
+                <pfx:SMFBody>
+                    <pfx:SFDC>
+                        <pfx:Customer>
+                            <ns:SfdcPartnerId>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/SfdcPartnerId"/>
+                            </ns:SfdcPartnerId>
+                            <ns:MdmPartnerId>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-SFDC-Customer/resultSet/Record[1]/MdmPartnerId)">
+                                        <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/MdmPartnerId"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns:MdmPartnerId>
+                            <ns:Active>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/Active"/>
+                            </ns:Active>
+                            <ns:AccountName>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/AccountName"/>
+                            </ns:AccountName>
+                            <ns:AccountType>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/AccountType"/>
+                            </ns:AccountType>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/AccountOtherType">
+                                <ns:AccountOtherType>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/AccountOtherType"/>
+                                </ns:AccountOtherType>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/AccountStatus">
+                                <ns:AccountStatus>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/AccountStatus"/>
+                                </ns:AccountStatus>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/AKA">
+                                <ns:AKA>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/AKA"/>
+                                </ns:AKA>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/VatNumber">
+                                <ns:VatNumber>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/VatNumber"/>
+                                </ns:VatNumber>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/MainPhoneNumber">
+                                <ns:MainPhoneNumber>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/MainPhoneNumber"/>
+                                </ns:MainPhoneNumber>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/Fax">
+                                <ns:Fax>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/Fax"/>
+                                </ns:Fax>
+                            </xsl:if>
+                            <ns:Country>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/Country"/>
+                            </ns:Country>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/Website">
+                                <ns:Website>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/Website"/>
+                                </ns:Website>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/EmailDomain">
+                                <ns:EmailDomain>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/EmailDomain"/>
+                                </ns:EmailDomain>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/NavisionID">
+                                <ns:NavisionID>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/NavisionID"/>
+                                </ns:NavisionID>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/DUNSName">
+                                <ns:DUNSName>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/DUNSName"/>
+                                </ns:DUNSName>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/DUNS">
+                                <ns:DUNS>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/DUNS"/>
+                                </ns:DUNS>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/DUNSDirectParent">
+                                <ns:DUNSDirectParent>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/DUNSDirectParent"/>
+                                </ns:DUNSDirectParent>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/DUNSGlobalParent">
+                                <ns:DUNSGlobalParent>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/DUNSGlobalParent"/>
+                                </ns:DUNSGlobalParent>
+                            </xsl:if>
+                            <ns:BillingCity>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/BillingCity"/>
+                            </ns:BillingCity>
+                            <ns:BillingCountry>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/BillingCountry"/>
+                            </ns:BillingCountry>
+                            <ns:BillingPostalCode>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/BillingPostalCode"/>
+                            </ns:BillingPostalCode>
+                            <ns:BillingState>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/BillingState"/>
+                            </ns:BillingState>
+                            <ns:BillingStreet>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/BillingStreet"/>
+                            </ns:BillingStreet>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/ParentAccount">
+                                <ns:ParentAccount>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/ParentAccount"/>
+                                </ns:ParentAccount>
+                            </xsl:if>
+                            <ns:PartnerTier>
+                                <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/PartnerTier"/>
+                            </ns:PartnerTier>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/MergedToSfdcPartnerId">
+                                <ns:MergedToSfdcPartnerId>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/MergedToSfdcPartnerId"/>
+                                </ns:MergedToSfdcPartnerId>
+                            </xsl:if>
+                            <xsl:if test="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/RecordType">
+                                <ns:recordType>
+                                    <xsl:value-of select="$JDBC-Query-SFDC-Customer/resultSet/Record[1]/RecordType"/>
+                                </ns:recordType>
+                            </xsl:if>
+                        </pfx:Customer>
+                    </pfx:SFDC>
+                    <pfx:MDM>
+                        <pfx:Company>
+                            <ns1:gold_id>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/gold_id)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/gold_id"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:gold_id>
+                            <ns1:company_name>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/company_name)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/company_name"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:company_name>
+                            <ns1:aka>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/aka)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/aka"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:aka>
+                            <ns1:match_name>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/match_name)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/match_name"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:match_name>
+                            <ns1:company_address>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/company_address)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/company_address"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:company_address>
+                            <ns1:company_address_line2>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/company_address_line2)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/company_address_line2"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:company_address_line2>
+                            <ns1:company_address_line3>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/company_address_line3)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/company_address_line3"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:company_address_line3>
+                            <ns1:country>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/country)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/country"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:country>
+                            <ns1:county>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/county)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/county"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:county>
+                            <ns1:city>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/city)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/city"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:city>
+                            <ns1:post_code>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/post_code)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/post_code"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:post_code>
+                            <ns1:company_website>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/company_website)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/company_website"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:company_website>
+                            <ns1:currency_code>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/currency_code)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/currency_code"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:currency_code>
+                            <ns1:language_code>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/language_code)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/language_code"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:language_code>
+                            <ns1:segment>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/segment)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/segment"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:segment>
+                            <ns1:master_customer_no>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/master_customer_no)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/master_customer_no"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:master_customer_no>
+                            <ns1:company_status>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/company_status)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/company_status"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:company_status>
+                            <ns1:primary_email>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/primary_email)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/primary_email"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:primary_email>
+                            <ns1:vat_number>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/vat_number)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/vat_number"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:vat_number>
+                            <ns1:primary_phone_no>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/primary_phone_no)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/primary_phone_no"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:primary_phone_no>
+                            <ns1:primary_fax_no>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/primary_fax_no)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/primary_fax_no"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:primary_fax_no>
+                            <ns1:is_reseller>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/is_reseller)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/is_reseller"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:is_reseller>
+                            <ns1:is_enduser>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/is_enduser)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/is_enduser"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:is_enduser>
+                            <ns1:is_distributor>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/is_distributor)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/is_distributor"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:is_distributor>
+                            <ns1:created>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/created)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/created"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:created>
+                            <ns1:created_by>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/created_by)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/created_by"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:created_by>
+                            <ns1:last_upd>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/last_upd)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/last_upd"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:last_upd>
+                            <ns1:last_upd_by>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/last_upd_by)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/last_upd_by"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:last_upd_by>
+                            <ns1:source_id>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/source_id)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/source_id"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:source_id>
+                            <ns1:sub_region>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/sub_region)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/sub_region"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:sub_region>
+                            <ns1:reporting_country>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/reporting_country)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/reporting_country"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:reporting_country>
+                            <ns1:is_directcustomer>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/is_directCustomer)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/is_directCustomer"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:is_directcustomer>
+                            <ns1:duns>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/duns)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/duns"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:duns>
+                            <ns1:transition_id>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/transition_id)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/transition_id"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:transition_id>
+                            <ns1:company_tier>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/company_tier)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/company_tier"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:company_tier>
+                            <ns1:datasource>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/datasource)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/datasource"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:datasource>
+                            <ns1:company_facebook>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/company_facebook)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/company_facebook"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:company_facebook>
+                            <ns1:nav_id>
+                                <xsl:choose>
+                                    <xsl:when test="exists($JDBC-Query-MDM-Main/resultSet/Record[1]/nav_id)">
+                                        <xsl:value-of select="$JDBC-Query-MDM-Main/resultSet/Record[1]/nav_id"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns1:nav_id>
+                        </pfx:Company>
+                        <pfx:SourceIDMapping>
+                            <ns1:GoldId>
+                                <xsl:value-of select="$JDBC-Query-Company_ID_Mapping/resultSet/Record[1]/gold_id"/>
+                            </ns1:GoldId>
+                            <ns1:NavId>
+                                <xsl:value-of select="$JDBC-Query-Company_ID_Mapping/resultSet/Record[1]/nav_id"/>
+                            </ns1:NavId>
+                            <ns1:RallyingId>
+                                <xsl:value-of select="$JDBC-Query-Company_ID_Mapping/resultSet/Record[1]/ral_id"/>
+                            </ns1:RallyingId>
+                            <ns1:SfId>
+                                <xsl:value-of select="$JDBC-Query-Company_ID_Mapping/resultSet/Record[1]/sfdc_partner_id"/>
+                            </ns1:SfId>
+                        </pfx:SourceIDMapping>
+                    </pfx:MDM>
+                </pfx:SMFBody>
+            </pfx:SMF>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JDBC Query Company_ID_Mapping</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query Company_ID_Mapping</pd:from>
+        <pd:to>JDBC Query MDM Main</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query MDM Main</pd:from>
+        <pd:to>JDBC Query SFDC Customer</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query SFDC Customer</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

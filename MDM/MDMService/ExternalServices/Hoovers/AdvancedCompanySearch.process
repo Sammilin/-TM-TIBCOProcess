@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx15="http://siebel.com/asi/" xmlns:ns="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:pfx14="http://applications.dnb.com/webservice/schema/" xmlns:pfx13="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" xmlns:pfx12="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" xmlns:pfx11="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx41="http://coretech.trendmicro.com/frs/charon/" xmlns:pfx10="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" xmlns:ns21="http://xmlns.tibco.com/encodings/mime" xmlns:TM2="java://com.trendmicro.getTIBCOGlobalVariable" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/PeopleSoft/schemas/DBLogger" xmlns:pfx2="http://tempuri.org/" xmlns:pfx9="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx8="http://www.trendmicro.com/ESB/MDM/schemas/SMF" xmlns:pfx7="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx6="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns3="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx21="http://Anti.Malware.Tracker-Service.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF"/>
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/MDMServerWSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" schemaLocation="/WSDL/Provider/MDMService/SearchCustomer_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" schemaLocation="/WSDL/Provider/MDMService/SearchCustomer_Output.xsd"/>
+    <xsd:import namespace="http://applications.dnb.com/webservice/schema/" schemaLocation="/WSDL/Client/HooversWSDL.wsdl"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Client/ACS WSDL.wsdl"/>
+    <wsdl:import namespace="http://applications.dnb.com/webservice/schema/" location="/WSDL/Client/HooversWSDL.wsdl"/>
+    <pd:name>ExternalServices/Hoovers/AdvancedCompanySearch.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx14:AdvancedCompanySearchRequest"/>
+    <pd:startX>74</pd:startX>
+    <pd:startY>181</pd:startY>
+    <pd:returnBindings>
+        <pfx14:AdvancedCompanySearchResponse>
+            <xsl:for-each select="$SOAPRequestReply/outputMessage/pfx14:AdvancedCompanySearchResponse/pfx14:return">
+                <pfx14:return>
+                    <xsl:for-each select="pfx14:companies">
+                        <pfx14:companies>
+                            <xsl:if test="pfx14:firstHit">
+                                <pfx14:firstHit>
+                                    <xsl:copy-of select="pfx14:firstHit/@xsi:nil"/>
+                                    <xsl:value-of select="pfx14:firstHit"/>
+                                </pfx14:firstHit>
+                            </xsl:if>
+                            <xsl:if test="pfx14:hits">
+                                <pfx14:hits>
+                                    <xsl:copy-of select="pfx14:hits/@xsi:nil"/>
+                                    <xsl:value-of select="pfx14:hits"/>
+                                </pfx14:hits>
+                            </xsl:if>
+                            <xsl:if test="pfx14:lastHit">
+                                <pfx14:lastHit>
+                                    <xsl:copy-of select="pfx14:lastHit/@xsi:nil"/>
+                                    <xsl:value-of select="pfx14:lastHit"/>
+                                </pfx14:lastHit>
+                            </xsl:if>
+                            <xsl:if test="pfx14:totalHits">
+                                <pfx14:totalHits>
+                                    <xsl:copy-of select="pfx14:totalHits/@xsi:nil"/>
+                                    <xsl:value-of select="pfx14:totalHits"/>
+                                </pfx14:totalHits>
+                            </xsl:if>
+                            <xsl:for-each select="pfx14:hit">
+                                <pfx14:hit>
+                                    <xsl:if test="pfx14:hitNumber">
+                                        <pfx14:hitNumber>
+                                            <xsl:copy-of select="pfx14:hitNumber/@xsi:nil"/>
+                                            <xsl:value-of select="pfx14:hitNumber"/>
+                                        </pfx14:hitNumber>
+                                    </xsl:if>
+                                    <xsl:for-each select="pfx14:companyResults">
+                                        <pfx14:companyResults>
+                                            <xsl:if test="pfx14:companyId">
+                                                <pfx14:companyId>
+                                                    <xsl:copy-of select="pfx14:companyId/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:companyId"/>
+                                                </pfx14:companyId>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:duns">
+                                                <pfx14:duns>
+                                                    <xsl:copy-of select="pfx14:duns/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:duns"/>
+                                                </pfx14:duns>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:companyName">
+                                                <pfx14:companyName>
+                                                    <xsl:copy-of select="pfx14:companyName/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:companyName"/>
+                                                </pfx14:companyName>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:locationType">
+                                                <pfx14:locationType>
+                                                    <xsl:copy-of select="pfx14:locationType/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:locationType"/>
+                                                </pfx14:locationType>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:address1">
+                                                <pfx14:address1>
+                                                    <xsl:copy-of select="pfx14:address1/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:address1"/>
+                                                </pfx14:address1>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:city">
+                                                <pfx14:city>
+                                                    <xsl:copy-of select="pfx14:city/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:city"/>
+                                                </pfx14:city>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:country">
+                                                <pfx14:country>
+                                                    <xsl:copy-of select="pfx14:country/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:country"/>
+                                                </pfx14:country>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:countryId">
+                                                <pfx14:countryId>
+                                                    <xsl:copy-of select="pfx14:countryId/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:countryId"/>
+                                                </pfx14:countryId>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:stateOrProvince">
+                                                <pfx14:stateOrProvince>
+                                                    <xsl:copy-of select="pfx14:stateOrProvince/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:stateOrProvince"/>
+                                                </pfx14:stateOrProvince>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:primaryUrl">
+                                                <pfx14:primaryUrl>
+                                                    <xsl:copy-of select="pfx14:primaryUrl/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:primaryUrl"/>
+                                                </pfx14:primaryUrl>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:parentDuns">
+                                                <pfx14:parentDuns>
+                                                    <xsl:copy-of select="pfx14:parentDuns/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:parentDuns"/>
+                                                </pfx14:parentDuns>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:ultimateParentDuns">
+                                                <pfx14:ultimateParentDuns>
+                                                    <xsl:copy-of select="pfx14:ultimateParentDuns/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:ultimateParentDuns"/>
+                                                </pfx14:ultimateParentDuns>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:sales">
+                                                <pfx14:sales>
+                                                    <xsl:copy-of select="pfx14:sales/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:sales"/>
+                                                </pfx14:sales>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:hqPhone">
+                                                <pfx14:hqPhone>
+                                                    <xsl:copy-of select="pfx14:hqPhone/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:hqPhone"/>
+                                                </pfx14:hqPhone>
+                                            </xsl:if>
+                                            <xsl:if test="pfx14:doNotCallRegistry">
+                                                <pfx14:doNotCallRegistry>
+                                                    <xsl:copy-of select="pfx14:doNotCallRegistry/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:doNotCallRegistry"/>
+                                                </pfx14:doNotCallRegistry>
+                                            </xsl:if>
+                                            <xsl:for-each select="pfx14:dbas">
+                                                <pfx14:dbas>
+                                                    <xsl:for-each select="pfx14:dba">
+                                                        <pfx14:dba>
+                                                            <xsl:copy-of select="./@xsi:nil"/>
+                                                            <xsl:value-of select="."/>
+                                                        </pfx14:dba>
+                                                    </xsl:for-each>
+                                                </pfx14:dbas>
+                                            </xsl:for-each>
+                                            <xsl:if test="pfx14:historicalIndicator">
+                                                <pfx14:historicalIndicator>
+                                                    <xsl:copy-of select="pfx14:historicalIndicator/@xsi:nil"/>
+                                                    <xsl:value-of select="pfx14:historicalIndicator"/>
+                                                </pfx14:historicalIndicator>
+                                            </xsl:if>
+                                            <xsl:for-each select="pfx14:exchanges">
+                                                <pfx14:exchanges>
+                                                    <xsl:for-each select="pfx14:exchange">
+                                                        <pfx14:exchange>
+                                                            <pfx14:tickerSymbol>
+                                                                <xsl:value-of select="pfx14:tickerSymbol"/>
+                                                            </pfx14:tickerSymbol>
+                                                            <pfx14:exchangeName>
+                                                                <xsl:value-of select="pfx14:exchangeName"/>
+                                                            </pfx14:exchangeName>
+                                                        </pfx14:exchange>
+                                                    </xsl:for-each>
+                                                </pfx14:exchanges>
+                                            </xsl:for-each>
+                                        </pfx14:companyResults>
+                                    </xsl:for-each>
+                                </pfx14:hit>
+                            </xsl:for-each>
+                        </pfx14:companies>
+                    </xsl:for-each>
+                    <xsl:for-each select="pfx14:navigators">
+                        <pfx14:navigators>
+                            <xsl:for-each select="pfx14:employeeNavigators">
+                                <pfx14:employeeNavigators>
+                                    <xsl:for-each select="pfx14:employeeNavigator">
+                                        <pfx14:employeeNavigator>
+                                            <pfx14:employeeNavigatorValue>
+                                                <xsl:copy-of select="pfx14:employeeNavigatorValue/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:employeeNavigatorValue"/>
+                                            </pfx14:employeeNavigatorValue>
+                                            <pfx14:employeeNavigatorDescription>
+                                                <xsl:copy-of select="pfx14:employeeNavigatorDescription/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:employeeNavigatorDescription"/>
+                                            </pfx14:employeeNavigatorDescription>
+                                        </pfx14:employeeNavigator>
+                                    </xsl:for-each>
+                                </pfx14:employeeNavigators>
+                            </xsl:for-each>
+                            <xsl:for-each select="pfx14:locationTypeNavigators">
+                                <pfx14:locationTypeNavigators>
+                                    <xsl:for-each select="pfx14:locationTypeNavigator">
+                                        <pfx14:locationTypeNavigator>
+                                            <pfx14:locationTypeNavigatorValue>
+                                                <xsl:copy-of select="pfx14:locationTypeNavigatorValue/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:locationTypeNavigatorValue"/>
+                                            </pfx14:locationTypeNavigatorValue>
+                                            <pfx14:locationTypeNavigatorDescription>
+                                                <xsl:copy-of select="pfx14:locationTypeNavigatorDescription/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:locationTypeNavigatorDescription"/>
+                                            </pfx14:locationTypeNavigatorDescription>
+                                        </pfx14:locationTypeNavigator>
+                                    </xsl:for-each>
+                                </pfx14:locationTypeNavigators>
+                            </xsl:for-each>
+                            <xsl:for-each select="pfx14:ownershipTypeNavigators">
+                                <pfx14:ownershipTypeNavigators>
+                                    <xsl:for-each select="pfx14:ownershipTypeNavigator">
+                                        <pfx14:ownershipTypeNavigator>
+                                            <pfx14:ownershipTypeNavigatorValue>
+                                                <xsl:copy-of select="pfx14:ownershipTypeNavigatorValue/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:ownershipTypeNavigatorValue"/>
+                                            </pfx14:ownershipTypeNavigatorValue>
+                                            <pfx14:ownershipTypeNavigatorDescription>
+                                                <xsl:copy-of select="pfx14:ownershipTypeNavigatorDescription/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:ownershipTypeNavigatorDescription"/>
+                                            </pfx14:ownershipTypeNavigatorDescription>
+                                        </pfx14:ownershipTypeNavigator>
+                                    </xsl:for-each>
+                                </pfx14:ownershipTypeNavigators>
+                            </xsl:for-each>
+                            <xsl:for-each select="pfx14:salesNavigators">
+                                <pfx14:salesNavigators>
+                                    <xsl:for-each select="pfx14:salesNavigator">
+                                        <pfx14:salesNavigator>
+                                            <pfx14:salesNavigatorValue>
+                                                <xsl:copy-of select="pfx14:salesNavigatorValue/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:salesNavigatorValue"/>
+                                            </pfx14:salesNavigatorValue>
+                                            <pfx14:salesNavigatorDescription>
+                                                <xsl:copy-of select="pfx14:salesNavigatorDescription/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:salesNavigatorDescription"/>
+                                            </pfx14:salesNavigatorDescription>
+                                        </pfx14:salesNavigator>
+                                    </xsl:for-each>
+                                </pfx14:salesNavigators>
+                            </xsl:for-each>
+                            <xsl:for-each select="pfx14:locationNavigators">
+                                <pfx14:locationNavigators>
+                                    <xsl:for-each select="pfx14:countryNavigators">
+                                        <pfx14:countryNavigators>
+                                            <xsl:for-each select="pfx14:countryNavigator">
+                                                <pfx14:countryNavigator>
+                                                    <pfx14:countryNavigatorValue>
+                                                        <xsl:copy-of select="pfx14:countryNavigatorValue/@xsi:nil"/>
+                                                        <xsl:value-of select="pfx14:countryNavigatorValue"/>
+                                                    </pfx14:countryNavigatorValue>
+                                                    <pfx14:countryNavigatorDescription>
+                                                        <xsl:copy-of select="pfx14:countryNavigatorDescription/@xsi:nil"/>
+                                                        <xsl:value-of select="pfx14:countryNavigatorDescription"/>
+                                                    </pfx14:countryNavigatorDescription>
+                                                    <xsl:for-each select="pfx14:stateProvinceNavigators">
+                                                        <pfx14:stateProvinceNavigators>
+                                                            <xsl:for-each select="pfx14:stateProvinceNavigator">
+                                                                <pfx14:stateProvinceNavigator>
+                                                                    <pfx14:stateProvinceNavigatorValue>
+                                                                        <xsl:copy-of select="pfx14:stateProvinceNavigatorValue/@xsi:nil"/>
+                                                                        <xsl:value-of select="pfx14:stateProvinceNavigatorValue"/>
+                                                                    </pfx14:stateProvinceNavigatorValue>
+                                                                    <pfx14:stateProvinceNavigatorDescription>
+                                                                        <xsl:copy-of select="pfx14:stateProvinceNavigatorDescription/@xsi:nil"/>
+                                                                        <xsl:value-of select="pfx14:stateProvinceNavigatorDescription"/>
+                                                                    </pfx14:stateProvinceNavigatorDescription>
+                                                                    <xsl:for-each select="pfx14:cityNavigators">
+                                                                        <pfx14:cityNavigators>
+                                                                            <xsl:for-each select="pfx14:cityNavigator">
+                                                                                <pfx14:cityNavigator>
+                                                                                    <pfx14:cityNavigatorValue>
+                                                                                        <xsl:copy-of select="pfx14:cityNavigatorValue/@xsi:nil"/>
+                                                                                        <xsl:value-of select="pfx14:cityNavigatorValue"/>
+                                                                                    </pfx14:cityNavigatorValue>
+                                                                                    <pfx14:cityNavigatorDescription>
+                                                                                        <xsl:copy-of select="pfx14:cityNavigatorDescription/@xsi:nil"/>
+                                                                                        <xsl:value-of select="pfx14:cityNavigatorDescription"/>
+                                                                                    </pfx14:cityNavigatorDescription>
+                                                                                </pfx14:cityNavigator>
+                                                                            </xsl:for-each>
+                                                                        </pfx14:cityNavigators>
+                                                                    </xsl:for-each>
+                                                                </pfx14:stateProvinceNavigator>
+                                                            </xsl:for-each>
+                                                        </pfx14:stateProvinceNavigators>
+                                                    </xsl:for-each>
+                                                </pfx14:countryNavigator>
+                                            </xsl:for-each>
+                                        </pfx14:countryNavigators>
+                                    </xsl:for-each>
+                                </pfx14:locationNavigators>
+                            </xsl:for-each>
+                            <xsl:for-each select="pfx14:industryNavigators">
+                                <pfx14:industryNavigators>
+                                    <xsl:for-each select="pfx14:industryNavigator">
+                                        <pfx14:industryNavigator>
+                                            <pfx14:industryNavigatorValue>
+                                                <xsl:copy-of select="pfx14:industryNavigatorValue/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:industryNavigatorValue"/>
+                                            </pfx14:industryNavigatorValue>
+                                            <pfx14:industryNavigatorDescription>
+                                                <xsl:copy-of select="pfx14:industryNavigatorDescription/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:industryNavigatorDescription"/>
+                                            </pfx14:industryNavigatorDescription>
+                                        </pfx14:industryNavigator>
+                                    </xsl:for-each>
+                                    <xsl:for-each select="pfx14:ussicNavigator">
+                                        <pfx14:ussicNavigator>
+                                            <pfx14:ussicNavigatorValue>
+                                                <xsl:copy-of select="pfx14:ussicNavigatorValue/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:ussicNavigatorValue"/>
+                                            </pfx14:ussicNavigatorValue>
+                                            <pfx14:ussicNavigatorDescription>
+                                                <xsl:copy-of select="pfx14:ussicNavigatorDescription/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:ussicNavigatorDescription"/>
+                                            </pfx14:ussicNavigatorDescription>
+                                        </pfx14:ussicNavigator>
+                                    </xsl:for-each>
+                                    <xsl:for-each select="pfx14:naicsNavigator">
+                                        <pfx14:naicsNavigator>
+                                            <pfx14:naicsNavigatorValue>
+                                                <xsl:copy-of select="pfx14:naicsNavigatorValue/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:naicsNavigatorValue"/>
+                                            </pfx14:naicsNavigatorValue>
+                                            <pfx14:naicsNavigatorDescription>
+                                                <xsl:copy-of select="pfx14:naicsNavigatorDescription/@xsi:nil"/>
+                                                <xsl:value-of select="pfx14:naicsNavigatorDescription"/>
+                                            </pfx14:naicsNavigatorDescription>
+                                        </pfx14:naicsNavigator>
+                                    </xsl:for-each>
+                                </pfx14:industryNavigators>
+                            </xsl:for-each>
+                        </pfx14:navigators>
+                    </xsl:for-each>
+                </pfx14:return>
+            </xsl:for-each>
+        </pfx14:AdvancedCompanySearchResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx14:AdvancedCompanySearchResponse"/>
+    <pd:endX>627</pd:endX>
+    <pd:endY>180</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx7:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1314244713029</pd:targetNamespace>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>514</pd:x>
+        <pd:y>397</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx7:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns1:ErrorReport/Data/pfx7:Error)">
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx7:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx7:Error>
+                                <pfx7:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx7:src>
+                                <pfx7:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx7:error_code>
+                                <pfx7:error_message>
+                                    <xsl:value-of select="concat(&quot;BW response error: &quot;,$_error/ns1:ErrorReport/Msg)"/>
+                                </pfx7:error_message>
+                                <pfx7:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx7:stack_trace>
+                            </pfx7:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>188</pd:x>
+        <pd:y>28</pd:y>
+        <pd:width>324</pd:width>
+        <pd:height>288</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>false() or exists($SOAPRequestReply/outputMessage/pfx14:AdvancedCompanySearchResponse/pfx14:return)</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SOAPRequestReply</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate-Error-1</pd:to>
+            <pd:xpathDescription>Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i&gt;5</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:xpathDescription>IOException</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>262</pd:x>
+            <pd:y>202</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>434</pd:x>
+            <pd:y>202</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/MDMServer/WebService/RetryInterval_secs * 1000"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate-Error-1">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>355</pd:x>
+            <pd:y>261</pd:y>
+            <config>
+                <faultName>errorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <pfx5:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </message>
+                    <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                    <data>
+                        <pfx7:Error>
+                            <pfx7:src>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                            </pfx7:src>
+                            <pfx7:error_code>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </pfx7:error_code>
+                            <pfx7:error_message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                            </pfx7:error_message>
+                            <pfx7:stack_trace>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                            </pfx7:stack_trace>
+                        </pfx7:Error>
+                    </data>
+                </pfx5:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="SOAPRequestReply">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>339</pd:x>
+            <pd:y>97</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx14:HooversAPI-34</service>
+                <servicePort>HooversAPI-34Soap11</servicePort>
+                <operation>AdvancedCompanySearch</operation>
+                <soapAction/>
+                <endpointURL>http://hapi-dev.hoovers.com/HooversAPI-34</endpointURL>
+                <useProxy>true</useProxy>
+                <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <headers>
+                        <Header.parameters>
+                            <pfx14:API-KEY>
+                                <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/Hoovers/WebService/API-KEY"/>
+                            </pfx14:API-KEY>
+                        </Header.parameters>
+                    </headers>
+                    <pfx14:AdvancedCompanySearchRequest>
+                        <pfx14:bal>
+                            <pfx14:maxRecords>
+                                <xsl:value-of select="$Start/pfx14:AdvancedCompanySearchRequest/pfx14:bal/pfx14:maxRecords"/>
+                            </pfx14:maxRecords>
+                            <pfx14:sortDirection>
+                                <xsl:value-of select="$Start/pfx14:AdvancedCompanySearchRequest/pfx14:bal/pfx14:sortDirection"/>
+                            </pfx14:sortDirection>
+                            <pfx14:location>
+                                <xsl:choose>
+                                    <xsl:when test="exists($Start/pfx14:AdvancedCompanySearchRequest/pfx14:bal/pfx14:location/pfx14:streetAddress)&#xA;and&#xA;count($Start/pfx14:AdvancedCompanySearchRequest/pfx14:bal/pfx14:location/pfx14:streetAddress)>0">
+                                        <xsl:for-each select="$Start/pfx14:AdvancedCompanySearchRequest/pfx14:bal/pfx14:location/pfx14:streetAddress">
+                                            <pfx14:streetAddress>
+                                                <xsl:value-of select="."/>
+                                            </pfx14:streetAddress>
+                                        </xsl:for-each>
+                                    </xsl:when>
+                                    <xsl:otherwise/>
+                                </xsl:choose>
+                                <xsl:for-each select="$Start/pfx14:AdvancedCompanySearchRequest/pfx14:bal/pfx14:location/pfx14:countryId">
+                                    <pfx14:countryId>
+                                        <xsl:value-of select="."/>
+                                    </pfx14:countryId>
+                                </xsl:for-each>
+                            </pfx14:location>
+                            <pfx14:specialtyCriteria>
+                                <pfx14:companyName>
+                                    <xsl:value-of select="$Start/pfx14:AdvancedCompanySearchRequest/pfx14:bal/pfx14:specialtyCriteria/pfx14:companyName"/>
+                                </pfx14:companyName>
+                            </pfx14:specialtyCriteria>
+                        </pfx14:bal>
+                    </pfx14:AdvancedCompanySearchRequest>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

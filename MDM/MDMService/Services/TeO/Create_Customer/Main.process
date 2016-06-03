@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/ACK" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer_Request" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/ACK.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Customer_Request.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" xmlns:ns15="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/Common" xmlns:ns12="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns13="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns7="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Input" xmlns:ns10="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" xmlns:ns8="http://www.trendmicro.com/ESB/MDM/schemas/SMF/ActSfCust_Input" xmlns:ns11="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CommonOutput" xmlns:ns2="http://tempuri.org/" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns4="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/ACSMessage.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" schemaLocation="/WSDL/Provider/SearchCustomer_Output.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" schemaLocation="/WSDL/Provider/MDMService/SearchCustomer_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Input" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/ActSfCust_Input" schemaLocation="/WSDL/Provider/SFDC/ActSfCust_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Output.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Customer_Request.xsd" schemaLocation="/XSD/Client/Navision/Customer_Request.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/ACK.xsd" schemaLocation="/XSD/Client/Navision/ACK.xsd"/>
+    <pd:name>Services/TeO/Create_Customer/Main.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="XMLString" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>100</pd:startX>
+    <pd:startY>66</pd:startY>
+    <pd:returnBindings>
+        <TrendMicro>
+            <MessageHeader>
+                <MessageName>
+                    <xsl:value-of select="$_globalVariables/ns12:GlobalVariables/Services/Navision/CreateNavCust/ACKMessageName"/>
+                </MessageName>
+                <MessageGUID>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </MessageGUID>
+                <MessageFunctionCode>
+                    <xsl:value-of select="&quot;Ack&quot;"/>
+                </MessageFunctionCode>
+                <DateTimeStamp>
+                    <xsl:value-of select="tib:format-dateTime(&quot;yyyyMMdd'T'HHmmss&quot;, tib:translate-timezone(current-dateTime(), 'UTC'))"/>
+                </DateTimeStamp>
+                <From>
+                    <xsl:value-of select="$Parse-XML/TrendMicro/MessageHeader/To"/>
+                </From>
+                <To>
+                    <xsl:value-of select="$Parse-XML/TrendMicro/MessageHeader/From"/>
+                </To>
+                <Correlation>
+                    <MsgTrackingGUID>
+                        <xsl:value-of select="$Parse-XML/TrendMicro/MessageHeader/Correlation/MsgTrackingGUID"/>
+                    </MsgTrackingGUID>
+                </Correlation>
+            </MessageHeader>
+        </TrendMicro>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx7:TrendMicro"/>
+    <pd:endX>598</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334229875067</pd:targetNamespace>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>197</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx6:TrendMicro"/>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="contains($Start/XMLString, &quot;ns0:&quot;)">
+                    <xmlString>
+                        <xsl:value-of select="TM:stringReplace(concat('&lt;ns0:TrendMicro>',substring-after($Start/XMLString, &quot;>&quot;)), &quot;ns0:&quot;, &quot;&quot;)"/>
+                    </xmlString>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xmlString>
+                        <xsl:value-of select="$Start/XMLString"/>
+                    </xmlString>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>309</pd:x>
+        <pd:y>189</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>452</pd:x>
+        <pd:y>187</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="ns6:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <xsl:choose>
+                    <xsl:when test="exists($_error_Parse-XML/ActivityErrors)">
+                        <pfx:SMFHeader>
+                            <ns5:MessageKey>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </ns5:MessageKey>
+                            <ns5:ServiceName>
+                                <xsl:value-of select="&quot;CreateTEOCust&quot;"/>
+                            </ns5:ServiceName>
+                            <ns5:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </ns5:ServiceVersion>
+                            <ns5:SourceID>
+                                <xsl:value-of select="&quot;N/A&quot;"/>
+                            </ns5:SourceID>
+                            <ns5:SourceIP>
+                                <xsl:value-of select="&quot;N/A&quot;"/>
+                            </ns5:SourceIP>
+                            <ns5:RsTimestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns5:RsTimestamp>
+                        </pfx:SMFHeader>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx:SMFHeader>
+                            <ns5:MessageKey>
+                                <xsl:value-of select="$Parse-XML/TrendMicro/MessageHeader/Correlation/MsgTrackingGUID"/>
+                            </ns5:MessageKey>
+                            <ns5:ServiceName>
+                                <xsl:value-of select="$Parse-XML/TrendMicro/MessageHeader/MessageName"/>
+                            </ns5:ServiceName>
+                            <ns5:ServiceVersion>
+                                <xsl:value-of select="$Parse-XML/TrendMicro/MessageHeader/MessageFunctionCode"/>
+                            </ns5:ServiceVersion>
+                            <ns5:SourceID>
+                                <xsl:value-of select="&quot;TEO&quot;"/>
+                            </ns5:SourceID>
+                            <ns5:RqTimestamp>
+                                <xsl:value-of select="tib:parse-dateTime(&quot;yyyyMMdd'T'HHmmss&quot;, $Parse-XML/TrendMicro/MessageHeader/DateTimeStamp)"/>
+                            </ns5:RqTimestamp>
+                            <ns5:RsTimestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns5:RsTimestamp>
+                        </pfx:SMFHeader>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($_error/ns3:ErrorReport/Data/ns6:Error)">
+                        <xsl:copy-of select="$_error/ns3:ErrorReport/Data/ns6:Error"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns6:Error>
+                            <ns6:src>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                            </ns6:src>
+                            <ns6:error_code>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </ns6:error_code>
+                            <ns6:error_message>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                            </ns6:error_message>
+                            <ns6:stack_trace>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            </ns6:stack_trace>
+                        </ns6:Error>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Source>
+                    <xsl:value-of select="$Start/XMLString"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="1"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MDM_CreateCustomer">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>444</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <processName>/Services/TeO/Create_Customer/ExecuteRequest.process</processName>
+            <processNameXPath/>
+            <customId/>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns9:SMF>
+                <ns9:SMFHeader>
+                    <ns5:MessageKey>
+                        <xsl:value-of select="$Parse-XML/TrendMicro/MessageHeader/Correlation/MsgTrackingGUID"/>
+                    </ns5:MessageKey>
+                    <ns5:ServiceName>
+                        <xsl:value-of select="&quot;CreateTEOCust&quot;"/>
+                    </ns5:ServiceName>
+                    <ns5:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns5:ServiceVersion>
+                    <ns5:SourceID>
+                        <xsl:value-of select="&quot;TEO&quot;"/>
+                    </ns5:SourceID>
+                    <ns5:RqTimestamp>
+                        <xsl:value-of select="tib:parse-dateTime(&quot;yyyyMMdd'T'HHmmss&quot;, $Parse-XML/TrendMicro/MessageHeader/DateTimeStamp)"/>
+                    </ns5:RqTimestamp>
+                </ns9:SMFHeader>
+                <ns9:SMFBody>
+                    <ns9:Navision>
+                        <ns9:Customer>
+                            <xsl:for-each select="$Parse-XML/TrendMicro/MessagePayload/BusinessObject/CustomerInfo/Customer">
+                                <ns15:Customer>
+                                    <xsl:if test="MDMCustID">
+                                        <ns15:MDMCustID>
+                                            <xsl:value-of select="MDMCustID"/>
+                                        </ns15:MDMCustID>
+                                    </xsl:if>
+                                    <xsl:if test="DnBNum">
+                                        <ns15:DnBNum>
+                                            <xsl:value-of select="DnBNum"/>
+                                        </ns15:DnBNum>
+                                    </xsl:if>
+                                    <ns15:SiebelID>
+                                        <xsl:value-of select="SiebelID"/>
+                                    </ns15:SiebelID>
+                                    <xsl:if test="SalesForceID">
+                                        <ns15:SalesForceID>
+                                            <xsl:value-of select="SalesForceID"/>
+                                        </ns15:SalesForceID>
+                                    </xsl:if>
+                                    <xsl:if test="B2BCustID">
+                                        <ns15:B2BCustID>
+                                            <xsl:value-of select="B2BCustID"/>
+                                        </ns15:B2BCustID>
+                                    </xsl:if>
+                                    <ns15:NavDistiID>
+                                        <xsl:value-of select="NavDistiID"/>
+                                    </ns15:NavDistiID>
+                                    <ns15:NAVID>
+                                        <xsl:value-of select="NAVID"/>
+                                    </ns15:NAVID>
+                                    <ns15:CustomerName>
+                                        <xsl:value-of select="CustomerName"/>
+                                    </ns15:CustomerName>
+                                    <ns15:CustomerName2>
+                                        <xsl:value-of select="CustomerName2"/>
+                                    </ns15:CustomerName2>
+                                    <ns15:Address>
+                                        <xsl:value-of select="Address"/>
+                                    </ns15:Address>
+                                    <ns15:Address2>
+                                        <xsl:value-of select="Address2"/>
+                                    </ns15:Address2>
+                                    <ns15:City>
+                                        <xsl:value-of select="City"/>
+                                    </ns15:City>
+                                    <ns15:County>
+                                        <xsl:value-of select="County"/>
+                                    </ns15:County>
+                                    <ns15:PostCode>
+                                        <xsl:value-of select="PostCode"/>
+                                    </ns15:PostCode>
+                                    <ns15:CountryCode>
+                                        <xsl:value-of select="CountryCode"/>
+                                    </ns15:CountryCode>
+                                    <ns15:Phone>
+                                        <xsl:value-of select="Phone"/>
+                                    </ns15:Phone>
+                                    <ns15:Fax>
+                                        <xsl:value-of select="Fax"/>
+                                    </ns15:Fax>
+                                    <ns15:Email>
+                                        <xsl:value-of select="Email"/>
+                                    </ns15:Email>
+                                    <ns15:LanguageCode>
+                                        <xsl:value-of select="LanguageCode"/>
+                                    </ns15:LanguageCode>
+                                    <ns15:LegalEntity>
+                                        <xsl:value-of select="LegalEntity"/>
+                                    </ns15:LegalEntity>
+                                    <ns15:EndCustomer>
+                                        <xsl:value-of select="EndCustomer"/>
+                                    </ns15:EndCustomer>
+                                    <ns15:Reseller>
+                                        <xsl:value-of select="Reseller"/>
+                                    </ns15:Reseller>
+                                    <ns15:TransactionProfile>
+                                        <xsl:value-of select="TransactionProfile"/>
+                                    </ns15:TransactionProfile>
+                                    <ns15:Segment>
+                                        <xsl:value-of select="Segment"/>
+                                    </ns15:Segment>
+                                    <ns15:MasterNAVID>
+                                        <xsl:value-of select="MasterNAVID"/>
+                                    </ns15:MasterNAVID>
+                                    <ns15:Blocked>
+                                        <xsl:value-of select="Blocked"/>
+                                    </ns15:Blocked>
+                                    <ns15:PartnerTier>
+                                        <xsl:value-of select="PartnerTier"/>
+                                    </ns15:PartnerTier>
+                                    <xsl:if test="DefaultAccred">
+                                        <ns15:DefaultAccred>
+                                            <xsl:value-of select="DefaultAccred"/>
+                                        </ns15:DefaultAccred>
+                                    </xsl:if>
+                                    <ns15:VATRegNo>
+                                        <xsl:value-of select="VATRegNo"/>
+                                    </ns15:VATRegNo>
+                                    <xsl:if test="DefaultContactID">
+                                        <ns15:DefaultContactID>
+                                            <xsl:value-of select="DefaultContactID"/>
+                                        </ns15:DefaultContactID>
+                                    </xsl:if>
+                                    <ns15:SourceSystemID>
+                                        <xsl:value-of select="SourceSystemID"/>
+                                    </ns15:SourceSystemID>
+                                    <xsl:if test="DistributorType">
+                                        <ns15:DistributorType>
+                                            <xsl:value-of select="DistributorType"/>
+                                        </ns15:DistributorType>
+                                    </xsl:if>
+                                    <xsl:if test="Currency">
+                                        <ns15:Currency>
+                                            <xsl:value-of select="Currency"/>
+                                        </ns15:Currency>
+                                    </xsl:if>
+                                    <xsl:if test="DeDupExclude">
+                                        <ns15:DeDupExclude>
+                                            <xsl:value-of select="DeDupExclude"/>
+                                        </ns15:DeDupExclude>
+                                    </xsl:if>
+                                    <ns15:MSP>
+                                        <xsl:value-of select="MSP"/>
+                                    </ns15:MSP>
+                                    <ns15:MarketPlace>
+                                        <xsl:value-of select="MarketPlace"/>
+                                    </ns15:MarketPlace>
+                                    <ns15:MSPContractSigned>
+                                        <xsl:value-of select="MSPContractSigned"/>
+                                    </ns15:MSPContractSigned>
+                                </ns15:Customer>
+                            </xsl:for-each>
+                        </ns9:Customer>
+                    </ns9:Navision>
+                </ns9:SMFBody>
+            </ns9:SMF>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Logging Input Message">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>311</pd:x>
+        <pd:y>74</pd:y>
+        <config>
+            <processName>/Services/SharedServices/MDM Logging Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <MessageKey>
+                    <xsl:value-of select="$Parse-XML/TrendMicro/MessageHeader/Correlation/MsgTrackingGUID"/>
+                </MessageKey>
+                <ServiceName>
+                    <xsl:value-of select="$Parse-XML/TrendMicro/MessageHeader/MessageName"/>
+                </ServiceName>
+                <ServiceVersion>
+                    <xsl:value-of select="$Parse-XML/TrendMicro/MessageHeader/MessageFunctionCode"/>
+                </ServiceVersion>
+                <SourceID>
+                    <xsl:value-of select="&quot;TEO&quot;"/>
+                </SourceID>
+                <RqTimestamp>
+                    <xsl:value-of select="tib:parse-dateTime(&quot;yyyyMMdd'T'HHmmss&quot;, $Parse-XML/TrendMicro/MessageHeader/DateTimeStamp)"/>
+                </RqTimestamp>
+                <MessageBody>
+                    <xsl:value-of select="$Start/XMLString"/>
+                </MessageBody>
+                <errlog_flag>
+                    <xsl:value-of select="&quot;N&quot;"/>
+                </errlog_flag>
+                <datasource>
+                    <xsl:value-of select="&quot;TEO&quot;"/>
+                </datasource>
+                <source_company_id>
+                    <xsl:value-of select="$Parse-XML/TrendMicro/MessagePayload/BusinessObject/CustomerInfo/Customer/NavDistiID"/>
+                </source_company_id>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Logging Input Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MDM_CreateCustomer</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Logging Input Message</pd:from>
+        <pd:to>MDM_CreateCustomer</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

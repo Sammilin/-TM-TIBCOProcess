@@ -1,0 +1,1122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/MDMServer/ResponseCreateCompany.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/MDMServer/ResponseCreateContact.xsd" xmlns:pfx2="http://www.tibco.com/schemas/MDMService/XSD/Client/SFDC/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/MDMServer/ResponseCreateContact.xsd" schemaLocation="/XSD/Client/MDMServer/ResponseCreateContact.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/MDMServer/ResponseCreateCompany.xsd" schemaLocation="/XSD/Client/MDMServer/ResponseCreateCompany.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" schemaLocation="/XSD/Client/MDMServer/MDMServer.xsd"/>
+    <pd:name>ExternalServices/MDM_Server/ReceiveCompany.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="message_id" type="xsd:string"/>
+                    <xsd:element name="message_type" type="xsd:string"/>
+                    <xsd:element name="datasource" type="xsd:string"/>
+                    <xsd:element name="gold_id" type="xsd:string"/>
+                    <xsd:element name="source_company_id" type="xsd:string"/>
+                    <xsd:element name="message_content" type="xsd:string"/>
+                    <xsd:element name="batch_id" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="trigger_datasource" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>69</pd:startX>
+    <pd:startY>80</pd:startY>
+    <pd:returnBindings>
+        <group>
+            <xsl:choose>
+                <xsl:when test="lower-case($Start/root/message_type)=&quot;create&quot;">
+                    <ExcuteRuleEngine>
+                        <xsl:value-of select="&quot;true&quot;"/>
+                    </ExcuteRuleEngine>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:choose>
+                        <xsl:when test="count($SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row)=0">
+                            <ExcuteRuleEngine>
+                                <xsl:value-of select="&quot;false&quot;"/>
+                            </ExcuteRuleEngine>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ExcuteRuleEngine>
+                                <xsl:value-of select="&quot;true&quot;"/>
+                            </ExcuteRuleEngine>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:otherwise>
+            </xsl:choose>
+            <responseXML>
+                <xsl:value-of select="tib:render-xml($SQL-Direct/jdbcGeneralActivityOutput/unknownResultset[1])"/>
+            </responseXML>
+            <xsl:if test="exists($SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row/column/name)">
+                <Resultsets>
+                    <xsl:choose>
+                        <xsl:when test="lower-case($Start/root/message_type)=&quot;create&quot;">
+                            <ResultSet>
+                                <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset[1]/row[1]">
+                                    <Record>
+                                        <pfx5:gold_id>
+                                            <xsl:copy-of select="column[name='gold_id']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='gold_id']/value"/>
+                                        </pfx5:gold_id>
+                                        <pfx5:company_name>
+                                            <xsl:copy-of select="column[name='company_name']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='company_name']/value"/>
+                                        </pfx5:company_name>
+                                        <pfx5:aka>
+                                            <xsl:copy-of select="column[name='aka']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='aka']/value"/>
+                                        </pfx5:aka>
+                                        <pfx5:match_name>
+                                            <xsl:copy-of select="column[name='match_name']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='match_name']/value"/>
+                                        </pfx5:match_name>
+                                        <pfx5:company_address>
+                                            <xsl:copy-of select="column[name='company_address']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='company_address']/value"/>
+                                        </pfx5:company_address>
+                                        <pfx5:company_address_line2>
+                                            <xsl:copy-of select="column[name='company_address_line2']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='company_address_line2']/value"/>
+                                        </pfx5:company_address_line2>
+                                        <pfx5:company_address_line3>
+                                            <xsl:copy-of select="column[name='company_address_line3']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='company_address_line3']/value"/>
+                                        </pfx5:company_address_line3>
+                                        <pfx5:country>
+                                            <xsl:copy-of select="column[name='country']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='country']/value"/>
+                                        </pfx5:country>
+                                        <pfx5:county>
+                                            <xsl:copy-of select="column[name='county']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='county']/value"/>
+                                        </pfx5:county>
+                                        <pfx5:city>
+                                            <xsl:copy-of select="column[name='city']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='city']/value"/>
+                                        </pfx5:city>
+                                        <pfx5:post_code>
+                                            <xsl:copy-of select="column[name='post_code']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='post_code']/value"/>
+                                        </pfx5:post_code>
+                                        <pfx5:company_website>
+                                            <xsl:copy-of select="column[name='company_website']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='company_website']/value"/>
+                                        </pfx5:company_website>
+                                        <pfx5:currency_code>
+                                            <xsl:copy-of select="column[name='currency_code']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='currency_code']/value"/>
+                                        </pfx5:currency_code>
+                                        <pfx5:language_code>
+                                            <xsl:copy-of select="column[name='language_code']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='language_code']/value"/>
+                                        </pfx5:language_code>
+                                        <pfx5:segment>
+                                            <xsl:copy-of select="column[name='segment']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='segment']/value"/>
+                                        </pfx5:segment>
+                                        <pfx5:master_customer_no>
+                                            <xsl:copy-of select="column[name='master_customer_no']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='master_customer_no']/value"/>
+                                        </pfx5:master_customer_no>
+                                        <pfx5:company_status>
+                                            <xsl:copy-of select="column[name='company_status']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='company_status']/value"/>
+                                        </pfx5:company_status>
+                                        <pfx5:primary_email>
+                                            <xsl:copy-of select="column[name='primary_email']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='primary_email']/value"/>
+                                        </pfx5:primary_email>
+                                        <pfx5:vat_number>
+                                            <xsl:copy-of select="column[name='vat_number']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='vat_number']/value"/>
+                                        </pfx5:vat_number>
+                                        <pfx5:primary_phone_no>
+                                            <xsl:copy-of select="column[name='primary_phone_no']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='primary_phone_no']/value"/>
+                                        </pfx5:primary_phone_no>
+                                        <pfx5:primary_fax_no>
+                                            <xsl:copy-of select="column[name='primary_fax_no']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='primary_fax_no']/value"/>
+                                        </pfx5:primary_fax_no>
+                                        <pfx5:is_reseller>
+                                            <xsl:copy-of select="column[name='is_reseller']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='is_reseller']/value"/>
+                                        </pfx5:is_reseller>
+                                        <pfx5:is_enduser>
+                                            <xsl:copy-of select="column[name='is_enduser']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='is_enduser']/value"/>
+                                        </pfx5:is_enduser>
+                                        <pfx5:is_distributor>
+                                            <xsl:copy-of select="column[name='is_distributor']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='is_distributor']/value"/>
+                                        </pfx5:is_distributor>
+                                        <pfx5:created>
+                                            <xsl:copy-of select="column[name='created']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='created']/value"/>
+                                        </pfx5:created>
+                                        <pfx5:created_by>
+                                            <xsl:copy-of select="column[name='created_by']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='created_by']/value"/>
+                                        </pfx5:created_by>
+                                        <pfx5:last_upd>
+                                            <xsl:copy-of select="column[name='last_upd']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='last_upd']/value"/>
+                                        </pfx5:last_upd>
+                                        <pfx5:last_upd_by>
+                                            <xsl:copy-of select="column[name='last_upd_by']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='last_upd_by']/value"/>
+                                        </pfx5:last_upd_by>
+                                        <pfx5:source_id>
+                                            <xsl:copy-of select="column[name='source_id']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='source_id']/value"/>
+                                        </pfx5:source_id>
+                                        <pfx5:sub_region>
+                                            <xsl:copy-of select="column[name='sub_region']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='sub_region']/value"/>
+                                        </pfx5:sub_region>
+                                        <pfx5:reporting_country>
+                                            <xsl:copy-of select="column[name='reporting_country']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='reporting_country']/value"/>
+                                        </pfx5:reporting_country>
+                                        <pfx5:is_directcustomer>
+                                            <xsl:copy-of select="column[name='is_directCustomer']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='is_directCustomer']/value"/>
+                                        </pfx5:is_directcustomer>
+                                        <pfx5:duns>
+                                            <xsl:copy-of select="column[name='duns']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='duns']/value"/>
+                                        </pfx5:duns>
+                                        <pfx5:transition_id>
+                                            <xsl:copy-of select="column[name='transition_id']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='transition_id']/value"/>
+                                        </pfx5:transition_id>
+                                        <pfx5:company_tier>
+                                            <xsl:copy-of select="column[name='company_tier']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='company_tier']/value"/>
+                                        </pfx5:company_tier>
+                                        <pfx5:datasource>
+                                            <xsl:copy-of select="column[name='datasource']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='datasource']/value"/>
+                                        </pfx5:datasource>
+                                        <pfx5:company_facebook>
+                                            <xsl:copy-of select="column[name='company_facebook']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='company_facebook']/value"/>
+                                        </pfx5:company_facebook>
+                                        <pfx5:nav_id>
+                                            <xsl:copy-of select="column[name='nav_id']/value/@xsi:nil"/>
+                                            <xsl:value-of select="column[name='nav_id']/value"/>
+                                        </pfx5:nav_id>
+                                        <xsl:if test="column[name='address_id']/value">
+                                            <pfx5:address_id>
+                                                <xsl:copy-of select="column[name='address_id']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='address_id']/value"/>
+                                            </pfx5:address_id>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='company_name_2']/value">
+                                            <pfx5:company_name_2>
+                                                <xsl:copy-of select="column[name='company_name_2']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='company_name_2']/value"/>
+                                            </pfx5:company_name_2>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='DeDupExclude']/value">
+                                            <pfx5:DeDupExclude>
+                                                <xsl:copy-of select="column[name='DeDupExclude']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='DeDupExclude']/value"/>
+                                            </pfx5:DeDupExclude>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='B2BCustID']/value">
+                                            <pfx5:B2BCustID>
+                                                <xsl:copy-of select="column[name='B2BCustID']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='B2BCustID']/value"/>
+                                            </pfx5:B2BCustID>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='NavDistiID']/value">
+                                            <pfx5:NavDistiID>
+                                                <xsl:copy-of select="column[name='NavDistiID']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='NavDistiID']/value"/>
+                                            </pfx5:NavDistiID>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='SalesForceID']/value">
+                                            <pfx5:SalesForceID>
+                                                <xsl:copy-of select="column[name='SalesForceID']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='SalesForceID']/value"/>
+                                            </pfx5:SalesForceID>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='LegalEntity']/value">
+                                            <pfx5:LegalEntity>
+                                                <xsl:copy-of select="column[name='LegalEntity']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='LegalEntity']/value"/>
+                                            </pfx5:LegalEntity>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='SiebelID']/value">
+                                            <pfx5:SiebelID>
+                                                <xsl:copy-of select="column[name='SiebelID']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='SiebelID']/value"/>
+                                            </pfx5:SiebelID>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='SourceSystemID']/value">
+                                            <pfx5:SourceSystemID>
+                                                <xsl:copy-of select="column[name='SourceSystemID']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='SourceSystemID']/value"/>
+                                            </pfx5:SourceSystemID>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='DefaultContactID']/value">
+                                            <pfx5:DefaultContactID>
+                                                <xsl:copy-of select="column[name='DefaultContactID']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='DefaultContactID']/value"/>
+                                            </pfx5:DefaultContactID>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='MSP']/value">
+                                            <pfx5:MSP>
+                                                <xsl:copy-of select="column[name='MSP']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='MSP']/value"/>
+                                            </pfx5:MSP>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='MarketPlace']/value">
+                                            <pfx5:MarketPlace>
+                                                <xsl:copy-of select="column[name='MarketPlace']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='MarketPlace']/value"/>
+                                            </pfx5:MarketPlace>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='MSPContractSigned']/value">
+                                            <pfx5:MSPContractSigned>
+                                                <xsl:copy-of select="column[name='MSPContractSigned']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='MSPContractSigned']/value"/>
+                                            </pfx5:MSPContractSigned>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='DefaultAccred']/value">
+                                            <pfx5:DefaultAccred>
+                                                <xsl:copy-of select="column[name='DefaultAccred']/value/@xsi:nil"/>
+                                                <xsl:value-of select="column[name='DefaultAccred']/value"/>
+                                            </pfx5:DefaultAccred>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='distributor_type']/value">
+                                            <pfx5:DistributorType>
+                                                <xsl:value-of select="column[name='distributor_type']/value"/>
+                                            </pfx5:DistributorType>
+                                        </xsl:if>
+                                        <xsl:if test="column[name='company']/value">
+                                            <pfx5:Company>
+                                                <xsl:value-of select="column[name='company']/value"/>
+                                            </pfx5:Company>
+                                        </xsl:if>
+                                    </Record>
+                                </xsl:for-each>
+                            </ResultSet>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ResultSet>
+                                <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset[1]">
+                                    <Record>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='gold_id']/column[4]/value)">
+                                                <pfx5:gold_id>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='gold_id']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='gold_id']/column[4]/value"/>
+                                                </pfx5:gold_id>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:gold_id xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='company_name']/column[4]/value)">
+                                                <pfx5:company_name>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='company_name']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='company_name']/column[4]/value"/>
+                                                </pfx5:company_name>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:company_name xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='aka']/column[4]/value)">
+                                                <pfx5:aka>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='aka']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='aka']/column[4]/value"/>
+                                                </pfx5:aka>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:aka xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='match_name']/column[4]/value)">
+                                                <pfx5:match_name>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='match_name']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='match_name']/column[4]/value"/>
+                                                </pfx5:match_name>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:match_name xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='company_address']/column[4]/value)">
+                                                <pfx5:company_address>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='company_address']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='company_address']/column[4]/value"/>
+                                                </pfx5:company_address>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:company_address xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='company_address_line2']/column[4]/value)">
+                                                <pfx5:company_address_line2>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='company_address_line2']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='company_address_line2']/column[4]/value"/>
+                                                </pfx5:company_address_line2>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:company_address_line2 xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='company_address_line3']/column[4]/value)">
+                                                <pfx5:company_address_line3>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='company_address_line3']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='company_address_line3']/column[4]/value"/>
+                                                </pfx5:company_address_line3>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:company_address_line3 xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='country']/column[4]/value)">
+                                                <pfx5:country>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='country']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='country']/column[4]/value"/>
+                                                </pfx5:country>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:country xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='county']/column[4]/value)">
+                                                <pfx5:county>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='county']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='county']/column[4]/value"/>
+                                                </pfx5:county>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:county xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='city']/column[4]/value)">
+                                                <pfx5:city>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='city']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='city']/column[4]/value"/>
+                                                </pfx5:city>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:city xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='post_code']/column[4]/value)">
+                                                <pfx5:post_code>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='post_code']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='post_code']/column[4]/value"/>
+                                                </pfx5:post_code>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:post_code xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='company_website']/column[4]/value)">
+                                                <pfx5:company_website>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='company_website']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='company_website']/column[4]/value"/>
+                                                </pfx5:company_website>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:company_website xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='currency_code']/column[4]/value)">
+                                                <pfx5:currency_code>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='currency_code']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='currency_code']/column[4]/value"/>
+                                                </pfx5:currency_code>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:currency_code xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='language_code']/column[4]/value)">
+                                                <pfx5:language_code>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='language_code']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='language_code']/column[4]/value"/>
+                                                </pfx5:language_code>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:language_code xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='segment']/column[4]/value)">
+                                                <pfx5:segment>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='segment']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='segment']/column[4]/value"/>
+                                                </pfx5:segment>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:segment xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='master_customer_no']/column[4]/value)">
+                                                <pfx5:master_customer_no>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='master_customer_no']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='master_customer_no']/column[4]/value"/>
+                                                </pfx5:master_customer_no>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:master_customer_no xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='company_status']/column[4]/value)">
+                                                <pfx5:company_status>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='company_status']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='company_status']/column[4]/value"/>
+                                                </pfx5:company_status>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:company_status xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='primary_email']/column[4]/value)">
+                                                <pfx5:primary_email>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='primary_email']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='primary_email']/column[4]/value"/>
+                                                </pfx5:primary_email>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:primary_email xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='vat_number']/column[4]/value)">
+                                                <pfx5:vat_number>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='vat_number']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='vat_number']/column[4]/value"/>
+                                                </pfx5:vat_number>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:vat_number xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='primary_phone_no']/column[4]/value)">
+                                                <pfx5:primary_phone_no>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='primary_phone_no']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='primary_phone_no']/column[4]/value"/>
+                                                </pfx5:primary_phone_no>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:primary_phone_no xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='primary_fax_no']/column[4]/value)">
+                                                <pfx5:primary_fax_no>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='primary_fax_no']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='primary_fax_no']/column[4]/value"/>
+                                                </pfx5:primary_fax_no>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:primary_fax_no xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='is_reseller']/column[4]/value)">
+                                                <pfx5:is_reseller>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='is_reseller']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='is_reseller']/column[4]/value"/>
+                                                </pfx5:is_reseller>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:is_reseller xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='is_enduser']/column[4]/value)">
+                                                <pfx5:is_enduser>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='is_enduser']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='is_enduser']/column[4]/value"/>
+                                                </pfx5:is_enduser>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:is_enduser xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='is_distributor']/column[4]/value)">
+                                                <pfx5:is_distributor>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='is_distributor']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='is_distributor']/column[4]/value"/>
+                                                </pfx5:is_distributor>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:is_distributor xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='created']/column[4]/value)">
+                                                <pfx5:created>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='created']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='created']/column[4]/value"/>
+                                                </pfx5:created>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:created xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='created_by']/column[4]/value)">
+                                                <pfx5:created_by>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='created_by']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='created_by']/column[4]/value"/>
+                                                </pfx5:created_by>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:created_by xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='last_upd']/column[4]/value)">
+                                                <pfx5:last_upd>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='last_upd']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='last_upd']/column[4]/value"/>
+                                                </pfx5:last_upd>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:last_upd xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='last_upd_by']/column[4]/value)">
+                                                <pfx5:last_upd_by>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='last_upd_by']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='last_upd_by']/column[4]/value"/>
+                                                </pfx5:last_upd_by>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:last_upd_by xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='source_id']/column[4]/value)">
+                                                <pfx5:source_id>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='source_id']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='source_id']/column[4]/value"/>
+                                                </pfx5:source_id>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:source_id xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='sub_region']/column[4]/value)">
+                                                <pfx5:sub_region>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='sub_region']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='sub_region']/column[4]/value"/>
+                                                </pfx5:sub_region>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:sub_region xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='reporting_country']/column[4]/value)">
+                                                <pfx5:reporting_country>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='reporting_country']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='reporting_country']/column[4]/value"/>
+                                                </pfx5:reporting_country>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:reporting_country xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='is_directCustomer']/column[4]/value)">
+                                                <pfx5:is_directcustomer>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='is_directCustomer']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='is_directCustomer']/column[4]/value"/>
+                                                </pfx5:is_directcustomer>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:is_directcustomer xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='duns']/column[4]/value)">
+                                                <pfx5:duns>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='duns']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='duns']/column[4]/value"/>
+                                                </pfx5:duns>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:duns xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='transition_id']/column[4]/value)">
+                                                <pfx5:transition_id>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='transition_id']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='transition_id']/column[4]/value"/>
+                                                </pfx5:transition_id>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:transition_id xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='company_tier']/column[4]/value)">
+                                                <pfx5:company_tier>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='company_tier']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='company_tier']/column[4]/value"/>
+                                                </pfx5:company_tier>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:company_tier xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='datasource']/column[4]/value)">
+                                                <pfx5:datasource>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='datasource']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='datasource']/column[4]/value"/>
+                                                </pfx5:datasource>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:datasource xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='company_facebook']/column[4]/value)">
+                                                <pfx5:company_facebook>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='company_facebook']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='company_facebook']/column[4]/value"/>
+                                                </pfx5:company_facebook>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:company_facebook xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='nav_id']/column[4]/value)">
+                                                <pfx5:nav_id>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='nav_id']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='nav_id']/column[4]/value"/>
+                                                </pfx5:nav_id>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx5:nav_id xsi:nil="true"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='address_id']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='address_id']/column[4]/value">
+                                                    <pfx5:address_id>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='address_id']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='address_id']/column[4]/value"/>
+                                                    </pfx5:address_id>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='company_name_2']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='company_name_2']/column[4]/value">
+                                                    <pfx5:company_name_2>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='company_name_2']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='company_name_2']/column[4]/value"/>
+                                                    </pfx5:company_name_2>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='DeDupExclude']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='DeDupExclude']/column[4]/value">
+                                                    <pfx5:DeDupExclude>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='DeDupExclude']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='DeDupExclude']/column[4]/value"/>
+                                                    </pfx5:DeDupExclude>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='B2BCustID']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='B2BCustID']/column[4]/value">
+                                                    <pfx5:B2BCustID>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='B2BCustID']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='B2BCustID']/column[4]/value"/>
+                                                    </pfx5:B2BCustID>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='NavDistiID']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='NavDistiID']/column[4]/value">
+                                                    <pfx5:NavDistiID>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='NavDistiID']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='NavDistiID']/column[4]/value"/>
+                                                    </pfx5:NavDistiID>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='SalesForceID']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='SalesForceID']/column[4]/value">
+                                                    <pfx5:SalesForceID>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='SalesForceID']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='SalesForceID']/column[4]/value"/>
+                                                    </pfx5:SalesForceID>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='LeglEntity']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='LeglEntity']/column[4]/value">
+                                                    <pfx5:LegalEntity>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='LeglEntity']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='LeglEntity']/column[4]/value"/>
+                                                    </pfx5:LegalEntity>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='SiebelID']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='SiebelID']/column[4]/value">
+                                                    <pfx5:SiebelID>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='SiebelID']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='SiebelID']/column[4]/value"/>
+                                                    </pfx5:SiebelID>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='SourceSystemID']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='SourceSystemID']/column[4]/value">
+                                                    <pfx5:SourceSystemID>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='SourceSystemID']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='SourceSystemID']/column[4]/value"/>
+                                                    </pfx5:SourceSystemID>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='DefaultContactID']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='DefaultContactID']/column[4]/value">
+                                                    <pfx5:DefaultContactID>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='DefaultContactID']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='DefaultContactID']/column[4]/value"/>
+                                                    </pfx5:DefaultContactID>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='MSP']/column[4]/value)">
+                                                <pfx5:MSP>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='MSP']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='MSP']/column[4]/value"/>
+                                                </pfx5:MSP>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='MarketPlace']/column[4]/value)">
+                                                <pfx5:MarketPlace>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='MarketPlace']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='MarketPlace']/column[4]/value"/>
+                                                </pfx5:MarketPlace>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='MSPContractSigned']/column[4]/value)">
+                                                <pfx5:MSPContractSigned>
+                                                    <xsl:copy-of select="current()/row[column[3]/value='MSPContractSigned']/column[4]/value/@xsi:nil"/>
+                                                    <xsl:value-of select="current()/row[column[3]/value='MSPContractSigned']/column[4]/value"/>
+                                                </pfx5:MSPContractSigned>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='DefaultAccred']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='DefaultAccred']/column[4]/value">
+                                                    <pfx5:DefaultAccred>
+                                                        <xsl:copy-of select="current()/row[column[3]/value='DefaultAccred']/column[4]/value/@xsi:nil"/>
+                                                        <xsl:value-of select="current()/row[column[3]/value='DefaultAccred']/column[4]/value"/>
+                                                    </pfx5:DefaultAccred>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='distributor_type']/column[4]/value)">
+                                                <xsl:if test="current()/row[column[3]/value='distributor_type']/column[4]/value">
+                                                    <pfx5:DistributorType>
+                                                        <xsl:value-of select="current()/row[column[3]/value='distributor_type']/column[4]/value"/>
+                                                    </pfx5:DistributorType>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(current()/row[column[3]/value='company']/column[4]/value)">
+                                                <pfx5:Company>
+                                                    <xsl:value-of select="current()/row[column[3]/value='company']/column[4]/value"/>
+                                                </pfx5:Company>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                    </Record>
+                                </xsl:for-each>
+                            </ResultSet>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Resultsets>
+            </xsl:if>
+        </group>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ExcuteRuleEngine" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="responseXML" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Resultsets" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="ResultSet">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Record" type="pfx5:CompanyType"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>455</pd:endX>
+    <pd:endY>79</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1339154402169</pd:targetNamespace>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>418</pd:x>
+        <pd:y>237</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </data>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>160</pd:x>
+        <pd:y>235</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Remove NS">
+        <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
+        <pd:x>180</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <inputStyle>binary</inputStyle>
+            <engine>TibcoXML</engine>
+            <stylesheet>/XSLT/Remove NameSpace.xslt</stylesheet>
+        </config>
+        <pd:inputBindings>
+            <bytesInput>
+                <xmlBytesIn>
+                    <xsl:value-of select="tib:string-to-base64(TM:stringReplace($Start/root/message_content,&quot;·&quot;, &quot; &quot;), &quot;UTF-8&quot;)"/>
+                </xmlBytesIn>
+            </bytesInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SQL Direct Error">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>286</pd:x>
+        <pd:y>176</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;EMEA_MDM.PRC_UPDATE_PROCESS_RESULT '&quot;,&#xA;$Start/root/batch_id ,&quot;','&quot;,&#xA;$Start/root/message_id ,&quot;','Y'&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.CriticalSectionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>134</pd:width>
+        <pd:height>142</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>criticalSection</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:scope>single</pd:scope>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SQL Direct</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SQL Direct</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="SQL Direct">
+            <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+            <pd:x>312</pd:x>
+            <pd:y>80</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>100</maxRows>
+                <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <jdbcGeneralActivityInput>
+                    <statement>
+                        <xsl:value-of select="concat(&quot;Execute EMEA_MDM.PRC_RECEIVE_COMPANY_MESSAGE '&quot;,&#xA;$Start/root/message_id,&quot;','&quot;,&#xA;$Start/root/message_type,&quot;','&quot;,&#xA;$Start/root/datasource,&quot;','&quot;,&#xA;$Start/root/gold_id,&quot;','&quot;,&#xA;$Start/root/source_company_id,&quot;','&quot;,&#xA;tib:string-to-base64(substring-after(tib:base64-to-string($Remove-NS/xmlBytes/xmlOutput, 'UTF-8'),&quot;?>&quot;),'UTF-16'),&quot;','&quot;,&#xA;tib:format-dateTime('yyyy-MM-dd HH:mm:ss.SSS', tib:current-dateTime-timezone(0, 0)),&quot;','&quot;,&#xA;$Start/root/batch_id,&quot;','&quot;,&#xA;$Start/root/trigger_datasource,&quot;'&#xA;&quot;)"/>
+                    </statement>
+                    <timeout>
+                        <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/MDMServer/WebService/Timeout_Secs"/>
+                    </timeout>
+                </jdbcGeneralActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Remove NS</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>SQL Direct Error</pd:to>
+        <pd:xpathDescription>exists batch_id</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Start/root/batch_id) !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct Error</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Remove NS</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

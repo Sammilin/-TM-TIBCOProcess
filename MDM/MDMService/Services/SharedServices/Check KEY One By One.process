@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Services/SharedServices/Check KEY One By One.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Source" type="xsd:string"/>
+                    <xsd:element name="MDM_ID" type="xsd:string"/>
+                    <xsd:element name="CompanySourceID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:choose>
+                <xsl:when test="lower-case($Start/root/Source)=&quot;navision&quot; or lower-case($Start/root/Source)=&quot;teo&quot;">
+                    <mapping>
+                        <xsl:value-of select="if ($Start/root/CompanySourceID=$SelectSourceID/SourceIDMapping/ns:NavId) then &quot;true&quot; else &quot;false&quot;"/>
+                    </mapping>
+                    <DBSourceID>
+                        <xsl:value-of select="$SelectSourceID/SourceIDMapping/ns:NavId"/>
+                    </DBSourceID>
+                </xsl:when>
+                <xsl:when test="lower-case($Start/root/Source)=&quot;rallying&quot;">
+                    <mapping>
+                        <xsl:value-of select="if ($Start/root/CompanySourceID=$SelectSourceID/SourceIDMapping/ns:RallyingId) then &quot;true&quot; else &quot;false&quot;"/>
+                    </mapping>
+                    <DBSourceID>
+                        <xsl:value-of select="$SelectSourceID/SourceIDMapping/ns:RallyingId"/>
+                    </DBSourceID>
+                </xsl:when>
+                <xsl:when test="lower-case($Start/root/Source)=&quot;sfdc&quot;">
+                    <mapping>
+                        <xsl:value-of select="if ($Start/root/CompanySourceID=$SelectSourceID/SourceIDMapping/ns:SfId) then &quot;true&quot; else &quot;false&quot;"/>
+                    </mapping>
+                    <DBSourceID>
+                        <xsl:value-of select="$SelectSourceID/SourceIDMapping/ns:SfId"/>
+                    </DBSourceID>
+                </xsl:when>
+                <xsl:otherwise>
+                    <mapping>
+                        <xsl:value-of select="&quot;false&quot;"/>
+                    </mapping>
+                </xsl:otherwise>
+            </xsl:choose>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="mapping" type="xsd:boolean"/>
+                    <xsd:element name="DBSourceID" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>402</pd:endX>
+    <pd:endY>70</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1378200068942</pd:targetNamespace>
+    <pd:activity name="SelectSourceID">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>271</pd:x>
+        <pd:y>138</pd:y>
+        <config>
+            <processName>/ExternalServices/MDM_Server/SelectSourceID.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GoldID>
+                <xsl:value-of select="$Start/root/MDM_ID"/>
+            </GoldID>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SelectSourceID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SelectSourceID</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

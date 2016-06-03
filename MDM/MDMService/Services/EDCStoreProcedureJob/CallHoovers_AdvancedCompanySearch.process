@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns13="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://tempuri.org/" xmlns:ns02="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/Common" xmlns:ns1="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Hoovers/AdvancedCompanySearchResponse.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/schemas/MDMService/XSD/Client/Hoovers/Schema.xsd" xmlns:pfx2="http://schemas.xmlsoap.org/soap/envelope/">
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/EDCWebService.wsdl"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Hoovers/AdvancedCompanySearchResponse.xsd" schemaLocation="/XSD/Client/Hoovers/AdvancedCompanySearchResponse.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Client/EDCWebService.wsdl"/>
+    <pd:name>Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>94</pd:x>
+        <pd:y>174</pd:y>
+        <config>
+            <StartTime>1372667598000</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>30</TimeInterval>
+            <FrequencyIndex>Minute</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1027</pd:endX>
+    <pd:endY>178</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="ns12:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <ProcessVar>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="bath_id" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </ProcessVar>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1372664726605</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>864</pd:x>
+        <pd:y>375</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1025</pd:x>
+        <pd:y>373</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ns1:SMFHeader>
+                    <ns2:MessageKey>
+                        <xsl:value-of select="$ProcessVar/root/bath_id"/>
+                    </ns2:MessageKey>
+                    <ns2:ServiceName>
+                        <xsl:value-of select="&quot;CallHoovers_AdvancedCompanySearch Timer&quot;"/>
+                    </ns2:ServiceName>
+                    <ns2:ServiceVersion>
+                        <xsl:value-of select="&quot;N/A&quot;"/>
+                    </ns2:ServiceVersion>
+                    <ns2:SourceID>
+                        <xsl:value-of select="&quot;N/A&quot;"/>
+                    </ns2:SourceID>
+                    <ns2:SourceIP>
+                        <xsl:value-of select="&quot;N/A&quot;"/>
+                    </ns2:SourceIP>
+                    <ns2:RsTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns2:RsTimestamp>
+                </ns1:SMFHeader>
+                <xsl:choose>
+                    <xsl:when test="exists($_error_Generate-Error/ns12:Error)">
+                        <xsl:copy-of select="$_error_Generate-Error/ns12:Error"/>
+                    </xsl:when>
+                    <xsl:when test="exists($_error_HooverException/ns12:Error)">
+                        <xsl:copy-of select="$_error_HooverException/ns12:Error"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns12:Error>
+                            <ns12:src>
+                                <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                            </ns12:src>
+                            <ns12:error_code>
+                                <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                            </ns12:error_code>
+                            <ns12:error_message>
+                                <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                            </ns12:error_message>
+                            <ns12:stack_trace>
+                                <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                            </ns12:stack_trace>
+                        </ns12:Error>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Source>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="0"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>261</pd:x>
+        <pd:y>173</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term ref="pfx2:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:Envelope>
+                <pfx2:Body>
+                    <pfx:CallHoovers_AdvancedCompanySearch>
+                        <pfx:CompanyName>
+                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch/CompanyName"/>
+                        </pfx:CompanyName>
+                        <pfx:Address>
+                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch/Address"/>
+                        </pfx:Address>
+                        <pfx:CountryID>
+                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch/Country_id"/>
+                        </pfx:CountryID>
+                        <pfx:batch_id>
+                            <xsl:value-of select="$ProcessVar/root/bath_id"/>
+                        </pfx:batch_id>
+                    </pfx:CallHoovers_AdvancedCompanySearch>
+                </pfx2:Body>
+            </pfx2:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>911</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx4:AdvancedCompanySearchResponse"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Remove-NS/xmlString"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Remove NS">
+        <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
+        <pd:x>775</pd:x>
+        <pd:y>180</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <engine>TibcoXML</engine>
+            <stylesheet>/XSLT/Remove NameSpace.xslt</stylesheet>
+        </config>
+        <pd:inputBindings>
+            <textInput>
+                <xmlString>
+                    <xsl:value-of select="TM:stringReplace(substring-before(substring-after($Send-HTTP-Request/RequestActivityOutput/asciiContent, &quot;&lt;CallHoovers_AdvancedCompanySearchResult>&quot;), &quot;&lt;/CallHoovers_AdvancedCompanySearchResult>&quot;),&quot;·&quot;, &quot; &quot;)"/>
+                </xmlString>
+            </textInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>333</pd:x>
+        <pd:y>9</pd:y>
+        <pd:width>367</pd:width>
+        <pd:height>326</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$i &gt;$_globalVariables/ns3:GlobalVariables/Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch/retrycount  or exists($Send-HTTP-Request/RequestActivityOutput/asciiContent)</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Send HTTP Request</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send HTTP Request</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send HTTP Request</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:xpathDescription>Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65434</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i &gt; $_globalVariables/ns3:GlobalVariables/Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch/retrycount</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Send HTTP Request">
+            <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+            <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+            <pd:x>418</pd:x>
+            <pd:y>78</pd:y>
+            <config>
+                <inputOutputVersion>5.3.0</inputOutputVersion>
+                <newMimeSupport>true</newMimeSupport>
+                <serverhost>edc2vmmdmstg002.eu.trendnet.org</serverhost>
+                <InputHeaders>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="SOAPAction" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </InputHeaders>
+                <OutputHeaders>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </OutputHeaders>
+            </config>
+            <pd:inputBindings>
+                <RequestActivityInput>
+                    <Host>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch/host"/>
+                    </Host>
+                    <Port>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch/port"/>
+                    </Port>
+                    <Method>
+                        <xsl:value-of select="&quot;POST&quot;"/>
+                    </Method>
+                    <RequestURI>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch/requestURI"/>
+                    </RequestURI>
+                    <PostData>
+                        <xsl:value-of select="$Render-XML/xmlString"/>
+                    </PostData>
+                    <Headers>
+                        <SOAPAction>
+                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch/soapaction"/>
+                        </SOAPAction>
+                        <Accept-Encoding>
+                            <xsl:value-of select="&quot;UTF-8&quot;"/>
+                        </Accept-Encoding>
+                        <Content-Type>
+                            <xsl:value-of select="&quot;text/xml;charset=UTF-8&quot;"/>
+                        </Content-Type>
+                    </Headers>
+                </RequestActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>418</pd:x>
+            <pd:y>184</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>569</pd:x>
+            <pd:y>184</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Services/EDCStoreProcedureJob/CallHoovers_AdvancedCompanySearch/retryintervalsec * 1000"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>508</pd:x>
+            <pd:y>265</pd:y>
+            <config>
+                <faultName>ErrorMessage</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns02:ActivityInput>
+                    <message>
+                        <xsl:value-of select="tib:render-xml($_error_Send-HTTP-Request/ActivityErrors,0)"/>
+                    </message>
+                    <xsl:if test="$_error/ns:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                    <data>
+                        <ns12:Error>
+                            <ns12:src>
+                                <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                            </ns12:src>
+                            <ns12:error_code>
+                                <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                            </ns12:error_code>
+                            <ns12:error_message>
+                                <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                            </ns12:error_message>
+                            <ns12:stack_trace>
+                                <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                            </ns12:stack_trace>
+                        </ns12:Error>
+                    </data>
+                </ns02:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="HooverException">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>864</pd:x>
+        <pd:y>283</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns02:ActivityInput>
+                <data>
+                    <ns12:Error>
+                        <ns12:src>
+                            <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
+                        </ns12:src>
+                        <ns12:error_code>
+                            <xsl:value-of select="&quot;Hoovers Exception&quot;"/>
+                        </ns12:error_code>
+                        <ns12:error_message>
+                            <xsl:value-of select="$Send-HTTP-Request/RequestActivityOutput/asciiContent"/>
+                        </ns12:error_message>
+                        <ns12:stack_trace>
+                            <xsl:value-of select="$_processContext/ns:ProcessContext/TrackingInfo[1]"/>
+                        </ns12:stack_trace>
+                    </ns12:Error>
+                </data>
+            </ns02:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>178</pd:x>
+        <pd:y>172</pd:y>
+        <config>
+            <variableName>ProcessVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <bath_id>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </bath_id>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Remove NS</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Remove NS</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Remove NS</pd:from>
+        <pd:to>HooverException</pd:to>
+        <pd:xpathDescription>HooverException</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:tokenize($Send-HTTP-Request/RequestActivityOutput/asciiContent, "error")&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx3="http://www.trendmicro.com/ESB/FRS/schemas/routing" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:pfx="http://www.tibco.com/schemas/MDMService/TestData/Schema.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/MDMService/TestData/Schema.xsd" schemaLocation="/TestData/Schema.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/FRS/schemas/routing" schemaLocation="/XSD/Common/routing.xsd"/>
+    <pd:name>TestData/Generate XSLT Test.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>94</pd:startX>
+    <pd:startY>55</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Parse-XML/pfx3:RoutingTable"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx3:RoutingTable"/>
+    <pd:endX>1361</pd:endX>
+    <pd:endY>337</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Variable0>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="top" type="xsd:string"/>
+                        <xsd:element name="bottom" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Variable0>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1339554948264</pd:targetNamespace>
+    <pd:group name="Group (3)">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>258</pd:x>
+        <pd:y>119</pd:y>
+        <pd:width>772</pd:width>
+        <pd:height>454</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Map-input-Data/root/resultSet</pd:over>
+            <pd:iterationElementSlot>currentResultSet</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>totalMapTotal</pd:outSlot>
+            <pd:activityOutputName>Map Total</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Parse Rules</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Total</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Parse Rules</pd:from>
+            <pd:to>Parse Destinations</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Group</pd:from>
+            <pd:to>Group (1)</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Group (1)</pd:from>
+            <pd:to>Group (2)</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Parse Destinations</pd:from>
+            <pd:to>Group</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Group (2)</pd:from>
+            <pd:to>Map Total</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Parse Rules">
+            <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+            <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+            <pd:x>332</pd:x>
+            <pd:y>183</pd:y>
+            <config>
+                <InputType>String</InputType>
+                <Encoding>ASCII</Encoding>
+                <ParseSharedConfig>/TestData/Data Format AND.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <text>
+                        <xsl:value-of select="translate($currentResultSet/resultSet/rules, ';', &quot;&#xA;&quot;)"/>
+                    </text>
+                    <noOfRecords>
+                        <xsl:value-of select="-1"/>
+                    </noOfRecords>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Parse Destinations">
+            <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+            <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+            <pd:x>482</pd:x>
+            <pd:y>185</pd:y>
+            <config>
+                <InputType>String</InputType>
+                <Encoding>ASCII</Encoding>
+                <ParseSharedConfig>/TestData/Data Format AND.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <text>
+                        <xsl:value-of select="translate($currentResultSet/resultSet/destinations, ';', &quot;&#xA;&quot;)"/>
+                    </text>
+                    <noOfRecords>
+                        <xsl:value-of select="-1"/>
+                    </noOfRecords>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:group name="Group">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>296</pd:x>
+            <pd:y>304</pd:y>
+            <pd:width>196</pd:width>
+            <pd:height>211</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$Parse-Rules/Output/Rows/root</pd:over>
+                <pd:iterationElementSlot>currentRule</pd:iterationElementSlot>
+                <pd:indexSlot>j</pd:indexSlot>
+                <pd:outSlot>totalRulesHead</pd:outSlot>
+                <pd:activityOutputName>Map RulesHead</pd:activityOutputName>
+                <pd:accumulateOutput>true</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Map RulesHead</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Map RulesHead</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Map RulesHead">
+                <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+                <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+                <pd:x>379</pd:x>
+                <pd:y>419</pd:y>
+                <config>
+                    <element>
+                        <xsd:element name="root" type="xsd:string"/>
+                    </element>
+                </config>
+                <pd:inputBindings>
+                    <root>
+                        <xsl:value-of select="concat(&#xA;'&lt;xsl:if test=&quot;', &#xA;$currentRule/root/param, &#xA;'&quot;>'&#xA;)"/>
+                    </root>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+        <pd:group name="Group (1)">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>495</pd:x>
+            <pd:y>302</pd:y>
+            <pd:width>194</pd:width>
+            <pd:height>211</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$Parse-Destinations/Output/Rows/root</pd:over>
+                <pd:iterationElementSlot>currentDestination</pd:iterationElementSlot>
+                <pd:indexSlot>k</pd:indexSlot>
+                <pd:outSlot>totalDestinations</pd:outSlot>
+                <pd:activityOutputName>Map Destinations</pd:activityOutputName>
+                <pd:accumulateOutput>true</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Map Destinations</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Map Destinations</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Map Destinations">
+                <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+                <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+                <pd:x>584</pd:x>
+                <pd:y>417</pd:y>
+                <config>
+                    <element>
+                        <xsd:element name="root" type="xsd:string"/>
+                    </element>
+                </config>
+                <pd:inputBindings>
+                    <xsl:choose>
+                        <xsl:when test="$k = 1">
+                            <root>
+                                <xsl:value-of select="concat(&#xA;'&lt;ServiceName>', &#xA;'&lt;Destinaiton>', &#xA;'&lt;xsl:attribute name=&quot;Target&quot;>', &#xA;'&lt;xsl:value-of select=&quot;', &quot;'&quot;, substring-before($currentDestination/root/param, ']'), &quot;'&quot;, '&quot;/>', &#xA;'&lt;/xsl:attribute>', &#xA;'&lt;xsl:value-of select=&quot;', &quot;'&quot;, substring-after($currentDestination/root/param, ']'), &quot;'&quot;, '&quot;/>', &#xA;'&lt;/Destinaiton>'&#xA;)"/>
+                            </root>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <root>
+                                <xsl:value-of select="concat(&#xA;'&lt;Destinaiton>', &#xA;'&lt;xsl:attribute name=&quot;Target&quot;>', &#xA;'&lt;xsl:value-of select=&quot;', &quot;'&quot;, substring-before($currentDestination/root/param, ']'), &quot;'&quot;, '&quot;/>', &#xA;'&lt;/xsl:attribute>', &#xA;'&lt;xsl:value-of select=&quot;', &quot;'&quot;, substring-after($currentDestination/root/param, ']'), &quot;'&quot;, '&quot;/>', &#xA;'&lt;/Destinaiton>'&#xA;)"/>
+                            </root>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+        <pd:group name="Group (2)">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>700</pd:x>
+            <pd:y>305</pd:y>
+            <pd:width>187</pd:width>
+            <pd:height>210</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$Parse-Rules/Output/Rows/root</pd:over>
+                <pd:iterationElementSlot>currentRules2</pd:iterationElementSlot>
+                <pd:indexSlot>l</pd:indexSlot>
+                <pd:outSlot>totalRulesBottom</pd:outSlot>
+                <pd:activityOutputName>Map RulesBottom</pd:activityOutputName>
+                <pd:accumulateOutput>true</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Map RulesBottom</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Map RulesBottom</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Map RulesBottom">
+                <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+                <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+                <pd:x>791</pd:x>
+                <pd:y>418</pd:y>
+                <config>
+                    <element>
+                        <xsd:element name="root" type="xsd:string"/>
+                    </element>
+                </config>
+                <pd:inputBindings>
+                    <xsl:choose>
+                        <xsl:when test="$l = 1">
+                            <root>
+                                <xsl:value-of select="concat(&#xA;'&lt;/ServiceName>', &#xA;'&lt;/xsl:if>'&#xA;)"/>
+                            </root>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <root>
+                                <xsl:value-of select="'&lt;/xsl:if>'"/>
+                            </root>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+        <pd:activity name="Map Total">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>794</pd:x>
+            <pd:y>200</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="root" type="xsd:string"/>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:value-of select="concat(&#xA;tib:concat-sequence($totalRulesHead/AccumulatedOutput/root), &#xA;tib:concat-sequence($totalDestinations/AccumulatedOutput/root),&#xA;tib:concat-sequence($totalRulesBottom/AccumulatedOutput/root)&#xA;)"/>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>150</pd:x>
+        <pd:y>368</pd:y>
+        <config>
+            <variableName>Variable0</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <top>
+                    <xsl:value-of select="concat(&#xA;'&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>', &#xA;'&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;>',&#xA;'&lt;xsl:template match=&quot;/SMF&quot;>', &#xA;'&lt;RoutingTable  xmlns=&quot;http://www.trendmicro.com/ESB/FRS/schemas/routing&quot;>'&#xA;)"/>
+                </top>
+                <bottom>
+                    <xsl:value-of select="concat(&#xA;'&lt;/RoutingTable>', &#xA;'&lt;/xsl:template>', &#xA;'&lt;/xsl:stylesheet>'&#xA;)"/>
+                </bottom>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map input Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>238</pd:x>
+        <pd:y>55</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="resultSet" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="rules" type="xsd:string"/>
+                                        <xsd:element name="destinations" type="xsd:string"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <resultSet>
+                    <rules>
+                        <xsl:value-of select="&quot;/SMF/SMFHeader/ServiceName='Rescan.SampleReceiver'&quot;"/>
+                    </rules>
+                    <destinations>
+                        <xsl:value-of select="&quot;Queue]trend.esb.FRS.Rescan.STAT_INC&quot;"/>
+                    </destinations>
+                </resultSet>
+                <resultSet>
+                    <rules>
+                        <xsl:value-of select="&quot;/SMF/SMFHeader/ServiceName='Rescan.PAFI'&quot;"/>
+                    </rules>
+                    <destinations>
+                        <xsl:value-of select="&quot;Queue]trend.esb.FRS.Rescan.PAT_INC;Topic]trend.esb.FRS.Rescan.RESCAN_ANALYSIS&quot;"/>
+                    </destinations>
+                </resultSet>
+                <resultSet>
+                    <rules>
+                        <xsl:value-of select="&quot;/SMF/SMFHeader/ServiceName='Rescan.Symcheck';/SMF/SMFBody/Message/RescanMessage/MessageBody/SYM/SYM_Body/SUMMARY/STATUS = 'PASSED'&quot;"/>
+                    </rules>
+                    <destinations>
+                        <xsl:value-of select="&quot;Queue]trend.esb.FRS.Rescan.VB_INC&quot;"/>
+                    </destinations>
+                </resultSet>
+                <resultSet>
+                    <rules>
+                        <xsl:value-of select="&quot;/SMF/SMFHeader/ServiceName='Rescan.Symcheck';/SMF/SMFBody/Message/RescanMessage/MessageBody/SYM/SYM_Body/SUMMARY/STATUS !='PASSED'&quot;"/>
+                    </rules>
+                    <destinations>
+                        <xsl:value-of select="&quot;Queue]trend.esb.FRS.Rescan.PAT_SUB_INC&quot;"/>
+                    </destinations>
+                </resultSet>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>1123</pd:x>
+        <pd:y>353</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx2:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:SMF>
+                <pfx2:SMFHeader>
+                    <ns:MessageKey>
+                        <xsl:value-of select="''"/>
+                    </ns:MessageKey>
+                    <ns:ServiceName>
+                        <xsl:value-of select="'Rescan.SampleReceiver'"/>
+                    </ns:ServiceName>
+                    <ns:ServiceVersion>
+                        <xsl:value-of select="''"/>
+                    </ns:ServiceVersion>
+                    <ns:SourceID>
+                        <xsl:value-of select="''"/>
+                    </ns:SourceID>
+                </pfx2:SMFHeader>
+                <pfx2:SMFBody>
+                    <pfx2:Navision>
+                        <xsl:value-of select="''"/>
+                    </pfx2:Navision>
+                </pfx2:SMFBody>
+            </pfx2:SMF>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Transform XML">
+        <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
+        <pd:x>1237</pd:x>
+        <pd:y>361</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <engine>TibcoXML</engine>
+            <stylesheet>/XSLT/XSLT File.xslt</stylesheet>
+        </config>
+        <pd:inputBindings>
+            <textInput>
+                <xmlString>
+                    <xsl:value-of select="$remove-namespace/xmlString"/>
+                </xmlString>
+                <stylesheet>
+                    <xsl:value-of select="concat(&#xA;$Variable0/root/top, &#xA;tib:concat-sequence($totalMapTotal/AccumulatedOutput/root), &#xA;$Variable0/root/bottom&#xA;)"/>
+                </stylesheet>
+            </textInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>1241</pd:x>
+        <pd:y>506</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:RoutingTable"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Transform-XML/xmlString"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="remove namespace">
+        <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
+        <pd:x>1234</pd:x>
+        <pd:y>217</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <engine>TibcoXML</engine>
+            <stylesheet>/XSLT/Remove NameSpace.xslt</stylesheet>
+        </config>
+        <pd:inputBindings>
+            <textInput>
+                <xmlString>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </xmlString>
+            </textInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map input Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Map input Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map input Data</pd:from>
+        <pd:to>Group (3)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group (3)</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>remove namespace</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transform XML</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>remove namespace</pd:from>
+        <pd:to>Transform XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

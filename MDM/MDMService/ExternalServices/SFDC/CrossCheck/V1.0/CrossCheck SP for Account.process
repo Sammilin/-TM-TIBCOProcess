@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="urn:sobject.enterprise.soap.sforce.com" xmlns:pfx8="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pfx7="urn:enterprise.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" schemaLocation="/XSD/Client/SFDC/sfdc_crosscheck.xsd"/>
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <pd:name>ExternalServices/SFDC/CrossCheck/V1.0/CrossCheck SP for Account.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType wsMsgRef="pfx7:queryAllResponse"/>
+    <pd:startX>146</pd:startX>
+    <pd:startY>65</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>614</pd:endX>
+    <pd:endY>70</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1343718802317</pd:targetNamespace>
+    <pd:activity name="Cross check">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>474</pd:x>
+        <pd:y>67</pd:y>
+        <config>
+            <processName>/ExternalServices/MDM_Server/CrossCheck/SFDC Receiver Cross check.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <message_id>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </message_id>
+                <message_content>
+                    <xsl:value-of select="tib:render-xml($Account-Mapping/account, 1)"/>
+                </message_content>
+                <message_root>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/AccountMessageRoot"/>
+                </message_root>
+                <data_source>
+                    <xsl:value-of select="&quot;SFDC&quot;"/>
+                </data_source>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Account Mapping">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>305</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <element>
+                <xsd:element name="account">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="result" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Partner" type="pfx8:CustomerType"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Start/pfx7:queryAllResponse/parameters/pfx7:queryAllResponse/pfx7:result/pfx7:records" type="ns5:Account"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <account>
+                <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/pfx7:queryAllResponse/parameters/pfx7:queryAllResponse/pfx7:result/pfx7:records">
+                    <result>
+                        <Partner>
+                            <pfx8:SfdcPartnerId>
+                                <xsl:copy-of select="ns5:Id/@xsi:nil"/>
+                                <xsl:value-of select="ns5:Id"/>
+                            </pfx8:SfdcPartnerId>
+                            <xsl:if test="ns5:MDM_ID__c">
+                                <pfx8:MdmPartnerId>
+                                    <xsl:copy-of select="ns5:MDM_ID__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:MDM_ID__c"/>
+                                </pfx8:MdmPartnerId>
+                            </xsl:if>
+                            <pfx8:Active>
+                                <xsl:copy-of select="ns5:Active__c/@xsi:nil"/>
+                                <xsl:value-of select="ns5:Active__c"/>
+                            </pfx8:Active>
+                            <pfx8:AccountName>
+                                <xsl:copy-of select="ns5:Name/@xsi:nil"/>
+                                <xsl:value-of select="ns5:Name"/>
+                            </pfx8:AccountName>
+                            <pfx8:AccountType>
+                                <xsl:copy-of select="ns5:Account_Type__c/@xsi:nil"/>
+                                <xsl:value-of select="ns5:Account_Type__c"/>
+                            </pfx8:AccountType>
+                            <xsl:if test="not((ns5:Account_Other_Type__c/@xsi:nil=(&quot;true&quot;)) or (ns5:Account_Other_Type__c/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx8:AccountOtherType>
+                                    <xsl:value-of select="ns5:Account_Other_Type__c"/>
+                                </pfx8:AccountOtherType>
+                            </xsl:if>
+                            <xsl:if test="not((ns5:Account_Status__c/@xsi:nil=(&quot;true&quot;)) or (ns5:Account_Status__c/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx8:AccountStatus>
+                                    <xsl:value-of select="ns5:Account_Status__c"/>
+                                </pfx8:AccountStatus>
+                            </xsl:if>
+                            <xsl:if test="ns5:AKA__c">
+                                <pfx8:AKA>
+                                    <xsl:copy-of select="ns5:AKA__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:AKA__c"/>
+                                </pfx8:AKA>
+                            </xsl:if>
+                            <xsl:if test="ns5:Vat_Number__c">
+                                <pfx8:VatNumber>
+                                    <xsl:copy-of select="ns5:Vat_Number__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Vat_Number__c"/>
+                                </pfx8:VatNumber>
+                            </xsl:if>
+                            <xsl:if test="ns5:Main_Phone_Number__c">
+                                <pfx8:MainPhoneNumber>
+                                    <xsl:copy-of select="ns5:Main_Phone_Number__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Main_Phone_Number__c"/>
+                                </pfx8:MainPhoneNumber>
+                            </xsl:if>
+                            <xsl:if test="ns5:Fax">
+                                <pfx8:Fax>
+                                    <xsl:copy-of select="ns5:Fax/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Fax"/>
+                                </pfx8:Fax>
+                            </xsl:if>
+                            <xsl:if test="ns5:Country__c">
+                                <pfx8:Country>
+                                    <xsl:copy-of select="ns5:Country__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Country__c"/>
+                                </pfx8:Country>
+                            </xsl:if>
+                            <xsl:if test="ns5:Website">
+                                <pfx8:Website>
+                                    <xsl:copy-of select="ns5:Website/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Website"/>
+                                </pfx8:Website>
+                            </xsl:if>
+                            <xsl:if test="ns5:Email_Domain__c">
+                                <pfx8:EmailDomain>
+                                    <xsl:copy-of select="ns5:Email_Domain__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Email_Domain__c"/>
+                                </pfx8:EmailDomain>
+                            </xsl:if>
+                            <xsl:if test="ns5:Navision_ID__c">
+                                <pfx8:NavisionID>
+                                    <xsl:copy-of select="ns5:Navision_ID__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Navision_ID__c"/>
+                                </pfx8:NavisionID>
+                            </xsl:if>
+                            <xsl:if test="not((ns5:DUNS_Name__c/@xsi:nil=(&quot;true&quot;)) or (ns5:DUNS_Name__c/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx8:DUNSName>
+                                    <xsl:value-of select="ns5:DUNS_Name__c"/>
+                                </pfx8:DUNSName>
+                            </xsl:if>
+                            <xsl:if test="ns5:DUNS__c">
+                                <pfx8:DUNS>
+                                    <xsl:copy-of select="ns5:DUNS__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:DUNS__c"/>
+                                </pfx8:DUNS>
+                            </xsl:if>
+                            <xsl:if test="not((ns5:DUNS_Domestic_Parent__c/@xsi:nil=(&quot;true&quot;)) or (ns5:DUNS_Domestic_Parent__c/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx8:DUNSDirectParent>
+                                    <xsl:value-of select="ns5:DUNS_Domestic_Parent__c"/>
+                                </pfx8:DUNSDirectParent>
+                            </xsl:if>
+                            <xsl:if test="ns5:DUNS_Global_Parent__c">
+                                <pfx8:DUNSGlobalParent>
+                                    <xsl:copy-of select="ns5:DUNS_Global_Parent__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:DUNS_Global_Parent__c"/>
+                                </pfx8:DUNSGlobalParent>
+                            </xsl:if>
+                            <xsl:if test="ns5:BillingCity">
+                                <pfx8:BillingCity>
+                                    <xsl:copy-of select="ns5:BillingCity/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:BillingCity"/>
+                                </pfx8:BillingCity>
+                            </xsl:if>
+                            <xsl:if test="ns5:BillingCountry">
+                                <pfx8:BillingCountry>
+                                    <xsl:copy-of select="ns5:BillingCountry/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:BillingCountry"/>
+                                </pfx8:BillingCountry>
+                            </xsl:if>
+                            <xsl:if test="ns5:BillingPostalCode">
+                                <pfx8:BillingPostalCode>
+                                    <xsl:copy-of select="ns5:BillingPostalCode/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:BillingPostalCode"/>
+                                </pfx8:BillingPostalCode>
+                            </xsl:if>
+                            <xsl:if test="ns5:BillingState">
+                                <pfx8:BillingState>
+                                    <xsl:copy-of select="ns5:BillingState/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:BillingState"/>
+                                </pfx8:BillingState>
+                            </xsl:if>
+                            <xsl:if test="ns5:BillingStreet">
+                                <pfx8:BillingStreet>
+                                    <xsl:copy-of select="ns5:BillingStreet/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:BillingStreet"/>
+                                </pfx8:BillingStreet>
+                            </xsl:if>
+                            <pfx8:ParentAccount>
+                                <xsl:copy-of select="ns5:Parent/ns5:Id/@xsi:nil"/>
+                                <xsl:value-of select="ns5:Parent/ns5:Id"/>
+                            </pfx8:ParentAccount>
+                            <xsl:if test="ns5:Parent/ns5:Partner_Tiering__c">
+                                <pfx8:PartnerTier>
+                                    <xsl:copy-of select="ns5:Parent/ns5:Partner_Tiering__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Parent/ns5:Partner_Tiering__c"/>
+                                </pfx8:PartnerTier>
+                            </xsl:if>
+                            <xsl:if test="not((ns5:MergedToSfdcPartnerId__c/@xsi:nil=(&quot;true&quot;)) or (ns5:MergedToSfdcPartnerId__c/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx8:MergedToSfdcPartnerId>
+                                    <xsl:value-of select="ns5:MergedToSfdcPartnerId__c"/>
+                                </pfx8:MergedToSfdcPartnerId>
+                            </xsl:if>
+                            <xsl:if test="not((ns5:RecordType/ns5:Name/@xsi:nil=(&quot;true&quot;)) or (ns5:RecordType/ns5:Name/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx8:recordType>
+                                    <xsl:value-of select="ns5:RecordType/ns5:Name"/>
+                                </pfx8:recordType>
+                            </xsl:if>
+                            <xsl:if test="not((ns5:LastModifiedDate/@xsi:nil=(&quot;true&quot;)) or (ns5:LastModifiedDate/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx8:LastModifiedDate>
+                                    <xsl:value-of select="ns5:LastModifiedDate"/>
+                                </pfx8:LastModifiedDate>
+                            </xsl:if>
+                        </Partner>
+                    </result>
+                </xsl:for-each>
+            </account>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Cross check</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Account Mapping</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Account Mapping</pd:from>
+        <pd:to>Cross check</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

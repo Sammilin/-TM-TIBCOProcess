@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Utilities/Java/updateFileLastModified.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="FilePath" type="xsd:string"/>
+                    <xsd:element name="Timestamp" type="xsd:dateTime" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1293421258023</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>299</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <fileName>updateFileLastModifiedJavaCode</fileName>
+            <packageName>Utilities.Java.updateFileLastModified</packageName>
+            <fullsource>package Utilities.Java.updateFileLastModified;
+import java.util.*;
+import java.io.*;
+public class updateFileLastModifiedJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String FilePath = "";
+	protected Date Timestamp = null;
+	protected String Result = "";
+	public String getFilePath() {
+		return FilePath;
+	}
+	public void setFilePath(String val) {
+		FilePath = val;
+	}
+	public Date getTimestamp() {
+		return Timestamp;
+	}
+	public void setTimestamp(Date val) {
+		Timestamp = val;
+	}
+	public String getResult() {
+		return Result;
+	}
+	public void setResult(String val) {
+		Result = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public updateFileLastModifiedJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String FilePath
+	In  : Date Timestamp
+	Out : String Result
+* Available Variables: DO NOT MODIFY *****/
+	try {
+				
+		File updateFile = new File(getFilePath());
+		updateFile.setLastModified((null == getTimestamp())?System.currentTimeMillis():getTimestamp().getTime());
+
+		setResult("1");
+	}
+	catch(Exception e) {
+		setResult(e.getMessage());
+	}
+}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>Result</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>FilePath</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>Timestamp</fieldName>
+                    <fieldType>dateTime</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>updateFileLastModifiedJavaCode</name>
+                    <byteCode>yv66vgAAADEARgkAEQAqCQARACsJABEALAoAEgAtCAAuBwAvCgARADAKAAYAMQoAEQAyCgAzADQKADUANgoABgA3CAA4CgARADkHADoKAA8AOwcAPAcAPQEACEZpbGVQYXRoAQASTGphdmEvbGFuZy9TdHJpbmc7AQAJVGltZXN0YW1wAQAQTGphdmEvdXRpbC9EYXRlOwEABlJlc3VsdAEAC2dldEZpbGVQYXRoAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQALc2V0RmlsZVBhdGgBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAxnZXRUaW1lc3RhbXABABIoKUxqYXZhL3V0aWwvRGF0ZTsBAAxzZXRUaW1lc3RhbXABABMoTGphdmEvdXRpbC9EYXRlOylWAQAJZ2V0UmVzdWx0AQAJc2V0UmVzdWx0AQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQAKRXhjZXB0aW9ucwEAClNvdXJjZUZpbGUBACN1cGRhdGVGaWxlTGFzdE1vZGlmaWVkSmF2YUNvZGUuamF2YQwAEwAUDAAVABYMABcAFAwAJAAlAQAAAQAMamF2YS9pby9GaWxlDAAYABkMACQAHQwAHgAfBwA+DAA/AEAHAEEMAEIAQAwAQwBEAQABMQwAIwAdAQATamF2YS9sYW5nL0V4Y2VwdGlvbgwARQAZAQBEVXRpbGl0aWVzL0phdmEvdXBkYXRlRmlsZUxhc3RNb2RpZmllZC91cGRhdGVGaWxlTGFzdE1vZGlmaWVkSmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQAQamF2YS9sYW5nL1N5c3RlbQEAEWN1cnJlbnRUaW1lTWlsbGlzAQADKClKAQAOamF2YS91dGlsL0RhdGUBAAdnZXRUaW1lAQAPc2V0TGFzdE1vZGlmaWVkAQAEKEopWgEACmdldE1lc3NhZ2UAIQARABIAAAADAAQAEwAUAAAABAAVABYAAAAEABcAFAAAAAgAAQAYABkAAQAaAAAAHQABAAEAAAAFKrQAAbAAAAABABsAAAAGAAEAAAAKAAEAHAAdAAEAGgAAACIAAgACAAAABiortQABsQAAAAEAGwAAAAoAAgAAAA0ABQAOAAEAHgAfAAEAGgAAAB0AAQABAAAABSq0AAKwAAAAAQAbAAAABgABAAAAEAABACAAIQABABoAAAAiAAIAAgAAAAYqK7UAArEAAAABABsAAAAKAAIAAAATAAUAFAABACIAGQABABoAAAAdAAEAAQAAAAUqtAADsAAAAAEAGwAAAAYAAQAAABYAAQAjAB0AAQAaAAAAIgACAAIAAAAGKiu1AAOxAAAAAQAbAAAACgACAAAAGQAFABoAAQAkACUAAQAaAAAAPgACAAEAAAAWKrcABCoSBbUAASoBtQACKhIFtQADsQAAAAEAGwAAABYABQAAABwABAAGAAoABwAPAAgAFQAdAAEAJgAlAAIAGgAAAHEAAwACAAAAObsABlkqtgAHtwAITCsBKrYACaYACbgACqcACiq2AAm2AAu2AAxXKhINtgAOpwAMTCortgAQtgAOsQABAAAALAAvAA8AAQAbAAAAHgAHAAAAJgAMACcAJgApACwALQAvACsAMAAsADgALgAnAAAABAABAA8AAQAoAAAAAgAp</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <FilePath>
+                    <xsl:value-of select="$Start/root/FilePath"/>
+                </FilePath>
+                <xsl:if test="$Start/root/Timestamp">
+                    <Timestamp>
+                        <xsl:value-of select="$Start/root/Timestamp"/>
+                    </Timestamp>
+                </xsl:if>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

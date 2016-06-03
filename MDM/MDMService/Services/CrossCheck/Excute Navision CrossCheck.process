@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="www.tibco.com/plugin/Sleep" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/CrossCheck/Excute Navision CrossCheck.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="TraceID" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>66</pd:startX>
+    <pd:startY>181</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>994</pd:endX>
+    <pd:endY>189</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1349258777342</pd:targetNamespace>
+    <pd:activity name="TriggerNavisionCrossCheck Customer">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>185</pd:x>
+        <pd:y>192</pd:y>
+        <config>
+            <processName>/Services/CrossCheck/TriggerNavisionCrossCheck.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <datasource>
+                    <xsl:value-of select="'NAVISION'"/>
+                </datasource>
+                <table_schema>
+                    <xsl:value-of select="'ERP_EMEA'"/>
+                </table_schema>
+                <table_name>
+                    <xsl:value-of select="'Customer'"/>
+                </table_name>
+                <xsl:if test="$Start/root/TraceID">
+                    <TraceID>
+                        <xsl:value-of select="$Start/root/TraceID"/>
+                    </TraceID>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sleep 30min">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>303</pd:x>
+        <pd:y>184</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="1800000"/>
+                </IntervalInMillisec>
+            </ns:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Complete Customer Of Navision Cross Check">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>602</pd:x>
+        <pd:y>195</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>393</pd:x>
+        <pd:y>42</pd:y>
+        <pd:width>134</pd:width>
+        <pd:height>251</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>exists($SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row)=false()</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SQL Direct</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SQL Direct</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep 1 min</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SQL Direct</pd:from>
+            <pd:to>Sleep 1 min</pd:to>
+            <pd:xpathDescription>exists</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row)</pd:xpath>
+        </pd:transition>
+        <pd:activity name="SQL Direct">
+            <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+            <pd:x>456</pd:x>
+            <pd:y>108</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>0</maxRows>
+                <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <jdbcGeneralActivityInput>
+                    <statement>
+                        <xsl:value-of select="&quot;EMEA_MDM.PRC_SELECT_CROSSCHECK_RESULT 'NAVISION'&quot;"/>
+                    </statement>
+                    <timeout>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Services/CrossCheck/DBTimeOut"/>
+                    </timeout>
+                </jdbcGeneralActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep 1 min">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:description>Sleep 1 min</pd:description>
+            <pd:x>454</pd:x>
+            <pd:y>219</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="60000"/>
+                    </IntervalInMillisec>
+                </ns:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="TriggerRallyingCrossCheck Customer">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>867</pd:x>
+        <pd:y>191</pd:y>
+        <config>
+            <processName>/Services/CrossCheck/TriggerRallyingCrossCheck.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <datasource>
+                    <xsl:value-of select="'RALLYING'"/>
+                </datasource>
+                <table_schema>
+                    <xsl:value-of select="'RAL'"/>
+                </table_schema>
+                <table_name>
+                    <xsl:value-of select="'CX_NAV_ORG_EXT'"/>
+                </table_name>
+                <xsl:if test="$Start/root/TraceID">
+                    <TraceID>
+                        <xsl:value-of select="$Start/root/TraceID"/>
+                    </TraceID>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Teo &amp; Navision Contact Sync">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>740</pd:x>
+        <pd:y>186</pd:y>
+        <config>
+            <processName>/Services/CrossCheck/Teo &amp; Navision Contact Sync.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <TraceID>
+                    <xsl:value-of select="$Start/root/TraceID"/>
+                </TraceID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>670</pd:x>
+        <pd:y>360</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx:ActivityInput>
+                <xsl:if test="$_error/ns1:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+            </pfx:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>385</pd:x>
+        <pd:y>360</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>525</pd:x>
+        <pd:y>361</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ns12:SMFHeader>
+                    <ns2:MessageKey>
+                        <xsl:value-of select="$Start/root/TraceID"/>
+                    </ns2:MessageKey>
+                    <ns2:ServiceName>
+                        <xsl:value-of select="&quot;Cross Check&quot;"/>
+                    </ns2:ServiceName>
+                    <ns2:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns2:ServiceVersion>
+                    <ns2:SourceID>
+                        <xsl:value-of select="&quot;MDM&quot;"/>
+                    </ns2:SourceID>
+                    <ns2:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns2:RqTimestamp>
+                    <ns2:RsTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns2:RsTimestamp>
+                </ns12:SMFHeader>
+                <ns6:Error>
+                    <ns6:src>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                    </ns6:src>
+                    <ns6:error_code>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </ns6:error_code>
+                    <ns6:error_message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </ns6:error_message>
+                    <ns6:stack_trace>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                    </ns6:stack_trace>
+                </ns6:Error>
+                <Source>
+                    <xsl:value-of select="tib:render-xml($Catch/exceptiondata, 1)"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="0"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>TriggerNavisionCrossCheck Customer</pd:from>
+        <pd:to>Sleep 30min</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Complete Customer Of Navision Cross Check</pd:from>
+        <pd:to>Teo &amp; Navision Contact Sync</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep 30min</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Complete Customer Of Navision Cross Check</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>TriggerRallyingCrossCheck Customer</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>TriggerNavisionCrossCheck Customer</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Teo &amp; Navision Contact Sync</pd:from>
+        <pd:to>TriggerRallyingCrossCheck Customer</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

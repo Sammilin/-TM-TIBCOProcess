@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Contact" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/Common" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/MDMServer/ResponseCreateCompany.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/MDMServer/ResponseCreateCompany.xsd" schemaLocation="/XSD/Client/MDMServer/ResponseCreateCompany.xsd"/>
+    <pd:name>Services/SharedServices/Update Contact Message Exchange Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:choice>
+                        <xsd:element name="toNavision" type="xsd:boolean"/>
+                        <xsd:element name="toSFDC" type="xsd:boolean"/>
+                    </xsd:choice>
+                    <xsd:element ref="pfx:SMF"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>80</pd:startX>
+    <pd:startY>111</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Map-Contact-Data/pfx:SMF"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:SMF"/>
+    <pd:endX>619</pd:endX>
+    <pd:endY>114</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1344491501487</pd:targetNamespace>
+    <pd:activity name="Map Contact Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>460</pd:x>
+        <pd:y>115</pd:y>
+        <config>
+            <element ref="pfx:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:SMF>
+                <pfx:SMFHeader>
+                    <ns4:MessageKey>
+                        <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:MessageKey"/>
+                    </ns4:MessageKey>
+                    <xsl:choose>
+                        <xsl:when test="$Start/root/toNavision">
+                            <ns4:ServiceName>
+                                <xsl:value-of select="&quot;UpdateNavCust&quot;"/>
+                            </ns4:ServiceName>
+                        </xsl:when>
+                        <xsl:when test="$Start/root/toSFDC">
+                            <ns4:ServiceName>
+                                <xsl:value-of select="&quot;UpdateSfCust&quot;"/>
+                            </ns4:ServiceName>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns4:ServiceName>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </ns4:ServiceName>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <ns4:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns4:ServiceVersion>
+                    <ns4:SourceID>
+                        <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:SourceID"/>
+                    </ns4:SourceID>
+                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:SourceIP">
+                        <ns4:SourceIP>
+                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:SourceIP"/>
+                        </ns4:SourceIP>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:RqTimestamp">
+                        <ns4:RqTimestamp>
+                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:RqTimestamp"/>
+                        </ns4:RqTimestamp>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:RsTimestamp">
+                        <ns4:RsTimestamp>
+                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:RsTimestamp"/>
+                        </ns4:RsTimestamp>
+                    </xsl:if>
+                </pfx:SMFHeader>
+                <pfx:SMFBody>
+                    <xsl:choose>
+                        <xsl:when test="$Start/root/toNavision">
+                            <pfx:Navision>
+                                <pfx:Contact>
+                                    <xsl:copy-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Contact/ns6:Contact"/>
+                                </pfx:Contact>
+                            </pfx:Navision>
+                        </xsl:when>
+                        <xsl:when test="$Start/root/toSFDC">
+                            <pfx:SFDC>
+                                <xsl:for-each select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:SFDC/pfx:Contact">
+                                    <pfx:Contact>
+                                        <ns1:MdmPartnerId>
+                                            <xsl:value-of select="ns1:MdmPartnerId"/>
+                                        </ns1:MdmPartnerId>
+                                        <xsl:if test="ns1:MdmContactId">
+                                            <ns1:MdmContactId>
+                                                <xsl:value-of select="ns1:MdmContactId"/>
+                                            </ns1:MdmContactId>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:MdmLocationId">
+                                            <ns1:MdmLocationId>
+                                                <xsl:value-of select="ns1:MdmLocationId"/>
+                                            </ns1:MdmLocationId>
+                                        </xsl:if>
+                                        <ns1:SfdcContactId>
+                                            <xsl:value-of select="ns1:SfdcContactId"/>
+                                        </ns1:SfdcContactId>
+                                        <ns1:Salutation>
+                                            <xsl:value-of select="ns1:Salutation"/>
+                                        </ns1:Salutation>
+                                        <ns1:firstName>
+                                            <xsl:value-of select="ns1:firstName"/>
+                                        </ns1:firstName>
+                                        <ns1:lastName>
+                                            <xsl:value-of select="ns1:lastName"/>
+                                        </ns1:lastName>
+                                        <ns1:sfdcPartnerId>
+                                            <xsl:value-of select="ns1:sfdcPartnerId"/>
+                                        </ns1:sfdcPartnerId>
+                                        <xsl:if test="ns1:title">
+                                            <ns1:title>
+                                                <xsl:value-of select="ns1:title"/>
+                                            </ns1:title>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:jobFunction">
+                                            <ns1:jobFunction>
+                                                <xsl:value-of select="ns1:jobFunction"/>
+                                            </ns1:jobFunction>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:language">
+                                            <ns1:language>
+                                                <xsl:value-of select="ns1:language"/>
+                                            </ns1:language>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:sfdcLocationId">
+                                            <ns1:sfdcLocationId>
+                                                <xsl:value-of select="ns1:sfdcLocationId"/>
+                                            </ns1:sfdcLocationId>
+                                        </xsl:if>
+                                        <ns1:DirectLine>
+                                            <xsl:value-of select="ns1:DirectLine"/>
+                                        </ns1:DirectLine>
+                                        <xsl:if test="ns1:HomePhone">
+                                            <ns1:HomePhone>
+                                                <xsl:value-of select="ns1:HomePhone"/>
+                                            </ns1:HomePhone>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:mobile">
+                                            <ns1:mobile>
+                                                <xsl:value-of select="ns1:mobile"/>
+                                            </ns1:mobile>
+                                        </xsl:if>
+                                        <ns1:email>
+                                            <xsl:value-of select="ns1:email"/>
+                                        </ns1:email>
+                                        <xsl:if test="ns1:primaryContact">
+                                            <ns1:primaryContact>
+                                                <xsl:copy-of select="ns1:primaryContact/@xsi:nil"/>
+                                                <xsl:value-of select="ns1:primaryContact"/>
+                                            </ns1:primaryContact>
+                                        </xsl:if>
+                                        <ns1:active>
+                                            <xsl:value-of select="ns1:active"/>
+                                        </ns1:active>
+                                        <xsl:if test="ns1:DirectLineExt">
+                                            <ns1:DirectLineExt>
+                                                <xsl:value-of select="ns1:DirectLineExt"/>
+                                            </ns1:DirectLineExt>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:recordType">
+                                            <ns1:recordType>
+                                                <xsl:value-of select="ns1:recordType"/>
+                                            </ns1:recordType>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:MergedToSfdcContactId">
+                                            <ns1:MergedToSfdcContactId>
+                                                <xsl:value-of select="ns1:MergedToSfdcContactId"/>
+                                            </ns1:MergedToSfdcContactId>
+                                        </xsl:if>
+                                    </pfx:Contact>
+                                </xsl:for-each>
+                            </pfx:SFDC>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:copy-of select="$Start/root/pfx:SMF/pfx:SMFBody/*"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </pfx:SMFBody>
+            </pfx:SMF>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SelectSourceContactData">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>258</pd:x>
+        <pd:y>115</pd:y>
+        <config>
+            <processName>/ExternalServices/MDM_Server/SelectSourceContactData.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:choose>
+                    <xsl:when test="$Start/root/toNavision">
+                        <getNavision>
+                            <xsl:value-of select="$Start/root/toNavision"/>
+                        </getNavision>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <getSFDC>
+                            <xsl:value-of select="$Start/root/toSFDC"/>
+                        </getSFDC>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <GoldID>
+                    <xsl:value-of select="tib:if-absent($Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Contact/ns6:Contact/ns6:MDMCustID, $Start/root/pfx:SMF/pfx:SMFBody/pfx:SFDC/pfx:Contact[1]/ns1:MdmPartnerId)"/>
+                </GoldID>
+                <xsl:choose>
+                    <xsl:when test="exists($Start/root/pfx:SMF/pfx:SMFBody/pfx:SFDC)">
+                        <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:SFDC/pfx:Contact[1]/ns1:MdmContactId">
+                            <MDMContactId>
+                                <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:SFDC/pfx:Contact[1]/ns1:MdmContactId"/>
+                            </MDMContactId>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Contact/ns6:Contact/ns6:MDMContID">
+                            <MDMContactId>
+                                <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Contact/ns6:Contact/ns6:MDMContID"/>
+                            </MDMContactId>
+                        </xsl:if>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SelectSourceContactData</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Contact Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SelectSourceContactData</pd:from>
+        <pd:to>Map Contact Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

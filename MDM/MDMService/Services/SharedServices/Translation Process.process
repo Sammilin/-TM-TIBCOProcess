@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://TrendMicro.BW.Schemas.EAIQryLog" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:pfx2="http://TrendMicro.BW.Schemas.BW_Properties" xmlns:pfx7="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pfx6="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/MDM/TeO/Customer" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns13="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/Common" xmlns:pfx="http://TrendMicro.BW.Schemas.Generic_CDM" xmlns:ns7="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns8="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:ns4="http://www.tibco.com/schemas/BWGINEI/resources/Schema/Schema.xsd" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://TrendMicro.BW.Schemas.BW_Properties" schemaLocation="/resources/Schema/BW_Properties.xsd"/>
+    <xsd:import namespace="http://TrendMicro.BW.Schemas.Generic_CDM" schemaLocation="/resources/Schema/Generic_CDM.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/BWGINEI/resources/Schema/Schema.xsd" schemaLocation="/resources/Schema/Error Schema.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" schemaLocation="/XSD/Client/SFDC/Customer.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/SharedServices/Translation Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="XSLTFileName" type="xsd:string"/>
+                    <xsd:element ref="pfx3:SMF"/>
+                    <xsd:element name="ExternalXmlParam" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="dataSource" type="xsd:string"/>
+                    <xsd:element name="source_id" type="xsd:string"/>
+                    <xsd:element name="target" type="xsd:string"/>
+                    <xsd:element name="type" type="xsd:string"/>
+                    <xsd:element name="gold_id" type="xsd:string"/>
+                    <xsd:element name="UpdateSourceData" type="xsd:boolean"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>85</pd:startX>
+    <pd:startY>121</pd:startY>
+    <pd:returnBindings>
+        <pfx3:SMF>
+            <xsl:copy-of select="$Parse-XML/pfx3:SMF/pfx3:SMFHeader"/>
+            <pfx3:SMFBody>
+                <xsl:choose>
+                    <xsl:when test="exists($Parse-XML/pfx3:SMF/pfx3:SMFBody/pfx3:Navision)">
+                        <xsl:for-each select="$Parse-XML/pfx3:SMF/pfx3:SMFBody/pfx3:Navision">
+                            <pfx3:Navision>
+                                <xsl:copy-of select="*"/>
+                            </pfx3:Navision>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:when test="exists($Parse-XML/pfx3:SMF/pfx3:SMFBody/pfx3:SFDC)">
+                        <xsl:for-each select="$Parse-XML/pfx3:SMF/pfx3:SMFBody/pfx3:SFDC">
+                            <pfx3:SFDC>
+                                <xsl:copy-of select="*"/>
+                            </pfx3:SFDC>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:when test="exists($Parse-XML/pfx3:SMF/pfx3:SMFBody/pfx3:Rallying)">
+                        <xsl:for-each select="$Parse-XML/pfx3:SMF/pfx3:SMFBody/pfx3:Rallying">
+                            <pfx3:Rallying>
+                                <xsl:for-each select="pfx3:Partner">
+                                    <pfx3:Partner>
+                                        <xsl:if test="pfx6:Id">
+                                            <pfx6:Id>
+                                                <xsl:value-of select="pfx6:Id"/>
+                                            </pfx6:Id>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:Address">
+                                            <pfx6:Address>
+                                                <xsl:value-of select="pfx6:Address"/>
+                                            </pfx6:Address>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:BlockFlag">
+                                            <pfx6:BlockFlag>
+                                                <xsl:value-of select="pfx6:BlockFlag"/>
+                                            </pfx6:BlockFlag>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:City">
+                                            <pfx6:City>
+                                                <xsl:value-of select="pfx6:City"/>
+                                            </pfx6:City>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:Country">
+                                            <pfx6:Country>
+                                                <xsl:value-of select="pfx6:Country"/>
+                                            </pfx6:Country>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:DistributorFlag">
+                                            <pfx6:DistributorFlag>
+                                                <xsl:value-of select="pfx6:DistributorFlag"/>
+                                            </pfx6:DistributorFlag>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:Email">
+                                            <pfx6:Email>
+                                                <xsl:value-of select="pfx6:Email"/>
+                                            </pfx6:Email>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:EndCustomerFlag">
+                                            <pfx6:EndCustomerFlag>
+                                                <xsl:value-of select="pfx6:EndCustomerFlag"/>
+                                            </pfx6:EndCustomerFlag>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:IntegrationSource">
+                                            <pfx6:IntegrationSource>
+                                                <xsl:value-of select="pfx6:IntegrationSource"/>
+                                            </pfx6:IntegrationSource>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:Name">
+                                            <pfx6:Name>
+                                                <xsl:value-of select="pfx6:Name"/>
+                                            </pfx6:Name>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:PartnerTier">
+                                            <pfx6:PartnerTier>
+                                                <xsl:value-of select="pfx6:PartnerTier"/>
+                                            </pfx6:PartnerTier>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:PartnerTierDescription">
+                                            <pfx6:PartnerTierDescription>
+                                                <xsl:value-of select="pfx6:PartnerTierDescription"/>
+                                            </pfx6:PartnerTierDescription>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:PrimaryPartnerTierId">
+                                            <pfx6:PrimaryPartnerTierId>
+                                                <xsl:value-of select="pfx6:PrimaryPartnerTierId"/>
+                                            </pfx6:PrimaryPartnerTierId>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:PrimaryPartnerTypeId">
+                                            <pfx6:PrimaryPartnerTypeId>
+                                                <xsl:value-of select="pfx6:PrimaryPartnerTypeId"/>
+                                            </pfx6:PrimaryPartnerTypeId>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:ResellerFlag">
+                                            <pfx6:ResellerFlag>
+                                                <xsl:value-of select="pfx6:ResellerFlag"/>
+                                            </pfx6:ResellerFlag>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:StandardDiscount">
+                                            <pfx6:StandardDiscount>
+                                                <xsl:value-of select="pfx6:StandardDiscount"/>
+                                            </pfx6:StandardDiscount>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:SyncDate">
+                                            <pfx6:SyncDate>
+                                                <xsl:value-of select="pfx6:SyncDate"/>
+                                            </pfx6:SyncDate>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:NavisionId">
+                                            <pfx6:NavisionId>
+                                                <xsl:value-of select="pfx6:NavisionId"/>
+                                            </pfx6:NavisionId>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:SalesForceId">
+                                            <pfx6:SalesForceId>
+                                                <xsl:value-of select="pfx6:SalesForceId"/>
+                                            </pfx6:SalesForceId>
+                                        </xsl:if>
+                                        <xsl:if test="pfx6:MDMId">
+                                            <pfx6:MDMId>
+                                                <xsl:value-of select="pfx6:MDMId"/>
+                                            </pfx6:MDMId>
+                                        </xsl:if>
+                                    </pfx3:Partner>
+                                </xsl:for-each>
+                            </pfx3:Rallying>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx3:TeO>
+                            <xsl:copy-of select="$Parse-XML/pfx3:SMF/pfx3:SMFBody/pfx3:TeO/pfx3:Customer"/>
+                        </pfx3:TeO>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:copy-of select="$Start/root/pfx3:SMF/pfx3:SMFBody/pfx3:MDM"/>
+            </pfx3:SMFBody>
+        </pfx3:SMF>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx3:SMF"/>
+    <pd:endX>954</pd:endX>
+    <pd:endY>126</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1240479190662</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>462</pd:x>
+        <pd:y>2</pd:y>
+        <pd:width>371</pd:width>
+        <pd:height>226</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>simpleGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Read XSLT File</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Parse XML</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Read XSLT File</pd:from>
+            <pd:to>Transform XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Transform XML</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:xpathDescription>Transform Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Transform XML</pd:from>
+            <pd:to>Parse XML</pd:to>
+            <pd:xpathDescription>Success</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Transform-XML/xmlString!=""</pd:xpath>
+        </pd:transition>
+        <pd:activity name="Read XSLT File">
+            <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+            <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+            <pd:x>540</pd:x>
+            <pd:y>67</pd:y>
+            <config>
+                <encoding>text</encoding>
+            </config>
+            <pd:inputBindings>
+                <ns1:ReadActivityInputClass>
+                    <fileName>
+                        <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/Services/SharedServices/TranslatoinProcess/XSLTFolder,$Start/root/XSLTFileName)"/>
+                    </fileName>
+                    <encoding>
+                        <xsl:value-of select="&quot;UTF-8&quot;"/>
+                    </encoding>
+                </ns1:ReadActivityInputClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Transform XML">
+            <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
+            <pd:x>642</pd:x>
+            <pd:y>67</pd:y>
+            <config>
+                <engine>TibcoXML</engine>
+                <inputStyle>text</inputStyle>
+                <stylesheet>/XSLT/XSLT File.xslt</stylesheet>
+            </config>
+            <pd:inputBindings>
+                <textInput>
+                    <xsl:choose>
+                        <xsl:when test="$Start/root/UpdateSourceData=&quot;true&quot;">
+                            <xmlString>
+                                <xsl:value-of select="tib:render-xml($SelectUpdateSourceData/pfx3:SMF)"/>
+                            </xmlString>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xmlString>
+                                <xsl:value-of select="tib:render-xml($Start/root/pfx3:SMF)"/>
+                            </xmlString>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <stylesheet>
+                        <xsl:value-of select="$Read-XSLT-File/ns2:ReadActivityOutputTextClass/fileContent/textContent"/>
+                    </stylesheet>
+                    <parameter>
+                        <name>
+                            <xsl:value-of select="&quot;AccountRecordType&quot;"/>
+                        </name>
+                        <xsl:choose>
+                            <xsl:when test="lower-case($Start/root/type)=&quot;customer&quot;">
+                                <value>
+                                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/AccountRecordType"/>
+                                </value>
+                            </xsl:when>
+                            <xsl:when test="lower-case($Start/root/type)=&quot;contact&quot;">
+                                <value>
+                                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/ContactRecordType"/>
+                                </value>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <value>
+                                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/LocationRecordType"/>
+                                </value>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <isXMLDocument>
+                            <xsl:value-of select="false()"/>
+                        </isXMLDocument>
+                    </parameter>
+                    <parameter>
+                        <name>
+                            <xsl:value-of select="&quot;MergeNavCust&quot;"/>
+                        </name>
+                        <value>
+                            <xsl:value-of select="&quot;MergeNavCust&quot;"/>
+                        </value>
+                        <isXMLDocument>
+                            <xsl:value-of select="false()"/>
+                        </isXMLDocument>
+                    </parameter>
+                    <parameter>
+                        <name>
+                            <xsl:value-of select="&quot;ServiceName&quot;"/>
+                        </name>
+                        <value>
+                            <xsl:value-of select="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:ServiceName"/>
+                        </value>
+                        <isXMLDocument>
+                            <xsl:value-of select="false()"/>
+                        </isXMLDocument>
+                    </parameter>
+                    <xsl:if test="exists($SelectTargetCustomerData)">
+                        <parameter>
+                            <name>
+                                <xsl:value-of select="&quot;SelectSourceCustomerData&quot;"/>
+                            </name>
+                            <value>
+                                <xsl:value-of select="tib:render-xml($SelectTargetCustomerData/pfx3:SMF/pfx3:SMFBody/*[1], 1)"/>
+                            </value>
+                            <isXMLDocument>
+                                <xsl:value-of select="true()"/>
+                            </isXMLDocument>
+                        </parameter>
+                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/root/ExternalXmlParam)">
+                            <parameter>
+                                <name>
+                                    <xsl:value-of select="&quot;ExternalParam&quot;"/>
+                                </name>
+                                <value>
+                                    <xsl:value-of select="$Start/root/ExternalXmlParam"/>
+                                </value>
+                                <isXMLDocument>
+                                    <xsl:value-of select="true()"/>
+                                </isXMLDocument>
+                            </parameter>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <parameter>
+                                <name>
+                                    <xsl:value-of select="&quot;ExternalParam&quot;"/>
+                                </name>
+                                <value>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </value>
+                                <isXMLDocument>
+                                    <xsl:value-of select="false()"/>
+                                </isXMLDocument>
+                            </parameter>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </textInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>645</pd:x>
+            <pd:y>170</pd:y>
+            <config>
+                <faultName>errorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns13:ActivityInput>
+                    <message>
+                        <xsl:value-of select="concat(&quot;XSLT Transform Error! Got empty Translated xml string. XSLT File:&quot;,$_globalVariables/ns5:GlobalVariables/Services/SharedServices/TranslatoinProcess/XSLTFolder,$Start/root/XSLTFileName)"/>
+                    </message>
+                    <messageCode>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </messageCode>
+                    <data>
+                        <pfx4:Error>
+                            <pfx4:src>
+                                <xsl:value-of select="&quot;Service/SharedServices/Translation Process&quot;"/>
+                            </pfx4:src>
+                            <pfx4:error_code>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </pfx4:error_code>
+                            <pfx4:error_message>
+                                <xsl:value-of select="concat(&quot;XSLT Transform Error! Got empty Translated xml string. XSLT File:&quot;,$_globalVariables/ns5:GlobalVariables/Services/SharedServices/TranslatoinProcess/XSLTFolder,$Start/root/XSLTFileName)"/>
+                            </pfx4:error_message>
+                            <pfx4:stack_trace>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </pfx4:stack_trace>
+                        </pfx4:Error>
+                    </data>
+                </ns13:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Parse XML">
+            <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+            <pd:x>748</pd:x>
+            <pd:y>68</pd:y>
+            <config>
+                <inputStyle>text</inputStyle>
+                <xsdVersion>default</xsdVersion>
+                <validateOutput>true</validateOutput>
+                <term ref="pfx3:SMF"/>
+            </config>
+            <pd:inputBindings>
+                <xmlString>
+                    <xsl:value-of select="$Transform-XML/xmlString"/>
+                </xmlString>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Generate Write Log Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>777</pd:x>
+        <pd:y>324</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="pfx4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($_error/ns3:ErrorReport/Data)">
+                    <ns13:ActivityInput>
+                        <message>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                        </message>
+                        <xsl:if test="$_error/ns3:ErrorReport/MsgCode">
+                            <messageCode>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </messageCode>
+                        </xsl:if>
+                        <data>
+                            <xsl:copy-of select="$_error/ns3:ErrorReport/Data/pfx4:Error"/>
+                        </data>
+                    </ns13:ActivityInput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ns13:ActivityInput>
+                        <message>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                        </message>
+                        <xsl:if test="$_error/ns3:ErrorReport/MsgCode">
+                            <messageCode>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </messageCode>
+                        </xsl:if>
+                        <data>
+                            <pfx4:Error>
+                                <pfx4:src>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                                </pfx4:src>
+                                <pfx4:error_code>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                                </pfx4:error_code>
+                                <pfx4:error_message>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                                </pfx4:error_message>
+                                <pfx4:stack_trace>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                                </pfx4:stack_trace>
+                            </pfx4:Error>
+                        </data>
+                    </ns13:ActivityInput>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SelectTargetCustomerData">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>359</pd:x>
+        <pd:y>196</pd:y>
+        <config>
+            <processName>/ExternalServices/MDM_Server/SelectSourceDataByID.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <dataSource>
+                    <xsl:value-of select="$Start/root/target"/>
+                </dataSource>
+                <type>
+                    <xsl:value-of select="$Start/root/type"/>
+                </type>
+                <xsl:choose>
+                    <xsl:when test="upper-case($Start/root/target)=&quot;NAVISION&quot; or upper-case($Start/root/target)=&quot;TEO&quot;">
+                        <source_id>
+                            <xsl:value-of select="$SelectUpdateSourceData/pfx3:SMF/pfx3:SMFBody/pfx3:MDM/pfx3:SourceIDMapping/ns8:NavId"/>
+                        </source_id>
+                    </xsl:when>
+                    <xsl:when test="upper-case($Start/root/target)=&quot;RALLYING&quot;">
+                        <source_id>
+                            <xsl:value-of select="$SelectUpdateSourceData/pfx3:SMF/pfx3:SMFBody/pfx3:MDM/pfx3:SourceIDMapping/ns8:RallyingId"/>
+                        </source_id>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <source_id>
+                            <xsl:value-of select="$SelectUpdateSourceData/pfx3:SMF/pfx3:SMFBody/pfx3:MDM/pfx3:SourceIDMapping/ns8:SfId"/>
+                        </source_id>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <ns7:SMFHeader>
+                    <ns6:MessageKey>
+                        <xsl:value-of select="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:MessageKey"/>
+                    </ns6:MessageKey>
+                    <ns6:ServiceName>
+                        <xsl:value-of select="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:ServiceName"/>
+                    </ns6:ServiceName>
+                    <ns6:ServiceVersion>
+                        <xsl:value-of select="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:ServiceVersion"/>
+                    </ns6:ServiceVersion>
+                    <ns6:SourceID>
+                        <xsl:value-of select="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:SourceID"/>
+                    </ns6:SourceID>
+                    <xsl:if test="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:SourceIP">
+                        <ns6:SourceIP>
+                            <xsl:value-of select="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:SourceIP"/>
+                        </ns6:SourceIP>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:RqTimestamp">
+                        <ns6:RqTimestamp>
+                            <xsl:value-of select="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:RqTimestamp"/>
+                        </ns6:RqTimestamp>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:RsTimestamp">
+                        <ns6:RsTimestamp>
+                            <xsl:value-of select="$Start/root/pfx3:SMF/pfx3:SMFHeader/ns6:RsTimestamp"/>
+                        </ns6:RsTimestamp>
+                    </xsl:if>
+                </ns7:SMFHeader>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SelectUpdateSourceData">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>199</pd:x>
+        <pd:y>194</pd:y>
+        <config>
+            <processName>/ExternalServices/MDM_Server/SelectMDMSourceData.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <dataSource>
+                    <xsl:value-of select="$Start/root/dataSource"/>
+                </dataSource>
+                <type>
+                    <xsl:value-of select="$Start/root/type"/>
+                </type>
+                <source_id>
+                    <xsl:value-of select="$Start/root/source_id"/>
+                </source_id>
+                <gold_id>
+                    <xsl:value-of select="$Start/root/gold_id"/>
+                </gold_id>
+                <xsl:copy-of select="$Start/root/pfx3:SMF"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>570</pd:x>
+        <pd:y>316</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>384</pd:x>
+        <pd:y>313</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="pfx4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($_error/ns3:ErrorReport/Data/pfx4:Error)">
+                    <ns13:ActivityInput>
+                        <xsl:if test="$_error/ns3:ErrorReport/Data/pfx4:Error/pfx4:error_message">
+                            <message>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/Data/pfx4:Error/pfx4:error_message"/>
+                            </message>
+                        </xsl:if>
+                        <xsl:if test="$_error/ns3:ErrorReport/Data/pfx4:Error/pfx4:error_code">
+                            <messageCode>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/Data/pfx4:Error/pfx4:error_code"/>
+                            </messageCode>
+                        </xsl:if>
+                        <data>
+                            <xsl:copy-of select="$_error/ns3:ErrorReport/Data/pfx4:Error"/>
+                        </data>
+                    </ns13:ActivityInput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ns13:ActivityInput>
+                        <message>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                        </message>
+                        <xsl:if test="$_error/ns3:ErrorReport/MsgCode">
+                            <messageCode>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </messageCode>
+                        </xsl:if>
+                        <data>
+                            <pfx4:Error>
+                                <pfx4:src>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                                </pfx4:src>
+                                <pfx4:error_code>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                                </pfx4:error_code>
+                                <pfx4:error_message>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                                </pfx4:error_message>
+                                <pfx4:stack_trace>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                                </pfx4:stack_trace>
+                            </pfx4:Error>
+                        </data>
+                    </ns13:ActivityInput>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SelectUpdateSourceData</pd:to>
+        <pd:xpathDescription>Update Source Data</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/UpdateSourceData="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SelectTargetCustomerData</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SelectUpdateSourceData</pd:from>
+        <pd:to>SelectTargetCustomerData</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Write Log Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>$Start/ExternalXmlParam of value is for xslt to use.
+Input sample：
+&lt;root&gt;
+&lt;!--this is external parameter element--&gt;
+&lt;AccountRecordType&gt;PRMEU Partner&lt;/AccountRecordType&gt; 
+&lt;/root&gt;
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+xslt use sample：
+&lt;xsl:copy-of select="$ExternalParam/root/AccountRecordType"/&gt;
+</pd:description>
+        <pd:x>155</pd:x>
+        <pd:y>358</pd:y>
+        <pd:width>223</pd:width>
+        <pd:height>233</pd:height>
+        <pd:fontColor>-16776961</pd:fontColor>
+        <pd:color>-256</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

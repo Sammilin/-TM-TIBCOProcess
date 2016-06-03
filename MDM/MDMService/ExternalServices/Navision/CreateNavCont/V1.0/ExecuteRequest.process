@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/schemas/Common" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Contact" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CommonOutput" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer_Request" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Contact_Request.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Customer_Request.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Output.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Customer_Request.xsd" schemaLocation="/XSD/Client/Navision/Customer_Request.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Contact_Request.xsd" schemaLocation="/XSD/Client/Navision/Contact_Request.xsd"/>
+    <pd:name>ExternalServices/Navision/CreateNavCont/V1.0/ExecuteRequest.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:SMF"/>
+                    <xsd:element name="ResendCount" type="xsd:int"/>
+                    <xsd:element name="RedeliveredQueue" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>101</pd:startX>
+    <pd:startY>91</pd:startY>
+    <pd:returnBindings>
+        <XMLString>
+            <xsl:value-of select="$Render-XML/xmlString"/>
+        </XMLString>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="XMLString" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>461</pd:endX>
+    <pd:endY>92</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1340276022570</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>204</pd:x>
+        <pd:y>208</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>396</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns4:ErrorReport/Data/*" element="pfx4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <xsl:if test="$_error/ns4:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns4:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns4:ErrorReport/Data/pfx4:Error)">
+                            <xsl:copy-of select="$_error/ns4:ErrorReport/Data/pfx4:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx4:Error>
+                                <pfx4:src>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                                </pfx4:src>
+                                <pfx4:error_code>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                                </pfx4:error_code>
+                                <pfx4:error_message>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                                </pfx4:error_message>
+                                <pfx4:stack_trace>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                                </pfx4:stack_trace>
+                            </pfx4:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Navision MSMQ Sender">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>323</pd:x>
+        <pd:y>102</pd:y>
+        <config>
+            <processName>/ExternalServices/Navision/ShareProcess/Navision MSMQ Sender.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <QueueName>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/MDMRequest"/>
+                </QueueName>
+                <MessageKey>
+                    <xsl:value-of select="$Start/group/pfx:SMF/pfx:SMFHeader/ns:MessageKey"/>
+                </MessageKey>
+                <MsgExpirationTime>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/MsgExpirationTime"/>
+                </MsgExpirationTime>
+                <XMLString>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </XMLString>
+                <WaitingACKQueue>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/WaitingACKQueue"/>
+                </WaitingACKQueue>
+                <RedeliveredQueue>
+                    <xsl:value-of select="$Start/group/RedeliveredQueue"/>
+                </RedeliveredQueue>
+                <ResendCount>
+                    <xsl:value-of select="$Start/group/ResendCount"/>
+                </ResendCount>
+                <xsl:copy-of select="$Start/group/pfx:SMF"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>207</pd:x>
+        <pd:y>91</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-16</textEncoding>
+            <term ref="pfx7:TrendMicro"/>
+        </config>
+        <pd:inputBindings>
+            <TrendMicro>
+                <MessageHeader>
+                    <MessageName>
+                        <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/CreateNavCust/MessageName"/>
+                    </MessageName>
+                    <MessageGUID>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </MessageGUID>
+                    <MessageFunctionCode>
+                        <xsl:value-of select="&quot;Request&quot;"/>
+                    </MessageFunctionCode>
+                    <DateTimeStamp>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyyMMdd'T'HHmmss&quot;, tib:translate-timezone(current-dateTime(), 'UTC'))"/>
+                    </DateTimeStamp>
+                    <From>
+                        <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/From"/>
+                    </From>
+                    <To>
+                        <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/To"/>
+                    </To>
+                    <Correlation>
+                        <MsgTrackingGUID>
+                            <xsl:value-of select="$Start/group/pfx:SMF/pfx:SMFHeader/ns:MessageKey"/>
+                        </MsgTrackingGUID>
+                    </Correlation>
+                </MessageHeader>
+                <MessagePayload>
+                    <BusinessObject>
+                        <ContactInfo>
+                            <Command>
+                                <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/CreateNavCont/Command"/>
+                            </Command>
+                            <xsl:for-each select="$Start/group/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Contact/ns6:Contact">
+                                <Contact>
+                                    <MDMContID>
+                                        <xsl:value-of select="ns6:MDMContID"/>
+                                    </MDMContID>
+                                    <MDMCustID>
+                                        <xsl:value-of select="ns6:MDMCustID"/>
+                                    </MDMCustID>
+                                    <NavID>
+                                        <xsl:value-of select="ns6:NavID"/>
+                                    </NavID>
+                                    <NAVCustID>
+                                        <xsl:value-of select="ns6:NAVCustID"/>
+                                    </NAVCustID>
+                                    <ContactName>
+                                        <xsl:value-of select="ns6:ContactName"/>
+                                    </ContactName>
+                                    <Phone>
+                                        <xsl:value-of select="ns6:Phone"/>
+                                    </Phone>
+                                    <MobilePhone>
+                                        <xsl:value-of select="ns6:MobilePhone"/>
+                                    </MobilePhone>
+                                    <Email>
+                                        <xsl:value-of select="ns6:Email"/>
+                                    </Email>
+                                    <SourceSystemID>
+                                        <xsl:value-of select="ns6:SourceSystemID"/>
+                                    </SourceSystemID>
+                                </Contact>
+                            </xsl:for-each>
+                        </ContactInfo>
+                    </BusinessObject>
+                </MessagePayload>
+            </TrendMicro>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Navision MSMQ Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Navision MSMQ Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

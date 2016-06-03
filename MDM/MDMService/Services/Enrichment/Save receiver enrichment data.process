@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://applications.dnb.com/webservice/schema/" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/Common" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://applications.dnb.com/webservice/schema/" schemaLocation="/WSDL/Client/HooversWSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" schemaLocation="/WSDL/Provider/MDMService/RetrieveCustomer_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/messageheader.xsd"/>
+    <pd:name>Services/Enrichment/Save receiver enrichment data.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="ns2:SMFHeader"/>
+                    <xsd:element name="HooversRSXml" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>63</pd:startX>
+    <pd:startY>133</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>388</pd:endX>
+    <pd:endY>137</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1354184213842</pd:targetNamespace>
+    <pd:activity name="SQL-Direct-1">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>277</pd:x>
+        <pd:y>135</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;Execute [EMEA_MDM].[PRC_RECEIVE_HOOVERS_MESSAGE] &quot;,&#xA;&quot;'&quot;, $Start/root/ns2:SMFHeader/pfx3:MessageKey , &quot;',&quot;,&#xA;&quot;'&quot;,tib:string-to-base64(substring-after(tib:base64-to-string($Remove-NS/xmlBytes/xmlOutput, 'UTF-8'),&quot;?>&quot;),'UTF-16'),&quot;'&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>186</pd:x>
+        <pd:y>245</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>425</pd:x>
+        <pd:y>249</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>309</pd:x>
+        <pd:y>247</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <xsl:copy-of select="$Start/root/ns2:SMFHeader"/>
+                <ns6:Error>
+                    <ns6:src>
+                        <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                    </ns6:src>
+                    <ns6:error_code>
+                        <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                    </ns6:error_code>
+                    <ns6:error_message>
+                        <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                    </ns6:error_message>
+                    <ns6:stack_trace>
+                        <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                    </ns6:stack_trace>
+                </ns6:Error>
+                <Source>
+                    <xsl:value-of select="$Start/root/HooversRSXml"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="0"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Remove NS">
+        <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
+        <pd:x>174</pd:x>
+        <pd:y>135</pd:y>
+        <config>
+            <inputStyle>binary</inputStyle>
+            <engine>TibcoXML</engine>
+            <stylesheet>/XSLT/Remove NameSpace.xslt</stylesheet>
+        </config>
+        <pd:inputBindings>
+            <bytesInput>
+                <xmlBytesIn>
+                    <xsl:value-of select="tib:string-to-base64(TM:stringReplace($Start/root/HooversRSXml,&quot;·&quot;, &quot; &quot;), &quot;UTF-8&quot;)"/>
+                </xmlBytesIn>
+            </bytesInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Remove NS</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL-Direct-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Remove NS</pd:from>
+        <pd:to>SQL-Direct-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

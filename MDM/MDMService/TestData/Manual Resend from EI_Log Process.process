@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>TestData/Manual Resend from EI_Log Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:string"/>
+                    <xsd:element name="service_name" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>106</pd:startX>
+    <pd:startY>158</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>683</pd:endX>
+    <pd:endY>161</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1353667565872</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>183</pd:x>
+        <pd:y>12</pd:y>
+        <pd:width>322</pd:width>
+        <pd:height>279</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>tib:tokenize($Start/root/id, ",")</pd:over>
+            <pd:iterationElementSlot>current</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>MissingID</pd:outSlot>
+            <pd:activityOutputName>Map Missing Data</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SQL Direct</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Missing Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JMS Queue Sender</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SQL Direct</pd:from>
+            <pd:to>JMS Queue Sender</pd:to>
+            <pd:xpathDescription>Success</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row/column/value)</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SQL Direct</pd:from>
+            <pd:to>Map Missing Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SQL Direct</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Map Missing Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="JMS Queue Sender">
+            <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+            <pd:x>393</pd:x>
+            <pd:y>83</pd:y>
+            <config>
+                <PermittedMessageType>Text</PermittedMessageType>
+                <SessionAttributes>
+                    <transacted>false</transacted>
+                    <acknowledgeMode>1</acknowledgeMode>
+                    <maxSessions>1</maxSessions>
+                </SessionAttributes>
+                <ConfigurableHeaders>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSExpiration>0</JMSExpiration>
+                    <JMSPriority>4</JMSPriority>
+                </ConfigurableHeaders>
+                <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms">
+                    <destinationQueue>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/TeO/UpdateTeOCust/DestinationQueue"/>
+                    </destinationQueue>
+                    <Body>
+                        <xsl:value-of select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset[1]/row[1]/column[1]/value"/>
+                    </Body>
+                </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="SQL Direct">
+            <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+            <pd:x>261</pd:x>
+            <pd:y>83</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>1</maxRows>
+                <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <jdbcGeneralActivityInput>
+                    <statement>
+                        <xsl:value-of select="concat(&quot;SELECT CAST(MessageBody AS VARCHAR(MAX)) as XML FROM EMEA_MDM.TBL_EI_ESBLog Where (source_company_id='&quot;,tib:trim(tib:tokenize($Start/root/id, &quot;,&quot;)[$i]),&#xA;&quot;' or gold_id='&quot;,tib:trim(tib:tokenize($Start/root/id, &quot;,&quot;)[$i]),&#xA;&quot;') and ServiceName='&quot;,$Start/root/service_name,&#xA;&quot;' and errlog_flag='N' order by CreateDate Desc&quot;)"/>
+                    </statement>
+                </jdbcGeneralActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Missing Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>399</pd:x>
+            <pd:y>213</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="Missing_ID" type="xsd:string"/>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <xsl:choose>
+                    <xsl:when test="exists($_error)">
+                        <Missing_ID>
+                            <xsl:value-of select="concat(tib:trim(tib:tokenize($Start/root/id, &quot;,&quot;)[$i]),&quot; ERROR=&quot;,$_error/ns1:ErrorReport/Msg)"/>
+                        </Missing_ID>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <Missing_ID>
+                            <xsl:value-of select="concat(tib:trim(tib:tokenize($Start/root/id, &quot;,&quot;)[$i]),&quot; Missing&quot;)"/>
+                        </Missing_ID>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>261</pd:x>
+            <pd:y>212</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Map MissingOrError Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>575</pd:x>
+        <pd:y>168</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:for-each select="$MissingID/AccumulatedOutput/Missing_ID">
+                    <ID>
+                        <xsl:value-of select="."/>
+                    </ID>
+                </xsl:for-each>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Map MissingOrError Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map MissingOrError Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>Noted: 
+* Please change the DestinationQueue in JMS Queue Sender before sending the message.
+* Put the multiple IDs with separator ",".
+   EX: 001,002,EX001</pd:description>
+        <pd:x>364</pd:x>
+        <pd:y>358</pd:y>
+        <pd:width>524</pd:width>
+        <pd:height>101</pd:height>
+        <pd:fontColor>-65536</pd:fontColor>
+        <pd:color>-10027009</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns5="http://tempuri.org/" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns13="http://xmlns.tibco.com/2003/5/bw/plugins/tcp" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://xmlns.tibco.com/encodings/mime" xmlns:ns3="http://xmlns.tibco.com/bw/plugin-api/messages/context" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:pfx4="http://www.trendmicro.com/ESB/PeopleSoft/schemas/DBLogger" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/PeopleSoft/schemas/messageHeader" xmlns:pfx2="http://www.trendmicro.com/ESB/PeopleSoft/schemas/getEmployeeProfileRq" xmlns:SOAUtility="java://SOAUtility" xmlns:pfx8="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx7="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx6="http://www.trendmicro.com/ESB/FRS/schemas/DBLogger">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/PeopleSoft/schemas/messageHeader" schemaLocation="/XSD/Common/messageheader.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/PeopleSoft/schemas/getEmployeeProfileRq"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/FRS/schemas/SMF" schemaLocation="/XSD/Common/SMFV1.2.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/DBLogger" schemaLocation="/XSD/Common/logger.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Adpaters/EMS-Listener/V1.0/Processes/Main.process</pd:name>
+    <pd:description/>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>91</pd:x>
+        <pd:y>44</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Adpaters/EMS-Listener/V1.0/JMSRequestQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>719</pd:endX>
+    <pd:endY>209</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1259824970633</pd:targetNamespace>
+    <pd:activity name="ExecuteRequest">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:description/>
+        <pd:x>393</pd:x>
+        <pd:y>36</pd:y>
+        <config>
+            <processName>/Adpaters/EMS-Listener/V1.0/Processes/ExecuteRequest.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <DestinationQueue>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/Adpaters/EMS-Listener/V1.0/ServicePrefix,&quot;.&quot;,$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:ServiceName,&quot;.&quot;,$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:ServiceVersion)"/>
+                </DestinationQueue>
+                <Request>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                </Request>
+                <xsl:choose>
+                    <xsl:when test="exists($JMS-Queue-Receiver/ns:ActivityOutput/JMSHeaders/ns:JMSReplyTo)">
+                        <isQuery>
+                            <xsl:value-of select="&quot;true&quot;"/>
+                        </isQuery>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <isQuery>
+                            <xsl:value-of select="&quot;false&quot;"/>
+                        </isQuery>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/JMSHeaders/ns:JMSPriority">
+                    <JMSPriority>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/JMSHeaders/ns:JMSPriority"/>
+                    </JMSPriority>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ResponseError">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:description/>
+        <pd:x>719</pd:x>
+        <pd:y>37</pd:y>
+        <config>
+            <role/>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="$ExecuteRequest/root"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="&quot;EMS-ReplyTo&quot;"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AccessControl">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:description/>
+        <pd:x>228</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Allowed" type="xsd:boolean"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Allowed>
+                    <xsl:value-of select="&quot;true&quot;"/>
+                </Allowed>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="NotAllowed">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:description/>
+        <pd:x>229</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <role/>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="concat(&quot;Access Control: &quot;,$AccessControl/root/Allowed)"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SetJobVariables">
+        <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+        <pd:x>89</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <variableConfig>/Adpaters/EMS-Listener/V1.0/Variables/ServiceJobVariables.jobsharedvariable</variableConfig>
+            <showResult>true</showResult>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ServiceName>
+                    <xsl:value-of select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'ServiceName>'), '&lt;/ServiceName')"/>
+                </ServiceName>
+                <ServiceVersion>
+                    <xsl:value-of select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'ServiceVersion>'), '&lt;/ServiceVersion')"/>
+                </ServiceVersion>
+                <MessageKey>
+                    <xsl:value-of select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'MessageKey>'), '&lt;/MessageKey')"/>
+                </MessageKey>
+                <SourceID>
+                    <xsl:value-of select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'SourceID>'), '&lt;/SourceID')"/>
+                </SourceID>
+                <SourceIP>
+                    <xsl:value-of select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'SourceIP>'), '&lt;/SourceIP')"/>
+                </SourceIP>
+                <RqTimestamp>
+                    <xsl:value-of select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'RqTimestamp>'), '&lt;/RqTimestamp')"/>
+                </RqTimestamp>
+                <RsTimestamp>
+                    <xsl:value-of select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'RsTimestamp>'), '&lt;/RsTimestamp')"/>
+                </RsTimestamp>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>548</pd:x>
+        <pd:y>46</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$ExecuteRequest/root"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>220</pd:x>
+        <pd:y>42</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx7:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>541</pd:x>
+        <pd:y>306</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Adpaters/EMS-Listener/V1.0/JMSResponseQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <xsl:choose>
+                    <xsl:when test="exists($_error)">
+                        <Body>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                        </Body>
+                    </xsl:when>
+                    <xsl:when test="$AccessControl/root/Allowed=&quot;false&quot;">
+                        <Body>
+                            <xsl:value-of select="&quot;Not Allowed to access this service&quot;"/>
+                        </Body>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <Body>
+                            <xsl:value-of select="&quot;ESB ACK&quot;"/>
+                        </Body>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Error Response Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>400</pd:x>
+        <pd:y>193</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <pfx7:SMF>
+                    <pfx7:SMFHeader>
+                        <pfx7:MessageKey>
+                            <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:MessageKey"/>
+                        </pfx7:MessageKey>
+                        <pfx7:ServiceName>
+                            <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:ServiceName"/>
+                        </pfx7:ServiceName>
+                        <pfx7:ServiceVersion>
+                            <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:ServiceVersion"/>
+                        </pfx7:ServiceVersion>
+                        <pfx7:SourceID>
+                            <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:SourceID"/>
+                        </pfx7:SourceID>
+                        <xsl:if test="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:SourceIP">
+                            <pfx7:SourceIP>
+                                <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:SourceIP"/>
+                            </pfx7:SourceIP>
+                        </xsl:if>
+                        <xsl:if test="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:RqTimestamp">
+                            <pfx7:RqTimestamp>
+                                <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:RqTimestamp"/>
+                            </pfx7:RqTimestamp>
+                        </xsl:if>
+                        <pfx7:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </pfx7:RsTimestamp>
+                    </pfx7:SMFHeader>
+                    <pfx7:SMFBody>
+                        <xsl:copy-of select="$Parse-XML/pfx7:SMF/pfx7:SMFBody/pfx7:Message"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns2:ErrorReport/Data/ns6:Error)">
+                                <pfx7:Error>
+                                    <pfx7:src>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns6:Error/ns6:process_stack"/>
+                                    </pfx7:src>
+                                    <pfx7:error_code>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns6:Error/ns6:error_code"/>
+                                    </pfx7:error_code>
+                                    <pfx7:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns6:Error/ns6:error_desc"/>
+                                    </pfx7:error_message>
+                                    <pfx7:error_detail>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns6:Error/ns6:stack_trace"/>
+                                    </pfx7:error_detail>
+                                </pfx7:Error>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx7:Error>
+                                    <pfx7:src>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                    </pfx7:src>
+                                    <pfx7:error_code>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                    </pfx7:error_code>
+                                    <pfx7:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                    </pfx7:error_message>
+                                    <pfx7:error_detail>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                    </pfx7:error_detail>
+                                </pfx7:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx7:SMFBody>
+                </pfx7:SMF>
+                <ns5:InsertTaskLog>
+                    <ns5:serviceID>
+                        <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFBody[1]/pfx7:Message/pfx7:ACSMessage/pfx7:CASE/pfx7:SERVICE_ID"/>
+                    </ns5:serviceID>
+                    <ns5:stepTypeID>
+                        <xsl:value-of select="9999"/>
+                    </ns5:stepTypeID>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns2:ErrorReport/Data/ns6:Error)">
+                            <ns5:message>
+                                <xsl:value-of select="concat(&quot;BW response error: &quot;,$_error/ns2:ErrorReport/Data/ns6:Error/ns6:error_desc)"/>
+                            </ns5:message>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns5:message>
+                                <xsl:value-of select="concat(&quot;BW response error: &quot;,$_error/ns2:ErrorReport/Msg)"/>
+                            </ns5:message>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns5:InsertTaskLog>
+                <isESBLog>
+                    <xsl:value-of select="&quot;true&quot;"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>896</pd:x>
+        <pd:y>57</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Call Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>898</pd:x>
+        <pd:y>216</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($_error_JMS-Queue-Sender/ActivityErrors) or exists($_error_Parse-XML/ActivityErrors)">
+                    <xsl:variable name="MessageKey" select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'MessageKey>'), '&lt;/MessageKey')"/>
+                    <xsl:variable name="ServiceName" select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'ServiceName>'), '&lt;/ServiceName')"/>
+                    <xsl:variable name="ServiceVersion" select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'ServiceVersion>'), '&lt;/ServiceVersion')"/>
+                    <xsl:variable name="SourceID" select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'SourceID>'), '&lt;/SourceID')"/>
+                    <xsl:variable name="SourceIP" select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'SourceIP>'), '&lt;/SourceIP')"/>
+                    <xsl:variable name="RqTimestamp" select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'RqTimestamp>'), '&lt;/RqTimestamp')"/>
+                    <xsl:variable name="RsTimestamp" select="substring-before(substring-after($JMS-Queue-Receiver/ns:ActivityOutput/Body, 'RsTimestamp>'), '&lt;/RsTimestamp')"/>
+                    <group>
+                        <pfx7:SMF>
+                            <pfx7:SMFHeader>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim($MessageKey) !=&quot;&quot;">
+                                        <pfx7:MessageKey>
+                                            <xsl:value-of select="$MessageKey"/>
+                                        </pfx7:MessageKey>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <pfx7:MessageKey>
+                                            <xsl:value-of select="&quot;ParsingError&quot;"/>
+                                        </pfx7:MessageKey>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <pfx7:ServiceName>
+                                    <xsl:value-of select="$ServiceName"/>
+                                </pfx7:ServiceName>
+                                <pfx7:ServiceVersion>
+                                    <xsl:value-of select="$ServiceVersion"/>
+                                </pfx7:ServiceVersion>
+                                <pfx7:SourceID>
+                                    <xsl:value-of select="$SourceID"/>
+                                </pfx7:SourceID>
+                                <pfx7:SourceIP>
+                                    <xsl:value-of select="$SourceIP"/>
+                                </pfx7:SourceIP>
+                                <pfx7:RqTimestamp>
+                                    <xsl:value-of select="$RqTimestamp"/>
+                                </pfx7:RqTimestamp>
+                                <pfx7:RsTimestamp>
+                                    <xsl:value-of select="$RsTimestamp"/>
+                                </pfx7:RsTimestamp>
+                            </pfx7:SMFHeader>
+                            <pfx7:SMFBody>
+                                <pfx7:Error>
+                                    <pfx7:src>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                    </pfx7:src>
+                                    <pfx7:error_code>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                    </pfx7:error_code>
+                                    <pfx7:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                    </pfx7:error_message>
+                                    <pfx7:error_detail>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                    </pfx7:error_detail>
+                                </pfx7:Error>
+                            </pfx7:SMFBody>
+                        </pfx7:SMF>
+                        <xsl:if test="tib:trim($MessageKey) !=&quot;&quot;">
+                            <ns5:InsertTaskLog>
+                                <ns5:serviceID>
+                                    <xsl:value-of select="$MessageKey"/>
+                                </ns5:serviceID>
+                                <ns5:stepTypeID>
+                                    <xsl:value-of select="9911"/>
+                                </ns5:stepTypeID>
+                                <xsl:choose>
+                                    <xsl:when test="exists($_error/ns2:ErrorReport/Data/ns6:Error)">
+                                        <ns5:message>
+                                            <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns6:Error/ns6:error_desc"/>
+                                        </ns5:message>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <ns5:message>
+                                            <xsl:value-of select="concat(&quot;BW response error: &quot;,$_error/ns2:ErrorReport/Msg)"/>
+                                        </ns5:message>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ns5:InsertTaskLog>
+                        </xsl:if>
+                        <isESBLog>
+                            <xsl:value-of select="&quot;true&quot;"/>
+                        </isESBLog>
+                    </group>
+                </xsl:when>
+                <xsl:otherwise>
+                    <group>
+                        <pfx7:SMF>
+                            <pfx7:SMFHeader>
+                                <pfx7:MessageKey>
+                                    <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:MessageKey"/>
+                                </pfx7:MessageKey>
+                                <pfx7:ServiceName>
+                                    <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:ServiceName"/>
+                                </pfx7:ServiceName>
+                                <pfx7:ServiceVersion>
+                                    <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:ServiceVersion"/>
+                                </pfx7:ServiceVersion>
+                                <pfx7:SourceID>
+                                    <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:SourceID"/>
+                                </pfx7:SourceID>
+                                <xsl:if test="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:SourceIP">
+                                    <pfx7:SourceIP>
+                                        <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:SourceIP"/>
+                                    </pfx7:SourceIP>
+                                </xsl:if>
+                                <xsl:if test="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:RqTimestamp">
+                                    <pfx7:RqTimestamp>
+                                        <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:RqTimestamp"/>
+                                    </pfx7:RqTimestamp>
+                                </xsl:if>
+                                <pfx7:RsTimestamp>
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </pfx7:RsTimestamp>
+                            </pfx7:SMFHeader>
+                            <pfx7:SMFBody>
+                                <xsl:copy-of select="$Parse-XML/pfx7:SMF/pfx7:SMFBody/pfx7:Message"/>
+                                <xsl:choose>
+                                    <xsl:when test="exists($_error/ns2:ErrorReport/Data/ns6:Error)">
+                                        <pfx7:Error>
+                                            <pfx7:src>
+                                                <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns6:Error/ns6:process_stack"/>
+                                            </pfx7:src>
+                                            <pfx7:error_code>
+                                                <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns6:Error/ns6:error_code"/>
+                                            </pfx7:error_code>
+                                            <pfx7:error_message>
+                                                <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns6:Error/ns6:error_desc"/>
+                                            </pfx7:error_message>
+                                            <pfx7:error_detail>
+                                                <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns6:Error/ns6:stack_trace"/>
+                                            </pfx7:error_detail>
+                                        </pfx7:Error>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <pfx7:Error>
+                                            <pfx7:src>
+                                                <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                            </pfx7:src>
+                                            <pfx7:error_code>
+                                                <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                            </pfx7:error_code>
+                                            <pfx7:error_message>
+                                                <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                            </pfx7:error_message>
+                                            <pfx7:error_detail>
+                                                <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                            </pfx7:error_detail>
+                                        </pfx7:Error>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </pfx7:SMFBody>
+                        </pfx7:SMF>
+                        <ns5:InsertTaskLog>
+                            <ns5:serviceID>
+                                <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFBody[1]/pfx7:Message/pfx7:ACSMessage/pfx7:CASE/pfx7:SERVICE_ID"/>
+                            </ns5:serviceID>
+                            <ns5:stepTypeID>
+                                <xsl:value-of select="9911"/>
+                            </ns5:stepTypeID>
+                            <xsl:choose>
+                                <xsl:when test="exists($_error/ns2:ErrorReport/Data/ns6:Error)">
+                                    <ns5:message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns6:Error/ns6:error_desc"/>
+                                    </ns5:message>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <ns5:message>
+                                        <xsl:value-of select="concat(&quot;BW response error: &quot;,$_error/ns2:ErrorReport/Msg)"/>
+                                    </ns5:message>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </ns5:InsertTaskLog>
+                        <isESBLog>
+                            <xsl:value-of select="&quot;true&quot;"/>
+                        </isESBLog>
+                    </group>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="LogRqMessage">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>91</pd:x>
+        <pd:y>385</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx8:DBLogger>
+                <pfx8:MessageHeader>
+                    <pfx8:MessageKey>
+                        <xsl:value-of select="$SetJobVariables/group/MessageKey"/>
+                    </pfx8:MessageKey>
+                    <pfx8:ServiceName>
+                        <xsl:value-of select="$SetJobVariables/group/ServiceName"/>
+                    </pfx8:ServiceName>
+                    <pfx8:ServiceVersion>
+                        <xsl:value-of select="$SetJobVariables/group/ServiceVersion"/>
+                    </pfx8:ServiceVersion>
+                    <pfx8:SourceID>
+                        <xsl:value-of select="$SetJobVariables/group/SourceID"/>
+                    </pfx8:SourceID>
+                    <pfx8:SourceIP>
+                        <xsl:value-of select="$SetJobVariables/group/SourceIP"/>
+                    </pfx8:SourceIP>
+                    <pfx8:RqTimestamp>
+                        <xsl:value-of select="$SetJobVariables/group/RqTimestamp"/>
+                    </pfx8:RqTimestamp>
+                    <pfx8:RsTimestamp>
+                        <xsl:value-of select="$SetJobVariables/group/RsTimestamp"/>
+                    </pfx8:RsTimestamp>
+                </pfx8:MessageHeader>
+                <pfx8:MessageBody>
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                </pfx8:MessageBody>
+            </pfx8:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="LogRsMessage">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>525</pd:x>
+        <pd:y>187</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx8:DBLogger>
+                <pfx8:MessageHeader>
+                    <pfx8:MessageKey>
+                        <xsl:value-of select="$SetJobVariables/group/MessageKey"/>
+                    </pfx8:MessageKey>
+                    <pfx8:ServiceName>
+                        <xsl:value-of select="$SetJobVariables/group/ServiceName"/>
+                    </pfx8:ServiceName>
+                    <pfx8:ServiceVersion>
+                        <xsl:value-of select="$SetJobVariables/group/ServiceVersion"/>
+                    </pfx8:ServiceVersion>
+                    <pfx8:SourceID>
+                        <xsl:value-of select="$SetJobVariables/group/SourceID"/>
+                    </pfx8:SourceID>
+                    <pfx8:SourceIP>
+                        <xsl:value-of select="$SetJobVariables/group/SourceIP"/>
+                    </pfx8:SourceIP>
+                    <pfx8:RqTimestamp>
+                        <xsl:value-of select="$SetJobVariables/group/RqTimestamp"/>
+                    </pfx8:RqTimestamp>
+                    <pfx8:RsTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </pfx8:RsTimestamp>
+                </pfx8:MessageHeader>
+                <pfx8:MessageBody>
+                    <xsl:copy-of select="$ExecuteRequest/root"/>
+                </pfx8:MessageBody>
+            </pfx8:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call ACS Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>549</pd:x>
+        <pd:y>395</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns5:InsertTaskLog>
+                <ns5:serviceID>
+                    <xsl:value-of select="$Parse-XML/pfx7:SMF/pfx7:SMFHeader/pfx7:MessageKey"/>
+                </ns5:serviceID>
+                <ns5:stepTypeID>
+                    <xsl:value-of select="5"/>
+                </ns5:stepTypeID>
+                <ns5:message>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </ns5:message>
+            </ns5:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>ExecuteRequest</pd:from>
+        <pd:to>Call Error Response Process</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-3407872</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ResponseError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AccessControl</pd:from>
+        <pd:to>ExecuteRequest</pd:to>
+        <pd:xpathDescription>Allowed</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777012</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$AccessControl/root/Allowed='true'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AccessControl</pd:from>
+        <pd:to>NotAllowed</pd:to>
+        <pd:xpathDescription>Not Allowed</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3407872</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetJobVariables</pd:from>
+        <pd:to>AccessControl</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetJobVariables</pd:from>
+        <pd:to>LogRqMessage</pd:to>
+        <pd:xpathDescription>Log Request</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns1:GlobalVariables/Adpaters/EMS-Listener/V1.0/LogRq="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExecuteRequest</pd:from>
+        <pd:to>Reply to JMS Message</pd:to>
+        <pd:xpathDescription>ReplyTo</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($JMS-Queue-Receiver/ns:ActivityOutput/JMSHeaders/ns:JMSReplyTo)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>NotAllowed</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>ResponseError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExecuteRequest</pd:from>
+        <pd:to>LogRsMessage</pd:to>
+        <pd:xpathDescription>Log Response</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns1:GlobalVariables/Adpaters/EMS-Listener/V1.0/LogRs="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>SetJobVariables</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExecuteRequest</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Error Response Process</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Call Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Error Handling Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogRsMessage</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogRqMessage</pd:from>
+        <pd:to>Call ACS Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call ACS Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx15="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd" xmlns:pfx14="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" xmlns:ns="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:pfx13="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" xmlns:pfx12="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx11="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" xmlns:pfx10="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" xmlns:pfx41="http://coretech.trendmicro.com/frs/charon/" xmlns:ns21="http://xmlns.tibco.com/encodings/mime" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/PeopleSoft/schemas/DBLogger" xmlns:pfx2="http://tempuri.org/" xmlns:pfx9="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx8="http://www.trendmicro.com/ESB/MDM/schemas/SMF" xmlns:pfx7="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx6="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/Common" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns3="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx21="http://Anti.Malware.Tracker-Service.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF"/>
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/MDMServerWSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" schemaLocation="/WSDL/Provider/MDMService/SearchCustomer_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" schemaLocation="/WSDL/Provider/MDMService/SearchCustomer_Output.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd" schemaLocation="/WSDL/Provider/MDMService/RetrieveCustomerOutput.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" schemaLocation="/WSDL/Provider/MDMService/RetrieveCustomer_Input.xsd"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Client/ACS WSDL.wsdl"/>
+    <pd:name>ExternalServices/MDM_Server/callCustomerRetrieve.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx14:SMF"/>
+    <pd:startX>138</pd:startX>
+    <pd:startY>123</pd:startY>
+    <pd:returnBindings>
+        <pfx15:SMF>
+            <pfx15:SMFHeader>
+                <ns5:MessageKey>
+                    <xsl:value-of select="$Start/pfx14:SMF/pfx14:SMFHeader/ns5:MessageKey"/>
+                </ns5:MessageKey>
+                <ns5:ServiceName>
+                    <xsl:value-of select="$Start/pfx14:SMF/pfx14:SMFHeader/ns5:ServiceName"/>
+                </ns5:ServiceName>
+                <ns5:ServiceVersion>
+                    <xsl:value-of select="$Start/pfx14:SMF/pfx14:SMFHeader/ns5:ServiceVersion"/>
+                </ns5:ServiceVersion>
+                <ns5:SourceID>
+                    <xsl:value-of select="$Start/pfx14:SMF/pfx14:SMFHeader/ns5:SourceID"/>
+                </ns5:SourceID>
+                <xsl:if test="$Start/pfx14:SMF/pfx14:SMFHeader/ns5:SourceIP">
+                    <ns5:SourceIP>
+                        <xsl:value-of select="$Start/pfx14:SMF/pfx14:SMFHeader/ns5:SourceIP"/>
+                    </ns5:SourceIP>
+                </xsl:if>
+                <xsl:if test="$Start/pfx14:SMF/pfx14:SMFHeader/ns5:RqTimestamp">
+                    <ns5:RqTimestamp>
+                        <xsl:value-of select="$Start/pfx14:SMF/pfx14:SMFHeader/ns5:RqTimestamp"/>
+                    </ns5:RqTimestamp>
+                </xsl:if>
+                <ns5:RsTimestamp>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns5:RsTimestamp>
+            </pfx15:SMFHeader>
+            <pfx15:SMFBody>
+                <xsl:for-each select="$SQL-Direct-Retrieve-Customer-Info/jdbcGeneralActivityOutput/unknownResultset/row">
+                    <pfx15:row>
+                        <xsl:if test="column[name='Name']/value">
+                            <pfx15:Name>
+                                <xsl:value-of select="column[name='Name']/value"/>
+                            </pfx15:Name>
+                        </xsl:if>
+                        <xsl:if test="column[name='Address']/value">
+                            <pfx15:Address>
+                                <xsl:value-of select="column[name='Address']/value"/>
+                            </pfx15:Address>
+                        </xsl:if>
+                        <xsl:if test="column[name='City']/value">
+                            <pfx15:City>
+                                <xsl:value-of select="column[name='City']/value"/>
+                            </pfx15:City>
+                        </xsl:if>
+                        <xsl:if test="column[name='Country']/value">
+                            <pfx15:Country>
+                                <xsl:value-of select="column[name='Country']/value"/>
+                            </pfx15:Country>
+                        </xsl:if>
+                        <xsl:if test="column[name='PostCode']/value">
+                            <pfx15:PostCode>
+                                <xsl:value-of select="column[name='PostCode']/value"/>
+                            </pfx15:PostCode>
+                        </xsl:if>
+                        <xsl:if test="column[name='Contact']/value">
+                            <pfx15:Contact>
+                                <xsl:value-of select="column[name='Contact']/value"/>
+                            </pfx15:Contact>
+                        </xsl:if>
+                        <xsl:if test="column[name='E-Mail']/value">
+                            <pfx15:E-Mail>
+                                <xsl:value-of select="column[name='E-Mail']/value"/>
+                            </pfx15:E-Mail>
+                        </xsl:if>
+                        <xsl:if test="column[name='WebSite']/value">
+                            <pfx15:WebSite>
+                                <xsl:value-of select="column[name='WebSite']/value"/>
+                            </pfx15:WebSite>
+                        </xsl:if>
+                        <xsl:if test="column[name='Phone_No']/value">
+                            <pfx15:Phone_No>
+                                <xsl:value-of select="column[name='Phone_No']/value"/>
+                            </pfx15:Phone_No>
+                        </xsl:if>
+                        <xsl:if test="column[name='Reseller']/value">
+                            <pfx15:Reseller>
+                                <xsl:value-of select="column[name='Reseller']/value"/>
+                            </pfx15:Reseller>
+                        </xsl:if>
+                        <pfx15:End_Customer>
+                            <xsl:value-of select="column[name='EndCustomer']/value"/>
+                        </pfx15:End_Customer>
+                        <xsl:if test="column[name='Distributor']/value">
+                            <pfx15:Distributor>
+                                <xsl:value-of select="column[name='Distributor']/value"/>
+                            </pfx15:Distributor>
+                        </xsl:if>
+                        <xsl:if test="column[name='DUNS']/value">
+                            <pfx15:DUNS>
+                                <xsl:value-of select="column[name='DUNS']/value"/>
+                            </pfx15:DUNS>
+                        </xsl:if>
+                        <xsl:if test="column[name='Result']/value">
+                            <pfx15:Result>
+                                <xsl:value-of select="column[name='Result']/value"/>
+                            </pfx15:Result>
+                        </xsl:if>
+                        <xsl:if test="column[name='Gold_ID']/value">
+                            <pfx15:Gold_ID>
+                                <xsl:value-of select="column[name='Gold_ID']/value"/>
+                            </pfx15:Gold_ID>
+                        </xsl:if>
+                        <xsl:if test="column[name='Datasource']/value">
+                            <pfx15:Datasource>
+                                <xsl:value-of select="column[name='Datasource']/value"/>
+                            </pfx15:Datasource>
+                        </xsl:if>
+                        <xsl:if test="column[name='ID']/value">
+                            <pfx15:ID>
+                                <xsl:value-of select="column[name='ID']/value"/>
+                            </pfx15:ID>
+                        </xsl:if>
+                        <xsl:if test="column[name='Segment']/value">
+                            <pfx15:Segment>
+                                <xsl:value-of select="column[name='Segment']/value"/>
+                            </pfx15:Segment>
+                        </xsl:if>
+                        <xsl:if test="column[name='Status']/value">
+                            <pfx15:Status>
+                                <xsl:value-of select="column[name='Status']/value"/>
+                            </pfx15:Status>
+                        </xsl:if>
+                        <xsl:if test="column[name='SalesForceID']/value">
+                            <pfx15:SalesForceID>
+                                <xsl:value-of select="column[name='SalesForceID']/value"/>
+                            </pfx15:SalesForceID>
+                        </xsl:if>
+                        <xsl:if test="column[name='DUNSName']/value">
+                            <pfx15:DUNSName>
+                                <xsl:value-of select="column[name='DUNSName']/value"/>
+                            </pfx15:DUNSName>
+                        </xsl:if>
+                        <xsl:if test="column[name='ImmediateparentDuns']/value">
+                            <pfx15:ImmediateParentDuns>
+                                <xsl:value-of select="column[name='ImmediateparentDuns']/value"/>
+                            </pfx15:ImmediateParentDuns>
+                        </xsl:if>
+                        <xsl:if test="column[name='DUNSGlobalParent']/value">
+                            <pfx15:DUNSGlobalParent>
+                                <xsl:value-of select="column[name='DUNSGlobalParent']/value"/>
+                            </pfx15:DUNSGlobalParent>
+                        </xsl:if>
+                    </pfx15:row>
+                </xsl:for-each>
+            </pfx15:SMFBody>
+        </pfx15:SMF>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx15:SMF"/>
+    <pd:endX>456</pd:endX>
+    <pd:endY>128</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx7:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1314244713029</pd:targetNamespace>
+    <pd:activity name="SQL Direct Retrieve Customer Info">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>312</pd:x>
+        <pd:y>143</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/Database/JDBC Connection_MDMFuzzyServer.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;Execute EMEA_MDM_FUZZY_SOURCE.MDM_MATCH.PRC_COMPANY_MAIN_EXACT  '&quot;,&#xA;$Start/pfx14:SMF/pfx14:SMFBody[1]/pfx14:Name,&quot;','&quot;,&#xA;$Start/pfx14:SMF/pfx14:SMFBody[1]/pfx14:country,&quot;','&quot;,&#xA;$Start/pfx14:SMF/pfx14:SMFBody[1]/pfx14:emaildomain,&quot;','&quot;,&#xA;$Start/pfx14:SMF/pfx14:SMFBody[1]/pfx14:website,&quot;','&quot;,&#xA;$Start/pfx14:SMF/pfx14:SMFBody[1]/pfx14:gold_id,&quot;'&quot;&#xA;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>314</pd:x>
+        <pd:y>274</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <data>
+                    <pfx7:Error>
+                        <pfx7:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx7:src>
+                        <pfx7:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx7:error_code>
+                        <pfx7:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx7:error_message>
+                        <pfx7:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx7:stack_trace>
+                    </pfx7:Error>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SQL Direct Retrieve Customer Info</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct Retrieve Customer Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct Retrieve Customer Info</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

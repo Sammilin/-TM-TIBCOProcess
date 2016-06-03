@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>ExternalServices/SFDC/shareProcess/ValueTransfer.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CountryCode" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Code" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="CountryName" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="DataSource" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:choose>
+                <xsl:when test="tib:trim($Start/root/CountryCode)!=&quot;&quot;">
+                    <Country>
+                        <xsl:value-of select="$GetSFDCCountryName/jdbcGeneralActivityOutput/unknownResultset[1]/row[1]/column[name=&quot;country&quot;]/value"/>
+                    </Country>
+                </xsl:when>
+                <xsl:otherwise>
+                    <Country>
+                        <xsl:value-of select="$GetSFDCCountryCode/jdbcGeneralActivityOutput/unknownResultset[1]/row[1]/column[name=&quot;code&quot;]/value"/>
+                    </Country>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="$Get-PartnerTier/resultSet/Record[1]/Code">
+                <Code>
+                    <xsl:value-of select="$Get-PartnerTier/resultSet/Record[1]/Code"/>
+                </Code>
+            </xsl:if>
+            <xsl:if test="$Get-PartnerTier/resultSet/Record[1]/Description">
+                <Description>
+                    <xsl:value-of select="$Get-PartnerTier/resultSet/Record[1]/Description"/>
+                </Description>
+            </xsl:if>
+            <xsl:if test="$Get-PartnerTier/resultSet/Record[1]/Rebate">
+                <Rebate>
+                    <xsl:value-of select="$Get-PartnerTier/resultSet/Record[1]/Rebate"/>
+                </Rebate>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Country" type="xsd:string"/>
+                    <xsd:element name="Code" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Rebate" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>449</pd:endX>
+    <pd:endY>63</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1354014374913</pd:targetNamespace>
+    <pd:activity name="GetSFDCCountryName">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>303</pd:x>
+        <pd:y>41</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;EMEA_MDM.PRC_SELECT_COUNTRY_BY_CODE '&quot;,upper-case($Start/root/DataSource) , &quot;','&quot;,$Start/root/CountryCode,&quot;'&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get PartnerTier">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>314</pd:x>
+        <pd:y>309</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>select  Code,Description,[Rebate %] from ERP_EMEA.[Reseller Category] 
+where   Code=? or Description =?
+  order by code desc,description desc</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>Code</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Description</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>Code</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Description</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Rebate</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <Code>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/root/Code)">
+                            <xsl:value-of select="$Start/root/Code"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Code>
+                <Description>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/root/Description)">
+                            <xsl:value-of select="$Start/root/Description"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Description>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetSFDCCountryCode">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>308</pd:x>
+        <pd:y>161</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;EMEA_MDM.PRC_SELECT_COUNTRY_BY_NAME '&quot;,upper-case($Start/root/DataSource),&quot;' ,'&quot;,$Start/root/CountryName,&quot;'&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetSFDCCountryName</pd:to>
+        <pd:xpathDescription>Input CountryCode</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Start/root/CountryCode) !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get PartnerTier</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get PartnerTier</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSFDCCountryName</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetSFDCCountryCode</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Start/root/CountryName) !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSFDCCountryCode</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

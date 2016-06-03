@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:ns2="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" xmlns:ns1="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd2" xmlns:ns4="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" xmlns:ns3="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd" xmlns:tns="http://www.trendmicro.com/ESB/schemas/MDMService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns0="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/RetrieveContact_Input" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns5="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/Common" name="Untitled" targetNamespace="http://www.trendmicro.com/ESB/schemas/MDMService">
+    <wsdl:types>
+        <xs:schema xmlns="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/Common"/>
+            <xs:element name="SMF">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="SMFHeader" type="ns0:TrendESBCommonHeader"/>
+                        <xs:element name="SMFBody" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Name" type="xs:string"/>
+                                    <xs:element name="country" type="xs:string"/>
+                                    <xs:element name="email" type="xs:string"/>
+                                    <xs:element name="website" type="xs:string"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd2" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/Common"/>
+            <xs:complexType name="MachContactType">
+                <xs:sequence>
+                    <xs:element name="contact_id" type="xs:string" minOccurs="0"/>
+                    <xs:element name="first_name" type="xs:string" minOccurs="0"/>
+                    <xs:element name="middle_name" type="xs:string" minOccurs="0"/>
+                    <xs:element name="family_name" type="xs:string" minOccurs="0"/>
+                    <xs:element name="salutation" type="xs:string" minOccurs="0"/>
+                    <xs:element name="job_title" type="xs:string" minOccurs="0"/>
+                    <xs:element name="department" type="xs:string" minOccurs="0"/>
+                    <xs:element name="office_phone_no" type="xs:string" minOccurs="0"/>
+                    <xs:element name="extension_no" type="xs:string" minOccurs="0"/>
+                    <xs:element name="mobile_phone_no" type="xs:string" minOccurs="0"/>
+                    <xs:element name="fax_no" type="xs:string" minOccurs="0"/>
+                    <xs:element name="email" type="xs:string" minOccurs="0"/>
+                    <xs:element name="gold_id" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Result" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="SMF">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="SMFHeader" type="ns0:TrendESBCommonHeader"/>
+                        <xs:element name="SMFBody" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="row" type="ns1:MachContactType" minOccurs="0" maxOccurs="unbounded"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xsd:schema xmlns="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.trendmicro.com/ESB/schemas/Common" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xsd:complexType name="TrendCommonBody">
+                <xsd:sequence>
+                    <xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##any"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="TrendESBCommonHeader">
+                <xsd:sequence>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element name="ServiceName" type="xsd:string"/>
+                    <xsd:element name="ServiceVersion" type="xsd:string"/>
+                    <xsd:element name="SourceID" type="xsd:string"/>
+                    <xsd:element name="SourceIP" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="RqTimestamp" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="RsTimestamp" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="common">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="MessageHeader" type="ns6:TrendESBCommonHeader"/>
+                        <xsd:element name="MessageBody" type="ns6:TrendCommonBody"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+        <xs:schema xmlns="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/Common"/>
+            <xs:element name="SMF">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="SMFHeader" type="ns0:TrendESBCommonHeader"/>
+                        <xs:element name="SMFBody" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="name" type="xs:string" minOccurs="0"/>
+                                    <xs:element name="Address" type="xs:string" minOccurs="0"/>
+                                    <xs:element name="ExpectedScore" type="xs:int" minOccurs="0"/>
+                                    <xs:element name="BatchId" type="xs:string" minOccurs="0"/>
+                                    <xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+                                    <xs:element name="FuzzyWeighting" type="xs:string" minOccurs="0"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/Common"/>
+            <xs:complexType name="SearchCustomerType">
+                <xs:sequence>
+                    <xs:element name="Row" minOccurs="0" maxOccurs="unbounded">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Score" type="xs:string"/>
+                                <xs:element name="Gold_ID" type="xs:string"/>
+                                <xs:element name="NAV_ID" type="xs:string"/>
+                                <xs:element name="Name" type="xs:string"/>
+                                <xs:element name="Address" type="xs:string"/>
+                                <xs:element name="City" type="xs:string"/>
+                                <xs:element name="Country_Code" type="xs:string"/>
+                                <xs:element name="PostCode" type="xs:string"/>
+                                <xs:element name="Contact" type="xs:string"/>
+                                <xs:element name="E-Mail" type="xs:string"/>
+                                <xs:element name="Phone_No" type="xs:string"/>
+                                <xs:element name="Reseller" type="xs:string"/>
+                                <xs:element name="End_Customer" type="xs:string"/>
+                                <xs:element name="Distributor" type="xs:string"/>
+                                <xs:element name="ResultCount" type="xs:string" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="SMF">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="SMFHeader" type="ns0:TrendESBCommonHeader"/>
+                        <xs:element name="SMFBody" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Rows" type="ns5:SearchCustomerType" minOccurs="0"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/RetrieveContact_Input" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/RetrieveContact_Input" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/Common"/>
+            <xs:element name="SMF">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="SMFHeader" type="ns0:TrendESBCommonHeader"/>
+                        <xs:element name="SMFBody" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="email" type="xs:string"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/Common"/>
+            <xs:complexType name="MachCustomerType">
+                <xs:sequence>
+                    <xs:element name="NAV_ID" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Name" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Address" type="xs:string" minOccurs="0"/>
+                    <xs:element name="City" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Country" type="xs:string" minOccurs="0"/>
+                    <xs:element name="PostCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Contact" type="xs:string" minOccurs="0"/>
+                    <xs:element name="E-Mail" type="xs:string" minOccurs="0"/>
+                    <xs:element name="WebSite" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Phone_No" type="xs:string" minOccurs="0"/>
+                    <xs:element name="gold_id" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Reseller" type="xs:string" minOccurs="0"/>
+                    <xs:element name="End_Customer" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Distributor" type="xs:string" minOccurs="0"/>
+                    <xs:element name="DUNS" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Result" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="SMF">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="SMFHeader" type="ns0:TrendESBCommonHeader"/>
+                        <xs:element name="SMFBody" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="row" type="ns3:MachCustomerType" minOccurs="0" maxOccurs="unbounded"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:service name="MDMService">
+        <wsdl:port name="PortTypeEndpoint" binding="tns:PortTypeEndpointBinding">
+            <soap:address location="http://66.180.84.34/WSDL/Provider/MDMService.serviceagent/PortTypeEndpoint"/>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="PortType">
+        <wsdl:operation name="RetrieveContact">
+            <wsdl:input message="tns:RetrieveContactInput"/>
+            <wsdl:output message="tns:RetrieveContactOutput"/>
+        </wsdl:operation>
+        <wsdl:operation name="RetrieveCustomer">
+            <wsdl:input message="tns:RetrieveCustomerInput"/>
+            <wsdl:output message="tns:RetrieveCustomerOutput"/>
+        </wsdl:operation>
+        <wsdl:operation name="SearchCustomer">
+            <wsdl:input message="tns:SearchCustomerInput"/>
+            <wsdl:output message="tns:SearchCustomerOutput"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="PortTypeEndpointBinding" type="tns:PortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="RetrieveContact">
+            <soap:operation style="document" soapAction="/WSDL/Provider/MDMService/MDMService.serviceagent//RetrieveContact"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="parameter"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="parameter"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RetrieveCustomer">
+            <soap:operation style="document" soapAction="/WSDL/Provider/MDMService/MDMService.serviceagent//RetrieveCustomer"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="parameter"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="parameter"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SearchCustomer">
+            <soap:operation style="document" soapAction="/WSDL/Provider/MDMService.serviceagent/PortTypeEndpoint1/SearchCustomer"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="parameter"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="parameter"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:message name="RetrieveContactInput">
+        <wsdl:part name="parameter" element="ns0:SMF"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveContactOutput">
+        <wsdl:part name="parameter" element="ns1:SMF"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveCustomerInput">
+        <wsdl:part name="parameter" element="ns2:SMF"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveCustomerOutput">
+        <wsdl:part name="parameter" element="ns3:SMF"/>
+    </wsdl:message>
+    <wsdl:message name="SearchCustomerInput">
+        <wsdl:part name="parameter" element="ns4:SMF"/>
+    </wsdl:message>
+    <wsdl:message name="SearchCustomerOutput">
+        <wsdl:part name="parameter" element="ns5:SMF"/>
+    </wsdl:message>
+</wsdl:definitions>

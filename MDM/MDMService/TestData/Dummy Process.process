@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="http://tempuri.org/" xmlns:pfx="http://Anti.Malware.Tracker-Service.org/">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/MDMServerWSDL.wsdl"/>
+    <wsdl:import namespace="http://Anti.Malware.Tracker-Service.org/"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Client/MDMServerWSDL.wsdl"/>
+    <pd:name>TestData/Dummy Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>90</pd:startX>
+    <pd:startY>66</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1314608051514</pd:targetNamespace>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>263</pd:x>
+        <pd:y>53</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx2:Service1</service>
+            <servicePort>Service1Soap</servicePort>
+            <operation>callFuzzy</operation>
+            <soapAction>http://tempuri.org/callFuzzy</soapAction>
+            <endpointURL>http://sjdc-sisolap01s:1001/Service1.asmx</endpointURL>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx2:callFuzzy>
+                    <pfx2:name>
+                        <xsl:value-of select="&quot;t-mobile Austria&quot;"/>
+                    </pfx2:name>
+                    <pfx2:addr>
+                        <xsl:value-of select="&quot;Rennweg 97-99&quot;"/>
+                    </pfx2:addr>
+                    <pfx2:country>
+                        <xsl:value-of select="&quot;Austria&quot;"/>
+                    </pfx2:country>
+                    <pfx2:city>
+                        <xsl:value-of select="&quot;WIEN&quot;"/>
+                    </pfx2:city>
+                    <pfx2:zip>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </pfx2:zip>
+                    <pfx2:phone>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </pfx2:phone>
+                </pfx2:callFuzzy>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send HTTP Request">
+        <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+        <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+        <pd:x>286</pd:x>
+        <pd:y>240</pd:y>
+        <config>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <serverhost>sjdc-sisolap01s</serverhost>
+            <serverport>1001</serverport>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="SOAPAction" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+            <OutputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </OutputHeaders>
+        </config>
+        <pd:inputBindings>
+            <RequestActivityInput>
+                <Method>
+                    <xsl:value-of select="&quot;POST&quot;"/>
+                </Method>
+                <RequestURI>
+                    <xsl:value-of select="&quot;Service1.asmx&quot;"/>
+                </RequestURI>
+                <PostData>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </PostData>
+                <Headers>
+                    <SOAPAction>
+                        <xsl:value-of select="'&quot;http://tempuri.org/callFuzzy&quot;'"/>
+                    </SOAPAction>
+                    <Accept-Encoding>
+                        <xsl:value-of select="&quot;UTF-8&quot;"/>
+                    </Accept-Encoding>
+                    <Content-Type>
+                        <xsl:value-of select="&quot;text/xml;charset=UTF-8&quot;"/>
+                    </Content-Type>
+                </Headers>
+            </RequestActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>139</pd:x>
+        <pd:y>240</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Envelope>
+                <pfx3:Body>
+                    <pfx2:callFuzzy>
+                        <pfx2:name>
+                            <xsl:value-of select="&quot;t-mobile Austria&quot;"/>
+                        </pfx2:name>
+                        <pfx2:addr>
+                            <xsl:value-of select="&quot;Rennweg 97-99&quot;"/>
+                        </pfx2:addr>
+                        <pfx2:country>
+                            <xsl:value-of select="&quot;Austria&quot;"/>
+                        </pfx2:country>
+                        <pfx2:city>
+                            <xsl:value-of select="&quot;WIEN&quot;"/>
+                        </pfx2:city>
+                        <pfx2:zip>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx2:zip>
+                        <pfx2:phone>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx2:phone>
+                    </pfx2:callFuzzy>
+                </pfx3:Body>
+            </pfx3:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>237</pd:x>
+        <pd:y>157</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="param" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <param>
+                    <xsl:value-of select="tib:base64-to-string(&quot;CgoKCjwhLS0gLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uCiAgICAgICAuLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4KICAgICAgIC4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLgogICAgICAgLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uIC0tPjx0YWJsZSBjZWxsc3BhY2luZz0xMD4KPHRyPjx0ZD48c3BhbiBzdHlsZT0iZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc2l6ZTogMTJwdDsiPlVSTCBObyBMb25nZXIgRXhpc3RzPC9zcGFuPjwvdGQ+PC90cj4KPHRyPjx0ZD5Zb3UgaGF2ZSBhdHRlbXB0ZWQgdG8gcmVhY2ggYSBVUkwgdGhhdCBubyBsb25nZXIgZXhpc3RzIG9uIHNhbGVzZm9yY2UuY29tLiA8YnIvPjxici8+CgpZb3UgbWF5IGhhdmUgcmVhY2hlZCB0aGlzIHBhZ2UgYWZ0ZXIgY2xpY2tpbmcgb24gYSBkaXJlY3QgbGluayBpbnRvIHRoZSBhcHBsaWNhdGlvbi4gVGhpcyBkaXJlY3QgbGluayBtaWdodCBiZTogPGJyLz4KJiM4MjI2OyBBIGJvb2ttYXJrIHRvIGEgcGFydGljdWxhciBwYWdlLCBzdWNoIGFzIGEgcmVwb3J0IG9yIHZpZXcgPGJyLz4KJiM4MjI2OyBBIGxpbmsgdG8gYSBwYXJ0aWN1bGFyIHBhZ2UgaW4gdGhlIEN1c3RvbSBMaW5rcyBzZWN0aW9uIG9mIHlvdXIgSG9tZSBUYWIsIG9yIGEgQ3VzdG9tIExpbmsgPGJyLz4KJiM4MjI2OyBBIGxpbmsgdG8gYSBwYXJ0aWN1bGFyIHBhZ2UgaW4geW91ciBlbWFpbCB0ZW1wbGF0ZXMgPGJyLz48YnIvPgpJZiB5b3UgcmVhY2hlZCB0aGlzIHBhZ2UgdGhyb3VnaCBhIGJvb2ttYXJrLCB5b3UgYXJlIHByb2JhYmx5IHRyeWluZyB0byBhY2Nlc3Mgc29tZXRoaW5nIHRoYXQgaGFzIG1vdmVkLiBQbGVhc2UgdXBkYXRlIHlvdXIgYm9va21hcmsuIDxici8+Cjxici8+SWYgeW91IHJlYWNoZWQgdGhpcyBwYWdlIHRocm91Z2ggYW55IG9mIHRoZSBvdGhlciBkaXJlY3QgbGlua3MgbGlzdGVkIGFib3ZlLCBwbGVhc2Ugbm90aWZ5IHlvdXIgYWRtaW5pc3RyYXRvciB0byB1cGRhdGUgdGhlIGxpbmsuIDxici8+PGJyLz5JZiB5b3UgcmVhY2hlZCB0aGlzIHBhZ2UgdGhyb3VnaCBhIGxpbmsgb24gb3VyIHNpdGUsIHBsZWFzZSA8YSBocmVmPSIvY2FzZXMvbG9nYWJ1Zy5qc3AiPiByZXBvcnQgdGhlIGJyb2tlbiBsaW5rIGRpcmVjdGx5IHRvIG91ciBTdXBwb3J0IFRlYW08L2E+IGFuZCB3ZSB3aWxsIGZpeCBpdCBwcm9tcHRseS4gUGxlYXNlIGluZGljYXRlIHRoZSBwYWdlIHlvdSB3ZXJlIG9uIHdoZW4geW91IGNsaWNrZWQgdGhlIGxpbmsgYXMgd2VsbCBhcyBhbnkgb3RoZXIgcmVsYXRlZCBpbmZvcm1hdGlvbi4gV2UgYXBvbG9naXplIGZvciB0aGUgaW5jb252ZW5pZW5jZS4gPGJyLz48YnIvPlRoYW5rIHlvdSBhZ2FpbiBmb3IgeW91ciBwYXRpZW5jZSBhbmQgYXNzaXN0YW5jZS4gQW5kIHRoYW5rcyBmb3IgdXNpbmcgc2FsZXNmb3JjZS5jb20hPC90ZD48L3RyPgo8L3RhYmxlPgoKCgo8IS0tIEJvZHkgZXZlbnRzIC0tPgo8c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCI+ZnVuY3Rpb24gYm9keU9uTG9hZCgpe2lmKHdpbmRvdy5QcmVmZXJlbmNlQml0cyl7d2luZG93LlByZWZlcmVuY2VCaXRzLnByb3RvdHlwZS5jc3JmVG9rZW49Im51bGwiO307aWYod2luZG93LkppZmZ5KXtpZihKaWZmeS5vbkxvYWQpSmlmZnkub25Mb2FkKCk7aWYoSmlmZnkudWkmJkppZmZ5LnVpLm9uTG9hZClKaWZmeS51aS5vbkxvYWQoKX19ZnVuY3Rpb24gYm9keU9uQmVmb3JlVW5sb2FkKCl7fWZ1bmN0aW9uIGJvZHlPbkZvY3VzKCl7fWZ1bmN0aW9uIGJvZHlPblVubG9hZCgpe308L3NjcmlwdD4KCQkJCjwvYm9keT4KPC9odG1sPgoKCjwhLS0KLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uCi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLgouLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4KLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uCi0tPgo=&quot;)"/>
+                </param>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>450</pd:x>
+        <pd:y>239</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="rows">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="row" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence/>
+                                    <xsd:attribute name="Score" type="xsd:string"/>
+                                    <xsd:attribute name="Similarity" type="xsd:string"/>
+                                    <xsd:attribute name="Confidence" type="xsd:string"/>
+                                    <xsd:attribute name="NAV_ID" type="xsd:string"/>
+                                    <xsd:attribute name="Name" type="xsd:string"/>
+                                    <xsd:attribute name="Address" type="xsd:string"/>
+                                    <xsd:attribute name="City" type="xsd:string"/>
+                                    <xsd:attribute name="Country" type="xsd:string"/>
+                                    <xsd:attribute name="PostCode" type="xsd:string"/>
+                                    <xsd:attribute name="Contact" type="xsd:string"/>
+                                    <xsd:attribute name="E-Mail" type="xsd:string"/>
+                                    <xsd:attribute name="Phone_No" type="xsd:string"/>
+                                    <xsd:attribute name="Exec_StartTime" type="xsd:string"/>
+                                    <xsd:attribute name="Exec_EndTime" type="xsd:string"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="substring-before(substring-after($Send-HTTP-Request/RequestActivityOutput/asciiContent, &quot;callFuzzyResult>&quot;),&quot;&lt;/callFuzzyResult>&quot;)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send HTTP Request</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Send HTTP Request</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

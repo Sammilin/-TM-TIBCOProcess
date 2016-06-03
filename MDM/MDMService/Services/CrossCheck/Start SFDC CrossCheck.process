@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/CrossCheck/Start SFDC CrossCheck.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element name="begin_time" type="xsd:string"/>
+                    <xsd:element name="end_time" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>58</pd:startX>
+    <pd:startY>209</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1089</pd:endX>
+    <pd:endY>200</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1349258777342</pd:targetNamespace>
+    <pd:activity name="Sleep 1 hr">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:description>1 hr</pd:description>
+        <pd:x>430</pd:x>
+        <pd:y>292</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="360000"/>
+                </IntervalInMillisec>
+            </ns:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Complete Customer Of SFDC Cross Check">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>757</pd:x>
+        <pd:y>223</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>534</pd:x>
+        <pd:y>79</pd:y>
+        <pd:width>134</pd:width>
+        <pd:height>251</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>exists($SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row)=false()</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SQL Direct</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SQL Direct</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep 1 min</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SQL Direct</pd:from>
+            <pd:to>Sleep 1 min</pd:to>
+            <pd:xpathDescription>exists</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row)</pd:xpath>
+        </pd:transition>
+        <pd:activity name="SQL Direct">
+            <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+            <pd:x>598</pd:x>
+            <pd:y>140</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>100</maxRows>
+                <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <jdbcGeneralActivityInput>
+                    <statement>
+                        <xsl:value-of select="&quot;EMEA_MDM.PRC_SELECT_CROSSCHECK_RESULT 'SFDC'&quot;"/>
+                    </statement>
+                </jdbcGeneralActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep 1 min">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:description>Sleep 1 min</pd:description>
+            <pd:x>595</pd:x>
+            <pd:y>252</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="60000"/>
+                    </IntervalInMillisec>
+                </ns:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Start External SFDC  Cross Check">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>183</pd:x>
+        <pd:y>298</pd:y>
+        <config>
+            <processName>/Services/CrossCheck/Receive SFDC  Cross Check Start.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <start_date>
+                    <xsl:value-of select="$Start/root/begin_time"/>
+                </start_date>
+                <end_date>
+                    <xsl:value-of select="$Start/root/end_time"/>
+                </end_date>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Trigger SFDC CrossCheck">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>310</pd:x>
+        <pd:y>298</pd:y>
+        <config>
+            <processName>/Services/CrossCheck/TriggerSFDCCrossCheck.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <datasource>
+                    <xsl:value-of select="&quot;SFDC&quot;"/>
+                </datasource>
+                <message_root>
+                    <xsl:value-of select="'account'"/>
+                </message_root>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="TriggerSFDCCrossCheck Contact">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>921</pd:x>
+        <pd:y>124</pd:y>
+        <config>
+            <processName>/Services/CrossCheck/TriggerSFDCCrossCheck.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <datasource>
+                    <xsl:value-of select="&quot;SFDC&quot;"/>
+                </datasource>
+                <message_root>
+                    <xsl:value-of select="'contact'"/>
+                </message_root>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="TriggerSFDCCrossCheck Location">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>927</pd:x>
+        <pd:y>272</pd:y>
+        <config>
+            <processName>/Services/CrossCheck/TriggerSFDCCrossCheck.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <datasource>
+                    <xsl:value-of select="&quot;SFDC&quot;"/>
+                </datasource>
+                <message_root>
+                    <xsl:value-of select="'location'"/>
+                </message_root>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error-Handling-1">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1020</pd:x>
+        <pd:y>395</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ns12:SMFHeader>
+                    <ns2:MessageKey>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </ns2:MessageKey>
+                    <ns2:ServiceName>
+                        <xsl:value-of select="&quot;SFDC CrossCheck&quot;"/>
+                    </ns2:ServiceName>
+                    <ns2:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns2:ServiceVersion>
+                    <ns2:SourceID>
+                        <xsl:value-of select="&quot;MDM&quot;"/>
+                    </ns2:SourceID>
+                    <ns2:SourceIP>
+                        <xsl:value-of select="TM:getIPAddress()"/>
+                    </ns2:SourceIP>
+                    <ns2:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns2:RqTimestamp>
+                    <ns2:RsTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns2:RsTimestamp>
+                </ns12:SMFHeader>
+                <ns6:Error>
+                    <ns6:src>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                    </ns6:src>
+                    <ns6:error_code>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </ns6:error_code>
+                    <ns6:error_message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </ns6:error_message>
+                    <ns6:stack_trace>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                    </ns6:stack_trace>
+                </ns6:Error>
+                <Source>
+                    <xsl:value-of select="&quot;MDM&quot;"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="0"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>882</pd:x>
+        <pd:y>390</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Complete Customer Of SFDC Cross Check</pd:from>
+        <pd:to>TriggerSFDCCrossCheck Contact</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep 1 hr</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Complete Customer Of SFDC Cross Check</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start External SFDC  Cross Check</pd:from>
+        <pd:to>Trigger SFDC CrossCheck</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Complete Customer Of SFDC Cross Check</pd:from>
+        <pd:to>TriggerSFDCCrossCheck Location</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Trigger SFDC CrossCheck</pd:from>
+        <pd:to>Sleep 1 hr</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>TriggerSFDCCrossCheck Location</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>TriggerSFDCCrossCheck Contact</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Start External SFDC  Cross Check</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error-Handling-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error-Handling-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>1=2</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

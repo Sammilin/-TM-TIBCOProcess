@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns12="www.tibco.com/plugin/Sleep" xmlns:pfx="urn:partner.soap.sforce.com" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="urn:enterprise.soap.sforce.com" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx5="http://soap.sforce.com/schemas/class/PRMEU_SyncContactWebService" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" xmlns:pfx2="http://soap.sforce.com/schemas/class/PRMEU_SyncLocationWebService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.trendmicro.com/ESB/ACS/schemas/SMF">
+    <xsd:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" schemaLocation="/WSDL/Client/PRMEU_SyncAccountWebService WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" schemaLocation="/WSDL/Client/PRMEU_SyncAccountWebService.WSDL.wsdl"/>
+    <wsdl:import namespace="urn:partner.soap.sforce.com" location="/WSDL/Client/SalesforceTrendMicro.wsdl"/>
+    <wsdl:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncLocationWebService" location="/WSDL/Client/PRMEU_SyncLocationWebService.WSDL.wsdl"/>
+    <wsdl:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" location="/WSDL/Client/PRMEU_SyncAccountWebService.WSDL.wsdl"/>
+    <pd:name>ExternalServices/SFDC/CreateSfCust/V1.0/ExecuteRequest.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx3:SFDCCreatePartner"/>
+    <pd:startX>78</pd:startX>
+    <pd:startY>187</pd:startY>
+    <pd:returnBindings>
+        <pfx3:SFDCCreatePartnerResponse>
+            <xsl:copy-of select="$Create-Partner/outputMessage/pfx3:SFDCCreatePartnerResponse/pfx3:result"/>
+        </pfx3:SFDCCreatePartnerResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx3:SFDCCreatePartnerResponse"/>
+    <pd:endX>703</pd:endX>
+    <pd:endY>197</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1342174847897</pd:targetNamespace>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>529</pd:x>
+        <pd:y>375</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns1:ErrorReport/Data/pfx4:Error)">
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx4:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="exists($_error_Create-Customer-Error/pfx4:Error)">
+                                    <xsl:copy-of select="$_error_Create-Customer-Error/pfx4:Error"/>
+                                </xsl:when>
+                                <xsl:when test="exists($_error_Generate-Error-2/pfx4:Error)">
+                                    <xsl:copy-of select="$_error_Generate-Error-2/pfx4:Error"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <pfx4:Error>
+                                        <pfx4:src>
+                                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                        </pfx4:src>
+                                        <pfx4:error_code>
+                                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                        </pfx4:error_code>
+                                        <pfx4:error_message>
+                                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                        </pfx4:error_message>
+                                        <pfx4:stack_trace>
+                                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                        </pfx4:stack_trace>
+                                    </pfx4:Error>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>373</pd:x>
+        <pd:y>375</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Login">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>197</pd:x>
+        <pd:y>187</pd:y>
+        <config>
+            <processName>/ExternalServices/SFDC/shareProcess/Login.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create Customer Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>703</pd:x>
+        <pd:y>306</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <pfx4:Error>
+                        <pfx4:src>
+                            <xsl:value-of select="&quot;Create Customer Fail&quot;"/>
+                        </pfx4:src>
+                        <pfx4:error_code>
+                            <xsl:value-of select="$Create-Partner/outputMessage/pfx3:SFDCCreatePartnerResponse/pfx3:result/pfx3:ProcessStatus"/>
+                        </pfx4:error_code>
+                        <pfx4:error_message>
+                            <xsl:value-of select="tib:render-xml($Create-Partner/outputMessage/pfx3:SFDCCreatePartnerResponse/pfx3:result, 1)"/>
+                        </pfx4:error_message>
+                        <pfx4:stack_trace>
+                            <xsl:value-of select="tib:render-xml($_processContext/ns1:ProcessContext/TrackingInfo[1],1)"/>
+                        </pfx4:stack_trace>
+                    </pfx4:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>277</pd:x>
+        <pd:y>28</pd:y>
+        <pd:width>308</pd:width>
+        <pd:height>303</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$i&gt;$_globalVariables/ns3:GlobalVariables/ExternalServices/SFDC/WebService/RetryCount or 
+exists($Create-Partner/outputMessage/pfx3:SFDCCreatePartnerResponse/pfx3:result/pfx3:ProcessStatus)</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Create Partner</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Create Partner</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Create Partner</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate-Error-2</pd:to>
+            <pd:xpathDescription>Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i&gt;$_globalVariables/ns3:GlobalVariables/ExternalServices/SFDC/WebService/RetryCount</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:xpathDescription>Retry</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Create Partner">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>413</pd:x>
+            <pd:y>94</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx3:PRMEU_SyncAccountWebServiceService</service>
+                <servicePort>PRMEU_SyncAccountWebService</servicePort>
+                <operation>SFDCCreatePartner</operation>
+                <soapAction/>
+                <endpointURL>https://cs9-api.salesforce.com/services/Soap/class/PRMEU_SyncAccountWebService</endpointURL>
+                <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                    <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                    <ns0:cert isRef="true">/Resources/Certificates/.folder</ns0:cert>
+                </ns0:ssl>
+                <useProxy>true</useProxy>
+                <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <headers>
+                        <Header.SessionHeader>
+                            <pfx3:SessionHeader>
+                                <pfx3:sessionId>
+                                    <xsl:value-of select="$Login/ns4:loginResponse/ns4:result/ns4:sessionId"/>
+                                </pfx3:sessionId>
+                            </pfx3:SessionHeader>
+                        </Header.SessionHeader>
+                        <Header.CallOptions>
+                            <pfx3:CallOptions>
+                                <pfx3:client>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </pfx3:client>
+                            </pfx3:CallOptions>
+                        </Header.CallOptions>
+                        <Header.DebuggingHeader/>
+                        <Header.AllowFieldTruncationHeader/>
+                    </headers>
+                    <ns:_configData>
+                        <endpointURL>
+                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/ExternalServices/SFDC/WebService/AccountEndPoint"/>
+                        </endpointURL>
+                    </ns:_configData>
+                    <pfx3:SFDCCreatePartner>
+                        <xsl:copy-of select="$Start/pfx3:SFDCCreatePartner/pfx3:inputBean"/>
+                    </pfx3:SFDCCreatePartner>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>331</pd:x>
+            <pd:y>269</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>471</pd:x>
+            <pd:y>187</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns12:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/ExternalServices/SFDC/WebService/RetryInterval_secs * 1000"/>
+                    </IntervalInMillisec>
+                </ns12:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate-Error-2">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>514</pd:x>
+            <pd:y>268</pd:y>
+            <config>
+                <faultName>ErrorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns2:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </message>
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                    <data>
+                        <pfx4:Error>
+                            <pfx4:src>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                            </pfx4:src>
+                            <pfx4:error_code>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </pfx4:error_code>
+                            <pfx4:error_message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                            </pfx4:error_message>
+                            <pfx4:stack_trace>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                            </pfx4:stack_trace>
+                        </pfx4:Error>
+                    </data>
+                </ns2:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Login</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Create Customer Error</pd:to>
+        <pd:xpathDescription>Status = F</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Create-Partner/outputMessage/pfx3:SFDCCreatePartnerResponse/pfx3:result/pfx3:ProcessStatus="F"</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/MDMServer/ResponseCreateContact.xsd" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx2="http://www.tibco.com/schemas/MDMService/XSD/Client/SFDC/Schema.xsd2" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/MDMServer/ResponseCreateContact.xsd" schemaLocation="/XSD/Client/MDMServer/ResponseCreateContact.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" schemaLocation="/XSD/Client/MDMServer/MDMServer.xsd"/>
+    <pd:name>ExternalServices/MDM_Server/ReceiveContact.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="message_id" type="xsd:string"/>
+                    <xsd:element name="message_type" type="xsd:string"/>
+                    <xsd:element name="datasource" type="xsd:string"/>
+                    <xsd:element name="gold_id" type="xsd:string"/>
+                    <xsd:element name="contact_id" type="xsd:string"/>
+                    <xsd:element name="source_company_id" type="xsd:string"/>
+                    <xsd:element name="source_contact_id" type="xsd:string"/>
+                    <xsd:element name="message_content" type="xsd:string"/>
+                    <xsd:element name="batch_id" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>85</pd:startX>
+    <pd:startY>89</pd:startY>
+    <pd:returnBindings>
+        <group>
+            <ExecuteRuleEngine>
+                <xsl:value-of select="&quot;false&quot;"/>
+            </ExecuteRuleEngine>
+            <xsl:if test="exists($SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row/column/name)">
+                <xsl:choose>
+                    <xsl:when test="lower-case(tib:trim($Start/root/message_type)) =&quot;create&quot;">
+                        <Resultsets>
+                            <ResultSet>
+                                <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset[1]/row[1]">
+                                    <Record>
+                                        <xsl:if test="column[name=&quot;contact_id&quot;]/value">
+                                            <pfx4:contact_id>
+                                                <xsl:value-of select="column[name=&quot;contact_id&quot;]/value"/>
+                                            </pfx4:contact_id>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;gold_id&quot;]/value">
+                                            <pfx4:gold_id>
+                                                <xsl:value-of select="column[name=&quot;gold_id&quot;]/value"/>
+                                            </pfx4:gold_id>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;full_name&quot;]/value">
+                                            <pfx4:full_name>
+                                                <xsl:value-of select="column[name=&quot;full_name&quot;]/value"/>
+                                            </pfx4:full_name>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;first_name&quot;]/value">
+                                            <pfx4:first_name>
+                                                <xsl:value-of select="column[name=&quot;first_name&quot;]/value"/>
+                                            </pfx4:first_name>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;middle_name&quot;]/value">
+                                            <pfx4:middle_name>
+                                                <xsl:value-of select="column[name=&quot;middle_name&quot;]/value"/>
+                                            </pfx4:middle_name>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;family_name&quot;]/value">
+                                            <pfx4:family_name>
+                                                <xsl:value-of select="column[name=&quot;family_name&quot;]/value"/>
+                                            </pfx4:family_name>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;salutation&quot;]/value">
+                                            <pfx4:salutation>
+                                                <xsl:value-of select="column[name=&quot;salutation&quot;]/value"/>
+                                            </pfx4:salutation>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;job_title&quot;]/value">
+                                            <pfx4:job_title>
+                                                <xsl:value-of select="column[name=&quot;job_title&quot;]/value"/>
+                                            </pfx4:job_title>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;department&quot;]/value">
+                                            <pfx4:department>
+                                                <xsl:value-of select="column[name=&quot;department&quot;]/value"/>
+                                            </pfx4:department>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;office_phone_no&quot;]/value">
+                                            <pfx4:office_phone_no>
+                                                <xsl:value-of select="column[name=&quot;office_phone_no&quot;]/value"/>
+                                            </pfx4:office_phone_no>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;extension_no&quot;]/value">
+                                            <pfx4:extension_no>
+                                                <xsl:value-of select="column[name=&quot;extension_no&quot;]/value"/>
+                                            </pfx4:extension_no>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;mobile_phone_no&quot;]/value">
+                                            <pfx4:mobile_phone_no>
+                                                <xsl:value-of select="column[name=&quot;mobile_phone_no&quot;]/value"/>
+                                            </pfx4:mobile_phone_no>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;fax_no&quot;]/value">
+                                            <pfx4:fax_no>
+                                                <xsl:value-of select="column[name=&quot;fax_no&quot;]/value"/>
+                                            </pfx4:fax_no>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;email&quot;]/value">
+                                            <pfx4:email>
+                                                <xsl:value-of select="column[name=&quot;email&quot;]/value"/>
+                                            </pfx4:email>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;primary_contact&quot;]/value">
+                                            <pfx4:primary_contact>
+                                                <xsl:value-of select="column[name=&quot;primary_contact&quot;]/value"/>
+                                            </pfx4:primary_contact>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;language&quot;]/value">
+                                            <pfx4:language>
+                                                <xsl:value-of select="column[name=&quot;language&quot;]/value"/>
+                                            </pfx4:language>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;pager_no&quot;]/value">
+                                            <pfx4:pager_no>
+                                                <xsl:value-of select="column[name=&quot;pager_no&quot;]/value"/>
+                                            </pfx4:pager_no>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;contact_status&quot;]/value">
+                                            <pfx4:contact_status>
+                                                <xsl:value-of select="column[name=&quot;contact_status&quot;]/value"/>
+                                            </pfx4:contact_status>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;gender&quot;]/value">
+                                            <pfx4:gender>
+                                                <xsl:value-of select="column[name=&quot;gender&quot;]/value"/>
+                                            </pfx4:gender>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;contact_birthday&quot;]/value">
+                                            <pfx4:contact_birthday>
+                                                <xsl:value-of select="column[name=&quot;contact_birthday&quot;]/value"/>
+                                            </pfx4:contact_birthday>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;created&quot;]/value">
+                                            <pfx4:created>
+                                                <xsl:value-of select="column[name=&quot;created&quot;]/value"/>
+                                            </pfx4:created>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;created_by&quot;]/value">
+                                            <pfx4:created_by>
+                                                <xsl:value-of select="column[name=&quot;created_by&quot;]/value"/>
+                                            </pfx4:created_by>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;last_upd&quot;]/value">
+                                            <pfx4:last_upd>
+                                                <xsl:value-of select="column[name=&quot;last_upd&quot;]/value"/>
+                                            </pfx4:last_upd>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;last_upd_by&quot;]/value">
+                                            <pfx4:last_upd_by>
+                                                <xsl:value-of select="column[name=&quot;last_upd_by&quot;]/value"/>
+                                            </pfx4:last_upd_by>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;tmp_source_id&quot;]/value">
+                                            <pfx4:tmp_source_id>
+                                                <xsl:value-of select="column[name=&quot;tmp_source_id&quot;]/value"/>
+                                            </pfx4:tmp_source_id>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;transition_id&quot;]/value">
+                                            <pfx4:transition_id>
+                                                <xsl:value-of select="column[name=&quot;transition_id&quot;]/value"/>
+                                            </pfx4:transition_id>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;datasource&quot;]/value">
+                                            <pfx4:datasource>
+                                                <xsl:value-of select="column[name=&quot;datasource&quot;]/value"/>
+                                            </pfx4:datasource>
+                                        </xsl:if>
+                                        <xsl:if test="column[name=&quot;mergedto_source_id&quot;]/value">
+                                            <pfx4:mergedto_source_id>
+                                                <xsl:value-of select="column[name=&quot;mergedto_source_id&quot;]/value"/>
+                                            </pfx4:mergedto_source_id>
+                                        </xsl:if>
+                                    </Record>
+                                </xsl:for-each>
+                            </ResultSet>
+                        </Resultsets>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <Resultsets>
+                            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset[1]">
+                                <ResultSet>
+                                    <Record>
+                                        <xsl:if test="current()/row[column[3]/value='contact_id']/column[4]/value">
+                                            <pfx4:contact_id>
+                                                <xsl:value-of select="current()/row[column[3]/value='contact_id']/column[4]/value"/>
+                                            </pfx4:contact_id>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='gold_id']/column[4]/value">
+                                            <pfx4:gold_id>
+                                                <xsl:value-of select="current()/row[column[3]/value='gold_id']/column[4]/value"/>
+                                            </pfx4:gold_id>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='full_name']/column[4]/value">
+                                            <pfx4:full_name>
+                                                <xsl:value-of select="current()/row[column[3]/value='full_name']/column[4]/value"/>
+                                            </pfx4:full_name>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='first_name']/column[4]/value">
+                                            <pfx4:first_name>
+                                                <xsl:value-of select="current()/row[column[3]/value='first_name']/column[4]/value"/>
+                                            </pfx4:first_name>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='middle_name']/column[4]/value">
+                                            <pfx4:middle_name>
+                                                <xsl:value-of select="current()/row[column[3]/value='middle_name']/column[4]/value"/>
+                                            </pfx4:middle_name>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='family_name']/column[4]/value">
+                                            <pfx4:family_name>
+                                                <xsl:value-of select="current()/row[column[3]/value='family_name']/column[4]/value"/>
+                                            </pfx4:family_name>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='salutation']/column[4]/value">
+                                            <pfx4:salutation>
+                                                <xsl:value-of select="current()/row[column[3]/value='salutation']/column[4]/value"/>
+                                            </pfx4:salutation>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='job_title']/column[4]/value">
+                                            <pfx4:job_title>
+                                                <xsl:value-of select="current()/row[column[3]/value='job_title']/column[4]/value"/>
+                                            </pfx4:job_title>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='department']/column[4]/value">
+                                            <pfx4:department>
+                                                <xsl:value-of select="current()/row[column[3]/value='department']/column[4]/value"/>
+                                            </pfx4:department>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='office_phone_no']/column[4]/value">
+                                            <pfx4:office_phone_no>
+                                                <xsl:value-of select="current()/row[column[3]/value='office_phone_no']/column[4]/value"/>
+                                            </pfx4:office_phone_no>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='extension_no']/column[4]/value">
+                                            <pfx4:extension_no>
+                                                <xsl:value-of select="current()/row[column[3]/value='extension_no']/column[4]/value"/>
+                                            </pfx4:extension_no>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='mobile_phone_no']/column[4]/value">
+                                            <pfx4:mobile_phone_no>
+                                                <xsl:value-of select="current()/row[column[3]/value='mobile_phone_no']/column[4]/value"/>
+                                            </pfx4:mobile_phone_no>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='fax_no']/column[4]/value">
+                                            <pfx4:fax_no>
+                                                <xsl:value-of select="current()/row[column[3]/value='fax_no']/column[4]/value"/>
+                                            </pfx4:fax_no>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='email']/column[4]/value">
+                                            <pfx4:email>
+                                                <xsl:value-of select="current()/row[column[3]/value='email']/column[4]/value"/>
+                                            </pfx4:email>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='primary_contact']/column[4]/value">
+                                            <pfx4:primary_contact>
+                                                <xsl:value-of select="current()/row[column[3]/value='primary_contact']/column[4]/value"/>
+                                            </pfx4:primary_contact>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='language']/column[4]/value">
+                                            <pfx4:language>
+                                                <xsl:value-of select="current()/row[column[3]/value='language']/column[4]/value"/>
+                                            </pfx4:language>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='pager_no']/column[4]/value">
+                                            <pfx4:pager_no>
+                                                <xsl:value-of select="current()/row[column[3]/value='pager_no']/column[4]/value"/>
+                                            </pfx4:pager_no>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='contact_status']/column[4]/value">
+                                            <pfx4:contact_status>
+                                                <xsl:value-of select="current()/row[column[3]/value='contact_status']/column[4]/value"/>
+                                            </pfx4:contact_status>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='gender']/column[4]/value">
+                                            <pfx4:gender>
+                                                <xsl:value-of select="current()/row[column[3]/value='gender']/column[4]/value"/>
+                                            </pfx4:gender>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='contact_birthday']/column[4]/value">
+                                            <pfx4:contact_birthday>
+                                                <xsl:value-of select="current()/row[column[3]/value='contact_birthday']/column[4]/value"/>
+                                            </pfx4:contact_birthday>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='created']/column[4]/value">
+                                            <pfx4:created>
+                                                <xsl:value-of select="current()/row[column[3]/value='created']/column[4]/value"/>
+                                            </pfx4:created>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='created_by']/column[4]/value">
+                                            <pfx4:created_by>
+                                                <xsl:value-of select="current()/row[column[3]/value='created_by']/column[4]/value"/>
+                                            </pfx4:created_by>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='last_upd']/column[4]/value">
+                                            <pfx4:last_upd>
+                                                <xsl:value-of select="current()/row[column[3]/value='last_upd']/column[4]/value"/>
+                                            </pfx4:last_upd>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='last_upd_by']/column[4]/value">
+                                            <pfx4:last_upd_by>
+                                                <xsl:value-of select="current()/row[column[3]/value='last_upd_by']/column[4]/value"/>
+                                            </pfx4:last_upd_by>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='tmp_source_id']/column[4]/value">
+                                            <pfx4:tmp_source_id>
+                                                <xsl:value-of select="current()/row[column[3]/value='tmp_source_id']/column[4]/value"/>
+                                            </pfx4:tmp_source_id>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='transition_id']/column[4]/value">
+                                            <pfx4:transition_id>
+                                                <xsl:value-of select="current()/row[column[3]/value='transition_id']/column[4]/value"/>
+                                            </pfx4:transition_id>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='datasource']/column[4]/value">
+                                            <pfx4:datasource>
+                                                <xsl:value-of select="current()/row[column[3]/value='datasource']/column[4]/value"/>
+                                            </pfx4:datasource>
+                                        </xsl:if>
+                                        <xsl:if test="current()/row[column[3]/value='mergedto_source_id']/column[4]/value">
+                                            <pfx4:mergedto_source_id>
+                                                <xsl:value-of select="current()/row[column[3]/value='mergedto_source_id']/column[4]/value"/>
+                                            </pfx4:mergedto_source_id>
+                                        </xsl:if>
+                                    </Record>
+                                </ResultSet>
+                            </xsl:for-each>
+                        </Resultsets>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:if>
+        </group>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ExecuteRuleEngine" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Resultsets" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="ResultSet">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Record" type="pfx4:ContactType"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>475</pd:endX>
+    <pd:endY>88</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1339154402169</pd:targetNamespace>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>474</pd:x>
+        <pd:y>250</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </data>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>188</pd:x>
+        <pd:y>250</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Remove NS">
+        <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
+        <pd:x>196</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <inputStyle>binary</inputStyle>
+            <engine>TibcoXML</engine>
+            <stylesheet>/XSLT/Remove NameSpace.xslt</stylesheet>
+        </config>
+        <pd:inputBindings>
+            <bytesInput>
+                <xmlBytesIn>
+                    <xsl:value-of select="tib:string-to-base64(TM:stringReplace($Start/root/message_content,&quot;·&quot;, &quot; &quot;), &quot;UTF-8&quot;)"/>
+                </xmlBytesIn>
+            </bytesInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SQL Direct Error">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>326</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;EMEA_MDM.PRC_UPDATE_PROCESS_RESULT '&quot;,&#xA;$Start/root/batch_id ,&quot;','&quot;,&#xA;$Start/root/message_id ,&quot;','Y'&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.CriticalSectionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>268</pd:x>
+        <pd:y>8</pd:y>
+        <pd:width>134</pd:width>
+        <pd:height>142</pd:height>
+        <pd:collapsedWidth>52</pd:collapsedWidth>
+        <pd:collapsedHeight>71</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <config>
+            <pd:groupType>criticalSection</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:scope>single</pd:scope>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SQL Direct</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SQL Direct</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="SQL Direct">
+            <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+            <pd:x>332</pd:x>
+            <pd:y>87</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>100</maxRows>
+                <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <jdbcGeneralActivityInput>
+                    <statement>
+                        <xsl:value-of select="concat(&quot;Execute EMEA_MDM.PRC_RECEIVE_CONTACT_MESSAGE '&quot;,&#xA;$Start/root/message_id,&quot;','&quot;,&#xA;$Start/root/message_type,&quot;','&quot;,&#xA;$Start/root/datasource,&quot;','&quot;,&#xA;$Start/root/gold_id,&quot;','&quot;,&#xA;$Start/root/contact_id,&quot;','&quot;,&#xA;$Start/root/source_company_id,&quot;','&quot;,&#xA;$Start/root/source_contact_id,&quot;','&quot;,&#xA;tib:string-to-base64(substring-after(tib:base64-to-string($Remove-NS/xmlBytes, 'UTF-8'),&quot;?>&quot;),'UTF-16'),&quot;','&quot;,&#xA;tib:format-dateTime('yyyy-MM-dd HH:mm:ss.SSS', tib:current-dateTime-timezone(0, 0)),&quot;','&quot;,&#xA;$Start/root/batch_id,&quot;'&#xA;&quot;)"/>
+                    </statement>
+                </jdbcGeneralActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Remove NS</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>SQL Direct Error</pd:to>
+        <pd:xpathDescription>exist batch_id</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Start/root/batch_id) !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct Error</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Remove NS</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

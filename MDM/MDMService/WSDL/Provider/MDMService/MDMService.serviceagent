@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serviceResource xmlns:wsdl="http://www.trendmicro.com/ESB/MDM/schemas/MDMService">
+    <ns0:import xmlns:ns0="http://schemas.xmlsoap.org/wsdl/" namespace="http://www.trendmicro.com/ESB/MDM/schemas/MDMService" location="/WSDL/Provider/MDMService/MDMServiceWSDL.wsdl"/>
+    <config>
+        <class>com.tibco.bw.service.serviceAgent.ServiceServiceAgent</class>
+        <implType>bw</implType>
+        <groups>
+            <row isDefault="true" groupName="Default"/>
+        </groups>
+        <serviceChange>Tue Aug 07 19:18:28 CST 2012</serviceChange>
+        <name>MDMService</name>
+        <resourceType>service.definition</resourceType>
+        <wsdl namespace="http://www.trendmicro.com/ESB/schemas/MDMService" embedWsdlComponents="true" embedSchemaComponents="true" embedJndiProperties="false"/>
+        <interfaceImpl>
+            <tab>
+                <tabName>PortType</tabName>
+                <tabType>bw</tabType>
+                <config>
+                    <wsdlDetail location="/WSDL/Provider/MDMService/MDMServiceWSDL.wsdl" portType="PortType" ns="http://www.trendmicro.com/ESB/MDM/schemas/MDMService"/>
+                    <detail>
+                        <tab>
+                            <tabName>service.definition.impl.tab.label</tabName>
+                            <tabType>impl</tabType>
+                            <config>
+                                <operations>
+                                    <row opName="SearchCustomer" opImpl="/Simulations/SearchCustomer.process"/>
+                                    <row opName="RetrieveCustomer" opImpl="/Simulations/RetrieveCustomer.process"/>
+                                    <row opName="RetrieveContact" opImpl="/Simulations/RetrieveContact.process"/>
+                                </operations>
+                            </config>
+                        </tab>
+                        <tab>
+                            <tabName>service.definition.ep.tab.label</tabName>
+                            <tabType>ep</tabType>
+                            <config>
+                                <epBindings>
+                                    <row epName="PortTypeEndpoint" epType="soap">
+                                        <config>
+                                            <epDetail>
+                                                <tab>
+                                                    <tabName>soap.service.transport.ui.transport.tab.label</tabName>
+                                                    <tabType>transport</tabType>
+                                                    <config>
+                                                        <sharedChannel>/Resources/HTTP/HTTP Connection.sharedhttp</sharedChannel>
+                                                        <transport>
+                                                            <config>
+                                                                <useBasicAuthentication>false</useBasicAuthentication>
+                                                                <httpURI>/WSDL/Provider/MDMService.serviceagent/PortTypeEndpoint</httpURI>
+                                                            </config>
+                                                        </transport>
+                                                    </config>
+                                                </tab>
+                                                <tab>
+                                                    <tabName>soap.service.transport.ui.details.tab.label</tabName>
+                                                    <tabType>details</tabType>
+                                                    <config>
+                                                        <operationStyle>document</operationStyle>
+                                                        <soapVersion>SOAP 1.1</soapVersion>
+                                                        <soap>
+                                                            <operation name="SearchCustomer">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Provider/MDMService.serviceagent/PortTypeEndpoint1/SearchCustomer</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                        <inputNamespace/>
+                                                                        <outputNamespace/>
+                                                                        <faultNamespace/>
+                                                                        <portAddressPrefix/>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                            <operation name="RetrieveCustomer">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Provider/MDMService/MDMService.serviceagent//RetrieveCustomer</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                            <operation name="RetrieveContact">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Provider/MDMService/MDMService.serviceagent//RetrieveContact</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                        </soap>
+                                                    </config>
+                                                </tab>
+                                            </epDetail>
+                                        </config>
+                                    </row>
+                                </epBindings>
+                            </config>
+                        </tab>
+                    </detail>
+                </config>
+            </tab>
+        </interfaceImpl>
+    </config>
+</serviceResource>

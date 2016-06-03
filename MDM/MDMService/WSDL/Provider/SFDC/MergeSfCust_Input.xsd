@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:ns0="http://www.trendmicro.com/ESB/schemas/Common"
+	 xmlns:ns1="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer"
+	 targetNamespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/MergeSfCust_Input"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/Common" schemaLocation="../../../XSD/Common/common.xsd"/>
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" schemaLocation="../../../XSD/Client/SFDC/Customer.xsd"/>
+	<xs:element name="SMF">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SMFHeader" type="ns0:TrendESBCommonHeader"/>
+				<xs:element name="SMFBody" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="MaterData" type="ns1:MaterCustData"/>
+							<xs:element name="MergedData" type="ns1:MergedCustData"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

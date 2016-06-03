@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.tibco.com/schemas/APACB2B/XSD/Common/Properties.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/schemas/APACB2B/XSD/Common/MailInfoSchema.xsd" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/MailProperties.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/FRS/schemas/MailProperties.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/schemas/APACB2B/XSD/Common/MailProperties.xsd" xmlns:pfx2="http://www.tibco.com/namespaces/tnt/plugins/file/v2">
+    <xsd:import namespace="http://www.tibco.com/schemas/APACB2B/XSD/Common/Properties.xsd" schemaLocation="/XSD/Common/Properties.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MailProperties.xsd" schemaLocation="/XSD/Common/MailProperties.xsd"/>
+    <pd:name>Utilities/MailNotify/LoadMailProperties.process</pd:name>
+    <pd:startName>onStartup</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="onStartup">
+        <pd:type>com.tibco.pe.core.OnStartupEventSource</pd:type>
+        <pd:resourceType>ae.activities.onStartup</pd:resourceType>
+        <pd:x>71</pd:x>
+        <pd:y>78</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>569</pd:endX>
+    <pd:endY>78</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1287385829649</pd:targetNamespace>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>318</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx5:Properties"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$ReadProperties/ns3:ReadActivityOutputTextClass/fileContent/textContent"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ReadProperties">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>194</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/MailPropertyPath"/>
+                </fileName>
+            </pfx2:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SetVariable">
+        <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+        <pd:x>452</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <variableConfig>/Utilities/MailNotify/SharedVars/MailPropertiesVar.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Parse-XML/pfx5:Properties"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>254</pd:x>
+        <pd:y>248</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <fault>localname=ValidationException namespace=http://schemas.tibco.com/bw/plugins/xml/5.0/xmlExceptions</fault>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ErroLogProcess">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>449</pd:x>
+        <pd:y>247</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/Subprocesses/SendMailQueue.process</processName>
+        </config>
+        <pd:inputBindings>
+            <mail>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/to"/>
+                </to>
+                <cc>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/cc"/>
+                </cc>
+                <subject>
+                    <xsl:value-of select="concat(&quot;[&quot;,$_globalVariables/ns:GlobalVariables/ESBBW/Environment,&quot;-&quot;,$_globalVariables/ns:GlobalVariables/Domain,&quot;]&quot;,&#xA;&quot;Load Mail Properties Error&quot;)"/>
+                </subject>
+                <MailBody>
+                    <xsl:value-of select="concat(&quot;&lt;BR>&quot;, &#xA;&quot;System raises an exception when processing message. The detailed information as below:&quot;,  &quot;&lt;BR>&quot;,&#xA;&quot;&lt;pre>&quot;,TM:stringReplace(TM:stringReplace(tib:render-xml($_error/ns1:ErrorReport,false(),true()),'&lt;',concat(&quot;&amp;&quot;,&quot;lt;&quot;)),'>',concat(&quot;&amp;&quot;,&quot;gt;&quot;)),&quot;&lt;/pre>&quot;)"/>
+                </MailBody>
+                <xsl:if test="not(exists($_error_ReadProperties/ActivityErrors))">
+                    <AttachFile>
+                        <AttachContent>
+                            <content-disposition>
+                                <xsl:value-of select="concat(&#xA;&quot;attachment; filename=&quot;, $ReadProperties/ns3:ReadActivityOutputTextClass/fileContent/textContent)"/>
+                            </content-disposition>
+                            <content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </content-type>
+                            <content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </content-transfer-encoding>
+                            <textContent>
+                                <xsl:value-of select="$ReadProperties/ns3:ReadActivityOutputTextClass/fileContent/textContent"/>
+                            </textContent>
+                        </AttachContent>
+                    </AttachFile>
+                </xsl:if>
+            </mail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>onStartup</pd:from>
+        <pd:to>ReadProperties</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ReadProperties</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>SetVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetVariable</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErroLogProcess</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErroLogProcess</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

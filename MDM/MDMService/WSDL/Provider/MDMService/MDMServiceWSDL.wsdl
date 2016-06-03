@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ns2="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" xmlns:ns="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" xmlns:ns4="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" xmlns:ns3="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" xmlns:tns="http://www.trendmicro.com/ESB/MDM/schemas/MDMService" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns5="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" xmlns:ns6="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/RetrieveContact_Input" xmlns:ns7="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd" xmlns:ns8="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd2" targetNamespace="http://www.trendmicro.com/ESB/MDM/schemas/MDMService">
+    <import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" location="SearchCustomer_Input.xsd"/>
+    <import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" location="SearchCustomer_Output.xsd"/>
+    <import namespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" location="RetrieveCustomer_Input.xsd"/>
+    <import namespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/RetrieveContact_Input" location="RetrieveContact_Input.xsd"/>
+    <import namespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd" location="RetrieveCustomerOutput.xsd"/>
+    <import namespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/Schema.xsd2" location="RetrieveContactOutput.xsd"/>
+    <message name="SearchCustomerInput">
+        <part name="parameter" element="ns3:SMF"/>
+    </message>
+    <message name="SearchCustomerOutput">
+        <part name="parameter" element="ns4:SMF"/>
+    </message>
+    <message name="RetrieveCustomerInput">
+        <part name="parameter" element="ns5:SMF"/>
+    </message>
+    <message name="RetrieveCustomerOutput">
+        <part name="parameter" element="ns7:SMF"/>
+    </message>
+    <message name="RetrieveContactInput">
+        <part name="parameter" element="ns6:SMF"/>
+    </message>
+    <message name="RetrieveContactOutput">
+        <part name="parameter" element="ns8:SMF"/>
+    </message>
+    <portType name="PortType">
+        <operation name="SearchCustomer">
+            <input message="tns:SearchCustomerInput"/>
+            <output message="tns:SearchCustomerOutput"/>
+        </operation>
+        <operation name="RetrieveCustomer">
+            <input message="tns:RetrieveCustomerInput"/>
+            <output message="tns:RetrieveCustomerOutput"/>
+        </operation>
+        <operation name="RetrieveContact">
+            <input message="tns:RetrieveContactInput"/>
+            <output message="tns:RetrieveContactOutput"/>
+        </operation>
+    </portType>
+</definitions>

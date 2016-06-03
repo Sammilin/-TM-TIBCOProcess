@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Utilities/Java/UnzipDecrypt.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputBinaryContent" type="xsd:base64Binary"/>
+                    <xsd:element name="password" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>108</pd:startX>
+    <pd:startY>139</pd:startY>
+    <pd:returnBindings>
+        <outputBinaryContent>
+            <xsl:value-of select="$Java-Code/javaCodeActivityOutput/outputBinary"/>
+        </outputBinaryContent>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="outputBinaryContent" type="xsd:base64Binary"/>
+    </pd:endType>
+    <pd:endX>408</pd:endX>
+    <pd:endY>139</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1278474747641</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>254</pd:x>
+        <pd:y>139</pd:y>
+        <config>
+            <fileName>UnzipDecryptJavaCode</fileName>
+            <packageName>Utilities.Java.UnzipDecrypt</packageName>
+            <fullsource>package Utilities.Java.UnzipDecrypt;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.ArrayList;
+import Unzip.ZipDecryptInputStream;
+@SuppressWarnings("unchecked")
+public class UnzipDecryptJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected byte[] inputBinary = null;
+	protected String password = "";
+	protected byte[] outputBinary = null;
+	public byte[] getinputBinary() {
+		return inputBinary;
+	}
+	public void setinputBinary(byte[] val) {
+		inputBinary = val;
+	}
+	public String getpassword() {
+		return password;
+	}
+	public void setpassword(String val) {
+		password = val;
+	}
+	public byte[] getoutputBinary() {
+		return outputBinary;
+	}
+	public void setoutputBinary(byte[] val) {
+		outputBinary = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public UnzipDecryptJavaCode() {
+	}
+	
+	public static byte[] ArrayList2byteArray(ArrayList AL) throws IOException 
+	{
+		byte[] T = new byte[AL.size()];
+		for(int i=0; i&lt;AL.size(); i++)
+			T[i] = new Integer((Integer)AL.get(i)).byteValue();
+	
+		return T;
+	}
+
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : byte[] inputBinary
+	In  : String password
+	Out : byte[] outputBinary
+* Available Variables: DO NOT MODIFY *****/
+		// password-protected zip file I need to read
+        	//FileInputStream fis = new FileInputStream("C:\\Users\\wade_chen\\Desktop\\0a0ad37054a9a866efc7b274378edecf48b9ee31.zip");
+        	byte s[] = getinputBinary();
+		ByteArrayInputStream fis = new ByteArrayInputStream(s);
+		// wrap it in the decrypt stream
+		ZipDecryptInputStream zdis = new ZipDecryptInputStream(fis, getpassword());
+        	// wrap the decrypt stream by the ZIP input stream
+        	ZipInputStream zis = new ZipInputStream(zdis);
+
+        	// read all the zip entries and save them as files
+        	ZipEntry ze;
+
+		String outputpathFolder = "C:\\Users\\wade_chen\\Desktop\\";
+		
+		ArrayList al = new ArrayList();
+        	if ((ze = zis.getNextEntry()) != null) 
+        	{
+            		FileOutputStream fos = new FileOutputStream(outputpathFolder.concat(ze.getName()));
+			int b;
+            		while ((b = zis.read()) != -1) 
+            		{
+                		fos.write(b);
+            			al.add(b);
+			}
+            		fos.close();
+            		zis.closeEntry();
+        	}
+		
+		byte[] bytes = ArrayList2byteArray(al);
+
+		setoutputBinary(bytes);
+        	zis.close();
+}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>inputBinary</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>password</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>outputBinary</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>UnzipDecryptJavaCode</name>
+                    <byteCode>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</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <inputBinary>
+                    <xsl:value-of select="$Start/root/inputBinaryContent"/>
+                </inputBinary>
+                <password>
+                    <xsl:value-of select="$Start/root/password"/>
+                </password>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

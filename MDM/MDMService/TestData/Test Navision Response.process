@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Customer_Request.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:ns15="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/Common" xmlns:ns12="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns13="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns7="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Input" xmlns:ns10="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" xmlns:ns11="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CommonOutput" xmlns:ns8="http://www.trendmicro.com/ESB/MDM/schemas/SMF/ActSfCust_Input" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://tempuri.org/" xmlns:ns1="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns4="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/ACSMessage.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" schemaLocation="/WSDL/Provider/SearchCustomer_Output.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" schemaLocation="/WSDL/Provider/MDMService/SearchCustomer_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Input" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/ActSfCust_Input" schemaLocation="/WSDL/Provider/SFDC/ActSfCust_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Output.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Customer_Request.xsd" schemaLocation="/XSD/Client/Navision/Customer_Request.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <pd:name>TestData/Test Navision Response.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element name="ServiceName" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>66</pd:startX>
+    <pd:startY>127</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>988</pd:endX>
+    <pd:endY>133</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334229875067</pd:targetNamespace>
+    <pd:activity name="Translation Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>393</pd:x>
+        <pd:y>140</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Translation Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <XSLTFileName>
+                    <xsl:value-of select="&quot;SFDCToNavision_UpdateNavCust.xsl&quot;"/>
+                </XSLTFileName>
+                <xsl:copy-of select="$Parse-XML/ns9:SMF"/>
+                <xsl:choose>
+                    <xsl:when test="$Parse-XML/ns9:SMF/ns9:SMFHeader/ns5:SourceID=&quot;SFDC&quot;">
+                        <xsl:if test="$ValueTransfer/root">
+                            <ExternalXmlParam>
+                                <xsl:value-of select="tib:render-xml($ValueTransfer/root,1)"/>
+                            </ExternalXmlParam>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise/>
+                </xsl:choose>
+                <dataSource>
+                    <xsl:value-of select="$Parse-XML/ns9:SMF/ns9:SMFHeader/ns5:SourceID"/>
+                </dataSource>
+                <source_id>
+                    <xsl:value-of select="$Parse-XML/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer[1]/ns14:SfdcPartnerId"/>
+                </source_id>
+                <target>
+                    <xsl:value-of select="&quot;Navision&quot;"/>
+                </target>
+                <type>
+                    <xsl:value-of select="&quot;Customer&quot;"/>
+                </type>
+                <gold_id>
+                    <xsl:value-of select="$Parse-XML/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping/ns15:GoldId"/>
+                </gold_id>
+                <xsl:choose>
+                    <xsl:when test="contains($Parse-XML/ns9:SMF/ns9:SMFHeader/ns5:ServiceName, &quot;Update&quot;)">
+                        <UpdateSourceData>
+                            <xsl:value-of select="1"/>
+                        </UpdateSourceData>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <UpdateSourceData>
+                            <xsl:value-of select="0"/>
+                        </UpdateSourceData>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ValueTransfer">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>292</pd:x>
+        <pd:y>284</pd:y>
+        <config>
+            <processName>/ExternalServices/SFDC/shareProcess/ValueTransfer.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CountryCode>
+                    <xsl:value-of select="$Parse-XML/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns13:Customer/ns13:CountryCode"/>
+                </CountryCode>
+                <xsl:if test="$Parse-XML/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns13:Customer/ns13:PartnerTier">
+                    <Code>
+                        <xsl:value-of select="$Parse-XML/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns13:Customer/ns13:PartnerTier"/>
+                    </Code>
+                </xsl:if>
+                <Description>
+                    <xsl:value-of select="$Parse-XML/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer[1]/ns14:PartnerTier"/>
+                </Description>
+                <CountryName>
+                    <xsl:value-of select="$Parse-XML/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer[1]/ns14:Country"/>
+                </CountryName>
+                <DataSource>
+                    <xsl:value-of select="&quot;NAVISION&quot;"/>
+                </DataSource>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Waiting ACK Queue">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>515</pd:x>
+        <pd:y>140</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination/>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties MSMQ.sharedjmsapp</ApplicationProperties>
+            <InDataxsdString ref="ns9:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$_globalVariables/ns12:GlobalVariables/ExternalServices/Navision/MSMQ/WaitingACKQueue"/>
+                </destinationQueue>
+                <JMSExpiration>
+                    <xsl:value-of select="$_globalVariables/ns12:GlobalVariables/ExternalServices/Navision/MSMQ/MsgExpirationTime"/>
+                </JMSExpiration>
+                <JMSCorrelationID>
+                    <xsl:value-of select="lower-case($Start/group/MessageKey)"/>
+                </JMSCorrelationID>
+                <JMSProperties/>
+                <OtherProperties>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="true()"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                </OtherProperties>
+                <Body>
+                    <xsl:copy-of select="$Translation-Process/ns9:SMF"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Waiting Response Queue">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>517</pd:x>
+        <pd:y>286</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination/>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties MSMQ.sharedjmsapp</ApplicationProperties>
+            <InDataxsdString ref="ns9:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms">
+                <destinationQueue>
+                    <xsl:value-of select="$_globalVariables/ns12:GlobalVariables/ExternalServices/Navision/MSMQ/WaitingResponseQueue"/>
+                </destinationQueue>
+                <JMSCorrelationID>
+                    <xsl:value-of select="lower-case($Start/group/MessageKey)"/>
+                </JMSCorrelationID>
+                <JMSProperties/>
+                <OtherProperties/>
+                <Body>
+                    <xsl:copy-of select="$Translation-Process/ns9:SMF"/>
+                </Body>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>842</pd:x>
+        <pd:y>131</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <xsl:choose>
+                    <xsl:when test="exists($JDBC-Query-Nav-ACK)">
+                        <destinationQueue>
+                            <xsl:value-of select="$_globalVariables/ns12:GlobalVariables/ExternalServices/Navision/MSMQ/NavisionACK"/>
+                        </destinationQueue>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <destinationQueue>
+                            <xsl:value-of select="$_globalVariables/ns12:GlobalVariables/ExternalServices/Navision/MSMQ/NavisionResponse"/>
+                        </destinationQueue>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Body>
+                    <xsl:value-of select="tib:if-absent($JDBC-Query-Nav-Response/resultSet/Record[1]/MessageBody, &#xA;$JDBC-Query-Nav-ACK/resultSet/Record[1]/MessageBody)"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JDBC Query Request">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>164</pd:x>
+        <pd:y>128</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT CAST(MessageBody as varchar(MAX)) as MessageBody FROM EMEA_MDM.TBL_EI_ESBLog WHERE MessageKey=? and ServiceName= ? 
+ORDER BY log_id ASC</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MessageKey</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ServiceName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>MessageBody</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <MessageKey>
+                    <xsl:value-of select="$Start/group/MessageKey"/>
+                </MessageKey>
+                <ServiceName>
+                    <xsl:value-of select="$Start/group/ServiceName"/>
+                </ServiceName>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>270</pd:x>
+        <pd:y>128</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="ns9:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JDBC-Query-Request/resultSet/Record[1]/MessageBody"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JDBC Query Nav Response">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>675</pd:x>
+        <pd:y>288</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT CAST(MessageBody as varchar(MAX)) as MessageBody FROM EMEA_MDM.TBL_EI_ESBLog WHERE MessageKey=? 
+AND ServiceName= 'Received Navision Response' 
+ORDER BY log_id DESC</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MessageKey</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>MessageBody</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <MessageKey>
+                    <xsl:value-of select="$Start/group/MessageKey"/>
+                </MessageKey>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JDBC Query Nav ACK">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>679</pd:x>
+        <pd:y>132</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT CAST(MessageBody as varchar(MAX)) as MessageBody FROM EMEA_MDM.TBL_EI_ESBLog WHERE MessageKey=? and ServiceName= 'Received Navision ACK' 
+ORDER BY log_id DESC</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MessageKey</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>MessageBody</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <MessageKey>
+                    <xsl:value-of select="$Start/group/MessageKey"/>
+                </MessageKey>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Translation Process</pd:from>
+        <pd:to>Send Waiting ACK Queue</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ValueTransfer</pd:from>
+        <pd:to>Translation Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Waiting ACK Queue</pd:from>
+        <pd:to>Send Waiting Response Queue</pd:to>
+        <pd:xpathDescription>Create</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Translation-Process/ns9:SMF/ns9:SMFHeader/ns5:ServiceName="CreateNavCust"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Waiting Response Queue</pd:from>
+        <pd:to>JDBC Query Nav Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Waiting ACK Queue</pd:from>
+        <pd:to>JDBC Query Nav ACK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JDBC Query Request</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Translation Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>ValueTransfer</pd:to>
+        <pd:xpathDescription>From SFDC</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-XML/ns9:SMF/ns9:SMFHeader/ns5:SourceID="SFDC"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query Request</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query Nav Response</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query Nav ACK</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

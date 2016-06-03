@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="urn:sobject.enterprise.soap.sforce.com" xmlns:pfx8="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pfx7="urn:enterprise.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" schemaLocation="/XSD/Client/SFDC/sfdc_crosscheck.xsd"/>
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <pd:name>ExternalServices/SFDC/CrossCheck/V1.0/CrossCheck SP for location.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType wsMsgRef="pfx7:queryAllResponse"/>
+    <pd:startX>143</pd:startX>
+    <pd:startY>69</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>602</pd:endX>
+    <pd:endY>73</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1343718802317</pd:targetNamespace>
+    <pd:activity name="Cross check">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>470</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <processName>/ExternalServices/MDM_Server/CrossCheck/SFDC Receiver Cross check.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <message_id>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </message_id>
+                <message_content>
+                    <xsl:value-of select="tib:render-xml($Location-Mapping/location,1)"/>
+                </message_content>
+                <message_root>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/LocationMessageRoot"/>
+                </message_root>
+                <data_source>
+                    <xsl:value-of select="&quot;SFDC&quot;"/>
+                </data_source>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Location Mapping">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>314</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <element>
+                <xsd:element name="location">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="result" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Partner" type="pfx8:LocationType"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Start/pfx7:queryAllResponse/parameters/pfx7:queryAllResponse/pfx7:result/pfx7:records" type="ns5:Location__c"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <location>
+                <xsl:for-each select="$Start/pfx7:queryAllResponse/parameters/pfx7:queryAllResponse/pfx7:result/pfx7:records">
+                    <result>
+                        <Partner>
+                            <pfx8:SfdcPartnerId>
+                                <xsl:copy-of select="ns5:Account__r/ns5:Id/@xsi:nil"/>
+                                <xsl:value-of select="ns5:Account__r/ns5:Id"/>
+                            </pfx8:SfdcPartnerId>
+                            <pfx8:MdmPartnerId>
+                                <xsl:copy-of select="ns5:Account__r/ns5:MDM_ID__c/@xsi:nil"/>
+                                <xsl:value-of select="ns5:Account__r/ns5:MDM_ID__c"/>
+                            </pfx8:MdmPartnerId>
+                            <pfx8:SfdcLocationId>
+                                <xsl:copy-of select="ns5:Id/@xsi:nil"/>
+                                <xsl:value-of select="ns5:Id"/>
+                            </pfx8:SfdcLocationId>
+                            <xsl:if test="ns5:Account__c">
+                                <pfx8:Account>
+                                    <xsl:copy-of select="ns5:Account__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Account__c"/>
+                                </pfx8:Account>
+                            </xsl:if>
+                            <pfx8:PrimaryLocation>
+                                <xsl:copy-of select="ns5:isPrimaryLocation__c/@xsi:nil"/>
+                                <xsl:value-of select="ns5:isPrimaryLocation__c"/>
+                            </pfx8:PrimaryLocation>
+                            <xsl:if test="ns5:Street__c">
+                                <pfx8:Street>
+                                    <xsl:copy-of select="ns5:Street__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Street__c"/>
+                                </pfx8:Street>
+                            </xsl:if>
+                            <xsl:if test="ns5:City__c">
+                                <pfx8:City>
+                                    <xsl:copy-of select="ns5:City__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:City__c"/>
+                                </pfx8:City>
+                            </xsl:if>
+                            <xsl:if test="ns5:County_Region__c">
+                                <pfx8:CountyRegion>
+                                    <xsl:copy-of select="ns5:County_Region__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:County_Region__c"/>
+                                </pfx8:CountyRegion>
+                            </xsl:if>
+                            <xsl:if test="ns5:Country__c">
+                                <pfx8:Country>
+                                    <xsl:copy-of select="ns5:Country__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Country__c"/>
+                                </pfx8:Country>
+                            </xsl:if>
+                            <xsl:if test="ns5:Postal_Code__c">
+                                <pfx8:PostalCode>
+                                    <xsl:copy-of select="ns5:Postal_Code__c/@xsi:nil"/>
+                                    <xsl:value-of select="ns5:Postal_Code__c"/>
+                                </pfx8:PostalCode>
+                            </xsl:if>
+                            <pfx8:recordType>
+                                <xsl:copy-of select="ns5:RecordType/ns5:Name/@xsi:nil"/>
+                                <xsl:value-of select="ns5:RecordType/ns5:Name"/>
+                            </pfx8:recordType>
+                            <xsl:if test="not((ns5:LastModifiedDate/@xsi:nil=(&quot;true&quot;)) or (ns5:LastModifiedDate/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx8:LastModifiedDate>
+                                    <xsl:value-of select="ns5:LastModifiedDate"/>
+                                </pfx8:LastModifiedDate>
+                            </xsl:if>
+                        </Partner>
+                    </result>
+                </xsl:for-each>
+            </location>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Location Mapping</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Cross check</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Location Mapping</pd:from>
+        <pd:to>Cross check</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

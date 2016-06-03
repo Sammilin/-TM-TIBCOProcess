@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element xmlns="http://applications.dnb.com/webservice/schema/" name="AdvancedCompanySearchResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="return">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="companies">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="firstHit" type="xs:string" nillable="true"/>
+										<xs:element name="hits" type="xs:string"/>
+										<xs:element name="lastHit" type="xs:string"/>
+										<xs:element name="totalHits" type="xs:string"/>
+										<xs:element name="hit" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="hitNumber" type="xs:string"/>
+													<xs:element name="companyResults">
+														<xs:complexType>
+															<xs:all>
+																<xs:element name="companyId" type="xs:string"/>
+																<xs:element name="duns" type="xs:string"/>
+																<xs:element name="companyName" type="xs:string"/>
+																<xs:element name="nonMarketableCompany" type="xs:string" nillable="true"/>
+																<xs:element name="locationType" type="xs:string"/>
+																<xs:element name="address1" type="xs:string" nillable="true"/>
+																<xs:element name="city" type="xs:string" nillable="true"/>
+																<xs:element name="country" type="xs:string"/>
+																<xs:element name="countryId" type="xs:string"/>
+																<xs:element name="stateOrProvince" type="xs:string"/>
+																<xs:element name="postalCode" type="xs:string"/>
+																<xs:element name="primaryUrl" type="xs:string"/>
+																<xs:element name="parentDuns" type="xs:string"/>
+																<xs:element name="ultimateParentDuns" type="xs:string"/>
+																<xs:element name="sales" type="xs:string" nillable="true"/>
+																<xs:element name="hqPhone" type="xs:string"/>
+																<xs:element name="doNotCallRegistry" type="xs:string"/>
+																<xs:element name="dbas" minOccurs="0" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="dba" type="xs:string"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="historicalIndicator" type="xs:string"/>
+																<xs:element name="exchanges" type="xs:string" nillable="true"/>
+															</xs:all>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="navigators" type="xs:string" nillable="true"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

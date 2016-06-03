@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx5="urn:enterprise.soap.sforce.com" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx3="http://soap.sforce.com/schemas/class/PRMEU_SyncLocationWebService" xmlns:pfx2="urn:partner.soap.sforce.com" xmlns:pfx="http://soap.sforce.com/schemas/class/PRMEU_SyncContactWebService">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="urn:enterprise.soap.sforce.com" schemaLocation="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <wsdl:import namespace="urn:partner.soap.sforce.com" location="/WSDL/Client/SalesforceTrendMicro.wsdl"/>
+    <wsdl:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncContactWebService" location="/WSDL/Client/PRMEU_SyncContactWebService.WSDL.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <pd:name>ExternalServices/SFDC/shareProcess/Login.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>164</pd:startX>
+    <pd:startY>100</pd:startY>
+    <pd:returnBindings>
+        <pfx5:loginResponse>
+            <xsl:copy-of select="$Login/outputMessage/pfx5:loginResponse/pfx5:result"/>
+        </pfx5:loginResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx5:loginResponse"/>
+    <pd:endX>457</pd:endX>
+    <pd:endY>97</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1343028269344</pd:targetNamespace>
+    <pd:activity name="Login">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>301</pd:x>
+        <pd:y>101</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx5:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>login</operation>
+            <soapAction/>
+            <endpointURL>https://test.salesforce.com/services/Soap/c/26.0/0DFU0000000L5nF</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Resources/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+            <useProxy>true</useProxy>
+            <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx5:login>
+                    <pfx5:username>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/SFDC/Login/UserName"/>
+                    </pfx5:username>
+                    <pfx5:password>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/SFDC/Login/Password"/>
+                    </pfx5:password>
+                </pfx5:login>
+                <ns3:_configData>
+                    <timeout>
+                        <xsl:value-of select="120000"/>
+                    </timeout>
+                </ns3:_configData>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>333</pd:x>
+        <pd:y>222</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>468</pd:x>
+        <pd:y>220</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <pfx4:Error>
+                        <pfx4:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx4:src>
+                        <pfx4:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx4:error_code>
+                        <pfx4:error_message>
+                            <xsl:value-of select="concat(&quot;BW Error: &quot;,$_error/ns1:ErrorReport/Msg,&quot;Login Message: &quot; ,$_error_Login/ActivityErrors)"/>
+                        </pfx4:error_message>
+                        <pfx4:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx4:stack_trace>
+                    </pfx4:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Login</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

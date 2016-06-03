@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://TrendMicro.TrendEOrders.Messsages/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://TrendMicro.TrendEOrders.Messsages/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://TrendMicro.TrendEOrders.Messsages/">
+      <s:element name="ReceiveMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MessageBody" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReceiveMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReceiveMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ReceiveMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:ReceiveMessage" />
+  </wsdl:message>
+  <wsdl:message name="ReceiveMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:ReceiveMessageResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MessageReceiverSoap">
+    <wsdl:operation name="ReceiveMessage">
+      <wsdl:input message="tns:ReceiveMessageSoapIn" />
+      <wsdl:output message="tns:ReceiveMessageSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MessageReceiverSoap" type="tns:MessageReceiverSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ReceiveMessage">
+      <soap:operation soapAction="http://TrendMicro.TrendEOrders.Messsages/ReceiveMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MessageReceiverSoap12" type="tns:MessageReceiverSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ReceiveMessage">
+      <soap12:operation soapAction="http://TrendMicro.TrendEOrders.Messsages/ReceiveMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MessageReceiver">
+    <wsdl:port name="MessageReceiverSoap" binding="tns:MessageReceiverSoap">
+      <soap:address location="http://edc2vmb2bapp011/TMOrder/MessageReceiver.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MessageReceiverSoap12" binding="tns:MessageReceiverSoap12">
+      <soap12:address location="http://edc2vmb2bapp011/TMOrder/MessageReceiver.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

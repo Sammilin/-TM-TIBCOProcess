@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns22="http://www.trendmicro.com/ESB/schemas/Common" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns5="http://xmlns.tibco.com/encodings/mime" xmlns:ns13="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="urn:enterprise.soap.sforce.com" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="urn:sobject.enterprise.soap.sforce.com" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/error" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/MDMService/XSD/Client/Navision/Schema.xsd" xmlns:pfx3="http://soap.sforce.com/schemas/class/PRMEU_SyncContactWebService" xmlns:pfx2="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" schemaLocation="/XSD/Client/MDMServer/MDMServer.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" schemaLocation="/XSD/Client/SFDC/Customer.xsd"/>
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <pd:name>ExternalServices/SFDC/Initial Load/initial load Location.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>835</pd:endX>
+    <pd:endY>72</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1344828890503</pd:targetNamespace>
+    <pd:activity name="SOAPRequestReply-Query">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>399</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>query</operation>
+            <soapAction/>
+            <endpointURL>https://test.salesforce.com/services/Soap/c/25.0/0DFK00000004CSK</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Resources/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx:SessionHeader>
+                            <pfx:sessionId>
+                                <xsl:value-of select="$Login/pfx:loginResponse/pfx:result/pfx:sessionId"/>
+                            </pfx:sessionId>
+                        </pfx:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.QueryOptions>
+                        <pfx:QueryOptions>
+                            <pfx:batchSize>
+                                <xsl:value-of select="200"/>
+                            </pfx:batchSize>
+                        </pfx:QueryOptions>
+                    </Header.QueryOptions>
+                    <Header.MruHeader/>
+                    <Header.PackageVersionHeader>
+                        <pfx:PackageVersionHeader>
+                            <pfx:packageVersions>
+                                <pfx:majorNumber>
+                                    <xsl:value-of select="0"/>
+                                </pfx:majorNumber>
+                                <pfx:minorNumber>
+                                    <xsl:value-of select="0"/>
+                                </pfx:minorNumber>
+                                <pfx:namespace>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </pfx:namespace>
+                            </pfx:packageVersions>
+                        </pfx:PackageVersionHeader>
+                    </Header.PackageVersionHeader>
+                </headers>
+                <ns:_configData>
+                    <xsl:if test="not(($Login/pfx:loginResponse/pfx:result/pfx:serverUrl/@xsi:nil=(&quot;true&quot;)) or ($Login/pfx:loginResponse/pfx:result/pfx:serverUrl/@xsi:nil=(&quot;1&quot;)))">
+                        <endpointURL>
+                            <xsl:value-of select="$Login/pfx:loginResponse/pfx:result/pfx:serverUrl"/>
+                        </endpointURL>
+                    </xsl:if>
+                </ns:_configData>
+                <pfx:query>
+                    <pfx:queryString>
+                        <xsl:value-of select="concat(&quot;select &quot;,$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/LocationFieldList,&#xA;&quot; from &quot;,$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/LocationType,&#xA;&quot; where recordType.name='&quot;,$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/LocationRecordType,&quot;'&quot;,&#xA;&quot; Order by Id asc&quot;)"/>
+                    </pfx:queryString>
+                </pfx:query>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Data">
+        <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+        <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+        <pd:x>622</pd:x>
+        <pd:y>73</pd:y>
+        <config>
+            <ParseSharedConfig>/ExternalServices/SFDC/Initial Load/DataFormat/Data Format SFDC Location.sharedparse</ParseSharedConfig>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$allData/AccumulatedOutput/outputMessage/pfx:queryMoreResponse/pfx:result/pfx:records" type="ns2:Location__c"/>
+            <pd:coercion xpath="$SOAPRequestReply-Query/outputMessage/pfx:queryResponse/pfx:result/pfx:records" type="ns2:Location__c"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Rows>
+                <xsl:for-each select="$SOAPRequestReply-Query/outputMessage/pfx:queryResponse/pfx:result/pfx:records">
+                    <Location>
+                        <ns3:SfdcPartnerId>
+                            <xsl:value-of select="concat('&quot;',ns2:Account__r/ns2:Id)"/>
+                        </ns3:SfdcPartnerId>
+                        <ns3:MdmPartnerId>
+                            <xsl:value-of select="ns2:Account__r/ns2:MDM_ID__c"/>
+                        </ns3:MdmPartnerId>
+                        <ns3:SfdcLocationId>
+                            <xsl:value-of select="ns2:Id"/>
+                        </ns3:SfdcLocationId>
+                        <xsl:if test="not((ns2:Account__c/@xsi:nil=(&quot;true&quot;)) or (ns2:Account__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:Account>
+                                <xsl:value-of select="ns2:Account__c"/>
+                            </ns3:Account>
+                        </xsl:if>
+                        <ns3:PrimaryLocation>
+                            <xsl:value-of select="ns2:isPrimaryLocation__c"/>
+                        </ns3:PrimaryLocation>
+                        <xsl:if test="not((ns2:Street__c/@xsi:nil=(&quot;true&quot;)) or (ns2:Street__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:Street>
+                                <xsl:value-of select="ns2:Street__c"/>
+                            </ns3:Street>
+                        </xsl:if>
+                        <xsl:if test="not((ns2:City__c/@xsi:nil=(&quot;true&quot;)) or (ns2:City__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:City>
+                                <xsl:value-of select="ns2:City__c"/>
+                            </ns3:City>
+                        </xsl:if>
+                        <xsl:if test="not((ns2:County_Region__c/@xsi:nil=(&quot;true&quot;)) or (ns2:County_Region__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:CountyRegion>
+                                <xsl:value-of select="ns2:County_Region__c"/>
+                            </ns3:CountyRegion>
+                        </xsl:if>
+                        <xsl:if test="not((ns2:Country__c/@xsi:nil=(&quot;true&quot;)) or (ns2:Country__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:Country>
+                                <xsl:value-of select="ns2:Country__c"/>
+                            </ns3:Country>
+                        </xsl:if>
+                        <xsl:if test="not((ns2:Postal_Code__c/@xsi:nil=(&quot;true&quot;)) or (ns2:Postal_Code__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:PostalCode>
+                                <xsl:value-of select="ns2:Postal_Code__c"/>
+                            </ns3:PostalCode>
+                        </xsl:if>
+                        <ns3:recordType>
+                            <xsl:value-of select="concat(ns2:RecordType/ns2:Name, '&quot;')"/>
+                        </ns3:recordType>
+                    </Location>
+                </xsl:for-each>
+                <xsl:for-each select="$allData/AccumulatedOutput/outputMessage/pfx:queryMoreResponse/pfx:result/pfx:records">
+                    <Location>
+                        <ns3:SfdcPartnerId>
+                            <xsl:value-of select="concat('&quot;',ns2:Account__r/ns2:Id)"/>
+                        </ns3:SfdcPartnerId>
+                        <ns3:MdmPartnerId>
+                            <xsl:value-of select="ns2:Account__r/ns2:MDM_ID__c"/>
+                        </ns3:MdmPartnerId>
+                        <ns3:SfdcLocationId>
+                            <xsl:value-of select="ns2:Id"/>
+                        </ns3:SfdcLocationId>
+                        <xsl:if test="not((ns2:Account__c/@xsi:nil=(&quot;true&quot;)) or (ns2:Account__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:Account>
+                                <xsl:value-of select="ns2:Account__c"/>
+                            </ns3:Account>
+                        </xsl:if>
+                        <ns3:PrimaryLocation>
+                            <xsl:value-of select="ns2:isPrimaryLocation__c"/>
+                        </ns3:PrimaryLocation>
+                        <xsl:if test="not((ns2:Street__c/@xsi:nil=(&quot;true&quot;)) or (ns2:Street__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:Street>
+                                <xsl:value-of select="ns2:Street__c"/>
+                            </ns3:Street>
+                        </xsl:if>
+                        <xsl:if test="not((ns2:City__c/@xsi:nil=(&quot;true&quot;)) or (ns2:City__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:City>
+                                <xsl:value-of select="ns2:City__c"/>
+                            </ns3:City>
+                        </xsl:if>
+                        <xsl:if test="not((ns2:County_Region__c/@xsi:nil=(&quot;true&quot;)) or (ns2:County_Region__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:CountyRegion>
+                                <xsl:value-of select="ns2:County_Region__c"/>
+                            </ns3:CountyRegion>
+                        </xsl:if>
+                        <xsl:if test="not((ns2:Country__c/@xsi:nil=(&quot;true&quot;)) or (ns2:Country__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:Country>
+                                <xsl:value-of select="ns2:Country__c"/>
+                            </ns3:Country>
+                        </xsl:if>
+                        <xsl:if test="not((ns2:Postal_Code__c/@xsi:nil=(&quot;true&quot;)) or (ns2:Postal_Code__c/@xsi:nil=(&quot;1&quot;)))">
+                            <ns3:PostalCode>
+                                <xsl:value-of select="ns2:Postal_Code__c"/>
+                            </ns3:PostalCode>
+                        </xsl:if>
+                        <ns3:recordType>
+                            <xsl:value-of select="concat(ns2:RecordType/ns2:Name, '&quot;')"/>
+                        </ns3:recordType>
+                    </Location>
+                </xsl:for-each>
+            </Rows>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Write File">
+        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+        <pd:x>731</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <encoding>text</encoding>
+            <compressFile>None</compressFile>
+            <createMissingDirectories>true</createMissingDirectories>
+        </config>
+        <pd:inputBindings>
+            <ns4:WriteActivityInputTextClass>
+                <fileName>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/Initial_Load/loaction_path"/>
+                </fileName>
+                <textContent>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/Initial_Load/location_file_title,&quot;&#xA;&quot;,$Render-Data/Text)"/>
+                </textContent>
+                <encoding>
+                    <xsl:value-of select="&quot;UTF-8&quot;"/>
+                </encoding>
+            </ns4:WriteActivityInputTextClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>419</pd:x>
+        <pd:y>124</pd:y>
+        <pd:width>187</pd:width>
+        <pd:height>142</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>allData</pd:outSlot>
+            <pd:activityOutputName>SOAPRequestReply-QueryMore</pd:activityOutputName>
+            <pd:repeatCondition>$SOAPRequestReply-QueryMore/outputMessage/pfx:queryMoreResponse/pfx:result/pfx:done="true"</pd:repeatCondition>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SOAPRequestReply-QueryMore</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply-QueryMore</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="SOAPRequestReply-QueryMore">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>507</pd:x>
+            <pd:y>197</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx:SforceService</service>
+                <servicePort>Soap</servicePort>
+                <operation>queryMore</operation>
+                <soapAction/>
+                <endpointURL>https://test.salesforce.com/services/Soap/c/25.0/0DFK00000004CSK</endpointURL>
+                <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                    <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                    <ns0:cert isRef="true">/Resources/Certificates/.folder</ns0:cert>
+                </ns0:ssl>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <headers>
+                        <Header.SessionHeader>
+                            <pfx:SessionHeader>
+                                <pfx:sessionId>
+                                    <xsl:value-of select="$Login/pfx:loginResponse/pfx:result/pfx:sessionId"/>
+                                </pfx:sessionId>
+                            </pfx:SessionHeader>
+                        </Header.SessionHeader>
+                        <Header.QueryOptions>
+                            <pfx:QueryOptions>
+                                <pfx:batchSize>
+                                    <xsl:value-of select="200"/>
+                                </pfx:batchSize>
+                            </pfx:QueryOptions>
+                        </Header.QueryOptions>
+                    </headers>
+                    <pfx:queryMore>
+                        <xsl:choose>
+                            <xsl:when test="$i=1">
+                                <pfx:queryLocator>
+                                    <xsl:value-of select="$SOAPRequestReply-Query/outputMessage/pfx:queryResponse/pfx:result/pfx:queryLocator"/>
+                                </pfx:queryLocator>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx:queryLocator>
+                                    <xsl:value-of select="$allData/AccumulatedOutput/outputMessage[$i]/pfx:queryMoreResponse/pfx:result/pfx:queryLocator"/>
+                                </pfx:queryLocator>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx:queryMore>
+                    <ns:_configData>
+                        <xsl:if test="not(($Login/pfx:loginResponse/pfx:result/pfx:serverUrl/@xsi:nil=(&quot;true&quot;)) or ($Login/pfx:loginResponse/pfx:result/pfx:serverUrl/@xsi:nil=(&quot;1&quot;)))">
+                            <endpointURL>
+                                <xsl:value-of select="$Login/pfx:loginResponse/pfx:result/pfx:serverUrl"/>
+                            </endpointURL>
+                        </xsl:if>
+                    </ns:_configData>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Login">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>261</pd:x>
+        <pd:y>130</pd:y>
+        <config>
+            <processName>/ExternalServices/SFDC/shareProcess/Login.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>382</pd:x>
+        <pd:y>323</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>671</pd:x>
+        <pd:y>326</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns13:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
+                </messageCode>
+            </ns13:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>513</pd:x>
+        <pd:y>325</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns7:ErrorReport/Data/*" element="pfx5:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <ns12:SMFHeader>
+                    <ns22:MessageKey>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </ns22:MessageKey>
+                    <ns22:ServiceName>
+                        <xsl:value-of select="&quot;SFDC Initial Load Location&quot;"/>
+                    </ns22:ServiceName>
+                    <ns22:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns22:ServiceVersion>
+                    <ns22:SourceID>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </ns22:SourceID>
+                    <ns22:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns22:RqTimestamp>
+                </ns12:SMFHeader>
+                <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:when test="exists($_error/ns7:ErrorReport/Data)">
+                        <xsl:copy-of select="$_error/ns7:ErrorReport/Data/pfx5:Error"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx5:Error>
+                            <pfx5:src>
+                                <xsl:value-of select="$_error/ns7:ErrorReport/ProcessStack"/>
+                            </pfx5:src>
+                            <pfx5:error_code>
+                                <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
+                            </pfx5:error_code>
+                            <pfx5:error_message>
+                                <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
+                            </pfx5:error_message>
+                            <pfx5:stack_trace>
+                                <xsl:value-of select="$_error/ns7:ErrorReport/StackTrace"/>
+                            </pfx5:stack_trace>
+                        </pfx5:Error>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Source>
+                    <xsl:value-of select="&quot;SFDC&quot;"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="0"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Data</pd:from>
+        <pd:to>Write File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write File</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply-Query</pd:from>
+        <pd:to>Render Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply-Query</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:xpathDescription>done = false</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$SOAPRequestReply-Query/outputMessage/pfx:queryResponse/pfx:result/pfx:done="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Render Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Login</pd:from>
+        <pd:to>SOAPRequestReply-Query</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

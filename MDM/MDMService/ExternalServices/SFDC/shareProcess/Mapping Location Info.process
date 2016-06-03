@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/schemas/Common" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:ns5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/SFDC/shareProcess/Mapping Location Info.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="ns9:SMF"/>
+    <pd:startX>133</pd:startX>
+    <pd:startY>80</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Location/ns9:SMF"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="ns9:SMF"/>
+    <pd:endX>611</pd:endX>
+    <pd:endY>81</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1345776111189</pd:targetNamespace>
+    <pd:activity name="Location">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>514</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <element ref="ns9:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns9:SMF>
+                <xsl:for-each select="$Start/ns9:SMF/ns9:SMFHeader">
+                    <ns9:SMFHeader>
+                        <ns:MessageKey>
+                            <xsl:value-of select="ns:MessageKey"/>
+                        </ns:MessageKey>
+                        <ns:ServiceName>
+                            <xsl:value-of select="&quot;UpdateSfLocation&quot;"/>
+                        </ns:ServiceName>
+                        <ns:ServiceVersion>
+                            <xsl:value-of select="ns:ServiceVersion"/>
+                        </ns:ServiceVersion>
+                        <ns:SourceID>
+                            <xsl:value-of select="ns:SourceID"/>
+                        </ns:SourceID>
+                        <xsl:if test="ns:SourceIP">
+                            <ns:SourceIP>
+                                <xsl:value-of select="ns:SourceIP"/>
+                            </ns:SourceIP>
+                        </xsl:if>
+                        <xsl:if test="ns:RqTimestamp">
+                            <ns:RqTimestamp>
+                                <xsl:value-of select="ns:RqTimestamp"/>
+                            </ns:RqTimestamp>
+                        </xsl:if>
+                    </ns9:SMFHeader>
+                </xsl:for-each>
+                <ns9:SMFBody>
+                    <ns9:SFDC>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Location)">
+                                <xsl:for-each select="$Start/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Location">
+                                    <ns9:Location>
+                                        <ns1:SfdcPartnerId>
+                                            <xsl:value-of select="ns1:SfdcPartnerId"/>
+                                        </ns1:SfdcPartnerId>
+                                        <ns1:MdmPartnerId>
+                                            <xsl:value-of select="ns1:MdmPartnerId"/>
+                                        </ns1:MdmPartnerId>
+                                        <xsl:if test="ns1:SfdcLocationId">
+                                            <ns1:SfdcLocationId>
+                                                <xsl:value-of select="ns1:SfdcLocationId"/>
+                                            </ns1:SfdcLocationId>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:MdmLocationId">
+                                            <ns1:MdmLocationId>
+                                                <xsl:value-of select="ns1:MdmLocationId"/>
+                                            </ns1:MdmLocationId>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:Account">
+                                            <ns1:Account>
+                                                <xsl:value-of select="ns1:Account"/>
+                                            </ns1:Account>
+                                        </xsl:if>
+                                        <ns1:PrimaryLocation>
+                                            <xsl:value-of select="ns1:PrimaryLocation"/>
+                                        </ns1:PrimaryLocation>
+                                        <xsl:if test="ns1:Street">
+                                            <ns1:Street>
+                                                <xsl:value-of select="ns1:Street"/>
+                                            </ns1:Street>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:City">
+                                            <ns1:City>
+                                                <xsl:value-of select="ns1:City"/>
+                                            </ns1:City>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:CountyRegion">
+                                            <ns1:CountyRegion>
+                                                <xsl:value-of select="ns1:CountyRegion"/>
+                                            </ns1:CountyRegion>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:Country">
+                                            <ns1:Country>
+                                                <xsl:value-of select="ns1:Country"/>
+                                            </ns1:Country>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:PostalCode">
+                                            <ns1:PostalCode>
+                                                <xsl:value-of select="ns1:PostalCode"/>
+                                            </ns1:PostalCode>
+                                        </xsl:if>
+                                        <xsl:if test="ns1:recordType">
+                                            <ns1:recordType>
+                                                <xsl:value-of select="ns1:recordType"/>
+                                            </ns1:recordType>
+                                        </xsl:if>
+                                    </ns9:Location>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:for-each select="$MDM-JDBC-Query/resultSet/Record[1]">
+                                    <ns9:Location>
+                                        <ns1:SfdcPartnerId>
+                                            <xsl:value-of select="SfdcPartnerId"/>
+                                        </ns1:SfdcPartnerId>
+                                        <ns1:MdmPartnerId>
+                                            <xsl:value-of select="MdmPartnerId"/>
+                                        </ns1:MdmPartnerId>
+                                        <xsl:if test="SfdcLocationId">
+                                            <ns1:SfdcLocationId>
+                                                <xsl:value-of select="SfdcLocationId"/>
+                                            </ns1:SfdcLocationId>
+                                        </xsl:if>
+                                        <xsl:if test="MdmLocationId">
+                                            <ns1:MdmLocationId>
+                                                <xsl:value-of select="MdmLocationId"/>
+                                            </ns1:MdmLocationId>
+                                        </xsl:if>
+                                        <xsl:if test="Account">
+                                            <ns1:Account>
+                                                <xsl:value-of select="Account"/>
+                                            </ns1:Account>
+                                        </xsl:if>
+                                        <ns1:PrimaryLocation>
+                                            <xsl:value-of select="PrimaryLocation"/>
+                                        </ns1:PrimaryLocation>
+                                        <xsl:choose>
+                                            <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:Address)">
+                                                <ns1:Street>
+                                                    <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:Address"/>
+                                                </ns1:Street>
+                                            </xsl:when>
+                                            <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:Rallying/ns9:Partner/ns6:Address)">
+                                                <ns1:Street>
+                                                    <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Rallying/ns9:Partner/ns6:Address"/>
+                                                </ns1:Street>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:if test="Street">
+                                                    <ns1:Street>
+                                                        <xsl:value-of select="Street"/>
+                                                    </ns1:Street>
+                                                </xsl:if>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:City)">
+                                                <xsl:if test="$Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:City">
+                                                    <ns1:City>
+                                                        <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:City"/>
+                                                    </ns1:City>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:Rallying/ns9:Partner/ns6:City)">
+                                                <xsl:if test="$Start/ns9:SMF/ns9:SMFBody/ns9:Rallying/ns9:Partner/ns6:City">
+                                                    <ns1:City>
+                                                        <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Rallying/ns9:Partner/ns6:City"/>
+                                                    </ns1:City>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:if test="City">
+                                                    <ns1:City>
+                                                        <xsl:value-of select="City"/>
+                                                    </ns1:City>
+                                                </xsl:if>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:CountryCode)">
+                                                <ns1:CountyRegion>
+                                                    <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:CountryCode"/>
+                                                </ns1:CountyRegion>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:if test="CountyRegion">
+                                                    <ns1:CountyRegion>
+                                                        <xsl:value-of select="CountyRegion"/>
+                                                    </ns1:CountyRegion>
+                                                </xsl:if>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:County)">
+                                                <ns1:Country>
+                                                    <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:County"/>
+                                                </ns1:Country>
+                                            </xsl:when>
+                                            <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:Rallying/ns9:Partner/ns6:Country)">
+                                                <ns1:Country>
+                                                    <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Rallying/ns9:Partner/ns6:Country"/>
+                                                </ns1:Country>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:if test="Country">
+                                                    <ns1:Country>
+                                                        <xsl:value-of select="Country"/>
+                                                    </ns1:Country>
+                                                </xsl:if>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:PostCode)">
+                                                <xsl:if test="$Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:PostCode">
+                                                    <ns1:PostalCode>
+                                                        <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:PostCode"/>
+                                                    </ns1:PostalCode>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:if test="PostalCode">
+                                                    <ns1:PostalCode>
+                                                        <xsl:value-of select="PostalCode"/>
+                                                    </ns1:PostalCode>
+                                                </xsl:if>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:if test="RecordType">
+                                            <ns1:recordType>
+                                                <xsl:value-of select="RecordType"/>
+                                            </ns1:recordType>
+                                        </xsl:if>
+                                    </ns9:Location>
+                                </xsl:for-each>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ns9:SFDC>
+                    <ns9:MDM>
+                        <xsl:copy-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:Company"/>
+                        <xsl:copy-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping"/>
+                        <xsl:if test="$Start/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:batch_id">
+                            <ns9:batch_id>
+                                <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:batch_id"/>
+                            </ns9:batch_id>
+                        </xsl:if>
+                    </ns9:MDM>
+                </ns9:SMFBody>
+            </ns9:SMF>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MDM JDBC Query">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>373</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT  [SfdcPartnerId]
+      ,[SfdcLocationId]
+      ,[Account]
+      ,[PrimaryLocation]
+      ,[Street]
+      ,[City]
+      ,[CountyRegion]
+      ,[Country]
+      ,[PostalCode]
+      ,[is_deleted]
+      ,[LastModifiedDate]
+      ,[RecordType]
+      ,[MdmPartnerId]
+      ,[MdmLocationId]
+  FROM [EMEA_MDM].[EMEA_MDM].[VIEW_SFDC_LOCATION]
+  where [SfdcPartnerId]=? and [PrimaryLocation]='true' and [is_deleted]=0</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>Code</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>SfdcPartnerId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SfdcLocationId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Account</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PrimaryLocation</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Street</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>City</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CountyRegion</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Country</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PostalCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>is_deleted</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LastModifiedDate</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>RecordType</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MdmPartnerId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MdmLocationId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <Code>
+                    <xsl:choose>
+                        <xsl:when test="exists($SelectSourceID/SourceIDMapping/ns3:SfId)">
+                            <xsl:value-of select="$SelectSourceID/SourceIDMapping/ns3:SfId"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Code>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SelectSourceID">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>260</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <processName>/ExternalServices/MDM_Server/SelectSourceID.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer)">
+                    <GoldID>
+                        <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:MDMCustID"/>
+                    </GoldID>
+                </xsl:when>
+                <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:Rallying/ns9:Partner)">
+                    <GoldID>
+                        <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Rallying/ns9:Partner/ns6:Id"/>
+                    </GoldID>
+                </xsl:when>
+                <xsl:when test="exists($Start/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer)">
+                    <GoldID>
+                        <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer[1]/ns1:MdmPartnerId"/>
+                    </GoldID>
+                </xsl:when>
+                <xsl:otherwise>
+                    <GoldID>
+                        <xsl:value-of select="$Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:MDMCustID"/>
+                    </GoldID>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>264</pd:x>
+        <pd:y>300</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>418</pd:x>
+        <pd:y>299</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns4:ErrorReport/Data/*" element="pfx:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns5:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_View-Get-No-Data-Exception/pfx:Error)">
+                            <xsl:for-each select="$_error_View-Get-No-Data-Exception/pfx:Error">
+                                <pfx:Error>
+                                    <pfx:src>
+                                        <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                                    </pfx:src>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="pfx:error_code"/>
+                                    </pfx:error_code>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="pfx:error_message"/>
+                                    </pfx:error_message>
+                                    <pfx:stack_trace>
+                                        <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                                    </pfx:stack_trace>
+                                </pfx:Error>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="exists($_error/ns4:ErrorReport/Data)">
+                                    <xsl:copy-of select="$_error/ns4:ErrorReport/Data/pfx:Error"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <pfx:Error>
+                                        <pfx:src>
+                                            <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                                        </pfx:src>
+                                        <pfx:error_code>
+                                            <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                                        </pfx:error_code>
+                                        <pfx:error_message>
+                                            <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                                        </pfx:error_message>
+                                        <pfx:stack_trace>
+                                            <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                                        </pfx:stack_trace>
+                                    </pfx:Error>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="View Get No Data Exception">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>460</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns5:ActivityInput>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="&quot;Select View Return 0&quot;"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="concat(&quot;Gold_Id=&quot;,$Start/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns2:Customer/ns2:MDMCustID,&quot;,Contant=&quot;,tib:render-xml($MDM-JDBC-Query/resultSet/Record[1],1))"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="tib:render-xml($_processContext/ns4:ProcessContext/TrackingInfo[1],1)"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </data>
+            </ns5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Location</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SelectSourceID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MDM JDBC Query</pd:from>
+        <pd:to>Location</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SelectSourceID</pd:from>
+        <pd:to>MDM JDBC Query</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MDM JDBC Query</pd:from>
+        <pd:to>View Get No Data Exception</pd:to>
+        <pd:xpathDescription>No data</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-10092442</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($MDM-JDBC-Query/resultSet/Record)=0</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns12="www.tibco.com/plugin/Sleep" xmlns:ns5="urn:enterprise.soap.sforce.com" xmlns:pfx="urn:partner.soap.sforce.com" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://xmlns.tibco.com/encodings/mime" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx3="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" xmlns:pfx2="http://soap.sforce.com/schemas/class/PRMEU_SyncLocationWebService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="urn:partner.soap.sforce.com" location="/WSDL/Client/SalesforceTrendMicro.wsdl"/>
+    <wsdl:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" location="/WSDL/Client/PRMEU_SyncAccountWebService.WSDL.wsdl"/>
+    <wsdl:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncLocationWebService" location="/WSDL/Client/PRMEU_SyncLocationWebService.WSDL.wsdl"/>
+    <pd:name>ExternalServices/SFDC/DeleteSfLocation/V1.0/ExecuteRequest.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType wsMsgRef="pfx2:SFDCDeleteLocationRequest"/>
+    <pd:startX>50</pd:startX>
+    <pd:startY>206</pd:startY>
+    <pd:returnBindings>
+        <pfx2:SFDCDeleteLocationResponse>
+            <parameters>
+                <pfx2:SFDCDeleteLocationResponse>
+                    <xsl:copy-of select="$Delete-Location/outputMessage/pfx2:SFDCDeleteLocationResponse/pfx2:result"/>
+                </pfx2:SFDCDeleteLocationResponse>
+            </parameters>
+        </pfx2:SFDCDeleteLocationResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType wsMsgRef="pfx2:SFDCDeleteLocationResponse"/>
+    <pd:endX>632</pd:endX>
+    <pd:endY>208</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1342174847897</pd:targetNamespace>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>491</pd:x>
+        <pd:y>392</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <xsl:choose>
+                    <xsl:when test="exists($_error/ns1:ErrorReport/Data/pfx4:Error)">
+                        <data>
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx4:Error"/>
+                        </data>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <data>
+                            <pfx4:Error>
+                                <pfx4:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx4:src>
+                                <pfx4:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx4:error_code>
+                                <pfx4:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx4:error_message>
+                                <pfx4:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx4:stack_trace>
+                            </pfx4:Error>
+                        </data>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>335</pd:x>
+        <pd:y>392</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Login">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>160</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <processName>/ExternalServices/SFDC/shareProcess/Login.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>624</pd:x>
+        <pd:y>350</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <pfx4:Error>
+                        <pfx4:src>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx4:src>
+                        <pfx4:error_code>
+                            <xsl:value-of select="$Delete-Location/outputMessage/pfx2:SFDCDeleteLocationResponse/pfx2:result/pfx2:ProcessStatus"/>
+                        </pfx4:error_code>
+                        <pfx4:error_message>
+                            <xsl:value-of select="$Delete-Location/outputMessage/pfx2:SFDCDeleteLocationResponse/pfx2:result/pfx2:ErrorMessage"/>
+                        </pfx4:error_message>
+                        <pfx4:stack_trace>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx4:stack_trace>
+                    </pfx4:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>239</pd:x>
+        <pd:y>47</pd:y>
+        <pd:width>291</pd:width>
+        <pd:height>299</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$i&gt;$_globalVariables/ns3:GlobalVariables/ExternalServices/SFDC/WebService/RetryCount or 
+exists($Delete-Location/outputMessage/pfx2:SFDCDeleteLocationResponse/pfx2:result/pfx2:ProcessStatus)</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Delete Location</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Delete Location</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Delete Location</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate-Error-2</pd:to>
+            <pd:xpathDescription>Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i&gt;$_globalVariables/ns3:GlobalVariables/ExternalServices/SFDC/WebService/RetryCount</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:xpathDescription>Retry</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Delete Location">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>369</pd:x>
+            <pd:y>120</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx2:PRMEU_SyncLocationWebServiceService</service>
+                <servicePort>PRMEU_SyncLocationWebService</servicePort>
+                <operation>SFDCDeleteLocation</operation>
+                <soapAction/>
+                <endpointURL>https://cs9-api.salesforce.com/services/Soap/class/PRMEU_SyncLocationWebService</endpointURL>
+                <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                    <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                    <ns0:cert isRef="true">/Resources/Certificates/.folder</ns0:cert>
+                </ns0:ssl>
+                <useProxy>true</useProxy>
+                <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <headers>
+                        <Header.SessionHeader>
+                            <pfx2:SessionHeader>
+                                <pfx2:sessionId>
+                                    <xsl:value-of select="$Login/ns5:loginResponse/ns5:result/ns5:sessionId"/>
+                                </pfx2:sessionId>
+                            </pfx2:SessionHeader>
+                        </Header.SessionHeader>
+                        <Header.CallOptions>
+                            <pfx2:CallOptions>
+                                <pfx2:client>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </pfx2:client>
+                            </pfx2:CallOptions>
+                        </Header.CallOptions>
+                        <Header.DebuggingHeader/>
+                        <Header.AllowFieldTruncationHeader/>
+                    </headers>
+                    <pfx2:SFDCDeleteLocation>
+                        <xsl:copy-of select="$Start/pfx2:SFDCDeleteLocationRequest/parameters/pfx2:SFDCDeleteLocation/pfx2:inputBean"/>
+                    </pfx2:SFDCDeleteLocation>
+                    <ns:_configData>
+                        <endpointURL>
+                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/ExternalServices/SFDC/WebService/LocatonEndPoint"/>
+                        </endpointURL>
+                    </ns:_configData>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>286</pd:x>
+            <pd:y>290</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>407</pd:x>
+            <pd:y>204</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns12:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/ExternalServices/SFDC/WebService/RetryInterval_secs * 1000"/>
+                    </IntervalInMillisec>
+                </ns12:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate-Error-2">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>467</pd:x>
+            <pd:y>290</pd:y>
+            <config>
+                <faultName>ErrorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns2:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </message>
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                    <data>
+                        <pfx4:Error>
+                            <pfx4:src>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                            </pfx4:src>
+                            <pfx4:error_code>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </pfx4:error_code>
+                            <pfx4:error_message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                            </pfx4:error_message>
+                            <pfx4:stack_trace>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                            </pfx4:stack_trace>
+                        </pfx4:Error>
+                    </data>
+                </ns2:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Login</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:xpathDescription>status=F</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Delete-Location/outputMessage/pfx2:SFDCDeleteLocationResponse/pfx2:result/pfx2:ProcessStatus="F"</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

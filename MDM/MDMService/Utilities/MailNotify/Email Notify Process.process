@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx11="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/Mail Schema1.2.xsd" xmlns:pfx10="http://www.tibco.com/ns/no_namespace_schema_location/Resources/Schema/Mail Schema1.2.xsd" xmlns:ns5="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://xmlns.tibco.com/encodings/mime" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns3="http://xmlns.tibco.com/body" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/resources/Schema/Mail Schema1.1.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.1.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.0.xsd" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx9="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.3.xsd" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.2.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.1.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.1.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.1.xsd" schemaLocation="/Configuration/Schema/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resources/Schema/Mail Schema1.1.xsd" schemaLocation="/resources/Schema/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.1.xsd" schemaLocation="/resource/Schema/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.2.xsd" schemaLocation="/resource/Schema/Mail Schema1.2.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.3.xsd" schemaLocation="/resource/Schema/Mail Schema1.3.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Resources/Schema/Mail Schema1.2.xsd" schemaLocation="/Resources/Schema/Mail Schema1.2.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/Mail Schema1.2.xsd" schemaLocation="/XSD/Common/Mail Schema1.2.xsd"/>
+    <pd:name>Utilities/MailNotify/Email Notify Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx11:mail"/>
+    <pd:startX>151</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>482</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1242200652794</pd:targetNamespace>
+    <pd:activity name="Write System Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Start/mail/MailBody"/>
+                </message>
+            </pfx2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Error System Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>481</pd:x>
+        <pd:y>245</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(current-dateTime() , &quot; &quot;,$Start/mail/subject,&quot; Send Notify Mail Failed!!!&quot;,&quot;  &quot;,&#xA;$_error/ns1:ErrorReport/MsgCode,&quot;,   &quot;,$_error/ns1:ErrorReport/Msg)"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </pfx2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sender to Mail Queue">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>249</pd:x>
+        <pd:y>245</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>mail.batch</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx10:mail"/>
+        </config>
+        <pd:inputBindings>
+            <ns5:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="'mail.nrealtime'"/>
+                </destinationQueue>
+                <JMSProperties>
+                    <ns5:JMSXGroupID>
+                        <xsl:value-of select="'Normal Mail'"/>
+                    </ns5:JMSXGroupID>
+                </JMSProperties>
+                <Body>
+                    <xsl:copy-of select="$Start/mail"/>
+                </Body>
+            </ns5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Write System Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write System Log</pd:from>
+        <pd:to>Sender to Mail Queue</pd:to>
+        <pd:xpathDescription>SendMailOn</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/SendMailOn = 'true'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Error System Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write System Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>SendMailOff</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sender to Mail Queue</pd:from>
+        <pd:to>Send Error System Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sender to Mail Queue</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

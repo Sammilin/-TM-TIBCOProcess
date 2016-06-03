@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>ExternalServices/MDM_Server/Insert Resend Fail Log.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="gold_id" type="xsd:string"/>
+                    <xsd:element name="from_datasource" type="xsd:string"/>
+                    <xsd:element name="to_datasource" type="xsd:string"/>
+                    <xsd:element name="status" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>111</pd:startX>
+    <pd:startY>137</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>467</pd:endX>
+    <pd:endY>139</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1353403461210</pd:targetNamespace>
+    <pd:activity name="JDBC Update">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>277</pd:x>
+        <pd:y>139</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>INSERT INTO
+    EMEA_MDM.TBL_LOG_EI_RESEND
+    (
+        gold_id,
+        from_datasource,
+        to_datasource,
+        create_date,
+        status
+    )
+    VALUES
+    (
+        ?,?,?,GETUTCDATE(),?
+    )</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>gold_id</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>from_datasource</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>to_datasource</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>status</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <gold_id>
+                    <xsl:value-of select="$Start/root/gold_id"/>
+                </gold_id>
+                <from_datasource>
+                    <xsl:value-of select="$Start/root/from_datasource"/>
+                </from_datasource>
+                <to_datasource>
+                    <xsl:value-of select="$Start/root/to_datasource"/>
+                </to_datasource>
+                <status>
+                    <xsl:value-of select="$Start/root/status"/>
+                </status>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JDBC Update</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Update</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/CrossCheck/Start  Cross Check.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>63</pd:x>
+        <pd:y>98</pd:y>
+        <config>
+            <StartTime>%%Services/CrossCheck/ExternalTime%%</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>1</TimeInterval>
+            <FrequencyIndex>Day</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>644</pd:endX>
+    <pd:endY>99</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <InitialVar>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="MessageKey" type="xsd:string"/>
+                        <xsd:element name="begin_time" type="xsd:string"/>
+                        <xsd:element name="end_time" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </InitialVar>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1349258777342</pd:targetNamespace>
+    <pd:activity name="Start Navision CrossCheck">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>517</pd:x>
+        <pd:y>104</pd:y>
+        <config>
+            <processName>/Services/CrossCheck/Excute Navision CrossCheck.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <TraceID>
+                    <xsl:value-of select="$InitialVar/root/MessageKey"/>
+                </TraceID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>199</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <variableName>InitialVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <MessageKey>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </MessageKey>
+                <begin_time>
+                    <xsl:value-of select="tib:add-to-dateTime(tib:current-dateTime-timezone(-8, 00), 0, 0, -3, 0,0, 0)"/>
+                </begin_time>
+                <end_time>
+                    <xsl:value-of select="tib:current-dateTime-timezone(-8, 00)"/>
+                </end_time>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="TriggerTeoCrossCheck">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>357</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <processName>/Services/CrossCheck/TriggerTeoCrossCheck.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <datasource>
+                    <xsl:value-of select="&quot;TEO&quot;"/>
+                </datasource>
+                <table_schema>
+                    <xsl:value-of select="&quot;TEO&quot;"/>
+                </table_schema>
+                <group>
+                    <table_name>
+                        <xsl:value-of select="'Disti'"/>
+                    </table_name>
+                    <table_name>
+                        <xsl:value-of select="'Reseller'"/>
+                    </table_name>
+                    <table_name>
+                        <xsl:value-of select="'EndUser'"/>
+                    </table_name>
+                </group>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>515</pd:x>
+        <pd:y>220</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error-Handling-1">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>643</pd:x>
+        <pd:y>218</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ns12:SMFHeader>
+                    <ns2:MessageKey>
+                        <xsl:value-of select="$InitialVar/root/MessageKey"/>
+                    </ns2:MessageKey>
+                    <ns2:ServiceName>
+                        <xsl:value-of select="&quot;Cross Check&quot;"/>
+                    </ns2:ServiceName>
+                    <ns2:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns2:ServiceVersion>
+                    <ns2:SourceID>
+                        <xsl:value-of select="&quot;MDM&quot;"/>
+                    </ns2:SourceID>
+                    <ns2:SourceIP>
+                        <xsl:value-of select="TM:getIPAddress()"/>
+                    </ns2:SourceIP>
+                    <ns2:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns2:RqTimestamp>
+                    <ns2:RsTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns2:RsTimestamp>
+                </ns12:SMFHeader>
+                <ns6:Error>
+                    <ns6:src>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                    </ns6:src>
+                    <ns6:error_code>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </ns6:error_code>
+                    <ns6:error_message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </ns6:error_message>
+                    <ns6:stack_trace>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                    </ns6:stack_trace>
+                </ns6:Error>
+                <Source>
+                    <xsl:value-of select="&quot;MDM&quot;"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="&quot;false&quot;"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start Navision CrossCheck</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>TriggerTeoCrossCheck</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>TriggerTeoCrossCheck</pd:from>
+        <pd:to>Start Navision CrossCheck</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error-Handling-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error-Handling-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

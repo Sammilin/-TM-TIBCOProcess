@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.trendmicro.com/ESB/schemas/Common" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://applications.dnb.com/webservice/schema/" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns13="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/Hoovers/Checking Hoovers Service.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>88</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <StartTime>1374050536000</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>30</TimeInterval>
+            <FrequencyIndex>Minute</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>708</pd:endX>
+    <pd:endY>72</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1374049578141</pd:targetNamespace>
+    <pd:activity name="FindCompanyByKeyword">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>396</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <processName>/ExternalServices/Hoovers/FindCompanyByKeyword.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:FindCompanyByKeywordRequest>
+                <ns:keyword>
+                    <xsl:value-of select="&quot;trend micro&quot;"/>
+                </ns:keyword>
+            </ns:FindCompanyByKeywordRequest>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>274</pd:x>
+        <pd:y>162</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>505</pd:x>
+        <pd:y>168</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx:ActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>383</pd:x>
+        <pd:y>165</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="ns13:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <ns12:SMFHeader>
+                    <ns2:MessageKey>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </ns2:MessageKey>
+                    <ns2:ServiceName>
+                        <xsl:value-of select="&quot;Ｃhecking Hoovers Service Status&quot;"/>
+                    </ns2:ServiceName>
+                    <ns2:ServiceVersion>
+                        <xsl:value-of select="&quot;N/A&quot;"/>
+                    </ns2:ServiceVersion>
+                    <ns2:SourceID>
+                        <xsl:value-of select="&quot;N/A&quot;"/>
+                    </ns2:SourceID>
+                    <ns2:SourceIP>
+                        <xsl:value-of select="&quot;N/A&quot;"/>
+                    </ns2:SourceIP>
+                    <ns2:RsTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns2:RsTimestamp>
+                </ns12:SMFHeader>
+                <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:when test="exists($_error/ns1:ErrorReport/Data/ns13:Error)">
+                        <xsl:copy-of select="$_error/ns1:ErrorReport/Data/ns13:Error"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns13:Error>
+                            <ns13:src>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                            </ns13:src>
+                            <ns13:error_code>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </ns13:error_code>
+                            <ns13:error_message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                            </ns13:error_message>
+                            <ns13:stack_trace>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                            </ns13:stack_trace>
+                        </ns13:Error>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Retry>
+                    <xsl:value-of select="0"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Input MDM Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>240</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <processName>/Services/SharedServices/MDM Logging Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <MessageKey>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </MessageKey>
+                <ServiceName>
+                    <xsl:value-of select="&quot;Checking Hooers Service Status&quot;"/>
+                </ServiceName>
+                <ServiceVersion>
+                    <xsl:value-of select="&quot;NA&quot;"/>
+                </ServiceVersion>
+                <RqTimestamp>
+                    <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                </RqTimestamp>
+                <MessageBody>
+                    <xsl:value-of select="concat(&quot;Checking Start, &quot;,tib:current-dateTime-timezone(0,0))"/>
+                </MessageBody>
+                <datasource>
+                    <xsl:value-of select="&quot;TIBCO&quot;"/>
+                </datasource>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Output MDM Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>571</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <processName>/Services/SharedServices/MDM Logging Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <MessageKey>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </MessageKey>
+                <ServiceName>
+                    <xsl:value-of select="&quot;Checking Hooers Service Status&quot;"/>
+                </ServiceName>
+                <ServiceVersion>
+                    <xsl:value-of select="&quot;NA&quot;"/>
+                </ServiceVersion>
+                <RqTimestamp>
+                    <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                </RqTimestamp>
+                <MessageBody>
+                    <xsl:value-of select="concat(&quot;Checking End, &quot;,tib:current-dateTime-timezone(0,0))"/>
+                </MessageBody>
+                <datasource>
+                    <xsl:value-of select="&quot;TIBCO&quot;"/>
+                </datasource>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>Input MDM Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FindCompanyByKeyword</pd:from>
+        <pd:to>Output MDM Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Input MDM Log</pd:from>
+        <pd:to>FindCompanyByKeyword</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Output MDM Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

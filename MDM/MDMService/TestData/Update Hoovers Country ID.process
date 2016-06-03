@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/namespaces/tnt/plugins/file/v2">
+    <pd:name>TestData/Update Hoovers Country ID.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>93</pd:startX>
+    <pd:startY>138</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>514</pd:endX>
+    <pd:endY>140</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1351670143157</pd:targetNamespace>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>293</pd:x>
+        <pd:y>140</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="GetAdvancedSearchLookupsResponse">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="return">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="countries">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="country" minOccurs="0" maxOccurs="unbounded">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence>
+                                                                <xsd:element name="continentId" type="xsd:string"/>
+                                                                <xsd:element name="displayFlag" type="xsd:string"/>
+                                                                <xsd:element name="id" type="xsd:string"/>
+                                                                <xsd:element name="mapLink" type="xsd:string"/>
+                                                                <xsd:element name="name" type="xsd:string"/>
+                                                                <xsd:element name="parentId" type="xsd:string"/>
+                                                                <xsd:element name="phoneCode" type="xsd:string"/>
+                                                                <xsd:element name="regionId" type="xsd:string"/>
+                                                                <xsd:element name="shortName" type="xsd:string"/>
+                                                                <xsd:element name="sortName" type="xsd:string"/>
+                                                                <xsd:element name="sortOrder" type="xsd:string"/>
+                                                            </xsd:sequence>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Read-File/ns:ReadActivityOutputTextClass/fileContent/textContent"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Read File">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>192</pd:x>
+        <pd:y>139</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <pfx:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="&quot;D:\MyProject\Project\MDM\Test Data\response.txt&quot;"/>
+                </fileName>
+                <encoding>
+                    <xsl:value-of select="&quot;UNICODE&quot;"/>
+                </encoding>
+            </pfx:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JDBC Update">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>401</pd:x>
+        <pd:y>140</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>UPDATE
+    EMEA_MDM.TBL_REF_COUNTRY
+SET
+    hoovers_id = ?
+WHERE
+    iso_code = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>hoovers_id</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>iso_code</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <batchUpdate>true</batchUpdate>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <xsl:for-each select="$Parse-XML/GetAdvancedSearchLookupsResponse/return/countries/country">
+                    <Record>
+                        <hoovers_id>
+                            <xsl:value-of select="id"/>
+                        </hoovers_id>
+                        <iso_code>
+                            <xsl:value-of select="shortName"/>
+                        </iso_code>
+                    </Record>
+                </xsl:for-each>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Read File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Read File</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>JDBC Update</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Update</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

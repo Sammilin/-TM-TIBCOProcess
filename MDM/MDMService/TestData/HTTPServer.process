@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.siebel.com/xml/RAEM%20CRM%20CX%20Partner" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx2="http://tempuri.org/" xmlns:pfx="http://siebel.com/asi/">
+    <wsdl:import namespace="http://siebel.com/asi/" location="/WSDL/Client/RAEM_CRM_Partner-MDM.WSDL.wsdl"/>
+    <pd:name>TestData/HTTPServer.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>448</pd:endX>
+    <pd:endY>67</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1338952284767</pd:targetNamespace>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>300</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:RAEM_spcCRM_spcPartner_spc-_spcMDM</service>
+            <servicePort>RAEM_spcCRM_spcCX_spcPartner_spcASI</servicePort>
+            <operation>QueryByIdCRMPartner</operation>
+            <soapAction>document/http://siebel.com/asi/:QueryByIdCRMPartner</soapAction>
+            <endpointURL>http://tw-bprallqa4/eai_enu/start.swe?SWEExtSource=WebService&amp;SWEExtCmd=Execute&amp;UserName=EUWEBADM&amp;Password=EUWEBADM</endpointURL>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx:RAEM_spcCRM_spcCX_spcPartner_spcASI_InsertOrUpdateCRMPartner_Input>
+                    <ns:ListOfRaemCrmCxPartner>
+                        <ns:RaemCrmCxPartner>
+                            <ns:Name>
+                                <xsl:value-of select="&quot;test&quot;"/>
+                            </ns:Name>
+                            <ns:NavisionId>
+                                <xsl:value-of select="&quot;test123&quot;"/>
+                            </ns:NavisionId>
+                        </ns:RaemCrmCxPartner>
+                    </ns:ListOfRaemCrmCxPartner>
+                </pfx:RAEM_spcCRM_spcCX_spcPartner_spcASI_InsertOrUpdateCRMPartner_Input>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns22="http://www.trendmicro.com/ESB/schemas/Common" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/schemas/BWGINEI/resources/Schema/Schema.xsd" xmlns:ns13="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/ACK" xmlns:pfx="http://TrendMicro.BW.Schemas.Generic_CDM" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://TrendMicro.BW.Schemas.BW_Properties" xmlns:ns1="http://TrendMicro.BW.Schemas.EAIQryLog" xmlns:ns4="http://TrendMicro.ERP.Schemas.Ack" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://TrendMicro.BW.Schemas.Ack" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://TrendMicro.BW.Schemas.Generic_NAV">
+    <xsd:import namespace="http://TrendMicro.BW.Schemas.Generic_CDM" schemaLocation="/resources/Schema/Generic_CDM.xsd"/>
+    <xsd:import namespace="http://TrendMicro.BW.Schemas.Generic_NAV"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/BWGINEI/resources/Schema/Schema.xsd" schemaLocation="/resources/Schema/Error Schema.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Dispatcher/Navision Response Process.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>101</pd:x>
+        <pd:y>89</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%ExternalServices/Navision/MSMQ/NavisionResponse%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>772</pd:endX>
+    <pd:endY>95</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1241433139563</pd:targetNamespace>
+    <pd:activity name="Call Main Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>362</pd:x>
+        <pd:y>92</pd:y>
+        <config>
+            <processName>/ExternalServices/Navision/Response/Customer_Return_ID.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <XMLString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+            </XMLString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call ACK Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>504</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <processName>/ExternalServices/Navision/ShareProcess/Navision MSMQ Sender.process</processName>
+            <processNameXPath/>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <QueueName>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/MDMACK"/>
+                </QueueName>
+                <MessageKey>
+                    <xsl:value-of select="$Call-Main-Process/TrendMicro/MessageHeader/Correlation/MsgTrackingGUID"/>
+                </MessageKey>
+                <MsgExpirationTime>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/MsgExpirationTime"/>
+                </MsgExpirationTime>
+                <XMLString>
+                    <xsl:value-of select="tib:render-xml($Call-Main-Process/TrendMicro)"/>
+                </XMLString>
+                <ResendCount>
+                    <xsl:value-of select="0"/>
+                </ResendCount>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>363</pd:x>
+        <pd:y>210</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>514</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="ns13:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:when test="exists($_error/ns3:ErrorReport/Data/ns13:Error)">
+                    <group>
+                        <ns14:SMFHeader>
+                            <ns22:MessageKey>
+                                <xsl:value-of select="$Call-Main-Process/TrendMicro/MessageHeader/Correlation/MsgTrackingGUID"/>
+                            </ns22:MessageKey>
+                            <ns22:ServiceName>
+                                <xsl:value-of select="$Call-Main-Process/TrendMicro/MessageHeader/MessageName"/>
+                            </ns22:ServiceName>
+                            <ns22:ServiceVersion>
+                                <xsl:value-of select="$Call-Main-Process/TrendMicro/MessageHeader/MessageFunctionCode"/>
+                            </ns22:ServiceVersion>
+                            <ns22:SourceID>
+                                <xsl:value-of select="&quot;Navision&quot;"/>
+                            </ns22:SourceID>
+                            <ns22:SourceIP>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </ns22:SourceIP>
+                            <ns22:RqTimestamp>
+                                <xsl:value-of select="tib:parse-dateTime(&quot;yyyyMMdd'T'HH:mm:ss&quot;, $Call-Main-Process/TrendMicro/MessageHeader/DateTimeStamp)"/>
+                            </ns22:RqTimestamp>
+                            <ns22:RsTimestamp>
+                                <xsl:value-of select="tib:translate-timezone(current-dateTime(), &quot;UTC&quot;)"/>
+                            </ns22:RsTimestamp>
+                        </ns14:SMFHeader>
+                        <ns13:Error>
+                            <ns13:src>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                            </ns13:src>
+                            <ns13:error_code>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </ns13:error_code>
+                            <ns13:error_message>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                            </ns13:error_message>
+                            <ns13:stack_trace>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            </ns13:stack_trace>
+                        </ns13:Error>
+                        <Source>
+                            <xsl:value-of select="tib:render-xml($Call-Main-Process/TrendMicro)"/>
+                        </Source>
+                        <Retry>
+                            <xsl:value-of select="0"/>
+                        </Retry>
+                    </group>
+                </xsl:when>
+                <xsl:otherwise>
+                    <group>
+                        <ns14:SMFHeader>
+                            <ns22:MessageKey>
+                                <xsl:value-of select="substring-after(substring-before($JMS-Queue-Receiver/ns:ActivityOutput/Body, &quot;&lt;/MsgTrackingGUID>&quot;), &quot;&lt;MsgTrackingGUID>&quot;)"/>
+                            </ns22:MessageKey>
+                            <ns22:ServiceName>
+                                <xsl:value-of select="&quot;Navision Response&quot;"/>
+                            </ns22:ServiceName>
+                            <ns22:ServiceVersion>
+                                <xsl:value-of select="&quot;Response&quot;"/>
+                            </ns22:ServiceVersion>
+                            <ns22:SourceID>
+                                <xsl:value-of select="&quot;Navision&quot;"/>
+                            </ns22:SourceID>
+                            <ns22:SourceIP>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </ns22:SourceIP>
+                            <ns22:RsTimestamp>
+                                <xsl:value-of select="tib:translate-timezone(current-dateTime(), &quot;UTC&quot;)"/>
+                            </ns22:RsTimestamp>
+                        </ns14:SMFHeader>
+                        <ns13:Error>
+                            <ns13:src>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                            </ns13:src>
+                            <ns13:error_code>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </ns13:error_code>
+                            <ns13:error_message>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                            </ns13:error_message>
+                            <ns13:stack_trace>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            </ns13:stack_trace>
+                        </ns13:Error>
+                        <Source>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                        </Source>
+                        <Retry>
+                            <xsl:value-of select="0"/>
+                        </Retry>
+                    </group>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MDM Logging Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>639</pd:x>
+        <pd:y>102</pd:y>
+        <config>
+            <processName>/Services/SharedServices/MDM Logging Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <MessageKey>
+                    <xsl:value-of select="$Call-Main-Process/TrendMicro/MessageHeader/Correlation/MsgTrackingGUID"/>
+                </MessageKey>
+                <ServiceName>
+                    <xsl:value-of select="$Call-Main-Process/TrendMicro/MessageHeader/MessageName"/>
+                </ServiceName>
+                <ServiceVersion>
+                    <xsl:value-of select="$Call-Main-Process/TrendMicro/MessageHeader/MessageFunctionCode"/>
+                </ServiceVersion>
+                <SourceID>
+                    <xsl:value-of select="&quot;MDM&quot;"/>
+                </SourceID>
+                <RsTimestamp>
+                    <xsl:value-of select="tib:parse-dateTime(&quot;yyyyMMdd'T'HHmmss&quot;, $Call-Main-Process/TrendMicro/MessageHeader/DateTimeStamp)"/>
+                </RsTimestamp>
+                <MessageBody>
+                    <xsl:value-of select="tib:render-xml($Call-Main-Process/TrendMicro,true())"/>
+                </MessageBody>
+                <errlog_flag>
+                    <xsl:value-of select="&quot;N&quot;"/>
+                </errlog_flag>
+                <datasource>
+                    <xsl:value-of select="&quot;MDM&quot;"/>
+                </datasource>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MDM Received Logging Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>229</pd:x>
+        <pd:y>99</pd:y>
+        <config>
+            <processName>/Services/SharedServices/MDM Logging Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <MessageKey>
+                    <xsl:value-of select="substring-after(substring-before($JMS-Queue-Receiver/ns:ActivityOutput/Body, &quot;&lt;/MsgTrackingGUID>&quot;), &quot;&lt;MsgTrackingGUID>&quot;)"/>
+                </MessageKey>
+                <ServiceName>
+                    <xsl:value-of select="&quot;Received Navision Response&quot;"/>
+                </ServiceName>
+                <ServiceVersion>
+                    <xsl:value-of select="&quot;Response&quot;"/>
+                </ServiceVersion>
+                <SourceID>
+                    <xsl:value-of select="&quot;Navision&quot;"/>
+                </SourceID>
+                <RsTimestamp>
+                    <xsl:value-of select="tib:translate-timezone(current-dateTime(), &quot;UTC&quot;)"/>
+                </RsTimestamp>
+                <MessageBody>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                </MessageBody>
+                <errlog_flag>
+                    <xsl:value-of select="&quot;N&quot;"/>
+                </errlog_flag>
+                <datasource>
+                    <xsl:value-of select="&quot;Navision&quot;"/>
+                </datasource>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Call Main Process</pd:from>
+        <pd:to>Call ACK Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>MDM Received Logging Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call ACK Process</pd:from>
+        <pd:to>MDM Logging Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MDM Logging Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MDM Received Logging Process</pd:from>
+        <pd:to>Call Main Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

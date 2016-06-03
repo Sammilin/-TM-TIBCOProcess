@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns20="http://TrendMicro.TrendEOrders.BTSMessage.UpdateCustomer" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" xmlns:ns16="http://www.siebel.com/xml/RAEM%20CRM%20CX%20Partner" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns17="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:ns14="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" xmlns:ns15="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" xmlns:ns18="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:ns19="http://www.trendmicro.com/ESB/schemas/MDM/TeO/Customer" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/Common" xmlns:ns12="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns13="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns7="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Input" xmlns:ns10="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" xmlns:ns8="http://www.trendmicro.com/ESB/MDM/schemas/SMF/ActSfCust_Input" xmlns:ns11="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CommonOutput" xmlns:ns2="http://tempuri.org/" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns4="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/ACSMessage.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" schemaLocation="/WSDL/Provider/SearchCustomer_Output.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" schemaLocation="/WSDL/Provider/MDMService/SearchCustomer_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Input" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/ActSfCust_Input" schemaLocation="/WSDL/Provider/SFDC/ActSfCust_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Output.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" schemaLocation="/XSD/Client/Rallying/Partner.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <pd:name>ExternalServices/TeO/UpdateTeOCust/V1.0/Main.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>93</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%ExternalServices/TeO/UpdateTeOCust/DestinationQueue%%</destination>
+                <selector/>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+            <OutDataxsdString ref="ns9:SMF"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>850</pd:endX>
+    <pd:endY>61</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334229875067</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>613</pd:x>
+        <pd:y>287</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>845</pd:x>
+        <pd:y>287</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="ns6:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <pfx:SMFHeader>
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ancestor-or-self::*/namespace::node()"/>
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/@*"/>
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/node()"/>
+                </pfx:SMFHeader>
+                <xsl:choose>
+                    <xsl:when test="exists($_error/ns3:ErrorReport/Data/ns6:Error)">
+                        <xsl:copy-of select="$_error/ns3:ErrorReport/Data/ns6:Error"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns6:Error>
+                            <ns6:src>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                            </ns6:src>
+                            <ns6:error_code>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </ns6:error_code>
+                            <ns6:error_message>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                            </ns6:error_message>
+                            <ns6:stack_trace>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            </ns6:stack_trace>
+                        </ns6:Error>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Source>
+                    <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF)"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="true()"/>
+                </Retry>
+                <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/RetryCount">
+                    <RetryCount>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/RetryCount"/>
+                    </RetryCount>
+                </xsl:if>
+                <RedeliveredQueue>
+                    <xsl:value-of select="$_globalVariables/ns12:GlobalVariables/ExternalServices/TeO/UpdateTeOCust/DestinationQueue"/>
+                </RedeliveredQueue>
+                <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping/ns17:GoldId">
+                    <gold_id>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping/ns17:GoldId"/>
+                    </gold_id>
+                </xsl:if>
+                <from_datasource>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID"/>
+                </from_datasource>
+                <to_datasource>
+                    <xsl:value-of select="&quot;TEO&quot;"/>
+                </to_datasource>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Update TeO Customer">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>537</pd:x>
+        <pd:y>168</pd:y>
+        <config>
+            <processName>/ExternalServices/TeO/UpdateTeOCust/V1.0/ExecuteRequest.process</processName>
+            <processNameXPath/>
+            <customId/>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ns20:TrendMicro>
+                    <ns20:MessageHeader>
+                        <ns20:MessageName>
+                            <xsl:value-of select="&quot;UpdateCustomer&quot;"/>
+                        </ns20:MessageName>
+                        <ns20:MessageGUID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:MessageKey"/>
+                        </ns20:MessageGUID>
+                        <ns20:MessageVersion>
+                            <xsl:value-of select="&quot;V01.00&quot;"/>
+                        </ns20:MessageVersion>
+                        <ns20:MessageFunctionCode>
+                            <xsl:value-of select="&quot;Request&quot;"/>
+                        </ns20:MessageFunctionCode>
+                        <ns20:DateTimeStamp>
+                            <xsl:value-of select="tib:format-dateTime(&quot;yyyyMMdd'T'HHmmss&quot;, current-dateTime())"/>
+                        </ns20:DateTimeStamp>
+                        <ns20:From>
+                            <xsl:value-of select="&quot;MDM&quot;"/>
+                        </ns20:From>
+                        <ns20:To>
+                            <xsl:value-of select="&quot;B2B&quot;"/>
+                        </ns20:To>
+                        <ns20:UsageCode>
+                            <xsl:value-of select="$_globalVariables/ns12:GlobalVariables/ExternalServices/TeO/UsageCode"/>
+                        </ns20:UsageCode>
+                        <ns20:Correlation>
+                            <ns20:MsgTrackingGUID>
+                                <xsl:value-of select="$Update-Customer-Message-Exchange-Process/ns9:SMF/ns9:SMFHeader/ns5:MessageKey"/>
+                            </ns20:MsgTrackingGUID>
+                        </ns20:Correlation>
+                    </ns20:MessageHeader>
+                    <ns20:MessagePayload>
+                        <ns20:TotalObjectCounts>
+                            <xsl:value-of select="1"/>
+                        </ns20:TotalObjectCounts>
+                        <ns20:BusinessObject>
+                            <ns20:Correlation>
+                                <ns20:BizObjTrackingGUID>
+                                    <xsl:value-of select="$Update-Customer-Message-Exchange-Process/ns9:SMF/ns9:SMFHeader/ns5:MessageKey"/>
+                                </ns20:BizObjTrackingGUID>
+                            </ns20:Correlation>
+                            <ns20:CustomerInfo>
+                                <xsl:for-each select="$Update-Customer-Message-Exchange-Process/ns9:SMF/ns9:SMFBody/ns9:TeO/ns9:Customer/ns19:Customer">
+                                    <ns20:Customer>
+                                        <ns20:Command>
+                                            <xsl:value-of select="ns19:Command[1]"/>
+                                        </ns20:Command>
+                                        <ns20:NavisionID>
+                                            <xsl:value-of select="ns19:NavisionID"/>
+                                        </ns20:NavisionID>
+                                        <ns20:MDMID>
+                                            <xsl:value-of select="ns19:MDMID"/>
+                                        </ns20:MDMID>
+                                        <xsl:if test="ns19:SFID">
+                                            <ns20:SFID>
+                                                <xsl:value-of select="ns19:SFID"/>
+                                            </ns20:SFID>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:DUNSID">
+                                            <ns20:DUNSID>
+                                                <xsl:value-of select="ns19:DUNSID"/>
+                                            </ns20:DUNSID>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:B2BID">
+                                            <ns20:B2BID>
+                                                <xsl:value-of select="ns19:B2BID"/>
+                                            </ns20:B2BID>
+                                        </xsl:if>
+                                        <ns20:IsDisti>
+                                            <xsl:value-of select="ns19:IsDisti"/>
+                                        </ns20:IsDisti>
+                                        <ns20:IsReseller>
+                                            <xsl:value-of select="ns19:IsReseller"/>
+                                        </ns20:IsReseller>
+                                        <ns20:IsEndUser>
+                                            <xsl:value-of select="ns19:IsEndUser"/>
+                                        </ns20:IsEndUser>
+                                        <xsl:if test="ns19:CountryID">
+                                            <ns20:CountryID>
+                                                <xsl:value-of select="ns19:CountryID"/>
+                                            </ns20:CountryID>
+                                        </xsl:if>
+                                        <ns20:Name>
+                                            <xsl:value-of select="ns19:Name"/>
+                                        </ns20:Name>
+                                        <xsl:if test="ns19:Name2">
+                                            <ns20:Name2>
+                                                <xsl:value-of select="ns19:Name2"/>
+                                            </ns20:Name2>
+                                        </xsl:if>
+                                        <ns20:Address>
+                                            <xsl:value-of select="ns19:Address"/>
+                                        </ns20:Address>
+                                        <xsl:if test="ns19:Address2">
+                                            <ns20:Address2>
+                                                <xsl:value-of select="ns19:Address2"/>
+                                            </ns20:Address2>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:City">
+                                            <ns20:City>
+                                                <xsl:value-of select="ns19:City"/>
+                                            </ns20:City>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:County">
+                                            <ns20:County>
+                                                <xsl:value-of select="ns19:County"/>
+                                            </ns20:County>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:Email">
+                                            <ns20:Email>
+                                                <xsl:value-of select="ns19:Email"/>
+                                            </ns20:Email>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:Fax">
+                                            <ns20:Fax>
+                                                <xsl:value-of select="ns19:Fax"/>
+                                            </ns20:Fax>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:Phone">
+                                            <ns20:Phone>
+                                                <xsl:value-of select="ns19:Phone"/>
+                                            </ns20:Phone>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:Website">
+                                            <ns20:Website>
+                                                <xsl:value-of select="ns19:Website"/>
+                                            </ns20:Website>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:Zip">
+                                            <ns20:Zip>
+                                                <xsl:value-of select="ns19:Zip"/>
+                                            </ns20:Zip>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:LanguageCode">
+                                            <ns20:LanguageCode>
+                                                <xsl:value-of select="ns19:LanguageCode"/>
+                                            </ns20:LanguageCode>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:Blocked">
+                                            <ns20:Blocked>
+                                                <xsl:value-of select="ns19:Blocked"/>
+                                            </ns20:Blocked>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:DistributorType">
+                                            <ns20:DistributorType>
+                                                <xsl:value-of select="ns19:DistributorType"/>
+                                            </ns20:DistributorType>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:Company">
+                                            <ns20:Company>
+                                                <xsl:value-of select="ns19:Company"/>
+                                            </ns20:Company>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:Currency">
+                                            <ns20:Currency>
+                                                <xsl:value-of select="ns19:Currency"/>
+                                            </ns20:Currency>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:Category">
+                                            <ns20:Category>
+                                                <xsl:value-of select="ns19:Category"/>
+                                            </ns20:Category>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:DefaultAccred">
+                                            <ns20:DefaultAccred>
+                                                <xsl:value-of select="ns19:DefaultAccred"/>
+                                            </ns20:DefaultAccred>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:DefaultContactID">
+                                            <ns20:DefaultContactID>
+                                                <xsl:value-of select="ns19:DefaultContactID"/>
+                                            </ns20:DefaultContactID>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:IsXSP">
+                                            <ns20:IsXSP>
+                                                <xsl:value-of select="ns19:IsXSP"/>
+                                            </ns20:IsXSP>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:IsMarketPlace">
+                                            <ns20:IsMarketPlace>
+                                                <xsl:value-of select="ns19:IsMarketPlace"/>
+                                            </ns20:IsMarketPlace>
+                                        </xsl:if>
+                                        <xsl:if test="ns19:ContractFlag">
+                                            <ns20:ContractFlag>
+                                                <xsl:value-of select="ns19:ContractFlag"/>
+                                            </ns20:ContractFlag>
+                                        </xsl:if>
+                                    </ns20:Customer>
+                                </xsl:for-each>
+                            </ns20:CustomerInfo>
+                        </ns20:BusinessObject>
+                    </ns20:MessagePayload>
+                </ns20:TrendMicro>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Logging Input Message">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>237</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <processName>/Services/SharedServices/MDM Logging Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <MessageKey>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:MessageKey"/>
+                </MessageKey>
+                <ServiceName>
+                    <xsl:value-of select="&quot;UpdateTeOCust&quot;"/>
+                </ServiceName>
+                <ServiceVersion>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:ServiceVersion"/>
+                </ServiceVersion>
+                <SourceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID"/>
+                </SourceID>
+                <SourceIP>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceIP"/>
+                </SourceIP>
+                <RqTimestamp>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:RqTimestamp"/>
+                </RqTimestamp>
+                <RsTimestamp>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:RsTimestamp"/>
+                </RsTimestamp>
+                <MessageBody>
+                    <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF,true())"/>
+                </MessageBody>
+                <errlog_flag>
+                    <xsl:value-of select="&quot;N&quot;"/>
+                </errlog_flag>
+                <datasource>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID"/>
+                </datasource>
+                <xsl:choose>
+                    <xsl:when test="exists($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:Navision)">
+                        <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns18:Customer/ns18:MDMCustID">
+                            <gold_id>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns18:Customer/ns18:MDMCustID"/>
+                            </gold_id>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:if test="not(($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer/ns13:MdmPartnerId/@xsi:nil=(&quot;true&quot;)) or ($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer/ns13:MdmPartnerId/@xsi:nil=(&quot;1&quot;)))">
+                            <gold_id>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer[1]/ns13:MdmPartnerId"/>
+                            </gold_id>
+                        </xsl:if>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:Navision)">
+                        <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns18:Customer/ns18:NAVID">
+                            <source_company_id>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns18:Customer/ns18:NAVID"/>
+                            </source_company_id>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer/ns13:SfdcPartnerId">
+                            <source_company_id>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer[1]/ns13:SfdcPartnerId"/>
+                            </source_company_id>
+                        </xsl:if>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ReceiveCompany">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>720</pd:x>
+        <pd:y>159</pd:y>
+        <config>
+            <processName>/ExternalServices/MDM_Server/ReceiveCompany.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <message_id>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:MessageKey"/>
+                </message_id>
+                <message_type>
+                    <xsl:value-of select="&quot;update&quot;"/>
+                </message_type>
+                <datasource>
+                    <xsl:value-of select="&quot;TeO&quot;"/>
+                </datasource>
+                <gold_id>
+                    <xsl:value-of select="$Update-Customer-Message-Exchange-Process/ns9:SMF/ns9:SMFBody/ns9:TeO/ns9:Customer/ns19:Customer/ns19:MDMID"/>
+                </gold_id>
+                <xsl:choose>
+                    <xsl:when test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID=&quot;SFDC&quot;">
+                        <source_company_id>
+                            <xsl:value-of select="$Update-Customer-Message-Exchange-ProcessSFDCToNav/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns18:Customer/ns18:NAVID"/>
+                        </source_company_id>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <source_company_id>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns18:Customer/ns18:NAVID"/>
+                        </source_company_id>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID=&quot;SFDC&quot;">
+                        <message_content>
+                            <xsl:value-of select="tib:render-xml($Update-Customer-Message-Exchange-ProcessSFDCToNav/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns18:Customer,true())"/>
+                        </message_content>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <message_content>
+                            <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns18:Customer,true())"/>
+                        </message_content>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:batch_id">
+                    <batch_id>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:batch_id"/>
+                    </batch_id>
+                </xsl:if>
+                <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID">
+                    <trigger_datasource>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID"/>
+                    </trigger_datasource>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Update Customer Message Exchange Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>463</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Translation Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <XSLTFileName>
+                    <xsl:value-of select="&quot;NavisionToTeO_UpdateTeOCust.xsl&quot;"/>
+                </XSLTFileName>
+                <xsl:choose>
+                    <xsl:when test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID=&quot;SFDC&quot;">
+                        <xsl:copy-of select="$Update-Customer-Message-Exchange-ProcessSFDCToNav/ns9:SMF"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <dataSource>
+                    <xsl:value-of select="&quot;Navision&quot;"/>
+                </dataSource>
+                <source_id>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping/ns17:NavId"/>
+                </source_id>
+                <target>
+                    <xsl:value-of select="&quot;TeO&quot;"/>
+                </target>
+                <type>
+                    <xsl:value-of select="&quot;Customer&quot;"/>
+                </type>
+                <xsl:choose>
+                    <xsl:when test="tib:trim($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping/ns17:GoldId) !=&quot;&quot;">
+                        <gold_id>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping/ns17:GoldId"/>
+                        </gold_id>
+                    </xsl:when>
+                    <xsl:when test="$SelectSourceID/SourceIDMapping/ns17:GoldId!=&quot;&quot;">
+                        <gold_id>
+                            <xsl:value-of select="$SelectSourceID/SourceIDMapping/ns17:GoldId"/>
+                        </gold_id>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <gold_id>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:Company/ns17:gold_id"/>
+                        </gold_id>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <UpdateSourceData>
+                    <xsl:value-of select="true()"/>
+                </UpdateSourceData>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Update-Customer-Message-Exchange-Process(SFDCToNav)">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>314</pd:x>
+        <pd:y>293</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Translation Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <XSLTFileName>
+                    <xsl:value-of select="&quot;SFDCToNavision_UpdateNavCust.xsl&quot;"/>
+                </XSLTFileName>
+                <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF"/>
+                <dataSource>
+                    <xsl:value-of select="&quot;SFDC&quot;"/>
+                </dataSource>
+                <source_id>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping/ns17:SfId"/>
+                </source_id>
+                <target>
+                    <xsl:value-of select="&quot;Navision&quot;"/>
+                </target>
+                <type>
+                    <xsl:value-of select="&quot;Customer&quot;"/>
+                </type>
+                <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:when test="tib:trim($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping/ns17:GoldId) !=&quot;&quot;">
+                        <gold_id>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping/ns17:GoldId"/>
+                        </gold_id>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <gold_id>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:Company/ns17:gold_id"/>
+                        </gold_id>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <UpdateSourceData>
+                    <xsl:value-of select="true()"/>
+                </UpdateSourceData>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SelectSourceID">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>388</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <processName>/ExternalServices/MDM_Server/SelectSourceID.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping)">
+                    <GoldID>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:SourceIDMapping/ns17:GoldId"/>
+                    </GoldID>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:choose>
+                        <xsl:when test="tib:index-of($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:ServiceName,&quot;Create&quot;) >-1">
+                            <GoldID>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:Company/ns17:gold_id"/>
+                            </GoldID>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID=&quot;Navision&quot;&#xA;or &#xA;$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID=&quot;MDM&quot;">
+                                    <GoldID>
+                                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:Navision/ns9:Customer/ns18:Customer/ns18:MDMCustID"/>
+                                    </GoldID>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <GoldID>
+                                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:SFDC/ns9:Customer[1]/ns13:MdmPartnerId"/>
+                                    </GoldID>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Resend Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>612</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <processName>/Utilities/UndeliveryService/Resend Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:when test="exists($JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/RetryCount)">
+                        <RetryCount>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/RetryCount"/>
+                        </RetryCount>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <RetryCount>
+                            <xsl:value-of select="0"/>
+                        </RetryCount>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <RedeliveredQueue>
+                    <xsl:value-of select="$_globalVariables/ns12:GlobalVariables/ExternalServices/TeO/UpdateTeOCust/DestinationQueue"/>
+                </RedeliveredQueue>
+                <ns1:SMFHeader xmlns:ns1="http://www.trendmicro.com/ESB/ACS/schemas/SMF">
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ancestor-or-self::*/namespace::node()"/>
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/@*"/>
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/node()"/>
+                </ns1:SMFHeader>
+                <Source>
+                    <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF)"/>
+                </Source>
+                <gold_id>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFBody/ns9:MDM/ns9:Company/ns17:gold_id"/>
+                </gold_id>
+                <from_datasource>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID"/>
+                </from_datasource>
+                <to_datasource>
+                    <xsl:value-of select="&quot;TeO&quot;"/>
+                </to_datasource>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>390</pd:x>
+        <pd:y>159</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update TeO Customer</pd:from>
+        <pd:to>ReceiveCompany</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Logging Input Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ReceiveCompany</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update Customer Message Exchange Process</pd:from>
+        <pd:to>Update TeO Customer</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update-Customer-Message-Exchange-Process(SFDCToNav)</pd:from>
+        <pd:to>Update Customer Message Exchange Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Logging Input Message</pd:from>
+        <pd:to>SelectSourceID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SelectSourceID</pd:from>
+        <pd:to>Resend Process</pd:to>
+        <pd:xpathDescription>NavID=""</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$SelectSourceID/SourceIDMapping/ns17:NavId =""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Resend Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SelectSourceID</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Update-Customer-Message-Exchange-Process(SFDCToNav)</pd:to>
+        <pd:xpathDescription>From SFDC</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$JMS-Queue-Receiver/ns:ActivityOutput/Body/ns9:SMF/ns9:SMFHeader/ns5:SourceID="SFDC"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Update Customer Message Exchange Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

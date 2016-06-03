@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/error" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Contact" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" schemaLocation="/XSD/Client/Navision/Customer.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Contact" schemaLocation="/XSD/Client/Navision/Contact.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" schemaLocation="/XSD/Client/SFDC/Customer.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" schemaLocation="/XSD/Client/Rallying/Partner.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/MDM_Server/CrossCheck/GetRallyView.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="source_id" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>104</pd:startX>
+    <pd:startY>117</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:for-each select="$Query-Customer-View/resultSet/Record">
+                <Customer>
+                    <pfx4:Id>
+                        <xsl:value-of select="ROW_ID"/>
+                    </pfx4:Id>
+                    <xsl:if test="NAV_ADDRESS">
+                        <pfx4:Address>
+                            <xsl:value-of select="NAV_ADDRESS"/>
+                        </pfx4:Address>
+                    </xsl:if>
+                    <xsl:if test="BLOCK_FLG">
+                        <pfx4:BlockFlag>
+                            <xsl:value-of select="BLOCK_FLG"/>
+                        </pfx4:BlockFlag>
+                    </xsl:if>
+                    <xsl:if test="NAV_CITY">
+                        <pfx4:City>
+                            <xsl:value-of select="NAV_CITY"/>
+                        </pfx4:City>
+                    </xsl:if>
+                    <xsl:if test="NAV_COUNTRY">
+                        <pfx4:Country>
+                            <xsl:value-of select="NAV_COUNTRY"/>
+                        </pfx4:Country>
+                    </xsl:if>
+                    <xsl:if test="DISTY_FLG">
+                        <pfx4:DistributorFlag>
+                            <xsl:value-of select="DISTY_FLG"/>
+                        </pfx4:DistributorFlag>
+                    </xsl:if>
+                    <xsl:if test="EMAIL">
+                        <pfx4:Email>
+                            <xsl:value-of select="EMAIL"/>
+                        </pfx4:Email>
+                    </xsl:if>
+                    <xsl:if test="ED_CUT_FLG">
+                        <pfx4:EndCustomerFlag>
+                            <xsl:value-of select="ED_CUT_FLG"/>
+                        </pfx4:EndCustomerFlag>
+                    </xsl:if>
+                    <xsl:if test="SRC_CD">
+                        <pfx4:IntegrationSource>
+                            <xsl:value-of select="SRC_CD"/>
+                        </pfx4:IntegrationSource>
+                    </xsl:if>
+                    <xsl:if test="NAV_NAME">
+                        <pfx4:Name>
+                            <xsl:value-of select="NAV_NAME"/>
+                        </pfx4:Name>
+                    </xsl:if>
+                    <xsl:if test="PARTNER_TIER">
+                        <pfx4:PartnerTier>
+                            <xsl:value-of select="PARTNER_TIER"/>
+                        </pfx4:PartnerTier>
+                    </xsl:if>
+                    <xsl:if test="PARTNER_TIER_DESC">
+                        <pfx4:PartnerTierDescription>
+                            <xsl:value-of select="PARTNER_TIER_DESC"/>
+                        </pfx4:PartnerTierDescription>
+                    </xsl:if>
+                    <xsl:if test="PR_PRTNR_TIER_ID">
+                        <pfx4:PrimaryPartnerTierId>
+                            <xsl:value-of select="PR_PRTNR_TIER_ID"/>
+                        </pfx4:PrimaryPartnerTierId>
+                    </xsl:if>
+                    <xsl:if test="PARTNER_TYPE">
+                        <pfx4:PrimaryPartnerTypeId>
+                            <xsl:value-of select="PARTNER_TYPE"/>
+                        </pfx4:PrimaryPartnerTypeId>
+                    </xsl:if>
+                    <xsl:if test="RESELLER_FLG">
+                        <pfx4:ResellerFlag>
+                            <xsl:value-of select="RESELLER_FLG"/>
+                        </pfx4:ResellerFlag>
+                    </xsl:if>
+                    <xsl:if test="DISCOUNT">
+                        <pfx4:StandardDiscount>
+                            <xsl:value-of select="DISCOUNT"/>
+                        </pfx4:StandardDiscount>
+                    </xsl:if>
+                    <pfx4:SyncDate>
+                        <xsl:value-of select="if (tib:trim(current()/SYNC_DATE)!=&quot;&quot;) then&#xA;tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;,SYNC_DATE)&#xA;else&#xA;&quot;&quot;"/>
+                    </pfx4:SyncDate>
+                    <xsl:if test="X_NAV_ID">
+                        <pfx4:NavisionId>
+                            <xsl:value-of select="X_NAV_ID"/>
+                        </pfx4:NavisionId>
+                    </xsl:if>
+                    <xsl:if test="SFDCCustomerID">
+                        <pfx4:SalesForceId>
+                            <xsl:value-of select="SFDCCustomerID"/>
+                        </pfx4:SalesForceId>
+                    </xsl:if>
+                    <xsl:if test="MDMCustomerID">
+                        <pfx4:MDMId>
+                            <xsl:value-of select="MDMCustomerID"/>
+                        </pfx4:MDMId>
+                    </xsl:if>
+                </Customer>
+            </xsl:for-each>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Customer" type="pfx4:Partner" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>524</pd:endX>
+    <pd:endY>117</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="ns2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1347614762010</pd:targetNamespace>
+    <pd:activity name="Query Customer View">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>310</pd:x>
+        <pd:y>126</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>SELECT [ROW_ID],[CREATED],[CREATED_BY],[LAST_UPD],[LAST_UPD_BY],[MODIFICATION_NUM],[CONFLICT_ID],[NAV_NAME],[X_NAV_ID]
+      ,[DB_LAST_UPD],CAST([DUP_FLG] AS NVARCHAR) AS [DUP_FLG],CAST([ED_CUT_FLG] AS NVARCHAR) AS [ED_CUT_FLG],[ACCOUNT_ID],[DB_LAST_UPD_SRC],[DUP_ACCOUNT_ID],[NAV_ADDRESS],[NAV_CITY],[NAV_COUNTRY],[PR_PRTNR_TYPE_ID]
+      ,[DISCOUNT],CAST([DISTY_FLG] AS NVARCHAR) AS [DISTY_FLG],[EMAIL],[PARTNER_TIER],[PARTNER_TYPE]
+      ,[PR_PRTNR_TIER_ID],CAST([RESELLER_FLG] AS NVARCHAR) AS [RESELLER_FLG],[SRC_CD],[SYNC_DATE],[PARTNER_TIER_DESC]
+      ,CAST([BLOCK_FLG] AS NVARCHAR) AS [BLOCK_FLG]
+     ,[SUB_REGION], NAV.[MDM Customer ID],NAV.[SFDC Customer ID]
+  FROM [EMEA_MDM].[EMEA_MDM].[VIEW_RAL_CX_NAV_ORG_EXT], [EMEA_MDM].[EMEA_MDM].[VIEW_NAV_CUSTOMER] NAV
+  WHERE [EMEA_MDM].[EMEA_MDM].[VIEW_RAL_CX_NAV_ORG_EXT].[X_NAV_ID] = NAV.[No_]
+  and  [ROW_ID]=?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>source_id</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <wizardData/>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>ROW_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CREATED</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CREATED_BY</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LAST_UPD</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LAST_UPD_BY</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MODIFICATION_NUM</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>numeric</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CONFLICT_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NAV_NAME</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>X_NAV_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DB_LAST_UPD</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUP_FLG</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ED_CUT_FLG</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ACCOUNT_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DB_LAST_UPD_SRC</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUP_ACCOUNT_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NAV_ADDRESS</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NAV_CITY</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NAV_COUNTRY</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PR_PRTNR_TYPE_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DISCOUNT</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>numeric</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DISTY_FLG</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>EMAIL</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PARTNER_TIER</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PARTNER_TYPE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PR_PRTNR_TIER_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>RESELLER_FLG</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SRC_CD</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SYNC_DATE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PARTNER_TIER_DESC</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BLOCK_FLG</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SUB_REGION</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MDMCustomerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SFDCCustomerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <source_id>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/root/source_id)">
+                            <xsl:value-of select="$Start/root/source_id"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </source_id>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>463</pd:x>
+        <pd:y>218</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                </messageCode>
+                <data>
+                    <ns2:Error>
+                        <ns2:src>
+                            <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                        </ns2:src>
+                        <ns2:error_code>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </ns2:error_code>
+                        <ns2:error_message>
+                            <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                        </ns2:error_message>
+                        <ns2:stack_trace>
+                            <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                        </ns2:stack_trace>
+                    </ns2:Error>
+                </data>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>286</pd:x>
+        <pd:y>218</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Query Customer View</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Query Customer View</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

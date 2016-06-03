@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/">
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+            <s:element name="TeO_Account_fuzzy">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="name" type="s:string"/>
+                        <s:element maxOccurs="1" minOccurs="0" name="address" type="s:string"/>
+                        <s:element maxOccurs="1" minOccurs="1" name="weight" type="s:int"/>
+                        <s:element maxOccurs="1" minOccurs="1" name="expect_score" type="s:int"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TeO_Account_fuzzyResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="TeO_Account_fuzzyResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any/>
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TeO_Contact_exactly">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="1" name="gold_id" type="s:int"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TeO_Contact_exactlyResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="TeO_Contact_exactlyResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any/>
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetGoogleMapFormattedAddress">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="addr" type="s:string"/>
+                        <s:element maxOccurs="1" minOccurs="0" name="country" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetGoogleMapFormattedAddressResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="GetGoogleMapFormattedAddressResult" type="tns:ArrayOfFormattedAddress"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ArrayOfFormattedAddress">
+                <s:sequence>
+                    <s:element maxOccurs="unbounded" minOccurs="0" name="FormattedAddress" nillable="true" type="tns:FormattedAddress"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="FormattedAddress">
+                <s:sequence>
+                    <s:element maxOccurs="1" minOccurs="0" name="MatchAddress" type="s:string"/>
+                    <s:element maxOccurs="1" minOccurs="1" name="FuzzyScore" type="s:double"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="TeO_Account_fuzzy_for_AVO">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="name" type="s:string"/>
+                        <s:element maxOccurs="1" minOccurs="0" name="address" type="s:string"/>
+                        <s:element maxOccurs="1" minOccurs="0" name="isocode" type="s:string"/>
+                        <s:element maxOccurs="1" minOccurs="1" name="expect_score" type="s:int"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TeO_Account_fuzzy_for_AVOResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="TeO_Account_fuzzy_for_AVOResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any/>
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TeO_Contact_fuzzy_for_AVO">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="name" type="s:string"/>
+                        <s:element maxOccurs="1" minOccurs="1" name="expect_score" type="s:int"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TeO_Contact_fuzzy_for_AVOResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="TeO_Contact_fuzzy_for_AVOResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any/>
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CallHoovers_FindCompanyByKeyword">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="keyword" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CallHoovers_FindCompanyByKeywordResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element maxOccurs="1" minOccurs="0" name="CallHoovers_FindCompanyByKeywordResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any/>
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="TeO_Account_fuzzySoapIn">
+        <wsdl:part element="tns:TeO_Account_fuzzy" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="TeO_Account_fuzzySoapOut">
+        <wsdl:part element="tns:TeO_Account_fuzzyResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="TeO_Contact_exactlySoapIn">
+        <wsdl:part element="tns:TeO_Contact_exactly" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="TeO_Contact_exactlySoapOut">
+        <wsdl:part element="tns:TeO_Contact_exactlyResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetGoogleMapFormattedAddressSoapIn">
+        <wsdl:part element="tns:GetGoogleMapFormattedAddress" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetGoogleMapFormattedAddressSoapOut">
+        <wsdl:part element="tns:GetGoogleMapFormattedAddressResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="TeO_Account_fuzzy_for_AVOSoapIn">
+        <wsdl:part element="tns:TeO_Account_fuzzy_for_AVO" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="TeO_Account_fuzzy_for_AVOSoapOut">
+        <wsdl:part element="tns:TeO_Account_fuzzy_for_AVOResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="TeO_Contact_fuzzy_for_AVOSoapIn">
+        <wsdl:part element="tns:TeO_Contact_fuzzy_for_AVO" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="TeO_Contact_fuzzy_for_AVOSoapOut">
+        <wsdl:part element="tns:TeO_Contact_fuzzy_for_AVOResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CallHoovers_FindCompanyByKeywordSoapIn">
+        <wsdl:part element="tns:CallHoovers_FindCompanyByKeyword" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CallHoovers_FindCompanyByKeywordSoapOut">
+        <wsdl:part element="tns:CallHoovers_FindCompanyByKeywordResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:portType name="ServiceSoap">
+        <wsdl:operation name="TeO_Account_fuzzy">
+            <wsdl:input message="tns:TeO_Account_fuzzySoapIn"/>
+            <wsdl:output message="tns:TeO_Account_fuzzySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="TeO_Contact_exactly">
+            <wsdl:input message="tns:TeO_Contact_exactlySoapIn"/>
+            <wsdl:output message="tns:TeO_Contact_exactlySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetGoogleMapFormattedAddress">
+            <wsdl:input message="tns:GetGoogleMapFormattedAddressSoapIn"/>
+            <wsdl:output message="tns:GetGoogleMapFormattedAddressSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="TeO_Account_fuzzy_for_AVO">
+            <wsdl:input message="tns:TeO_Account_fuzzy_for_AVOSoapIn"/>
+            <wsdl:output message="tns:TeO_Account_fuzzy_for_AVOSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="TeO_Contact_fuzzy_for_AVO">
+            <wsdl:input message="tns:TeO_Contact_fuzzy_for_AVOSoapIn"/>
+            <wsdl:output message="tns:TeO_Contact_fuzzy_for_AVOSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="CallHoovers_FindCompanyByKeyword">
+            <wsdl:input message="tns:CallHoovers_FindCompanyByKeywordSoapIn"/>
+            <wsdl:output message="tns:CallHoovers_FindCompanyByKeywordSoapOut"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="TeO_Account_fuzzy">
+            <soap:operation soapAction="http://tempuri.org/TeO_Account_fuzzy" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TeO_Contact_exactly">
+            <soap:operation soapAction="http://tempuri.org/TeO_Contact_exactly" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetGoogleMapFormattedAddress">
+            <soap:operation soapAction="http://tempuri.org/GetGoogleMapFormattedAddress" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TeO_Account_fuzzy_for_AVO">
+            <soap:operation soapAction="http://tempuri.org/TeO_Account_fuzzy_for_AVO" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TeO_Contact_fuzzy_for_AVO">
+            <soap:operation soapAction="http://tempuri.org/TeO_Contact_fuzzy_for_AVO" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CallHoovers_FindCompanyByKeyword">
+            <soap:operation soapAction="http://tempuri.org/CallHoovers_FindCompanyByKeyword" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="TeO_Account_fuzzy">
+            <soap12:operation soapAction="http://tempuri.org/TeO_Account_fuzzy" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TeO_Contact_exactly">
+            <soap12:operation soapAction="http://tempuri.org/TeO_Contact_exactly" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetGoogleMapFormattedAddress">
+            <soap12:operation soapAction="http://tempuri.org/GetGoogleMapFormattedAddress" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TeO_Account_fuzzy_for_AVO">
+            <soap12:operation soapAction="http://tempuri.org/TeO_Account_fuzzy_for_AVO" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TeO_Contact_fuzzy_for_AVO">
+            <soap12:operation soapAction="http://tempuri.org/TeO_Contact_fuzzy_for_AVO" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CallHoovers_FindCompanyByKeyword">
+            <soap12:operation soapAction="http://tempuri.org/CallHoovers_FindCompanyByKeyword" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="Service">
+        <wsdl:port binding="tns:ServiceSoap" name="ServiceSoap">
+            <soap:address location="http://sjdc-sisolap01s:1001/Service.asmx"/>
+        </wsdl:port>
+        <wsdl:port binding="tns:ServiceSoap12" name="ServiceSoap12">
+            <soap12:address location="http://sjdc-sisolap01s:1001/Service.asmx"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

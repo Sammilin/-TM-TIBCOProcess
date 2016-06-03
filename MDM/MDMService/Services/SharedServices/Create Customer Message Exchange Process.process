@@ -1,0 +1,986 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/MDM/TeO/Customer" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/Common" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/MDMServer/ResponseCreateCompany.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/MDMServer/ResponseCreateCompany.xsd" schemaLocation="/XSD/Client/MDMServer/ResponseCreateCompany.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <pd:name>Services/SharedServices/Create Customer Message Exchange Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:choice>
+                        <xsd:element name="toNavision" type="xsd:boolean"/>
+                        <xsd:element name="toSFDC" type="xsd:boolean"/>
+                        <xsd:element name="toRallying" type="xsd:boolean"/>
+                        <xsd:element name="toTeO" type="xsd:boolean"/>
+                    </xsd:choice>
+                    <xsd:element ref="pfx:SMF"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>134</pd:startX>
+    <pd:startY>114</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Map-Customer-Data/pfx:SMF"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:SMF"/>
+    <pd:endX>503</pd:endX>
+    <pd:endY>109</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1344491501487</pd:targetNamespace>
+    <pd:activity name="Map Customer Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>332</pd:x>
+        <pd:y>110</pd:y>
+        <config>
+            <element ref="pfx:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:SMF>
+                <pfx:SMFHeader>
+                    <ns4:MessageKey>
+                        <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:MessageKey"/>
+                    </ns4:MessageKey>
+                    <xsl:choose>
+                        <xsl:when test="$Start/root/toNavision">
+                            <ns4:ServiceName>
+                                <xsl:value-of select="&quot;CreateNavCust&quot;"/>
+                            </ns4:ServiceName>
+                        </xsl:when>
+                        <xsl:when test="$Start/root/toSFDC">
+                            <ns4:ServiceName>
+                                <xsl:value-of select="&quot;CreateSfCust&quot;"/>
+                            </ns4:ServiceName>
+                        </xsl:when>
+                        <xsl:when test="$Start/root/toRallying">
+                            <ns4:ServiceName>
+                                <xsl:value-of select="&quot;CreatRalCust&quot;"/>
+                            </ns4:ServiceName>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns4:ServiceName>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </ns4:ServiceName>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <ns4:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns4:ServiceVersion>
+                    <ns4:SourceID>
+                        <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:SourceID"/>
+                    </ns4:SourceID>
+                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:SourceIP">
+                        <ns4:SourceIP>
+                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:SourceIP"/>
+                        </ns4:SourceIP>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:RqTimestamp">
+                        <ns4:RqTimestamp>
+                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:RqTimestamp"/>
+                        </ns4:RqTimestamp>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:RsTimestamp">
+                        <ns4:RsTimestamp>
+                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFHeader/ns4:RsTimestamp"/>
+                        </ns4:RsTimestamp>
+                    </xsl:if>
+                </pfx:SMFHeader>
+                <pfx:SMFBody>
+                    <xsl:choose>
+                        <xsl:when test="$Start/root/toNavision">
+                            <pfx:Navision>
+                                <pfx:Customer>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($Start/root/pfx:SMF/pfx:SMFBody/pfx:SFDC/pfx:Customer)">
+                                            <ns:Customer>
+                                                <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:gold_id">
+                                                    <ns:MDMCustID>
+                                                        <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:gold_id"/>
+                                                    </ns:MDMCustID>
+                                                </xsl:if>
+                                                <ns:SiebelID>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns:SiebelID>
+                                                <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:SFDC/pfx:Customer[1]/ns1:SfdcPartnerId">
+                                                    <ns:SalesForceID>
+                                                        <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:SFDC/pfx:Customer[1]/ns1:SfdcPartnerId"/>
+                                                    </ns:SalesForceID>
+                                                </xsl:if>
+                                                <ns:NavDistiID>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns:NavDistiID>
+                                                <ns:NAVID>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns:NAVID>
+                                                <ns:CustomerName>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_name"/>
+                                                </ns:CustomerName>
+                                                <ns:CustomerName2>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns:CustomerName2>
+                                                <ns:Address>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_address"/>
+                                                </ns:Address>
+                                                <ns:Address2>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_address_line2"/>
+                                                </ns:Address2>
+                                                <ns:City>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:city"/>
+                                                </ns:City>
+                                                <ns:County>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:country"/>
+                                                </ns:County>
+                                                <ns:PostCode>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:post_code"/>
+                                                </ns:PostCode>
+                                                <ns:CountryCode>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:country"/>
+                                                </ns:CountryCode>
+                                                <ns:Phone>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_phone_no"/>
+                                                </ns:Phone>
+                                                <ns:Fax>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_fax_no"/>
+                                                </ns:Fax>
+                                                <ns:Email>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_email"/>
+                                                </ns:Email>
+                                                <ns:LanguageCode>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:language_code"/>
+                                                </ns:LanguageCode>
+                                                <ns:LegalEntity>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns:LegalEntity>
+                                                <ns:EndCustomer>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_enduser"/>
+                                                </ns:EndCustomer>
+                                                <ns:Reseller>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_reseller"/>
+                                                </ns:Reseller>
+                                                <ns:TransactionProfile>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns:TransactionProfile>
+                                                <ns:Segment>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:segment"/>
+                                                </ns:Segment>
+                                                <ns:MasterNAVID>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns:MasterNAVID>
+                                                <ns:Blocked>
+                                                    <xsl:value-of select="0"/>
+                                                </ns:Blocked>
+                                                <ns:PartnerTier>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns:PartnerTier>
+                                                <ns:VATRegNo>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns:VATRegNo>
+                                                <ns:SourceSystemID>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns:SourceSystemID>
+                                                <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:DistributorType">
+                                                    <ns:DistributorType>
+                                                        <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:DistributorType"/>
+                                                    </ns:DistributorType>
+                                                </xsl:if>
+                                                <ns:MSP>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MSP"/>
+                                                </ns:MSP>
+                                                <ns:MarketPlace>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MarketPlace"/>
+                                                </ns:MarketPlace>
+                                                <ns:MSPContractSigned>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MSPContractSigned"/>
+                                                </ns:MSPContractSigned>
+                                            </ns:Customer>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:copy-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx:Customer>
+                            </pfx:Navision>
+                        </xsl:when>
+                        <xsl:when test="$Start/root/toSFDC">
+                            <xsl:choose>
+                                <xsl:when test="tib:trim($Start/root/pfx:SMF/pfx:SMFHeader/ns4:ServiceName)!=&quot;CreateNavCust&quot;">
+                                    <pfx:SFDC>
+                                        <xsl:for-each select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer">
+                                            <pfx:Customer>
+                                                <ns1:SfdcPartnerId>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns1:SfdcPartnerId>
+                                                <xsl:choose>
+                                                    <xsl:when test="tib:trim(../../../pfx:MDM/pfx:Company/ns2:gold_id)!=&quot;&quot;">
+                                                        <xsl:if test="../../../pfx:MDM/pfx:Company/ns2:gold_id">
+                                                            <ns1:MdmPartnerId>
+                                                                <xsl:copy-of select="../../../pfx:MDM/pfx:Company/ns2:gold_id/@xsi:nil"/>
+                                                                <xsl:value-of select="../../../pfx:MDM/pfx:Company/ns2:gold_id"/>
+                                                            </ns1:MdmPartnerId>
+                                                        </xsl:if>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <ns1:MdmPartnerId>
+                                                            <xsl:choose>
+                                                                <xsl:when test="exists(ns:MDMCustID)">
+                                                                    <xsl:value-of select="ns:MDMCustID"/>
+                                                                </xsl:when>
+                                                                <xsl:otherwise>
+                                                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                                                </xsl:otherwise>
+                                                            </xsl:choose>
+                                                        </ns1:MdmPartnerId>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <xsl:choose>
+                                                    <xsl:when test="ns:Blocked='2' or ns:Blocked='3'">
+                                                        <ns1:Active>
+                                                            <xsl:value-of select="&quot;false&quot;"/>
+                                                        </ns1:Active>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <ns1:Active>
+                                                            <xsl:value-of select="&quot;true&quot;"/>
+                                                        </ns1:Active>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <ns1:AccountName>
+                                                    <xsl:value-of select="ns:CustomerName"/>
+                                                </ns1:AccountName>
+                                                <xsl:choose>
+                                                    <xsl:when test="current()/ns:TransactionProfile='1' or current()/ns:TransactionProfile='2' or ../../../pfx:MDM/pfx:Company/ns2:is_distributor=&quot;true&quot; or ../../../pfx:MDM/pfx:Company/ns2:is_directcustomer=&quot;true&quot;">
+                                                        <ns1:AccountType>
+                                                            <xsl:value-of select="&quot;Distributor&quot;"/>
+                                                        </ns1:AccountType>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <ns1:AccountType>
+                                                            <xsl:value-of select="&quot;Reseller&quot;"/>
+                                                        </ns1:AccountType>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <xsl:choose>
+                                                    <xsl:when test="current()/ns:EndCustomer=&quot;false&quot; and current()/ns:Reseller=&quot;true&quot;">
+                                                        <ns1:AccountOtherType>
+                                                            <xsl:value-of select="&quot;Reseller&quot;"/>
+                                                        </ns1:AccountOtherType>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <xsl:choose>
+                                                            <xsl:when test="current()/ns:EndCustomer=&quot;true&quot; and current()/ns:Reseller=&quot;true&quot; and current()/ns:Segment ='1'">
+                                                                <ns1:AccountOtherType>
+                                                                    <xsl:value-of select="&quot;Reseller,SMB End Customer&quot;"/>
+                                                                </ns1:AccountOtherType>
+                                                            </xsl:when>
+                                                            <xsl:when test="current()/ns:EndCustomer=&quot;true&quot; and current()/ns:Reseller=&quot;true&quot; and current()/ns:Segment ='2'">
+                                                                <ns1:AccountOtherType>
+                                                                    <xsl:value-of select="&quot;Reseller,Enterprise End Customer&quot;"/>
+                                                                </ns1:AccountOtherType>
+                                                            </xsl:when>
+                                                            <xsl:otherwise>
+                                                                <ns1:AccountOtherType>
+                                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                                </ns1:AccountOtherType>
+                                                            </xsl:otherwise>
+                                                        </xsl:choose>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <xsl:choose>
+                                                    <xsl:when test="ns:Blocked='2' or ns:Blocked='3'">
+                                                        <ns1:AccountStatus>
+                                                            <xsl:value-of select="&quot;Inactive&quot;"/>
+                                                        </ns1:AccountStatus>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <ns1:AccountStatus>
+                                                            <xsl:value-of select="&quot;Active&quot;"/>
+                                                        </ns1:AccountStatus>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <ns1:VatNumber>
+                                                    <xsl:value-of select="ns:VATRegNo"/>
+                                                </ns1:VatNumber>
+                                                <ns1:MainPhoneNumber>
+                                                    <xsl:value-of select="ns:Phone"/>
+                                                </ns1:MainPhoneNumber>
+                                                <ns1:Fax>
+                                                    <xsl:value-of select="ns:Fax"/>
+                                                </ns1:Fax>
+                                                <ns1:Country>
+                                                    <xsl:value-of select="$GetSFDCCountryName/jdbcGeneralActivityOutput/unknownResultset[1]/row[1]/column[name=&quot;country&quot;]/value"/>
+                                                </ns1:Country>
+                                                <ns1:EmailDomain>
+                                                    <xsl:value-of select="ns:Email"/>
+                                                </ns1:EmailDomain>
+                                                <ns1:NavisionID>
+                                                    <xsl:value-of select="ns:NAVID"/>
+                                                </ns1:NavisionID>
+                                                <ns1:BillingCity>
+                                                    <xsl:value-of select="ns:City"/>
+                                                </ns1:BillingCity>
+                                                <ns1:BillingCountry>
+                                                    <xsl:value-of select="ns:CountryCode"/>
+                                                </ns1:BillingCountry>
+                                                <ns1:BillingPostalCode>
+                                                    <xsl:value-of select="ns:PostCode"/>
+                                                </ns1:BillingPostalCode>
+                                                <ns1:BillingState>
+                                                    <xsl:value-of select="ns:County"/>
+                                                </ns1:BillingState>
+                                                <ns1:BillingStreet>
+                                                    <xsl:value-of select="ns:Address"/>
+                                                </ns1:BillingStreet>
+                                                <ns1:PartnerTier>
+                                                    <xsl:value-of select="ns:PartnerTier"/>
+                                                </ns1:PartnerTier>
+                                                <ns1:MergedToSfdcPartnerId>
+                                                    <xsl:value-of select="ns:MasterNAVID"/>
+                                                </ns1:MergedToSfdcPartnerId>
+                                                <ns1:recordType>
+                                                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/AccountRecordType"/>
+                                                </ns1:recordType>
+                                            </pfx:Customer>
+                                        </xsl:for-each>
+                                    </pfx:SFDC>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <pfx:SFDC>
+                                        <xsl:for-each select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company">
+                                            <pfx:Customer>
+                                                <ns1:SfdcPartnerId>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns1:SfdcPartnerId>
+                                                <ns1:MdmPartnerId>
+                                                    <xsl:copy-of select="ns2:gold_id/@xsi:nil"/>
+                                                    <xsl:value-of select="ns2:gold_id"/>
+                                                </ns1:MdmPartnerId>
+                                                <xsl:choose>
+                                                    <xsl:when test="ns2:company_status='2' or ns2:company_status='3'">
+                                                        <ns1:Active>
+                                                            <xsl:value-of select="&quot;false&quot;"/>
+                                                        </ns1:Active>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <ns1:Active>
+                                                            <xsl:value-of select="&quot;true&quot;"/>
+                                                        </ns1:Active>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <ns1:AccountName>
+                                                    <xsl:value-of select="ns2:company_name"/>
+                                                </ns1:AccountName>
+                                                <xsl:choose>
+                                                    <xsl:when test="ns2:is_distributor=&quot;true&quot;">
+                                                        <ns1:AccountType>
+                                                            <xsl:value-of select="&quot;Dsitributor&quot;"/>
+                                                        </ns1:AccountType>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <ns1:AccountType>
+                                                            <xsl:value-of select="&quot;Reseller&quot;"/>
+                                                        </ns1:AccountType>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <xsl:choose>
+                                                    <xsl:when test="ns2:is_reseller=&quot;true&quot; and ns2:is_distributor=&quot;true&quot; and ns2:is_enduser =&quot;false&quot;">
+                                                        <ns1:AccountOtherType>
+                                                            <xsl:value-of select="&quot;Reseller&quot;"/>
+                                                        </ns1:AccountOtherType>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <xsl:choose>
+                                                            <xsl:when test="ns2:is_reseller=&quot;true&quot; and ns2:is_distributor=&quot;true&quot; and ns2:is_enduser =&quot;true&quot;">
+                                                                <xsl:choose>
+                                                                    <xsl:when test="ns2:segment = 1">
+                                                                        <ns1:AccountOtherType>
+                                                                            <xsl:value-of select="&quot;Reseller;SMB End Customer&quot;"/>
+                                                                        </ns1:AccountOtherType>
+                                                                    </xsl:when>
+                                                                    <xsl:when test="ns2:segment = 2">
+                                                                        <ns1:AccountOtherType>
+                                                                            <xsl:value-of select="&quot;Reseller;Enterprise End Customer&quot;"/>
+                                                                        </ns1:AccountOtherType>
+                                                                    </xsl:when>
+                                                                    <xsl:otherwise>
+                                                                        <ns1:AccountOtherType>
+                                                                            <xsl:value-of select="&quot;Reseller;SMB End Customer&quot;"/>
+                                                                        </ns1:AccountOtherType>
+                                                                    </xsl:otherwise>
+                                                                </xsl:choose>
+                                                            </xsl:when>
+                                                            <xsl:otherwise>
+                                                                <ns1:AccountOtherType>
+                                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                                </ns1:AccountOtherType>
+                                                            </xsl:otherwise>
+                                                        </xsl:choose>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <xsl:choose>
+                                                    <xsl:when test="ns2:company_status='2' or ns2:company_status='3'">
+                                                        <ns1:AccountStatus>
+                                                            <xsl:value-of select="&quot;Inactive&quot;"/>
+                                                        </ns1:AccountStatus>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <ns1:AccountStatus>
+                                                            <xsl:value-of select="&quot;Active&quot;"/>
+                                                        </ns1:AccountStatus>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <ns1:AKA>
+                                                    <xsl:value-of select="ns2:aka"/>
+                                                </ns1:AKA>
+                                                <ns1:VatNumber>
+                                                    <xsl:value-of select="ns2:vat_number"/>
+                                                </ns1:VatNumber>
+                                                <xsl:if test="not((ns2:primary_phone_no/@xsi:nil=(&quot;true&quot;)) or (ns2:primary_phone_no/@xsi:nil=(&quot;1&quot;)))">
+                                                    <ns1:MainPhoneNumber>
+                                                        <xsl:value-of select="ns2:primary_phone_no"/>
+                                                    </ns1:MainPhoneNumber>
+                                                </xsl:if>
+                                                <xsl:if test="not((ns2:primary_fax_no/@xsi:nil=(&quot;true&quot;)) or (ns2:primary_fax_no/@xsi:nil=(&quot;1&quot;)))">
+                                                    <ns1:Fax>
+                                                        <xsl:value-of select="ns2:primary_fax_no"/>
+                                                    </ns1:Fax>
+                                                </xsl:if>
+                                                <ns1:Country>
+                                                    <xsl:value-of select="ns2:country"/>
+                                                </ns1:Country>
+                                                <ns1:Website>
+                                                    <xsl:value-of select="ns2:company_website"/>
+                                                </ns1:Website>
+                                                <ns1:EmailDomain>
+                                                    <xsl:value-of select="ns2:primary_email"/>
+                                                </ns1:EmailDomain>
+                                                <ns1:NavisionID>
+                                                    <xsl:value-of select="ns2:nav_id"/>
+                                                </ns1:NavisionID>
+                                                <ns1:DUNS>
+                                                    <xsl:value-of select="ns2:duns"/>
+                                                </ns1:DUNS>
+                                                <ns1:BillingCity>
+                                                    <xsl:value-of select="ns2:city"/>
+                                                </ns1:BillingCity>
+                                                <ns1:BillingCountry>
+                                                    <xsl:value-of select="ns2:country"/>
+                                                </ns1:BillingCountry>
+                                                <ns1:BillingPostalCode>
+                                                    <xsl:value-of select="ns2:post_code"/>
+                                                </ns1:BillingPostalCode>
+                                                <ns1:BillingState>
+                                                    <xsl:value-of select="ns2:county"/>
+                                                </ns1:BillingState>
+                                                <ns1:BillingStreet>
+                                                    <xsl:value-of select="ns2:company_address"/>
+                                                </ns1:BillingStreet>
+                                                <ns1:PartnerTier>
+                                                    <xsl:value-of select="ns2:company_tier"/>
+                                                </ns1:PartnerTier>
+                                                <ns1:recordType>
+                                                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/AccountRecordType"/>
+                                                </ns1:recordType>
+                                            </pfx:Customer>
+                                        </xsl:for-each>
+                                    </pfx:SFDC>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:when>
+                        <xsl:when test="$Start/root/toRallying">
+                            <pfx:Rallying>
+                                <pfx:Partner>
+                                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_address">
+                                        <ns5:Address>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_address"/>
+                                        </ns5:Address>
+                                    </xsl:if>
+                                    <xsl:choose>
+                                        <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_status=&quot;true&quot; &#xA;or $Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_status=1">
+                                            <ns5:BlockFlag>
+                                                <xsl:value-of select="&quot;Y&quot;"/>
+                                            </ns5:BlockFlag>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <ns5:BlockFlag>
+                                                <xsl:value-of select="&quot;N&quot;"/>
+                                            </ns5:BlockFlag>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:city">
+                                        <ns5:City>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:city"/>
+                                        </ns5:City>
+                                    </xsl:if>
+                                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:country">
+                                        <ns5:Country>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:country"/>
+                                        </ns5:Country>
+                                    </xsl:if>
+                                    <xsl:choose>
+                                        <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_distributor=&quot;true&quot; &#xA;or $Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_distributor=1">
+                                            <ns5:DistributorFlag>
+                                                <xsl:value-of select="&quot;Y&quot;"/>
+                                            </ns5:DistributorFlag>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <ns5:DistributorFlag>
+                                                <xsl:value-of select="&quot;N&quot;"/>
+                                            </ns5:DistributorFlag>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_email">
+                                        <ns5:Email>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_email"/>
+                                        </ns5:Email>
+                                    </xsl:if>
+                                    <xsl:choose>
+                                        <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_enduser=&quot;true&quot; &#xA;or $Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_enduser=1">
+                                            <ns5:EndCustomerFlag>
+                                                <xsl:value-of select="&quot;Y&quot;"/>
+                                            </ns5:EndCustomerFlag>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <ns5:EndCustomerFlag>
+                                                <xsl:value-of select="&quot;N&quot;"/>
+                                            </ns5:EndCustomerFlag>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <ns5:IntegrationSource>
+                                        <xsl:value-of select="&quot;EMEA&quot;"/>
+                                    </ns5:IntegrationSource>
+                                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_name">
+                                        <ns5:Name>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_name"/>
+                                        </ns5:Name>
+                                    </xsl:if>
+                                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:PartnerTier">
+                                        <ns5:PartnerTier>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:PartnerTier"/>
+                                        </ns5:PartnerTier>
+                                    </xsl:if>
+                                    <xsl:if test="$MDM-JDBC-Query/resultSet/Record[1]/Description">
+                                        <ns5:PartnerTierDescription>
+                                            <xsl:value-of select="$MDM-JDBC-Query/resultSet/Record[1]/Description"/>
+                                        </ns5:PartnerTierDescription>
+                                    </xsl:if>
+                                    <xsl:choose>
+                                        <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_reseller=&quot;true&quot; &#xA;or $Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_reseller=1">
+                                            <ns5:ResellerFlag>
+                                                <xsl:value-of select="&quot;Y&quot;"/>
+                                            </ns5:ResellerFlag>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <ns5:ResellerFlag>
+                                                <xsl:value-of select="&quot;N&quot;"/>
+                                            </ns5:ResellerFlag>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <xsl:if test="$MDM-JDBC-Query/resultSet/Record[1]/Rebate">
+                                        <ns5:StandardDiscount>
+                                            <xsl:value-of select="$MDM-JDBC-Query/resultSet/Record[1]/Rebate"/>
+                                        </ns5:StandardDiscount>
+                                    </xsl:if>
+                                    <ns5:SyncDate>
+                                        <xsl:value-of select="tib:format-dateTime(&quot;MM/dd/yyyy HH:mm:ss&quot;, tib:translate-timezone(current-dateTime(), 'UTC'))"/>
+                                    </ns5:SyncDate>
+                                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:NAVID">
+                                        <ns5:NavisionId>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:NAVID"/>
+                                        </ns5:NavisionId>
+                                    </xsl:if>
+                                    <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:SalesForceID">
+                                        <ns5:SalesForceId>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:SalesForceID"/>
+                                        </ns5:SalesForceId>
+                                    </xsl:if>
+                                    <xsl:if test="not(($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:gold_id/@xsi:nil=(&quot;true&quot;)) or ($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:gold_id/@xsi:nil=(&quot;1&quot;)))">
+                                        <ns5:MDMId>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:gold_id"/>
+                                        </ns5:MDMId>
+                                    </xsl:if>
+                                </pfx:Partner>
+                            </pfx:Rallying>
+                        </xsl:when>
+                        <xsl:when test="$Start/root/toTeO">
+                            <pfx:TeO>
+                                <pfx:Customer>
+                                    <ns6:Customer>
+                                        <ns6:Command>
+                                            <xsl:value-of select="&quot;&quot;"/>
+                                        </ns6:Command>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:nav_id/@xsi:nil">
+                                                <ns6:NavisionID>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:NAVID"/>
+                                                </ns6:NavisionID>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:NavisionID>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:nav_id"/>
+                                                </ns6:NavisionID>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:gold_id/@xsi:nil">
+                                                <ns6:MDMID>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:MDMCustID"/>
+                                                </ns6:MDMID>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:MDMID>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:gold_id"/>
+                                                </ns6:MDMID>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <ns6:SFID>
+                                            <xsl:value-of select="tib:if-absent($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:SourceIDMapping/ns2:SfId,$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:SalesForceID)"/>
+                                        </ns6:SFID>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:duns/@xsi:nil">
+                                                <ns6:DUNSID>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:DnBNum"/>
+                                                </ns6:DUNSID>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:DUNSID>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:duns"/>
+                                                </ns6:DUNSID>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <ns6:IsDisti>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_distributor"/>
+                                        </ns6:IsDisti>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_reseller/@xsi:nil">
+                                                <ns6:IsReseller>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:Reseller"/>
+                                                </ns6:IsReseller>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:IsReseller>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_distributor"/>
+                                                </ns6:IsReseller>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_enduser/@xsi:nil">
+                                                <ns6:IsEndUser>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:EndCustomer"/>
+                                                </ns6:IsEndUser>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:IsEndUser>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:is_enduser"/>
+                                                </ns6:IsEndUser>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:country/@xsi:nil">
+                                                <ns6:CountryID>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:CountryCode"/>
+                                                </ns6:CountryID>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:CountryID>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:country"/>
+                                                </ns6:CountryID>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_name/@xsi:nil">
+                                                <ns6:Name>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:CustomerName"/>
+                                                </ns6:Name>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:Name>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_name"/>
+                                                </ns6:Name>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <ns6:Name2>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:CustomerName2"/>
+                                        </ns6:Name2>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_address/@xsi:nil">
+                                                <ns6:Address>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:Address"/>
+                                                </ns6:Address>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:Address>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_address"/>
+                                                </ns6:Address>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_address_line2/@xsi:nil">
+                                                <ns6:Address2>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:Address2"/>
+                                                </ns6:Address2>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:Address2>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_address_line2"/>
+                                                </ns6:Address2>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:city/@xsi:nil">
+                                                <ns6:City>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:City"/>
+                                                </ns6:City>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:City>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:city"/>
+                                                </ns6:City>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:county/@xsi:nil">
+                                                <ns6:County>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:County"/>
+                                                </ns6:County>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:County>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:county"/>
+                                                </ns6:County>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_email/@xsi:nil">
+                                                <ns6:Email>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:Email"/>
+                                                </ns6:Email>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:Email>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_email"/>
+                                                </ns6:Email>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_fax_no/@xsi:nil">
+                                                <ns6:Fax>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:Fax"/>
+                                                </ns6:Fax>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:Fax>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_fax_no"/>
+                                                </ns6:Fax>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_phone_no/@xsi:nil">
+                                                <ns6:Phone>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:Phone"/>
+                                                </ns6:Phone>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:Phone>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:primary_phone_no"/>
+                                                </ns6:Phone>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:if test="not($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_website/@xsi:nil)">
+                                            <ns6:Website>
+                                                <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_website"/>
+                                            </ns6:Website>
+                                        </xsl:if>
+                                        <xsl:if test="not(($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:post_code/@xsi:nil=(&quot;true&quot;)) or ($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:post_code/@xsi:nil=(&quot;1&quot;)))">
+                                            <ns6:Zip>
+                                                <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:post_code"/>
+                                            </ns6:Zip>
+                                        </xsl:if>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:language_code/@xsi:nil">
+                                                <ns6:LanguageCode>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:LanguageCode"/>
+                                                </ns6:LanguageCode>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:LanguageCode>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:language_code"/>
+                                                </ns6:LanguageCode>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_status/@xsi:nil">
+                                                <ns6:Blocked>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:Blocked"/>
+                                                </ns6:Blocked>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns6:Blocked>
+                                                    <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:company_status"/>
+                                                </ns6:Blocked>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:if test="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:DistributorType">
+                                            <ns6:DistributorType>
+                                                <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:DistributorType"/>
+                                            </ns6:DistributorType>
+                                        </xsl:if>
+                                        <ns6:Company>
+                                            <xsl:value-of select="&quot;&quot;"/>
+                                        </ns6:Company>
+                                        <xsl:if test="not($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:currency_code/@xsi:nil)">
+                                            <ns6:Currency>
+                                                <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:currency_code"/>
+                                            </ns6:Currency>
+                                        </xsl:if>
+                                        <ns6:Category>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:PartnerTier"/>
+                                        </ns6:Category>
+                                        <ns6:DefaultContactID>
+                                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:DefaultContactID"/>
+                                        </ns6:DefaultContactID>
+                                        <xsl:if test="not(($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MSP/@xsi:nil=(&quot;true&quot;)) or ($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MSP/@xsi:nil=(&quot;1&quot;)))">
+                                            <ns6:IsXSP>
+                                                <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MSP"/>
+                                            </ns6:IsXSP>
+                                        </xsl:if>
+                                        <xsl:if test="not(($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MarketPlace/@xsi:nil=(&quot;true&quot;)) or ($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MarketPlace/@xsi:nil=(&quot;1&quot;)))">
+                                            <ns6:IsMarketPlace>
+                                                <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MarketPlace"/>
+                                            </ns6:IsMarketPlace>
+                                        </xsl:if>
+                                        <xsl:if test="not(($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MSPContractSigned/@xsi:nil=(&quot;true&quot;)) or ($Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MSPContractSigned/@xsi:nil=(&quot;1&quot;)))">
+                                            <ns6:ContractFlag>
+                                                <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:MDM/pfx:Company/ns2:MSPContractSigned"/>
+                                            </ns6:ContractFlag>
+                                        </xsl:if>
+                                    </ns6:Customer>
+                                </pfx:Customer>
+                            </pfx:TeO>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:copy-of select="$Start/root/pfx:SMF/pfx:SMFBody/*"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </pfx:SMFBody>
+            </pfx:SMF>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MDM JDBC Query">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>232</pd:x>
+        <pd:y>216</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT
+    Description,
+    [Rebate %]
+FROM
+    [ERP_EMEA].[Reseller Category]
+WHERE Code=?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>Code</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>Description</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Rebate</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <Code>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:PartnerTier)">
+                            <xsl:value-of select="$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:PartnerTier"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Code>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetSFDCCountryName">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>214</pd:x>
+        <pd:y>354</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;EMEA_MDM.PRC_SELECT_COUNTRY_BY_CODE 'SFDC' ,'&quot;,$Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns:Customer/ns:CountryCode,&quot;'&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Customer Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Customer Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>MDM JDBC Query</pd:to>
+        <pd:xpathDescription>Select Rallying StandardDiscount</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/toRallying and exists($Start/root/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MDM JDBC Query</pd:from>
+        <pd:to>Map Customer Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetSFDCCountryName</pd:to>
+        <pd:xpathDescription>ToSFDC</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/toSFDC="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSFDCCountryName</pd:from>
+        <pd:to>Map Customer Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

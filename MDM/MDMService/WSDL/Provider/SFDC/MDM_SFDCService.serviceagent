@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serviceResource xmlns:wsdl="http://www.trendmicro.com/ESB/MDM/schemas/SFDCService">
+    <ns0:import xmlns:ns0="http://schemas.xmlsoap.org/wsdl/" namespace="http://www.trendmicro.com/ESB/MDM/schemas/SFDCService" location="/WSDL/Provider/SFDC/SFDCServiceWSDL.wsdl"/>
+    <config>
+        <class>com.tibco.bw.service.serviceAgent.ServiceServiceAgent</class>
+        <implType>bw</implType>
+        <groups>
+            <row isDefault="true" groupName="Default"/>
+        </groups>
+        <serviceChange>Fri Jul 27 11:06:32 CST 2012</serviceChange>
+        <name>MDM_SFDCService</name>
+        <wsdl namespace="http://www.trendmicro.com/ESB/schemas/MDM_SFDCService" embedWsdlComponents="true" embedSchemaComponents="true" embedJndiProperties="false"/>
+        <resourceType>service.definition</resourceType>
+        <interfaceImpl>
+            <tab>
+                <tabName>PortType</tabName>
+                <tabType>bw</tabType>
+                <config>
+                    <wsdlDetail location="/WSDL/Provider/SFDC/SFDCServiceWSDL.wsdl" portType="PortType" ns="http://www.trendmicro.com/ESB/MDM/schemas/SFDCService"/>
+                    <detail>
+                        <tab>
+                            <tabName>service.definition.impl.tab.label</tabName>
+                            <tabType>impl</tabType>
+                            <config>
+                                <operations>
+                                    <row opName="CreateSFDCCust" opImpl="/Simulations/SFDC/CreateSfCust.process"/>
+                                    <row opName="UpdateSFDCCust" opImpl="/Simulations/SFDC/UpdateSfCust.process"/>
+                                    <row opName="CreateSFDCLocation" opImpl="/Simulations/SFDC/CreateSfLocation.process"/>
+                                    <row opName="UpdateSFDCLocation" opImpl="/Simulations/SFDC/UpdateSfLocation.process"/>
+                                    <row opName="DeleteSFDCLocation" opImpl="/Simulations/SFDC/DeleteSfLocation.process"/>
+                                    <row opName="CreateSFDCContact" opImpl="/Simulations/SFDC/CreateSfContact.process"/>
+                                    <row opName="UpdateSFDCContact" opImpl="/Simulations/SFDC/UpdateSfContact.process"/>
+                                </operations>
+                            </config>
+                        </tab>
+                        <tab>
+                            <tabName>service.definition.ep.tab.label</tabName>
+                            <tabType>ep</tabType>
+                            <config>
+                                <epBindings>
+                                    <row epName="PortTypeEndpoint1" epType="soap">
+                                        <config>
+                                            <epDetail>
+                                                <tab>
+                                                    <tabName>soap.service.transport.ui.transport.tab.label</tabName>
+                                                    <tabType>transport</tabType>
+                                                    <config>
+                                                        <sharedChannel>/Resources/HTTP/HTTP Connection.sharedhttp</sharedChannel>
+                                                        <transport>
+                                                            <config>
+                                                                <useBasicAuthentication>false</useBasicAuthentication>
+                                                                <httpURI>/WSDL/Provider/SFDC/MDM_SFDCService.serviceagent/PortTypeEndpoint</httpURI>
+                                                            </config>
+                                                        </transport>
+                                                    </config>
+                                                </tab>
+                                                <tab>
+                                                    <tabName>soap.service.transport.ui.details.tab.label</tabName>
+                                                    <tabType>details</tabType>
+                                                    <config>
+                                                        <operationStyle>document</operationStyle>
+                                                        <soapVersion>SOAP 1.1</soapVersion>
+                                                        <soap>
+                                                            <operation name="CreateSFDCCust">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Provider/SFDC/MDM_SFDCService.serviceagent/PortTypeEndpoint1/CreateSFDCCust</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                        <inputNamespace/>
+                                                                        <outputNamespace/>
+                                                                        <faultNamespace/>
+                                                                        <portAddressPrefix/>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                            <operation name="UpdateSFDCCust">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Provider/SFDC/MDM_SFDCService.serviceagent/PortTypeEndpoint1/UpdateSFDCCust</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                            <operation name="CreateSFDCLocation">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Provider/SFDC/MDM_SFDCService.serviceagent/PortTypeEndpoint1/CreateSFDCLocation</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                            <operation name="UpdateSFDCLocation">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Provider/SFDC/MDM_SFDCService.serviceagent/PortTypeEndpoint1/UpdateSFDCLocation</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                            <operation name="DeleteSFDCLocation">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Provider/SFDC/MDM_SFDCService.serviceagent/PortTypeEndpoint1/DeleteSFDCLocation</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                            <operation name="CreateSFDCContact">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Provider/SFDC/MDM_SFDCService.serviceagent/PortTypeEndpoint1/CreateSFDCContact</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                        <inputNamespace/>
+                                                                        <outputNamespace/>
+                                                                        <faultNamespace/>
+                                                                        <portAddressPrefix/>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                            <operation name="UpdateSFDCContact">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Provider/SFDC/MDM_SFDCService.serviceagent/PortTypeEndpoint1/UpdateSFDCContact</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                        <inputNamespace/>
+                                                                        <outputNamespace/>
+                                                                        <faultNamespace/>
+                                                                        <portAddressPrefix/>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                        </soap>
+                                                    </config>
+                                                </tab>
+                                            </epDetail>
+                                        </config>
+                                    </row>
+                                </epBindings>
+                            </config>
+                        </tab>
+                    </detail>
+                </config>
+            </tab>
+        </interfaceImpl>
+    </config>
+</serviceResource>

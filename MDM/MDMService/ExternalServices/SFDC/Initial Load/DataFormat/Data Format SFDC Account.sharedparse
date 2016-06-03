@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="urn:fault.enterprise.soap.sforce.com" xmlns:pfx3="urn:sobject.enterprise.soap.sforce.com" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/SMF">
+    <import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <import namespace="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" schemaLocation="/XSD/Client/SFDC/sfdc_crosscheck.xsd"/>
+    <import namespace="urn:fault.enterprise.soap.sforce.com" schemaLocation="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <name>Data Format SFDC Account</name>
+    <resourceType>ae.shared.ParseSharedResource</resourceType>
+    <config xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <FormatType>Delimiter separated</FormatType>
+        <ColumnSeparator>","</ColumnSeparator>
+        <ColSeparatorRule>Treat all characters as entered as a single column separator string</ColSeparatorRule>
+        <LineSeparator>&#xD;
+</LineSeparator>
+        <FillCharacter>Others</FillCharacter>
+        <LineLength>5</LineLength>
+        <DataFormat>
+            <xsd:element name="Account" type="pfx2:CustomerType"/>
+        </DataFormat>
+    </config>
+</BWSharedResource>

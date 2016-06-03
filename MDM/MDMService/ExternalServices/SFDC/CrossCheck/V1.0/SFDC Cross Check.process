@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns22="http://www.trendmicro.com/ESB/schemas/Common" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns5="urn:sobject.enterprise.soap.sforce.com" xmlns:pfx="urn:partner.soap.sforce.com" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://xmlns.tibco.com/encodings/mime" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://soap.sforce.com/schemas/class/PRMEU_SyncContactWebService" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx3="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" xmlns:pfx2="http://soap.sforce.com/schemas/class/PRMEU_SyncLocationWebService" xmlns:pfx8="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pfx7="urn:enterprise.soap.sforce.com" xmlns:pfx6="http://www.tibco.com/schemas/MDMService/XSD/Client/Navision/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" schemaLocation="/XSD/Client/SFDC/Customer.xsd"/>
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncLocationWebService" location="/WSDL/Client/PRMEU_SyncLocationWebService.WSDL.wsdl"/>
+    <wsdl:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" location="/WSDL/Client/PRMEU_SyncAccountWebService.WSDL.wsdl"/>
+    <wsdl:import namespace="urn:partner.soap.sforce.com" location="/WSDL/Client/SalesforceTrendMicro.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Client/SFDC_EnterpriseWSDL.wsdl"/>
+    <pd:name>ExternalServices/SFDC/CrossCheck/V1.0/SFDC Cross Check.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="getUpdated">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="sObjectType" type="xsd:string"/>
+                    <xsd:element name="startDate" type="xsd:string"/>
+                    <xsd:element name="endDate" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>139</pd:startX>
+    <pd:startY>84</pd:startY>
+    <pd:returnBindings>
+        <pfx3:SFDCUpdatePartnerResponse>
+            <parameters>
+                <pfx3:SFDCUpdatePartnerResponse>
+                    <xsl:copy-of select="$GetUpdated-Partner-data/outputMessage/pfx3:SFDCUpdatePartnerResponse/pfx3:result"/>
+                </pfx3:SFDCUpdatePartnerResponse>
+            </parameters>
+        </pfx3:SFDCUpdatePartnerResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endX>908</pd:endX>
+    <pd:endY>80</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1342174847897</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>203</pd:x>
+        <pd:y>216</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>455</pd:x>
+        <pd:y>215</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <pfx4:Error>
+                        <pfx4:src>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                        </pfx4:src>
+                        <pfx4:error_code>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                        </pfx4:error_code>
+                        <pfx4:error_message>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                        </pfx4:error_message>
+                        <pfx4:stack_trace>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                        </pfx4:stack_trace>
+                    </pfx4:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Cross Check Data-QueryAll">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>560</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx7:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>queryAll</operation>
+            <soapAction/>
+            <endpointURL>https://test.salesforce.com/services/Soap/c/26.0/0DFU0000000L5nF</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Resources/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+            <policies>
+                <incomingAttachmentPolicy>
+                    <writeToFile>true</writeToFile>
+                    <writeToFileDir>C:\Users\sammi_lin\Desktop\temp\MDM\CrossCheck.xml</writeToFileDir>
+                    <createNonExistDir>true</createNonExistDir>
+                    <writeToFileLimit>1</writeToFileLimit>
+                </incomingAttachmentPolicy>
+            </policies>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx7:queryAll>
+                    <pfx7:queryString>
+                        <xsl:value-of select="concat(&quot;select &quot;,&#xA;$Map-Data/root/FieldList,&#xA;&quot; From &quot;,&#xA;$Start/getUpdated/sObjectType,&#xA;&quot;  Where LastModifiedDate >= &quot;,$Start/getUpdated/startDate,&#xA;&quot;  and LastModifiedDate&lt; &quot;,$Start/getUpdated/endDate,&#xA;&quot; and RecordType.Name = '&quot;,$Map-Data/root/RecoreType,&quot;'&quot;,&#xA;if (lower-case($Start/getUpdated/sObjectType)=&quot;account&quot;) then &quot;  and Account_Status__c !='New' &quot; else &quot;&quot;)"/>
+                    </pfx7:queryString>
+                </pfx7:queryAll>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx7:SessionHeader>
+                            <pfx7:sessionId>
+                                <xsl:value-of select="$Login/pfx7:loginResponse/pfx7:result/pfx7:sessionId"/>
+                            </pfx7:sessionId>
+                        </pfx7:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.QueryOptions/>
+                </headers>
+                <ns:_configData>
+                    <xsl:if test="not(($Login/pfx7:loginResponse/pfx7:result/pfx7:serverUrl/@xsi:nil=(&quot;true&quot;)) or ($Login/pfx7:loginResponse/pfx7:result/pfx7:serverUrl/@xsi:nil=(&quot;1&quot;)))">
+                        <endpointURL>
+                            <xsl:value-of select="$Login/pfx7:loginResponse/pfx7:result/pfx7:serverUrl"/>
+                        </endpointURL>
+                    </xsl:if>
+                </ns:_configData>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>422</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="FieldList" type="xsd:string"/>
+                            <xsd:element name="RecoreType" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:choose>
+                    <xsl:when test="lower-case(tib:trim($Start/getUpdated/sObjectType))=$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/AccountType">
+                        <FieldList>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/AccountFieldList"/>
+                        </FieldList>
+                        <RecoreType>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/AccountRecordType"/>
+                        </RecoreType>
+                    </xsl:when>
+                    <xsl:when test="lower-case(tib:trim($Start/getUpdated/sObjectType))=$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/ContactType">
+                        <FieldList>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/ContactFieldList"/>
+                        </FieldList>
+                        <RecoreType>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/ContactRecordType"/>
+                        </RecoreType>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <FieldList>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/LocationFieldList"/>
+                        </FieldList>
+                        <RecoreType>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/LocationRecordType"/>
+                        </RecoreType>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call CrossCheck SP">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>743</pd:x>
+        <pd:y>84</pd:y>
+        <config>
+            <processName>/ExternalServices/SFDC/CrossCheck/V1.0/CrossCheck SP for Account.process</processName>
+            <processNameXPath/>
+        </config>
+        <pd:inputBindings>
+            <pfx7:queryAllResponse>
+                <parameters>
+                    <pfx7:queryAllResponse>
+                        <xsl:copy-of select="$Get-Cross-Check-Data-QueryAll/outputMessage/pfx7:queryAllResponse/pfx7:result"/>
+                    </pfx7:queryAllResponse>
+                </parameters>
+            </pfx7:queryAllResponse>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Login">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>288</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <processName>/ExternalServices/SFDC/shareProcess/Login.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>329</pd:x>
+        <pd:y>217</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="pfx4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <ns12:SMFHeader>
+                    <ns22:MessageKey>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </ns22:MessageKey>
+                    <ns22:ServiceName>
+                        <xsl:value-of select="&quot;SFDC Cross Check&quot;"/>
+                    </ns22:ServiceName>
+                    <ns22:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns22:ServiceVersion>
+                    <ns22:SourceID>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </ns22:SourceID>
+                    <ns22:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns22:RqTimestamp>
+                    <ns22:RsTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns22:RsTimestamp>
+                </ns12:SMFHeader>
+                <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:when test="exists($_error/ns3:ErrorReport/Data/pfx4:Error)">
+                        <xsl:copy-of select="$_error/ns3:ErrorReport/Data/pfx4:Error"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx4:Error>
+                            <pfx4:src>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                            </pfx4:src>
+                            <pfx4:error_code>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </pfx4:error_code>
+                            <pfx4:error_message>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                            </pfx4:error_message>
+                            <pfx4:stack_trace>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            </pfx4:stack_trace>
+                        </pfx4:Error>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Source>
+                    <xsl:value-of select="&quot;SFDC&quot;"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="0"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call-CrossCheck-SP-1">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>751</pd:x>
+        <pd:y>191</pd:y>
+        <config>
+            <processName>/ExternalServices/SFDC/CrossCheck/V1.0/CrossCheck SP for Contact.process</processName>
+            <processNameXPath/>
+        </config>
+        <pd:inputBindings>
+            <pfx7:queryAllResponse>
+                <parameters>
+                    <pfx7:queryAllResponse>
+                        <xsl:copy-of select="$Get-Cross-Check-Data-QueryAll/outputMessage/pfx7:queryAllResponse/pfx7:result"/>
+                    </pfx7:queryAllResponse>
+                </parameters>
+            </pfx7:queryAllResponse>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call-CrossCheck-SP-2">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>755</pd:x>
+        <pd:y>321</pd:y>
+        <config>
+            <processName>/ExternalServices/SFDC/CrossCheck/V1.0/CrossCheck SP for location.process</processName>
+            <processNameXPath/>
+        </config>
+        <pd:inputBindings>
+            <pfx7:queryAllResponse>
+                <parameters>
+                    <pfx7:queryAllResponse>
+                        <xsl:copy-of select="$Get-Cross-Check-Data-QueryAll/outputMessage/pfx7:queryAllResponse/pfx7:result"/>
+                    </pfx7:queryAllResponse>
+                </parameters>
+            </pfx7:queryAllResponse>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Get Cross Check Data-QueryAll</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Cross Check Data-QueryAll</pd:from>
+        <pd:to>Call CrossCheck SP</pd:to>
+        <pd:xpathDescription>Account</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>lower-case(tib:trim($Start/getUpdated/sObjectType))=$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/AccountType</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call CrossCheck SP</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Login</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Cross Check Data-QueryAll</pd:from>
+        <pd:to>Call-CrossCheck-SP-1</pd:to>
+        <pd:xpathDescription>Contact</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>lower-case(tib:trim($Start/getUpdated/sObjectType))=$_globalVariables/ns1:GlobalVariables/ExternalServices/SFDC/CrossCheck/V1.0/ContactType</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Cross Check Data-QueryAll</pd:from>
+        <pd:to>Call-CrossCheck-SP-2</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call-CrossCheck-SP-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call-CrossCheck-SP-2</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

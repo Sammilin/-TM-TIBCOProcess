@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns03="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns04="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns05="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" xmlns:ns02="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:ns2="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" schemaLocation="/XSD/Client/MDMServer/MDMServer.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/CrossCheck/Start Internal Check.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>71</pd:x>
+        <pd:y>232</pd:y>
+        <config>
+            <StartTime>%%Services/CrossCheck/InternalTIme%%</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>1</TimeInterval>
+            <FrequencyIndex>Day</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1262</pd:endX>
+    <pd:endY>246</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1350270391304</pd:targetNamespace>
+    <pd:activity name="Multi System Sync">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>198</pd:x>
+        <pd:y>234</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="&quot;EMEA_MDM.PRC_SYNC_MULTI_SYSTEM&quot;"/>
+                </statement>
+                <timeout>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/CrossCheck/DBTimeOut"/>
+                </timeout>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Select intercheck">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>321</pd:x>
+        <pd:y>233</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="&quot;EMEA_MDM.PRC_SELECT_INTERCHECK_RESULT&quot;"/>
+                </statement>
+                <timeout>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/CrossCheck/DBTimeOut"/>
+                </timeout>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>429</pd:x>
+        <pd:y>239</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="InternalCheckResult" type="pfx:InternalCheckType" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:for-each select="$Select-intercheck/jdbcGeneralActivityOutput/unknownResultset/row">
+                    <InternalCheckResult>
+                        <pfx:source_datasource>
+                            <xsl:value-of select="column[name=&quot;source_datasource&quot;]/value"/>
+                        </pfx:source_datasource>
+                        <pfx:source_id>
+                            <xsl:value-of select="column[name='source_id']/value"/>
+                        </pfx:source_id>
+                        <pfx:gold_id>
+                            <xsl:value-of select="column[name='gold_id']/value"/>
+                        </pfx:gold_id>
+                        <pfx:target_datasource>
+                            <xsl:value-of select="column[name=&quot;target_datasource&quot;]/value"/>
+                        </pfx:target_datasource>
+                        <pfx:message_type>
+                            <xsl:value-of select="column[name=&quot;message_type&quot;]/value"/>
+                        </pfx:message_type>
+                        <pfx:batch_id>
+                            <xsl:value-of select="column[name=&quot;batch_id&quot;]/value"/>
+                        </pfx:batch_id>
+                        <pfx:log_date>
+                            <xsl:value-of select="column[name=&quot;log_date&quot;]/value"/>
+                        </pfx:log_date>
+                    </InternalCheckResult>
+                </xsl:for-each>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>508</pd:x>
+        <pd:y>41</pd:y>
+        <pd:width>586</pd:width>
+        <pd:height>388</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Map-Data/root/InternalCheckResult</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>allbatch_id</pd:outSlot>
+            <pd:activityOutputName>Map-Data-2</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Map-Data-2</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map-Data-1</pd:from>
+            <pd:to>end</pd:to>
+            <pd:xpathDescription>SFDC Postpone</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$cu/InternalCheckResult/pfx:source_datasource="SFDC"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JMS Queue Sender</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Error Handling</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map-Data-1</pd:from>
+            <pd:to>JMS Queue Sender</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetRallyView</pd:from>
+            <pd:to>Map-Data-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetNavisionView</pd:from>
+            <pd:to>Map-Data-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetSFDCView</pd:from>
+            <pd:to>Map-Data-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>GetNavisionView</pd:to>
+            <pd:xpathDescription>NAVISION</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$cu/InternalCheckResult/pfx:source_datasource="NAVISION"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>GetSFDCView</pd:to>
+            <pd:xpathDescription>SFDC</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$cu/InternalCheckResult/pfx:source_datasource="SFDC"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>GetRallyView</pd:to>
+            <pd:xpathDescription>RALLYING</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$cu/InternalCheckResult/pfx:source_datasource="RALLYING"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>Error Handling</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map-Data-2</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="JMS Queue Sender">
+            <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+            <pd:x>962</pd:x>
+            <pd:y>128</pd:y>
+            <config>
+                <PermittedMessageType>XML Text</PermittedMessageType>
+                <SessionAttributes>
+                    <transacted>false</transacted>
+                    <acknowledgeMode>1</acknowledgeMode>
+                    <maxSessions>1</maxSessions>
+                </SessionAttributes>
+                <ConfigurableHeaders>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSExpiration>0</JMSExpiration>
+                    <JMSPriority>4</JMSPriority>
+                </ConfigurableHeaders>
+                <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+                <InDataxsdString ref="pfx2:SMF"/>
+            </config>
+            <pd:inputBindings>
+                <ns05:ActivityInput>
+                    <xsl:choose>
+                        <xsl:when test="$cu/InternalCheckResult/pfx:target_datasource=&quot;NAVISION&quot;">
+                            <destinationQueue>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/Navision/CreateNavCust/DestinationQueue"/>
+                            </destinationQueue>
+                        </xsl:when>
+                        <xsl:when test="$cu/InternalCheckResult/pfx:target_datasource=&quot;SFDC&quot;">
+                            <destinationQueue>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/SFDC/CreateSfCust/V1.0/DestinationQueue"/>
+                            </destinationQueue>
+                        </xsl:when>
+                        <xsl:when test="$cu/InternalCheckResult/pfx:target_datasource=&quot;TEO&quot;">
+                            <destinationQueue>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/TeO/UpdateTeOCust/DestinationQueue"/>
+                            </destinationQueue>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <destinationQueue>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/Rallying/CreateRalCust/DestinationQueue"/>
+                            </destinationQueue>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <Body>
+                        <xsl:copy-of select="$Map-Data-1/pfx2:SMF"/>
+                    </Body>
+                </ns05:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map-Data-1">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>850</pd:x>
+            <pd:y>203</pd:y>
+            <config>
+                <element ref="pfx2:SMF"/>
+            </config>
+            <pd:inputBindings>
+                <pfx2:SMF>
+                    <pfx2:SMFHeader>
+                        <ns0:MessageKey>
+                            <xsl:value-of select="TM:getGUID()"/>
+                        </ns0:MessageKey>
+                        <xsl:choose>
+                            <xsl:when test="$cu/InternalCheckResult/pfx:target_datasource=&quot;NAVISION&quot;">
+                                <ns0:ServiceName>
+                                    <xsl:value-of select="&quot;CreateNavCust&quot;"/>
+                                </ns0:ServiceName>
+                            </xsl:when>
+                            <xsl:when test="$cu/InternalCheckResult/pfx:target_datasource=&quot;SFDC&quot;">
+                                <ns0:ServiceName>
+                                    <xsl:value-of select="&quot;CreateSfCust&quot;"/>
+                                </ns0:ServiceName>
+                            </xsl:when>
+                            <xsl:when test="$cu/InternalCheckResult/pfx:target_datasource=&quot;TEO&quot;">
+                                <ns0:ServiceName>
+                                    <xsl:value-of select="&quot;UpdateTeOCust&quot;"/>
+                                </ns0:ServiceName>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <ns0:ServiceName>
+                                    <xsl:value-of select="&quot;CreateRalCust&quot;"/>
+                                </ns0:ServiceName>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <ns0:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns0:ServiceVersion>
+                        <ns0:SourceID>
+                            <xsl:value-of select="&quot;MDM&quot;"/>
+                        </ns0:SourceID>
+                        <ns0:SourceIP>
+                            <xsl:value-of select="TM:getIPAddress()"/>
+                        </ns0:SourceIP>
+                        <ns0:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns0:RqTimestamp>
+                    </pfx2:SMFHeader>
+                    <pfx2:SMFBody>
+                        <xsl:choose>
+                            <xsl:when test="$cu/InternalCheckResult/pfx:source_datasource=&quot;NAVISION&quot;">
+                                <pfx2:Navision>
+                                    <pfx2:Customer>
+                                        <xsl:copy-of select="$GetNavisionView/root/Customer/ns02:Customer"/>
+                                    </pfx2:Customer>
+                                </pfx2:Navision>
+                            </xsl:when>
+                            <xsl:when test="$cu/InternalCheckResult/pfx:source_datasource=&quot;SFDC&quot;">
+                                <pfx2:SFDC>
+                                    <xsl:for-each select="$GetSFDCView/root/Customer[1]">
+                                        <pfx2:Customer>
+                                            <ns03:SfdcPartnerId>
+                                                <xsl:value-of select="ns03:SfdcPartnerId"/>
+                                            </ns03:SfdcPartnerId>
+                                            <xsl:if test="ns03:MdmPartnerId">
+                                                <ns03:MdmPartnerId>
+                                                    <xsl:copy-of select="ns03:MdmPartnerId/@xsi:nil"/>
+                                                    <xsl:value-of select="ns03:MdmPartnerId"/>
+                                                </ns03:MdmPartnerId>
+                                            </xsl:if>
+                                            <ns03:Active>
+                                                <xsl:value-of select="ns03:Active"/>
+                                            </ns03:Active>
+                                            <ns03:AccountName>
+                                                <xsl:value-of select="ns03:AccountName"/>
+                                            </ns03:AccountName>
+                                            <ns03:AccountType>
+                                                <xsl:value-of select="ns03:AccountType"/>
+                                            </ns03:AccountType>
+                                            <xsl:if test="ns03:AccountOtherType">
+                                                <ns03:AccountOtherType>
+                                                    <xsl:value-of select="ns03:AccountOtherType"/>
+                                                </ns03:AccountOtherType>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:AccountStatus">
+                                                <ns03:AccountStatus>
+                                                    <xsl:value-of select="ns03:AccountStatus"/>
+                                                </ns03:AccountStatus>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:AKA">
+                                                <ns03:AKA>
+                                                    <xsl:value-of select="ns03:AKA"/>
+                                                </ns03:AKA>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:VatNumber">
+                                                <ns03:VatNumber>
+                                                    <xsl:value-of select="ns03:VatNumber"/>
+                                                </ns03:VatNumber>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:MainPhoneNumber">
+                                                <ns03:MainPhoneNumber>
+                                                    <xsl:value-of select="ns03:MainPhoneNumber"/>
+                                                </ns03:MainPhoneNumber>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:Fax">
+                                                <ns03:Fax>
+                                                    <xsl:value-of select="ns03:Fax"/>
+                                                </ns03:Fax>
+                                            </xsl:if>
+                                            <ns03:Country>
+                                                <xsl:value-of select="ns03:Country"/>
+                                            </ns03:Country>
+                                            <xsl:if test="ns03:Website">
+                                                <ns03:Website>
+                                                    <xsl:value-of select="ns03:Website"/>
+                                                </ns03:Website>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:EmailDomain">
+                                                <ns03:EmailDomain>
+                                                    <xsl:value-of select="ns03:EmailDomain"/>
+                                                </ns03:EmailDomain>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:NavisionID">
+                                                <ns03:NavisionID>
+                                                    <xsl:value-of select="ns03:NavisionID"/>
+                                                </ns03:NavisionID>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:DUNSName">
+                                                <ns03:DUNSName>
+                                                    <xsl:value-of select="ns03:DUNSName"/>
+                                                </ns03:DUNSName>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:DUNS">
+                                                <ns03:DUNS>
+                                                    <xsl:value-of select="ns03:DUNS"/>
+                                                </ns03:DUNS>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:DUNSDirectParent">
+                                                <ns03:DUNSDirectParent>
+                                                    <xsl:value-of select="ns03:DUNSDirectParent"/>
+                                                </ns03:DUNSDirectParent>
+                                            </xsl:if>
+                                            <xsl:if test="ns03:DUNSGlobalParent">
+                                                <ns03:DUNSGlobalParent>
+                                                    <xsl:value-of select="ns03:DUNSGlobalParent"/>
+                                                </ns03:DUNSGlobalParent>
+                                            </xsl:if>
+                                            <ns03:BillingCity>
+                                                <xsl:value-of select="ns03:BillingCity"/>
+                                            </ns03:BillingCity>
+                                            <ns03:BillingCountry>
+                                                <xsl:value-of select="ns03:BillingCountry"/>
+                                            </ns03:BillingCountry>
+                                            <ns03:BillingPostalCode>
+                                                <xsl:value-of select="ns03:BillingPostalCode"/>
+                                            </ns03:BillingPostalCode>
+                                            <ns03:BillingState>
+                                                <xsl:value-of select="ns03:BillingState"/>
+                                            </ns03:BillingState>
+                                            <ns03:BillingStreet>
+                                                <xsl:value-of select="ns03:BillingStreet"/>
+                                            </ns03:BillingStreet>
+                                            <xsl:if test="ns03:ParentAccount">
+                                                <ns03:ParentAccount>
+                                                    <xsl:value-of select="ns03:ParentAccount"/>
+                                                </ns03:ParentAccount>
+                                            </xsl:if>
+                                            <ns03:PartnerTier>
+                                                <xsl:value-of select="ns03:PartnerTier"/>
+                                            </ns03:PartnerTier>
+                                            <xsl:if test="ns03:MergedToSfdcPartnerId">
+                                                <ns03:MergedToSfdcPartnerId>
+                                                    <xsl:value-of select="ns03:MergedToSfdcPartnerId"/>
+                                                </ns03:MergedToSfdcPartnerId>
+                                            </xsl:if>
+                                            <ns03:recordType>
+                                                <xsl:value-of select="ns03:recordType"/>
+                                            </ns03:recordType>
+                                        </pfx2:Customer>
+                                    </xsl:for-each>
+                                </pfx2:SFDC>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx2:Rallying>
+                                    <xsl:for-each select="$GetRallyView/root/Customer[1]">
+                                        <pfx2:Partner>
+                                            <xsl:if test="ns04:Id">
+                                                <ns04:Id>
+                                                    <xsl:value-of select="ns04:Id"/>
+                                                </ns04:Id>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:Address">
+                                                <ns04:Address>
+                                                    <xsl:value-of select="ns04:Address"/>
+                                                </ns04:Address>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:BlockFlag">
+                                                <ns04:BlockFlag>
+                                                    <xsl:value-of select="ns04:BlockFlag"/>
+                                                </ns04:BlockFlag>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:City">
+                                                <ns04:City>
+                                                    <xsl:value-of select="ns04:City"/>
+                                                </ns04:City>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:Country">
+                                                <ns04:Country>
+                                                    <xsl:value-of select="ns04:Country"/>
+                                                </ns04:Country>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:DistributorFlag">
+                                                <ns04:DistributorFlag>
+                                                    <xsl:value-of select="ns04:DistributorFlag"/>
+                                                </ns04:DistributorFlag>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:Email">
+                                                <ns04:Email>
+                                                    <xsl:value-of select="ns04:Email"/>
+                                                </ns04:Email>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:EndCustomerFlag">
+                                                <ns04:EndCustomerFlag>
+                                                    <xsl:value-of select="ns04:EndCustomerFlag"/>
+                                                </ns04:EndCustomerFlag>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:IntegrationSource">
+                                                <ns04:IntegrationSource>
+                                                    <xsl:value-of select="ns04:IntegrationSource"/>
+                                                </ns04:IntegrationSource>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:Name">
+                                                <ns04:Name>
+                                                    <xsl:value-of select="ns04:Name"/>
+                                                </ns04:Name>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:PartnerTier">
+                                                <ns04:PartnerTier>
+                                                    <xsl:value-of select="ns04:PartnerTier"/>
+                                                </ns04:PartnerTier>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:PartnerTierDescription">
+                                                <ns04:PartnerTierDescription>
+                                                    <xsl:value-of select="ns04:PartnerTierDescription"/>
+                                                </ns04:PartnerTierDescription>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:PrimaryPartnerTierId">
+                                                <ns04:PrimaryPartnerTierId>
+                                                    <xsl:value-of select="ns04:PrimaryPartnerTierId"/>
+                                                </ns04:PrimaryPartnerTierId>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:PrimaryPartnerTypeId">
+                                                <ns04:PrimaryPartnerTypeId>
+                                                    <xsl:value-of select="ns04:PrimaryPartnerTypeId"/>
+                                                </ns04:PrimaryPartnerTypeId>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:ResellerFlag">
+                                                <ns04:ResellerFlag>
+                                                    <xsl:value-of select="ns04:ResellerFlag"/>
+                                                </ns04:ResellerFlag>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:StandardDiscount">
+                                                <ns04:StandardDiscount>
+                                                    <xsl:value-of select="ns04:StandardDiscount"/>
+                                                </ns04:StandardDiscount>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:SyncDate">
+                                                <ns04:SyncDate>
+                                                    <xsl:value-of select="ns04:SyncDate"/>
+                                                </ns04:SyncDate>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:NavisionId">
+                                                <ns04:NavisionId>
+                                                    <xsl:value-of select="ns04:NavisionId"/>
+                                                </ns04:NavisionId>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:SalesForceId">
+                                                <ns04:SalesForceId>
+                                                    <xsl:value-of select="ns04:SalesForceId"/>
+                                                </ns04:SalesForceId>
+                                            </xsl:if>
+                                            <xsl:if test="ns04:MDMId">
+                                                <ns04:MDMId>
+                                                    <xsl:value-of select="ns04:MDMId"/>
+                                                </ns04:MDMId>
+                                            </xsl:if>
+                                        </pfx2:Partner>
+                                    </xsl:for-each>
+                                </pfx2:Rallying>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx2:MDM>
+                            <pfx2:batch_id>
+                                <xsl:value-of select="$cu/InternalCheckResult/pfx:batch_id"/>
+                            </pfx2:batch_id>
+                        </pfx2:MDM>
+                    </pfx2:SMFBody>
+                </pfx2:SMF>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GetNavisionView">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>706</pd:x>
+            <pd:y>108</pd:y>
+            <config>
+                <processName>/ExternalServices/MDM_Server/CrossCheck/GetNavisionView.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <Type>
+                        <xsl:value-of select="&quot;Customer&quot;"/>
+                    </Type>
+                    <source_id>
+                        <xsl:value-of select="$cu/InternalCheckResult/pfx:source_id"/>
+                    </source_id>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GetRallyView">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>717</pd:x>
+            <pd:y>318</pd:y>
+            <config>
+                <processName>/ExternalServices/MDM_Server/CrossCheck/GetRallyView.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <source_id>
+                        <xsl:value-of select="$cu/InternalCheckResult/pfx:source_id"/>
+                    </source_id>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GetSFDCView">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>717</pd:x>
+            <pd:y>212</pd:y>
+            <config>
+                <processName>/ExternalServices/MDM_Server/CrossCheck/GetSFDCView.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <Type>
+                        <xsl:value-of select="&quot;Customer&quot;"/>
+                    </Type>
+                    <source_id>
+                        <xsl:value-of select="$cu/InternalCheckResult/pfx:source_id"/>
+                    </source_id>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>583</pd:x>
+            <pd:y>213</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Catch">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>844</pd:x>
+            <pd:y>352</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Error Handling">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>970</pd:x>
+            <pd:y>351</pd:y>
+            <config>
+                <processName>/Services/SharedServices/Error Handling Process.process</processName>
+            </config>
+            <pd:inputBindings>
+                <group>
+                    <ns2:SMFHeader>
+                        <ns0:MessageKey>
+                            <xsl:value-of select="TM:getGUID()"/>
+                        </ns0:MessageKey>
+                        <ns0:ServiceName>
+                            <xsl:value-of select="&quot;InternalCrossCheck&quot;"/>
+                        </ns0:ServiceName>
+                        <ns0:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns0:ServiceVersion>
+                        <ns0:SourceID>
+                            <xsl:value-of select="&quot;MDM&quot;"/>
+                        </ns0:SourceID>
+                        <ns0:SourceIP>
+                            <xsl:value-of select="TM:getIPAddress()"/>
+                        </ns0:SourceIP>
+                        <ns0:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns0:RqTimestamp>
+                    </ns2:SMFHeader>
+                    <ns6:Error>
+                        <ns6:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </ns6:src>
+                        <ns6:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </ns6:error_code>
+                        <ns6:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </ns6:error_message>
+                        <ns6:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </ns6:stack_trace>
+                    </ns6:Error>
+                    <Source>
+                        <xsl:value-of select="tib:render-xml($cu/InternalCheckResult, 1)"/>
+                    </Source>
+                    <Retry>
+                        <xsl:value-of select="0"/>
+                    </Retry>
+                </group>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map-Data-2">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>580</pd:x>
+            <pd:y>320</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="batch_id" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <batch_id>
+                        <xsl:value-of select="$cu/InternalCheckResult/pfx:batch_id"/>
+                    </batch_id>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch-1">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1008</pd:x>
+        <pd:y>485</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error-Handling-1">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1207</pd:x>
+        <pd:y>487</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ns2:SMFHeader>
+                    <ns0:MessageKey>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </ns0:MessageKey>
+                    <ns0:ServiceName>
+                        <xsl:value-of select="&quot;InternalCrossCheck&quot;"/>
+                    </ns0:ServiceName>
+                    <ns0:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns0:ServiceVersion>
+                    <ns0:SourceID>
+                        <xsl:value-of select="&quot;MDM&quot;"/>
+                    </ns0:SourceID>
+                    <ns0:SourceIP>
+                        <xsl:value-of select="TM:getIPAddress()"/>
+                    </ns0:SourceIP>
+                    <ns0:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns0:RqTimestamp>
+                    <ns0:RsTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns0:RsTimestamp>
+                </ns2:SMFHeader>
+                <ns6:Error>
+                    <ns6:src>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                    </ns6:src>
+                    <ns6:error_code>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </ns6:error_code>
+                    <ns6:error_message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </ns6:error_message>
+                    <ns6:stack_trace>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                    </ns6:stack_trace>
+                </ns6:Error>
+                <Source>
+                    <xsl:value-of select="&quot;MDM&quot;"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="0"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>1163</pd:x>
+        <pd:y>249</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($allbatch_id/AccumulatedOutput,1)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="&quot;internal_check&quot;"/>
+                </msgCode>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>Multi System Sync</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Multi System Sync</pd:from>
+        <pd:to>Select intercheck</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Select intercheck</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch-1</pd:from>
+        <pd:to>Error-Handling-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error-Handling-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

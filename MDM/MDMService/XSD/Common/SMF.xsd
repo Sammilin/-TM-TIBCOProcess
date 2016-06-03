@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.trendmicro.com/ESB/schemas/SMF"
+	 xmlns:ns0="http://www.trendmicro.com/ESB/schemas/Common"
+	 xmlns:ns1="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer"
+	 xmlns:ns2="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer"
+	 xmlns:ns3="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Contact"
+	 xmlns:ns4="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer"
+	 xmlns:ns5="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner"
+	 xmlns:ns6="http://www.trendmicro.com/ESB/schemas/MDM/TeO/Customer"
+	 targetNamespace="http://www.trendmicro.com/ESB/schemas/SMF"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/Common" schemaLocation="common.xsd"/>
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" schemaLocation="../Client/SFDC/Customer.xsd"/>
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" schemaLocation="../Client/Navision/Customer.xsd"/>
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Contact" schemaLocation="../Client/Navision/Contact.xsd"/>
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/MDMServer" schemaLocation="../Client/MDMServer/MDMServer.xsd"/>
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" schemaLocation="../Client/Rallying/Partner.xsd"/>
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/TeO/Customer" schemaLocation="../Client/TeO/Customer.xsd"/>
+	<xs:element name="SMF">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SMFHeader" type="ns0:TrendESBCommonHeader"/>
+				<xs:element name="SMFBody">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice>
+								<xs:element name="Navision" minOccurs="0">
+									<xs:complexType>
+										<xs:choice>
+											<xs:element name="Customer" type="ns2:CustomerInfo"/>
+											<xs:element name="Contact" type="ns3:ContactInfo"/>
+										</xs:choice>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="Rallying" minOccurs="0">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Partner" type="ns5:Partner"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="SFDC" minOccurs="0">
+									<xs:complexType>
+										<xs:choice>
+											<xs:element name="Customer" type="ns1:CustomerType" maxOccurs="100"/>
+											<xs:element name="Location" type="ns1:LocationType" maxOccurs="100"/>
+											<xs:element name="Contact" type="ns1:ContactType" maxOccurs="100"/>
+										</xs:choice>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="TeO" minOccurs="0">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Customer" type="ns6:CustomerInfo"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:choice>
+							<xs:element name="MDM" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Company" type="ns4:CompanyType" minOccurs="0"/>
+										<xs:element name="SourceIDMapping" type="ns4:SourceIDMappingType" minOccurs="0"/>
+										<xs:element name="batch_id" type="xs:string" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CommonType">
+		<xs:sequence>
+			<xs:element name="SourceId" type="xs:string"/>
+			<xs:element name="GoldenId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

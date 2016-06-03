@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Customer_Request.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Customer_Request.xsd" schemaLocation="/XSD/Client/Navision/Customer_Request.xsd"/>
+    <pd:name>TestData/Test Navision Client.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ID" type="xsd:string"/>
+                    <xsd:element name="Command" type="xsd:string"/>
+                    <xsd:element name="SourceSystemID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>98</pd:startX>
+    <pd:startY>102</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>669</pd:endX>
+    <pd:endY>98</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1351601496968</pd:targetNamespace>
+    <pd:activity name="JDBC Query">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>227</pd:x>
+        <pd:y>101</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT
+ [No_],
+ [Name],
+ [Name 2],
+ [Address],
+ [Address 2],
+ [City],
+ [PRIMARY Phone No_],
+ [Language Code],
+ [Country Code],
+ [PRIMARY Fax No_],
+ [VAT Registration No_],
+ [Post Code],
+ [County],
+ [PRIMARY E-Mail],
+ [Legal Entity Code],
+ [Master Customer No_],
+ [Reseller],
+ [END Customer],
+ [Blocked],
+ [PRIMARY Contact No_],
+ [B2B Customer ID],
+ [Siebel Segment],
+ [Siebel ID],
+ [Transaction Profile],
+ [MDM Customer ID],
+ [Salesforce Customer ID],
+ [DnB No_]
+FROM
+ [ERP_EMEA].[Customer]
+WHERE [No_]=? or  [MDM Customer ID]=?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>No</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>MDMID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>No_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Name</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Name2</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Address</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Address2</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>City</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PRIMARYPhoneNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LanguageCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CountryCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PRIMARYFaxNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>VATRegistrationNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PostCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>County</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PRIMARYE-Mail</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LegalEntityCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MasterCustomerNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Reseller</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ENDCustomer</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Blocked</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PRIMARYContactNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>B2BCustomerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SiebelSegment</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SiebelID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TransactionProfile</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MDMCustomerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SalesforceCustomerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DnBNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <No>
+                    <xsl:value-of select="$Start/root/ID"/>
+                </No>
+                <MDMID>
+                    <xsl:value-of select="$Start/root/ID"/>
+                </MDMID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>370</pd:x>
+        <pd:y>100</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term ref="pfx:TrendMicro"/>
+        </config>
+        <pd:inputBindings>
+            <TrendMicro>
+                <MessageHeader>
+                    <MessageName>
+                        <xsl:value-of select="&quot;MSG_05&quot;"/>
+                    </MessageName>
+                    <MessageGUID>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </MessageGUID>
+                    <MessageFunctionCode>
+                        <xsl:value-of select="&quot;Request&quot;"/>
+                    </MessageFunctionCode>
+                    <DateTimeStamp>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyyMMdd'T'HHmmss&quot;, current-dateTime())"/>
+                    </DateTimeStamp>
+                    <From>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/Navision/MSMQ/To"/>
+                    </From>
+                    <To>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/Navision/MSMQ/From"/>
+                    </To>
+                    <Correlation>
+                        <MsgTrackingGUID>
+                            <xsl:value-of select="TM:getGUID()"/>
+                        </MsgTrackingGUID>
+                    </Correlation>
+                </MessageHeader>
+                <MessagePayload>
+                    <BusinessObject>
+                        <CustomerInfo>
+                            <Command>
+                                <xsl:value-of select="$Start/root/Command"/>
+                            </Command>
+                            <Customer>
+                                <xsl:if test="$JDBC-Query/resultSet/Record[1]/MDMCustomerID">
+                                    <MDMCustID>
+                                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/MDMCustomerID"/>
+                                    </MDMCustID>
+                                </xsl:if>
+                                <xsl:if test="$JDBC-Query/resultSet/Record[1]/DnBNo_">
+                                    <DnBNum>
+                                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/DnBNo_"/>
+                                    </DnBNum>
+                                </xsl:if>
+                                <SiebelID>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </SiebelID>
+                                <xsl:if test="$JDBC-Query/resultSet/Record[1]/SalesforceCustomerID">
+                                    <SalesForceID>
+                                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/SalesforceCustomerID"/>
+                                    </SalesForceID>
+                                </xsl:if>
+                                <xsl:if test="$JDBC-Query/resultSet/Record[1]/B2BCustomerID">
+                                    <B2BCustID>
+                                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/B2BCustomerID"/>
+                                    </B2BCustID>
+                                </xsl:if>
+                                <NavDistiID>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </NavDistiID>
+                                <NAVID>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/No_"/>
+                                </NAVID>
+                                <CustomerName>
+                                    <xsl:value-of select="&quot;ECOLE SUPERIEURE DU COMMERCE111&quot;"/>
+                                </CustomerName>
+                                <CustomerName2>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/Name2"/>
+                                </CustomerName2>
+                                <Address>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/Address"/>
+                                </Address>
+                                <Address2>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/Address2"/>
+                                </Address2>
+                                <City>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/City"/>
+                                </City>
+                                <County>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/County"/>
+                                </County>
+                                <PostCode>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/PostCode"/>
+                                </PostCode>
+                                <CountryCode>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/CountryCode"/>
+                                </CountryCode>
+                                <Phone>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/PRIMARYPhoneNo_"/>
+                                </Phone>
+                                <Fax>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/PRIMARYFaxNo_"/>
+                                </Fax>
+                                <Email>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/PRIMARYE-Mail"/>
+                                </Email>
+                                <LanguageCode>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/LanguageCode"/>
+                                </LanguageCode>
+                                <LegalEntity>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/LegalEntityCode"/>
+                                </LegalEntity>
+                                <EndCustomer>
+                                    <xsl:value-of select="1"/>
+                                </EndCustomer>
+                                <Reseller>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/Reseller"/>
+                                </Reseller>
+                                <TransactionProfile>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/TransactionProfile"/>
+                                </TransactionProfile>
+                                <Segment>
+                                    <xsl:value-of select="2"/>
+                                </Segment>
+                                <MasterNAVID>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/MasterCustomerNo_"/>
+                                </MasterNAVID>
+                                <Blocked>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/Blocked"/>
+                                </Blocked>
+                                <PartnerTier>
+                                    <xsl:value-of select="&quot;A&quot;"/>
+                                </PartnerTier>
+                                <VATRegNo>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/VATRegistrationNo_"/>
+                                </VATRegNo>
+                                <xsl:if test="$JDBC-Query/resultSet/Record[1]/PRIMARYContactNo_">
+                                    <DefaultContactID>
+                                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/PRIMARYContactNo_"/>
+                                    </DefaultContactID>
+                                </xsl:if>
+                                <SystemSourceID>
+                                    <xsl:value-of select="&quot;TEO&quot;"/>
+                                </SystemSourceID>
+                            </Customer>
+                        </CustomerInfo>
+                    </BusinessObject>
+                </MessagePayload>
+            </TrendMicro>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>508</pd:x>
+        <pd:y>99</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%ExternalServices/Navision/MSMQ/NavisionRequest%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <Body>
+                    <xsl:value-of select="tib:if-absent($Render-XML-1/xmlString, $Render-XML/xmlString)"/>
+                </Body>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render-XML-1">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>375</pd:x>
+        <pd:y>209</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term ref="pfx:TrendMicro"/>
+        </config>
+        <pd:inputBindings>
+            <TrendMicro>
+                <MessageHeader>
+                    <MessageName>
+                        <xsl:value-of select="&quot;MSG_05&quot;"/>
+                    </MessageName>
+                    <MessageGUID>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </MessageGUID>
+                    <MessageFunctionCode>
+                        <xsl:value-of select="&quot;Request&quot;"/>
+                    </MessageFunctionCode>
+                    <DateTimeStamp>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyyMMdd'T'HHmmss&quot;, current-dateTime())"/>
+                    </DateTimeStamp>
+                    <From>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/Navision/MSMQ/To"/>
+                    </From>
+                    <To>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/Navision/MSMQ/From"/>
+                    </To>
+                    <Correlation>
+                        <MsgTrackingGUID>
+                            <xsl:value-of select="TM:getGUID()"/>
+                        </MsgTrackingGUID>
+                    </Correlation>
+                </MessageHeader>
+                <MessagePayload>
+                    <BusinessObject>
+                        <CustomerInfo>
+                            <Command>
+                                <xsl:value-of select="$Start/root/Command"/>
+                            </Command>
+                            <Customer>
+                                <xsl:if test="$JDBC-Query/resultSet/Record[1]/DnBNo_">
+                                    <DnBNum>
+                                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/DnBNo_"/>
+                                    </DnBNum>
+                                </xsl:if>
+                                <SiebelID>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </SiebelID>
+                                <xsl:if test="$JDBC-Query/resultSet/Record[1]/No_">
+                                    <B2BCustID>
+                                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/No_"/>
+                                    </B2BCustID>
+                                </xsl:if>
+                                <NavDistiID>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </NavDistiID>
+                                <NAVID>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/No_"/>
+                                </NAVID>
+                                <CustomerName>
+                                    <xsl:value-of select="&quot;ECOLE SUPERIEURE DU COMMERCE&quot;"/>
+                                </CustomerName>
+                                <CustomerName2>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/Name2"/>
+                                </CustomerName2>
+                                <Address>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/Address"/>
+                                </Address>
+                                <Address2>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/Address2"/>
+                                </Address2>
+                                <City>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/City"/>
+                                </City>
+                                <County>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/County"/>
+                                </County>
+                                <PostCode>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/PostCode"/>
+                                </PostCode>
+                                <CountryCode>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/CountryCode"/>
+                                </CountryCode>
+                                <Phone>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/PRIMARYPhoneNo_"/>
+                                </Phone>
+                                <Fax>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/PRIMARYFaxNo_"/>
+                                </Fax>
+                                <Email>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/PRIMARYE-Mail"/>
+                                </Email>
+                                <LanguageCode>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/LanguageCode"/>
+                                </LanguageCode>
+                                <LegalEntity>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/LegalEntityCode"/>
+                                </LegalEntity>
+                                <EndCustomer>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/ENDCustomer"/>
+                                </EndCustomer>
+                                <Reseller>
+                                    <xsl:value-of select="1"/>
+                                </Reseller>
+                                <TransactionProfile>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/TransactionProfile"/>
+                                </TransactionProfile>
+                                <Segment>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/SiebelSegment"/>
+                                </Segment>
+                                <MasterNAVID>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/MasterCustomerNo_"/>
+                                </MasterNAVID>
+                                <Blocked>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/Blocked"/>
+                                </Blocked>
+                                <PartnerTier>
+                                    <xsl:value-of select="&quot;A&quot;"/>
+                                </PartnerTier>
+                                <VATRegNo>
+                                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/VATRegistrationNo_"/>
+                                </VATRegNo>
+                                <xsl:if test="$JDBC-Query/resultSet/Record[1]/PRIMARYContactNo_">
+                                    <DefaultContactID>
+                                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/PRIMARYContactNo_"/>
+                                    </DefaultContactID>
+                                </xsl:if>
+                                <SystemSourceID>
+                                    <xsl:value-of select="&quot;TEO&quot;"/>
+                                </SystemSourceID>
+                            </Customer>
+                        </CustomerInfo>
+                    </BusinessObject>
+                </MessagePayload>
+            </TrendMicro>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JDBC Query</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query</pd:from>
+        <pd:to>Render-XML-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>contains($Start/root/Command, 'Create')</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render-XML-1</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

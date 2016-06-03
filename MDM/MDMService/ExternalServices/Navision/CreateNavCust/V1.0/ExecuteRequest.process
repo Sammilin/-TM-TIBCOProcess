@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/schemas/Common" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CommonOutput" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer_Request" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Customer_Request.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Output.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Client/Navision/Customer_Request.xsd" schemaLocation="/XSD/Client/Navision/Customer_Request.xsd"/>
+    <pd:name>ExternalServices/Navision/CreateNavCust/V1.0/ExecuteRequest.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:SMF"/>
+                    <xsd:element name="ResendCount" type="xsd:int"/>
+                    <xsd:element name="RedeliveredQueue" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>101</pd:startX>
+    <pd:startY>91</pd:startY>
+    <pd:returnBindings>
+        <XMLString>
+            <xsl:value-of select="$Render-XML/xmlString"/>
+        </XMLString>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="XMLString" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>460</pd:endX>
+    <pd:endY>92</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1340276022570</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>204</pd:x>
+        <pd:y>208</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>396</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns4:ErrorReport/Data/*" element="pfx4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <xsl:if test="$_error/ns4:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns4:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns4:ErrorReport/Data/pfx4:Error)">
+                            <xsl:copy-of select="$_error/ns4:ErrorReport/Data/pfx4:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx4:Error>
+                                <pfx4:src>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                                </pfx4:src>
+                                <pfx4:error_code>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                                </pfx4:error_code>
+                                <pfx4:error_message>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                                </pfx4:error_message>
+                                <pfx4:stack_trace>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                                </pfx4:stack_trace>
+                            </pfx4:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Navision MSMQ Sender">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>322</pd:x>
+        <pd:y>103</pd:y>
+        <config>
+            <processName>/ExternalServices/Navision/ShareProcess/Navision MSMQ Sender.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <QueueName>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/MDMRequest"/>
+                </QueueName>
+                <MessageKey>
+                    <xsl:value-of select="$Start/group/pfx:SMF/pfx:SMFHeader/ns:MessageKey"/>
+                </MessageKey>
+                <MsgExpirationTime>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/MsgExpirationTime"/>
+                </MsgExpirationTime>
+                <XMLString>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </XMLString>
+                <WaitingResponseQueue>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/WaitingResponseQueue"/>
+                </WaitingResponseQueue>
+                <WaitingACKQueue>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/WaitingACKQueue"/>
+                </WaitingACKQueue>
+                <RedeliveredQueue>
+                    <xsl:value-of select="$Start/group/RedeliveredQueue"/>
+                </RedeliveredQueue>
+                <ResendCount>
+                    <xsl:value-of select="$Start/group/ResendCount"/>
+                </ResendCount>
+                <xsl:copy-of select="$Start/group/pfx:SMF"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>210</pd:x>
+        <pd:y>91</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-16</textEncoding>
+            <term ref="pfx6:TrendMicro"/>
+        </config>
+        <pd:inputBindings>
+            <TrendMicro>
+                <MessageHeader>
+                    <MessageName>
+                        <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/CreateNavCust/MessageName"/>
+                    </MessageName>
+                    <MessageGUID>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </MessageGUID>
+                    <MessageFunctionCode>
+                        <xsl:value-of select="&quot;Request&quot;"/>
+                    </MessageFunctionCode>
+                    <DateTimeStamp>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyyMMdd'T'HHmmss&quot;, tib:translate-timezone(current-dateTime(), 'UTC'))"/>
+                    </DateTimeStamp>
+                    <From>
+                        <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/From"/>
+                    </From>
+                    <To>
+                        <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/MSMQ/To"/>
+                    </To>
+                    <Correlation>
+                        <MsgTrackingGUID>
+                            <xsl:value-of select="$Start/group/pfx:SMF/pfx:SMFHeader/ns:MessageKey"/>
+                        </MsgTrackingGUID>
+                    </Correlation>
+                </MessageHeader>
+                <MessagePayload>
+                    <BusinessObject>
+                        <CustomerInfo>
+                            <Command>
+                                <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ExternalServices/Navision/CreateNavCust/Command"/>
+                            </Command>
+                            <xsl:for-each select="$Start/group/pfx:SMF/pfx:SMFBody/pfx:Navision/pfx:Customer/ns1:Customer">
+                                <Customer>
+                                    <MDMCustID>
+                                        <xsl:value-of select="ns1:MDMCustID"/>
+                                    </MDMCustID>
+                                    <xsl:if test="string-length(ns1:DnBNum)>0">
+                                        <DnBNum>
+                                            <xsl:value-of select="ns1:DnBNum"/>
+                                        </DnBNum>
+                                    </xsl:if>
+                                    <xsl:if test="string-length(ns1:SiebelID)>0">
+                                        <SiebelID>
+                                            <xsl:value-of select="ns1:SiebelID"/>
+                                        </SiebelID>
+                                    </xsl:if>
+                                    <xsl:if test="string-length(ns1:SalesForceID)>0">
+                                        <SalesForceID>
+                                            <xsl:value-of select="ns1:SalesForceID"/>
+                                        </SalesForceID>
+                                    </xsl:if>
+                                    <xsl:if test="ns1:B2BCustID">
+                                        <B2BCustID>
+                                            <xsl:value-of select="ns1:B2BCustID"/>
+                                        </B2BCustID>
+                                    </xsl:if>
+                                    <xsl:if test="string-length(ns1:NavDistiID)>0">
+                                        <NavDistiID>
+                                            <xsl:value-of select="ns1:NavDistiID"/>
+                                        </NavDistiID>
+                                    </xsl:if>
+                                    <xsl:if test="ns1:NAVID">
+                                        <NAVID>
+                                            <xsl:value-of select="ns1:NAVID"/>
+                                        </NAVID>
+                                    </xsl:if>
+                                    <CustomerName>
+                                        <xsl:value-of select="ns1:CustomerName"/>
+                                    </CustomerName>
+                                    <xsl:if test="string-length(ns1:CustomerName2)>0">
+                                        <CustomerName2>
+                                            <xsl:value-of select="ns1:CustomerName2"/>
+                                        </CustomerName2>
+                                    </xsl:if>
+                                    <Address>
+                                        <xsl:value-of select="ns1:Address"/>
+                                    </Address>
+                                    <xsl:if test="string-length(ns1:Address2)>0">
+                                        <Address2>
+                                            <xsl:value-of select="ns1:Address2"/>
+                                        </Address2>
+                                    </xsl:if>
+                                    <City>
+                                        <xsl:value-of select="ns1:City"/>
+                                    </City>
+                                    <xsl:if test="string-length(ns1:County)>0">
+                                        <County>
+                                            <xsl:value-of select="ns1:County"/>
+                                        </County>
+                                    </xsl:if>
+                                    <xsl:if test="string-length(ns1:PostCode)>0">
+                                        <PostCode>
+                                            <xsl:value-of select="ns1:PostCode"/>
+                                        </PostCode>
+                                    </xsl:if>
+                                    <CountryCode>
+                                        <xsl:value-of select="ns1:CountryCode"/>
+                                    </CountryCode>
+                                    <xsl:if test="string-length(ns1:Phone)>0">
+                                        <Phone>
+                                            <xsl:value-of select="ns1:Phone"/>
+                                        </Phone>
+                                    </xsl:if>
+                                    <xsl:if test="string-length(ns1:Fax)>0">
+                                        <Fax>
+                                            <xsl:value-of select="ns1:Fax"/>
+                                        </Fax>
+                                    </xsl:if>
+                                    <xsl:if test="string-length(ns1:Email)>0">
+                                        <Email>
+                                            <xsl:value-of select="ns1:Email"/>
+                                        </Email>
+                                    </xsl:if>
+                                    <xsl:if test="string-length(ns1:LanguageCode)>0">
+                                        <LanguageCode>
+                                            <xsl:value-of select="ns1:LanguageCode"/>
+                                        </LanguageCode>
+                                    </xsl:if>
+                                    <xsl:if test="string-length(ns1:LegalEntity)>0">
+                                        <LegalEntity>
+                                            <xsl:value-of select="ns1:LegalEntity"/>
+                                        </LegalEntity>
+                                    </xsl:if>
+                                    <EndCustomer>
+                                        <xsl:value-of select="ns1:EndCustomer"/>
+                                    </EndCustomer>
+                                    <Reseller>
+                                        <xsl:value-of select="ns1:Reseller"/>
+                                    </Reseller>
+                                    <TransactionProfile>
+                                        <xsl:value-of select="ns1:TransactionProfile"/>
+                                    </TransactionProfile>
+                                    <Segment>
+                                        <xsl:value-of select="ns1:Segment"/>
+                                    </Segment>
+                                    <xsl:if test="ns1:MasterNAVID">
+                                        <MasterNAVID>
+                                            <xsl:value-of select="ns1:MasterNAVID"/>
+                                        </MasterNAVID>
+                                    </xsl:if>
+                                    <Blocked>
+                                        <xsl:value-of select="ns1:Blocked"/>
+                                    </Blocked>
+                                    <xsl:if test="ns1:Reseller=&quot;true&quot;">
+                                        <PartnerTier>
+                                            <xsl:value-of select="ns1:PartnerTier"/>
+                                        </PartnerTier>
+                                    </xsl:if>
+                                    <xsl:if test="ns1:DefaultAccred">
+                                        <DefaultAccred>
+                                            <xsl:value-of select="ns1:DefaultAccred"/>
+                                        </DefaultAccred>
+                                    </xsl:if>
+                                    <xsl:if test="string-length(ns1:VATRegNo)>0">
+                                        <VATRegNo>
+                                            <xsl:value-of select="ns1:VATRegNo"/>
+                                        </VATRegNo>
+                                    </xsl:if>
+                                    <xsl:if test="ns1:DefaultContactID">
+                                        <DefaultContactID>
+                                            <xsl:value-of select="ns1:DefaultContactID"/>
+                                        </DefaultContactID>
+                                    </xsl:if>
+                                    <SourceSystemID>
+                                        <xsl:value-of select="ns1:SourceSystemID"/>
+                                    </SourceSystemID>
+                                    <xsl:if test="ns1:DistributorType">
+                                        <DistributorType>
+                                            <xsl:value-of select="ns1:DistributorType"/>
+                                        </DistributorType>
+                                    </xsl:if>
+                                    <xsl:if test="string-length(ns1:Currency)>0">
+                                        <xsl:if test="ns1:Currency">
+                                            <Currency>
+                                                <xsl:value-of select="ns1:Currency"/>
+                                            </Currency>
+                                        </xsl:if>
+                                    </xsl:if>
+                                    <xsl:if test="ns1:DeDupExclude">
+                                        <DeDupExclude>
+                                            <xsl:value-of select="ns1:DeDupExclude"/>
+                                        </DeDupExclude>
+                                    </xsl:if>
+                                    <MSP>
+                                        <xsl:value-of select="ns1:MSP"/>
+                                    </MSP>
+                                    <MarketPlace>
+                                        <xsl:value-of select="ns1:MarketPlace"/>
+                                    </MarketPlace>
+                                    <MSPContractSigned>
+                                        <xsl:value-of select="ns1:MSPContractSigned"/>
+                                    </MSPContractSigned>
+                                </Customer>
+                            </xsl:for-each>
+                        </CustomerInfo>
+                    </BusinessObject>
+                </MessagePayload>
+            </TrendMicro>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Navision MSMQ Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Navision MSMQ Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,917 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns15="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/SMF" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/Common" xmlns:ns12="http://www.trendmicro.com/ESB/MDM/schemas/SMF/UpdateSfCust_Input" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns13="http://www.trendmicro.com/ESB/MDM/schemas/SMF/UpdateSfCust_Output" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns7="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Input" xmlns:ns10="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" xmlns:ns8="http://www.trendmicro.com/ESB/MDM/schemas/SMF/ActSfCust_Input" xmlns:ns11="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CommonOutput" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://tempuri.org/" xmlns:ns1="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns4="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/ACSMessage.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" schemaLocation="/WSDL/Provider/SearchCustomer_Output.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" schemaLocation="/WSDL/Provider/MDMService/SearchCustomer_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/ActSfCust_Input" schemaLocation="/WSDL/Provider/SFDC/ActSfCust_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Output" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Output.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/UpdateSfCust_Output" schemaLocation="/WSDL/Provider/SFDC/UpdateSfCust_Output.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CreateSfCust_Input" schemaLocation="/WSDL/Provider/SFDC/CreateSfCust_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/UpdateSfCust_Input" schemaLocation="/WSDL/Provider/SFDC/UpdateSfCust_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/CommonOutput" schemaLocation="/WSDL/Provider/CommonOutput.xsd"/>
+    <pd:name>Services/UpdateSfCust/V1.0/Main.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>99</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/UpdateSfCust/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>978</pd:endX>
+    <pd:endY>251</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Message>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="GUID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Message>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1334229875067</pd:targetNamespace>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>287</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>626</pd:x>
+        <pd:y>374</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>772</pd:x>
+        <pd:y>377</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="ns6:Error"/>
+            <pd:coercion xpath="$Parse-XML/pfx3:Envelope/pfx3:Body/*" element="ns12:SMF"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <xsl:choose>
+                    <xsl:when test="exists($_error_Parse-XML/ActivityErrors)">
+                        <pfx:SMFHeader>
+                            <ns5:MessageKey>
+                                <xsl:value-of select="&quot;SFDC Parsing Error&quot;"/>
+                            </ns5:MessageKey>
+                            <ns5:ServiceName>
+                                <xsl:value-of select="&quot;UdateSfCust&quot;"/>
+                            </ns5:ServiceName>
+                            <ns5:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </ns5:ServiceVersion>
+                            <ns5:SourceID>
+                                <xsl:value-of select="&quot;N/A&quot;"/>
+                            </ns5:SourceID>
+                            <ns5:SourceIP>
+                                <xsl:value-of select="&quot;N/A&quot;"/>
+                            </ns5:SourceIP>
+                            <ns5:RsTimestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns5:RsTimestamp>
+                        </pfx:SMFHeader>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx:SMFHeader>
+                            <ns5:MessageKey>
+                                <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:MessageKey"/>
+                            </ns5:MessageKey>
+                            <ns5:ServiceName>
+                                <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:ServiceName"/>
+                            </ns5:ServiceName>
+                            <ns5:ServiceVersion>
+                                <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:ServiceVersion"/>
+                            </ns5:ServiceVersion>
+                            <ns5:SourceID>
+                                <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceID"/>
+                            </ns5:SourceID>
+                            <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceIP">
+                                <ns5:SourceIP>
+                                    <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceIP"/>
+                                </ns5:SourceIP>
+                            </xsl:if>
+                            <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:RqTimestamp">
+                                <ns5:RqTimestamp>
+                                    <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:RqTimestamp"/>
+                                </ns5:RqTimestamp>
+                            </xsl:if>
+                            <ns5:RsTimestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns5:RsTimestamp>
+                        </pfx:SMFHeader>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($_error/ns3:ErrorReport/Data/ns6:Error) and empty($_error/ns3:ErrorReport/Data/ns6:Error)=&quot;false&quot;">
+                        <xsl:copy-of select="$_error/ns3:ErrorReport/Data/ns6:Error"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns6:Error>
+                            <ns6:src>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                            </ns6:src>
+                            <ns6:error_code>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </ns6:error_code>
+                            <ns6:error_message>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                            </ns6:error_message>
+                            <ns6:stack_trace>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            </ns6:stack_trace>
+                        </ns6:Error>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Source>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                </Source>
+                <Retry>
+                    <xsl:value-of select="0"/>
+                </Retry>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>795</pd:x>
+        <pd:y>259</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply Error to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>915</pd:x>
+        <pd:y>388</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+            <InDataxsdString ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <pfx3:Envelope>
+                        <pfx3:Body>
+                            <xsl:choose>
+                                <xsl:when test="exists($_error_Parse-XML/ActivityErrors)">
+                                    <ns13:SMF>
+                                        <ns13:SMFHeader>
+                                            <ns5:MessageKey>
+                                                <xsl:value-of select="&quot;SFDC Parsing Error&quot;"/>
+                                            </ns5:MessageKey>
+                                            <ns5:ServiceName>
+                                                <xsl:value-of select="&quot;UpdateSfCust&quot;"/>
+                                            </ns5:ServiceName>
+                                            <ns5:ServiceVersion>
+                                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                                            </ns5:ServiceVersion>
+                                            <ns5:SourceID>
+                                                <xsl:value-of select="&quot;N/A&quot;"/>
+                                            </ns5:SourceID>
+                                            <ns5:SourceIP>
+                                                <xsl:value-of select="&quot;N/A&quot;"/>
+                                            </ns5:SourceIP>
+                                            <ns5:RsTimestamp>
+                                                <xsl:value-of select="current-dateTime()"/>
+                                            </ns5:RsTimestamp>
+                                        </ns13:SMFHeader>
+                                        <ns13:SMFBody>
+                                            <ns11:ProcessStatus>
+                                                <xsl:value-of select="&quot;F&quot;"/>
+                                            </ns11:ProcessStatus>
+                                            <ns11:ErrorMessage>
+                                                <xsl:value-of select="&quot;E02 Request Message XML Format Error.&quot;"/>
+                                            </ns11:ErrorMessage>
+                                        </ns13:SMFBody>
+                                    </ns13:SMF>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <ns13:SMF>
+                                        <ns13:SMFHeader>
+                                            <ns5:MessageKey>
+                                                <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:MessageKey"/>
+                                            </ns5:MessageKey>
+                                            <ns5:ServiceName>
+                                                <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:ServiceName"/>
+                                            </ns5:ServiceName>
+                                            <ns5:ServiceVersion>
+                                                <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:ServiceVersion"/>
+                                            </ns5:ServiceVersion>
+                                            <ns5:SourceID>
+                                                <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceID"/>
+                                            </ns5:SourceID>
+                                            <ns5:SourceIP>
+                                                <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceIP"/>
+                                            </ns5:SourceIP>
+                                            <ns5:RqTimestamp>
+                                                <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:RqTimestamp"/>
+                                            </ns5:RqTimestamp>
+                                            <ns5:RsTimestamp>
+                                                <xsl:value-of select="current-dateTime()"/>
+                                            </ns5:RsTimestamp>
+                                        </ns13:SMFHeader>
+                                        <ns13:SMFBody>
+                                            <ns11:ProcessStatus>
+                                                <xsl:value-of select="&quot;F&quot;"/>
+                                            </ns11:ProcessStatus>
+                                            <ns11:ErrorMessage>
+                                                <xsl:value-of select="&quot;E99 BW General Error.&quot;"/>
+                                            </ns11:ErrorMessage>
+                                        </ns13:SMFBody>
+                                    </ns13:SMF>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx3:Body>
+                    </pfx3:Envelope>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>678</pd:x>
+        <pd:y>254</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Envelope>
+                <pfx3:Body>
+                    <ns13:SMF>
+                        <xsl:for-each select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader">
+                            <ns13:SMFHeader>
+                                <ns5:MessageKey>
+                                    <xsl:value-of select="ns5:MessageKey"/>
+                                </ns5:MessageKey>
+                                <ns5:ServiceName>
+                                    <xsl:value-of select="ns5:ServiceName"/>
+                                </ns5:ServiceName>
+                                <ns5:ServiceVersion>
+                                    <xsl:value-of select="ns5:ServiceVersion"/>
+                                </ns5:ServiceVersion>
+                                <ns5:SourceID>
+                                    <xsl:value-of select="ns5:SourceID"/>
+                                </ns5:SourceID>
+                                <ns5:SourceIP>
+                                    <xsl:value-of select="ns5:SourceIP"/>
+                                </ns5:SourceIP>
+                                <ns5:RqTimestamp>
+                                    <xsl:value-of select="ns5:RqTimestamp"/>
+                                </ns5:RqTimestamp>
+                                <ns5:RsTimestamp>
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </ns5:RsTimestamp>
+                            </ns13:SMFHeader>
+                        </xsl:for-each>
+                        <xsl:for-each select="$TotalOutput/AccumulatedOutput/root">
+                            <ns13:SMFBody>
+                                <xsl:copy-of select="Output/ancestor-or-self::*/namespace::node()"/>
+                                <xsl:copy-of select="Output/@*"/>
+                                <xsl:copy-of select="Output/node()"/>
+                            </ns13:SMFBody>
+                        </xsl:for-each>
+                    </ns13:SMF>
+                </pfx3:Body>
+            </pfx3:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>29</pd:x>
+        <pd:y>125</pd:y>
+        <pd:width>554</pd:width>
+        <pd:height>257</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF/ns12:SMFBody</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>TotalOutput</pd:outSlot>
+            <pd:activityOutputName>Map-Data-1</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Assign</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Logging Output Message</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>MDM UpdateCustomer</pd:from>
+            <pd:to>Map-Data-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Logging Input Message</pd:from>
+            <pd:to>MDM UpdateCustomer</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map-Data-1</pd:from>
+            <pd:to>Logging Output Message</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>MDM UpdateCustomer</pd:from>
+            <pd:to>Error-Handling-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-3407872</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Error-Handling-1</pd:from>
+            <pd:to>Map-Data-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign</pd:from>
+            <pd:to>Logging Input Message</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="MDM UpdateCustomer">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>240</pd:x>
+            <pd:y>208</pd:y>
+            <config>
+                <processName>/Services/UpdateSfCust/V1.0/ExecuteRequest.process</processName>
+            </config>
+            <pd:coercions>
+                <pd:coercion xpath="$Parse-XML/pfx3:Envelope/pfx3:Body/*" element="ns12:SMF" cardinality=""/>
+            </pd:coercions>
+            <pd:inputBindings>
+                <ns9:SMF>
+                    <xsl:for-each select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF/ns12:SMFHeader">
+                        <ns9:SMFHeader>
+                            <ns5:MessageKey>
+                                <xsl:value-of select="$Message/root/GUID"/>
+                            </ns5:MessageKey>
+                            <ns5:ServiceName>
+                                <xsl:value-of select="&quot;UpdateSfCust&quot;"/>
+                            </ns5:ServiceName>
+                            <ns5:ServiceVersion>
+                                <xsl:value-of select="ns5:ServiceVersion"/>
+                            </ns5:ServiceVersion>
+                            <ns5:SourceID>
+                                <xsl:value-of select="ns5:SourceID"/>
+                            </ns5:SourceID>
+                            <xsl:if test="ns5:SourceIP">
+                                <ns5:SourceIP>
+                                    <xsl:value-of select="ns5:SourceIP"/>
+                                </ns5:SourceIP>
+                            </xsl:if>
+                            <xsl:if test="ns5:RqTimestamp">
+                                <ns5:RqTimestamp>
+                                    <xsl:value-of select="ns5:RqTimestamp"/>
+                                </ns5:RqTimestamp>
+                            </xsl:if>
+                            <xsl:if test="ns5:RsTimestamp">
+                                <ns5:RsTimestamp>
+                                    <xsl:value-of select="ns5:RsTimestamp"/>
+                                </ns5:RsTimestamp>
+                            </xsl:if>
+                        </ns9:SMFHeader>
+                    </xsl:for-each>
+                    <ns9:SMFBody>
+                        <ns9:SFDC>
+                            <xsl:for-each select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF/ns12:SMFBody[$i]">
+                                <ns9:Customer>
+                                    <ns15:SfdcPartnerId>
+                                        <xsl:value-of select="ns15:SfdcPartnerId"/>
+                                    </ns15:SfdcPartnerId>
+                                    <xsl:if test="ns15:MdmPartnerId">
+                                        <ns15:MdmPartnerId>
+                                            <xsl:copy-of select="ns15:MdmPartnerId/@xsi:nil"/>
+                                            <xsl:value-of select="ns15:MdmPartnerId"/>
+                                        </ns15:MdmPartnerId>
+                                    </xsl:if>
+                                    <ns15:Active>
+                                        <xsl:value-of select="ns15:Active"/>
+                                    </ns15:Active>
+                                    <ns15:AccountName>
+                                        <xsl:value-of select="ns15:AccountName"/>
+                                    </ns15:AccountName>
+                                    <ns15:AccountType>
+                                        <xsl:value-of select="ns15:AccountType"/>
+                                    </ns15:AccountType>
+                                    <xsl:if test="ns15:AccountOtherType">
+                                        <ns15:AccountOtherType>
+                                            <xsl:value-of select="ns15:AccountOtherType"/>
+                                        </ns15:AccountOtherType>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:AccountStatus">
+                                        <ns15:AccountStatus>
+                                            <xsl:value-of select="ns15:AccountStatus"/>
+                                        </ns15:AccountStatus>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:AKA">
+                                        <ns15:AKA>
+                                            <xsl:value-of select="ns15:AKA"/>
+                                        </ns15:AKA>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:VatNumber">
+                                        <ns15:VatNumber>
+                                            <xsl:value-of select="ns15:VatNumber"/>
+                                        </ns15:VatNumber>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:MainPhoneNumber">
+                                        <ns15:MainPhoneNumber>
+                                            <xsl:value-of select="ns15:MainPhoneNumber"/>
+                                        </ns15:MainPhoneNumber>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:Fax">
+                                        <ns15:Fax>
+                                            <xsl:value-of select="ns15:Fax"/>
+                                        </ns15:Fax>
+                                    </xsl:if>
+                                    <ns15:Country>
+                                        <xsl:value-of select="ns15:Country"/>
+                                    </ns15:Country>
+                                    <xsl:if test="ns15:Website">
+                                        <ns15:Website>
+                                            <xsl:value-of select="ns15:Website"/>
+                                        </ns15:Website>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:EmailDomain">
+                                        <ns15:EmailDomain>
+                                            <xsl:value-of select="ns15:EmailDomain"/>
+                                        </ns15:EmailDomain>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:NavisionID">
+                                        <ns15:NavisionID>
+                                            <xsl:value-of select="ns15:NavisionID"/>
+                                        </ns15:NavisionID>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:DUNSName">
+                                        <ns15:DUNSName>
+                                            <xsl:value-of select="ns15:DUNSName"/>
+                                        </ns15:DUNSName>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:DUNS">
+                                        <ns15:DUNS>
+                                            <xsl:value-of select="ns15:DUNS"/>
+                                        </ns15:DUNS>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:DUNSDirectParent">
+                                        <ns15:DUNSDirectParent>
+                                            <xsl:value-of select="ns15:DUNSDirectParent"/>
+                                        </ns15:DUNSDirectParent>
+                                    </xsl:if>
+                                    <xsl:if test="ns15:DUNSGlobalParent">
+                                        <ns15:DUNSGlobalParent>
+                                            <xsl:value-of select="ns15:DUNSGlobalParent"/>
+                                        </ns15:DUNSGlobalParent>
+                                    </xsl:if>
+                                    <ns15:BillingCity>
+                                        <xsl:value-of select="ns15:BillingCity"/>
+                                    </ns15:BillingCity>
+                                    <ns15:BillingCountry>
+                                        <xsl:value-of select="ns15:BillingCountry"/>
+                                    </ns15:BillingCountry>
+                                    <ns15:BillingPostalCode>
+                                        <xsl:value-of select="ns15:BillingPostalCode"/>
+                                    </ns15:BillingPostalCode>
+                                    <ns15:BillingState>
+                                        <xsl:value-of select="ns15:BillingState"/>
+                                    </ns15:BillingState>
+                                    <ns15:BillingStreet>
+                                        <xsl:value-of select="ns15:BillingStreet"/>
+                                    </ns15:BillingStreet>
+                                    <xsl:if test="ns15:ParentAccount">
+                                        <ns15:ParentAccount>
+                                            <xsl:value-of select="ns15:ParentAccount"/>
+                                        </ns15:ParentAccount>
+                                    </xsl:if>
+                                    <ns15:PartnerTier>
+                                        <xsl:value-of select="ns15:PartnerTier"/>
+                                    </ns15:PartnerTier>
+                                    <xsl:if test="ns15:MergedToSfdcPartnerId">
+                                        <ns15:MergedToSfdcPartnerId>
+                                            <xsl:value-of select="ns15:MergedToSfdcPartnerId"/>
+                                        </ns15:MergedToSfdcPartnerId>
+                                    </xsl:if>
+                                    <ns15:recordType>
+                                        <xsl:value-of select="ns15:recordType"/>
+                                    </ns15:recordType>
+                                </ns9:Customer>
+                            </xsl:for-each>
+                        </ns9:SFDC>
+                    </ns9:SMFBody>
+                </ns9:SMF>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map-Data-1">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>382</pd:x>
+            <pd:y>209</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Output" type="ns11:SFDCPartnerOutputType"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_MDM-UpdateCustomer)">
+                            <Output>
+                                <ns11:ProcessStatus>
+                                    <xsl:value-of select="&quot;F&quot;"/>
+                                </ns11:ProcessStatus>
+                                <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFBody[$i]/ns15:SfdcPartnerId">
+                                    <ns11:SfdcPartnerId>
+                                        <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFBody[$i]/ns15:SfdcPartnerId"/>
+                                    </ns11:SfdcPartnerId>
+                                </xsl:if>
+                                <xsl:if test="not(($Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFBody[$i]/ns15:MdmPartnerId/@xsi:nil=(&quot;true&quot;)) or ($Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFBody[$i]/ns15:MdmPartnerId/@xsi:nil=(&quot;1&quot;)))">
+                                    <ns11:ExternalPartnerId>
+                                        <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFBody[$i]/ns15:MdmPartnerId"/>
+                                    </ns11:ExternalPartnerId>
+                                </xsl:if>
+                                <ns11:ErrorMessage>
+                                    <xsl:value-of select="&quot;E99 BW General Error.&quot;"/>
+                                </ns11:ErrorMessage>
+                            </Output>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <Output>
+                                <xsl:copy-of select="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFBody/ancestor-or-self::*/namespace::node()"/>
+                                <xsl:copy-of select="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFBody/@*"/>
+                                <xsl:copy-of select="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFBody/node()"/>
+                            </Output>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Logging Input Message">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>115</pd:x>
+            <pd:y>214</pd:y>
+            <config>
+                <processName>/Services/SharedServices/MDM Logging Process.process</processName>
+                <spawn>true</spawn>
+            </config>
+            <pd:coercions>
+                <pd:coercion xpath="$Parse-XML/pfx3:Envelope/pfx3:Body/*" element="ns12:SMF"/>
+            </pd:coercions>
+            <pd:inputBindings>
+                <group>
+                    <MessageKey>
+                        <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:MessageKey"/>
+                    </MessageKey>
+                    <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:ServiceName">
+                        <ServiceName>
+                            <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:ServiceName"/>
+                        </ServiceName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:ServiceVersion">
+                        <ServiceVersion>
+                            <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:ServiceVersion"/>
+                        </ServiceVersion>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceID">
+                        <SourceID>
+                            <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceID"/>
+                        </SourceID>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceIP">
+                        <SourceIP>
+                            <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceIP"/>
+                        </SourceIP>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:RqTimestamp">
+                        <RqTimestamp>
+                            <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:RqTimestamp"/>
+                        </RqTimestamp>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:RsTimestamp">
+                        <RsTimestamp>
+                            <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:RsTimestamp"/>
+                        </RsTimestamp>
+                    </xsl:if>
+                    <MessageBody>
+                        <xsl:value-of select="tib:render-xml($Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFBody[$i], 1)"/>
+                    </MessageBody>
+                    <errlog_flag>
+                        <xsl:value-of select="&quot;N&quot;"/>
+                    </errlog_flag>
+                    <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceID">
+                        <datasource>
+                            <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader/ns5:SourceID"/>
+                        </datasource>
+                    </xsl:if>
+                    <gold_id>
+                        <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFBody[$i]/ns15:MdmPartnerId"/>
+                    </gold_id>
+                    <xsl:if test="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFBody[$i]/ns15:SfdcPartnerId">
+                        <source_company_id>
+                            <xsl:value-of select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFBody[$i]/ns15:SfdcPartnerId"/>
+                        </source_company_id>
+                    </xsl:if>
+                </group>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Logging Output Message">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>488</pd:x>
+            <pd:y>281</pd:y>
+            <config>
+                <processName>/Services/SharedServices/MDM Logging Process.process</processName>
+                <spawn>true</spawn>
+            </config>
+            <pd:inputBindings>
+                <group>
+                    <MessageKey>
+                        <xsl:value-of select="$Message/root/GUID"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFHeader/ns5:ServiceName"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFHeader/ns5:ServiceVersion"/>
+                    </ServiceVersion>
+                    <SourceID>
+                        <xsl:value-of select="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFHeader/ns5:SourceID"/>
+                    </SourceID>
+                    <xsl:if test="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFHeader/ns5:SourceIP">
+                        <SourceIP>
+                            <xsl:value-of select="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFHeader/ns5:SourceIP"/>
+                        </SourceIP>
+                    </xsl:if>
+                    <xsl:if test="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFHeader/ns5:RqTimestamp">
+                        <RqTimestamp>
+                            <xsl:value-of select="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFHeader/ns5:RqTimestamp"/>
+                        </RqTimestamp>
+                    </xsl:if>
+                    <RsTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RsTimestamp>
+                    <MessageBody>
+                        <xsl:value-of select="tib:render-xml($Map-Data-1/root/Output, 1)"/>
+                    </MessageBody>
+                    <errlog_flag>
+                        <xsl:value-of select="&quot;N&quot;"/>
+                    </errlog_flag>
+                    <datasource>
+                        <xsl:value-of select="$MDM-UpdateCustomer/ns13:SMF/ns13:SMFHeader/ns5:SourceID"/>
+                    </datasource>
+                    <xsl:if test="$Map-Data-1/root/Output/ns11:ExternalPartnerId">
+                        <gold_id>
+                            <xsl:value-of select="$Map-Data-1/root/Output/ns11:ExternalPartnerId"/>
+                        </gold_id>
+                    </xsl:if>
+                    <xsl:if test="$Map-Data-1/root/Output/ns11:SfdcPartnerId">
+                        <source_company_id>
+                            <xsl:value-of select="$Map-Data-1/root/Output/ns11:SfdcPartnerId"/>
+                        </source_company_id>
+                    </xsl:if>
+                </group>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Error-Handling-1">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>299</pd:x>
+            <pd:y>313</pd:y>
+            <config>
+                <processName>/Services/SharedServices/Error Handling Process.process</processName>
+            </config>
+            <pd:coercions>
+                <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="ns6:Error"/>
+                <pd:coercion xpath="$Parse-XML/pfx3:Envelope/pfx3:Body/*" element="ns12:SMF"/>
+            </pd:coercions>
+            <pd:inputBindings>
+                <group>
+                    <xsl:for-each select="$Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFHeader">
+                        <pfx:SMFHeader>
+                            <ns5:MessageKey>
+                                <xsl:value-of select="$Message/root/GUID"/>
+                            </ns5:MessageKey>
+                            <ns5:ServiceName>
+                                <xsl:value-of select="ns5:ServiceName"/>
+                            </ns5:ServiceName>
+                            <ns5:ServiceVersion>
+                                <xsl:value-of select="ns5:ServiceVersion"/>
+                            </ns5:ServiceVersion>
+                            <ns5:SourceID>
+                                <xsl:value-of select="ns5:SourceID"/>
+                            </ns5:SourceID>
+                            <xsl:if test="ns5:SourceIP">
+                                <ns5:SourceIP>
+                                    <xsl:value-of select="ns5:SourceIP"/>
+                                </ns5:SourceIP>
+                            </xsl:if>
+                            <xsl:if test="ns5:RqTimestamp">
+                                <ns5:RqTimestamp>
+                                    <xsl:value-of select="ns5:RqTimestamp"/>
+                                </ns5:RqTimestamp>
+                            </xsl:if>
+                            <xsl:if test="ns5:RsTimestamp">
+                                <ns5:RsTimestamp>
+                                    <xsl:value-of select="ns5:RsTimestamp"/>
+                                </ns5:RsTimestamp>
+                            </xsl:if>
+                        </pfx:SMFHeader>
+                    </xsl:for-each>
+                    <xsl:copy-of select="$_error_MDM-UpdateCustomer/ns6:Error"/>
+                    <Source>
+                        <xsl:value-of select="tib:render-xml($Parse-XML/pfx3:Envelope/pfx3:Body/ns12:SMF[1]/ns12:SMFBody[$i], 1)"/>
+                    </Source>
+                    <Retry>
+                        <xsl:value-of select="0"/>
+                    </Retry>
+                </group>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>114</pd:x>
+            <pd:y>318</pd:y>
+            <config>
+                <variableName>Message</variableName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <GUID>
+                        <xsl:value-of select="TM:getGUID()"/>
+                    </GUID>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling</pd:from>
+        <pd:to>Reply Error to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply Error to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Reply to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

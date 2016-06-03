@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:pfx13="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" xmlns:pfx12="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" xmlns:pfx11="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Output" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx41="http://coretech.trendmicro.com/frs/charon/" xmlns:pfx10="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" xmlns:ns21="http://xmlns.tibco.com/encodings/mime" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx3="http://www.trendmicro.com/ESB/PeopleSoft/schemas/DBLogger" xmlns:pfx2="http://tempuri.org/" xmlns:pfx9="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx8="http://www.trendmicro.com/ESB/MDM/schemas/SMF" xmlns:pfx7="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx6="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns3="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx21="http://Anti.Malware.Tracker-Service.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Input" schemaLocation="/WSDL/Provider/MDMService/SearchCustomer_Input.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/SearchCustomer_Output" schemaLocation="/WSDL/Provider/MDMService/SearchCustomer_Output.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/MDMServerWSDL.wsdl"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Client/ACS WSDL.wsdl"/>
+    <pd:name>ExternalServices/MDM_Server/TeO_Account_fuzzy_for_AVO.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx12:SMF"/>
+    <pd:startX>67</pd:startX>
+    <pd:startY>169</pd:startY>
+    <pd:returnBindings>
+        <callFuzzyResult>
+            <xsl:choose>
+                <xsl:when test="exists($Parse-XML-Rows)">
+                    <xsl:for-each select="$Parse-XML-Rows/rows/row">
+                        <pfx13:Row>
+                            <pfx13:Score>
+                                <xsl:value-of select="@Score"/>
+                            </pfx13:Score>
+                            <pfx13:Gold_ID>
+                                <xsl:value-of select="@Gold_ID"/>
+                            </pfx13:Gold_ID>
+                            <pfx13:NAV_ID>
+                                <xsl:value-of select="@NAV_ID"/>
+                            </pfx13:NAV_ID>
+                            <pfx13:Name>
+                                <xsl:value-of select="@Name"/>
+                            </pfx13:Name>
+                            <pfx13:Address>
+                                <xsl:value-of select="@Address"/>
+                            </pfx13:Address>
+                            <pfx13:City>
+                                <xsl:value-of select="@City"/>
+                            </pfx13:City>
+                            <pfx13:Country_Code>
+                                <xsl:value-of select="@Country_Code"/>
+                            </pfx13:Country_Code>
+                            <pfx13:PostCode>
+                                <xsl:value-of select="@PostCode"/>
+                            </pfx13:PostCode>
+                            <pfx13:Contact>
+                                <xsl:value-of select="@Contact"/>
+                            </pfx13:Contact>
+                            <pfx13:E-Mail>
+                                <xsl:value-of select="@E-Mail"/>
+                            </pfx13:E-Mail>
+                            <pfx13:Phone_No>
+                                <xsl:value-of select="@Phone_No"/>
+                            </pfx13:Phone_No>
+                            <pfx13:Reseller>
+                                <xsl:value-of select="@Reseller"/>
+                            </pfx13:Reseller>
+                            <pfx13:End_Customer>
+                                <xsl:value-of select="@End_Customer"/>
+                            </pfx13:End_Customer>
+                            <pfx13:Distributor>
+                                <xsl:value-of select="@Distributor"/>
+                            </pfx13:Distributor>
+                            <xsl:if test="@Result">
+                                <pfx13:ResultCount>
+                                    <xsl:value-of select="@Result"/>
+                                </pfx13:ResultCount>
+                            </xsl:if>
+                        </pfx13:Row>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:for-each select="$Parse-XML-Row/row/row">
+                        <pfx13:Row>
+                            <pfx13:Score>
+                                <xsl:value-of select="@Score"/>
+                            </pfx13:Score>
+                            <pfx13:Gold_ID>
+                                <xsl:value-of select="@Gold_ID"/>
+                            </pfx13:Gold_ID>
+                            <pfx13:NAV_ID>
+                                <xsl:value-of select="@NAV_ID"/>
+                            </pfx13:NAV_ID>
+                            <pfx13:Name>
+                                <xsl:value-of select="@Name"/>
+                            </pfx13:Name>
+                            <pfx13:Address>
+                                <xsl:value-of select="@Address"/>
+                            </pfx13:Address>
+                            <pfx13:City>
+                                <xsl:value-of select="@City"/>
+                            </pfx13:City>
+                            <pfx13:Country_Code>
+                                <xsl:value-of select="@Country_Code"/>
+                            </pfx13:Country_Code>
+                            <pfx13:PostCode>
+                                <xsl:value-of select="@PostCode"/>
+                            </pfx13:PostCode>
+                            <pfx13:Contact>
+                                <xsl:value-of select="@Contact"/>
+                            </pfx13:Contact>
+                            <pfx13:E-Mail>
+                                <xsl:value-of select="@E-Mail"/>
+                            </pfx13:E-Mail>
+                            <pfx13:Phone_No>
+                                <xsl:value-of select="@Phone_No"/>
+                            </pfx13:Phone_No>
+                            <pfx13:Reseller>
+                                <xsl:value-of select="@Reseller"/>
+                            </pfx13:Reseller>
+                            <pfx13:End_Customer>
+                                <xsl:value-of select="@End_Customer"/>
+                            </pfx13:End_Customer>
+                            <pfx13:Distributor>
+                                <xsl:value-of select="@Distributor"/>
+                            </pfx13:Distributor>
+                            <xsl:if test="@Result">
+                                <pfx13:ResultCount>
+                                    <xsl:value-of select="@Result"/>
+                                </pfx13:ResultCount>
+                            </xsl:if>
+                        </pfx13:Row>
+                    </xsl:for-each>
+                </xsl:otherwise>
+            </xsl:choose>
+        </callFuzzyResult>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="callFuzzyResult" type="pfx13:SearchCustomerType"/>
+    </pd:endType>
+    <pd:endX>840</pd:endX>
+    <pd:endY>162</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx7:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1314244713029</pd:targetNamespace>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>537</pd:x>
+        <pd:y>386</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx7:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns1:ErrorReport/Data/pfx7:Error)">
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx7:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx7:Error>
+                                <pfx7:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx7:src>
+                                <pfx7:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx7:error_code>
+                                <pfx7:error_message>
+                                    <xsl:value-of select="concat(&quot;BW response error: &quot;,$_error/ns1:ErrorReport/Msg)"/>
+                                </pfx7:error_message>
+                                <pfx7:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx7:stack_trace>
+                            </pfx7:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>255</pd:x>
+        <pd:y>23</pd:y>
+        <pd:width>324</pd:width>
+        <pd:height>288</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>false() or exists($Send-HTTP-Request/RequestActivityOutput/asciiContent)</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Send HTTP Request</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send HTTP Request</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate-Error-1</pd:to>
+            <pd:xpathDescription>Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i&gt;5</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:xpathDescription>IOException</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send HTTP Request</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-3407821</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>332</pd:x>
+            <pd:y>195</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>487</pd:x>
+            <pd:y>192</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/MDMServer/WebService/RetryInterval_secs * 1000"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate-Error-1">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>415</pd:x>
+            <pd:y>256</pd:y>
+            <config>
+                <faultName>errorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <pfx5:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </message>
+                    <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                    <data>
+                        <pfx7:Error>
+                            <pfx7:src>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                            </pfx7:src>
+                            <pfx7:error_code>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </pfx7:error_code>
+                            <pfx7:error_message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                            </pfx7:error_message>
+                            <pfx7:stack_trace>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                            </pfx7:stack_trace>
+                        </pfx7:Error>
+                    </data>
+                </pfx5:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Send HTTP Request">
+            <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+            <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+            <pd:x>398</pd:x>
+            <pd:y>93</pd:y>
+            <config>
+                <inputOutputVersion>5.3.0</inputOutputVersion>
+                <newMimeSupport>true</newMimeSupport>
+                <serverhost>sjdc-sisolap01s</serverhost>
+                <serverport>1001</serverport>
+                <customField/>
+                <InputHeaders>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="SOAPAction" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </InputHeaders>
+                <OutputHeaders>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </OutputHeaders>
+            </config>
+            <pd:inputBindings>
+                <RequestActivityInput>
+                    <Host>
+                        <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/MDMServer/WebService/Host"/>
+                    </Host>
+                    <Port>
+                        <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/MDMServer/WebService/Port"/>
+                    </Port>
+                    <Method>
+                        <xsl:value-of select="&quot;POST&quot;"/>
+                    </Method>
+                    <RequestURI>
+                        <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/MDMServer/WebService/URI"/>
+                    </RequestURI>
+                    <PostData>
+                        <xsl:value-of select="$Render-XML/xmlString"/>
+                    </PostData>
+                    <Headers>
+                        <SOAPAction>
+                            <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/MDMServer/WebService/SOAPAction/callFuzzy_account_avo"/>
+                        </SOAPAction>
+                        <Accept-Encoding>
+                            <xsl:value-of select="&quot;UTF-8&quot;"/>
+                        </Accept-Encoding>
+                        <Content-Type>
+                            <xsl:value-of select="&quot;text/xml;charset=UTF-8&quot;"/>
+                        </Content-Type>
+                    </Headers>
+                </RequestActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Parse XML Rows">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>700</pd:x>
+        <pd:y>224</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="rows">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="row" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence/>
+                                    <xsd:attribute name="Score" type="xsd:string"/>
+                                    <xsd:attribute name="Gold_ID" type="xsd:string"/>
+                                    <xsd:attribute name="NAV_ID" type="xsd:string"/>
+                                    <xsd:attribute name="Name" type="xsd:string"/>
+                                    <xsd:attribute name="Address" type="xsd:string"/>
+                                    <xsd:attribute name="City" type="xsd:string"/>
+                                    <xsd:attribute name="Country_Code" type="xsd:string"/>
+                                    <xsd:attribute name="PostCode" type="xsd:string"/>
+                                    <xsd:attribute name="Contact" type="xsd:string"/>
+                                    <xsd:attribute name="E-Mail" type="xsd:string"/>
+                                    <xsd:attribute name="Phone_No" type="xsd:string"/>
+                                    <xsd:attribute name="Reseller" type="xsd:string"/>
+                                    <xsd:attribute name="End_Customer" type="xsd:string"/>
+                                    <xsd:attribute name="Distributor" type="xsd:string"/>
+                                    <xsd:attribute name="Result" type="xsd:string"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="substring-before(substring-after($Send-HTTP-Request/RequestActivityOutput/asciiContent, &quot;TeO_Account_fuzzy_for_AVOResult>&quot;),&quot;&lt;/TeO_Account_fuzzy_for_AVOResult>&quot;)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>179</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx9:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx9:Envelope>
+                <pfx9:Body>
+                    <pfx2:TeO_Account_fuzzy_for_AVO>
+                        <xsl:if test="$Start/pfx12:SMF/pfx12:SMFBody[1]/pfx12:name">
+                            <pfx2:name>
+                                <xsl:value-of select="$Start/pfx12:SMF/pfx12:SMFBody[1]/pfx12:name"/>
+                            </pfx2:name>
+                        </xsl:if>
+                        <xsl:if test="$Start/pfx12:SMF/pfx12:SMFBody[1]/pfx12:Address">
+                            <pfx2:address>
+                                <xsl:value-of select="$Start/pfx12:SMF/pfx12:SMFBody[1]/pfx12:Address"/>
+                            </pfx2:address>
+                        </xsl:if>
+                        <xsl:if test="$Start/pfx12:SMF/pfx12:SMFBody[1]/pfx12:CountryCode">
+                            <pfx2:isocode>
+                                <xsl:value-of select="$Start/pfx12:SMF/pfx12:SMFBody[1]/pfx12:CountryCode"/>
+                            </pfx2:isocode>
+                        </xsl:if>
+                        <pfx2:expect_score>
+                            <xsl:value-of select="$Start/pfx12:SMF/pfx12:SMFBody[1]/pfx12:ExpectedScore"/>
+                        </pfx2:expect_score>
+                    </pfx2:TeO_Account_fuzzy_for_AVO>
+                </pfx9:Body>
+            </pfx9:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML Row">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>685</pd:x>
+        <pd:y>116</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="row">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="row" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence/>
+                                    <xsd:attribute name="Score" type="xsd:string"/>
+                                    <xsd:attribute name="Gold_ID" type="xsd:string"/>
+                                    <xsd:attribute name="NAV_ID" type="xsd:string"/>
+                                    <xsd:attribute name="Name" type="xsd:string"/>
+                                    <xsd:attribute name="Address" type="xsd:string"/>
+                                    <xsd:attribute name="City" type="xsd:string"/>
+                                    <xsd:attribute name="Country_Code" type="xsd:string"/>
+                                    <xsd:attribute name="PostCode" type="xsd:string"/>
+                                    <xsd:attribute name="Contact" type="xsd:string"/>
+                                    <xsd:attribute name="E-Mail" type="xsd:string"/>
+                                    <xsd:attribute name="Phone_No" type="xsd:string"/>
+                                    <xsd:attribute name="Reseller" type="xsd:string"/>
+                                    <xsd:attribute name="End_Customer" type="xsd:string"/>
+                                    <xsd:attribute name="Distributor" type="xsd:string"/>
+                                    <xsd:attribute name="Result" type="xsd:string"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="substring-before(substring-after($Send-HTTP-Request/RequestActivityOutput/asciiContent, &quot;TeO_Account_fuzzy_for_AVOResult>&quot;),&quot;&lt;/TeO_Account_fuzzy_for_AVOResult>&quot;)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Parse XML Rows</pd:to>
+        <pd:xpathDescription>Rows</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>contains($Send-HTTP-Request/RequestActivityOutput/asciiContent, "&lt;rows")</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML Rows</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Parse XML Row</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML Row</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

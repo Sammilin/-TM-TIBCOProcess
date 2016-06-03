@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM1="java://com.trendmicro.ChangeDateFormatUtil" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/schemas/MDMService/WSDL/Provider/MDMService/RetrieveContact_Input" xmlns:ns6="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns7="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/Common" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://soap.sforce.com/schemas/class/PRMEU_SyncLocationWebService" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/MDMService">
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/MDMServerWSDL.wsdl"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/MDMService/WSDL/Provider/SFDC/RetrieveCustomer_Input" schemaLocation="/WSDL/Provider/MDMService/RetrieveCustomer_Input.xsd"/>
+    <wsdl:import namespace="http://www.trendmicro.com/ESB/schemas/MDMService" location="/WSDL/Client/MDMService_STG_Internet.wsdl"/>
+    <pd:name>PerformanceProcedure/ExactlyMatching-RetrieveContact.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>148</pd:startX>
+    <pd:startY>65</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>708</pd:endX>
+    <pd:endY>150</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <PressureTesting>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="TraceID" type="xsd:string"/>
+                        <xsd:element name="rqTime" type="xsd:string"/>
+                        <xsd:element name="rsTime" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="difftime-ms" type="xsd:string" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </PressureTesting>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1348644942933</pd:targetNamespace>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>323</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx2:MDMService</service>
+            <servicePort>PortTypeEndpoint</servicePort>
+            <operation>RetrieveContact</operation>
+            <soapAction>/WSDL/Provider/MDMService/MDMService.serviceagent//RetrieveContact</soapAction>
+            <endpointURL>http://66.180.84.34/WSDL/Provider/MDMService.serviceagent/PortTypeEndpoint</endpointURL>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <ns5:SMF>
+                    <ns5:SMFHeader>
+                        <ns3:MessageKey>
+                            <xsl:value-of select="$PressureTesting/root/TraceID"/>
+                        </ns3:MessageKey>
+                        <ns3:ServiceName>
+                            <xsl:value-of select="&quot;RetrieveContact&quot;"/>
+                        </ns3:ServiceName>
+                        <ns3:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns3:ServiceVersion>
+                        <ns3:SourceID>
+                            <xsl:value-of select="&quot;MDM&quot;"/>
+                        </ns3:SourceID>
+                    </ns5:SMFHeader>
+                    <ns5:SMFBody>
+                        <ns5:email>
+                            <xsl:value-of select="&quot;omsa@nuovaomsa.com&quot;"/>
+                        </ns5:email>
+                    </ns5:SMFBody>
+                </ns5:SMF>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>238</pd:x>
+        <pd:y>151</pd:y>
+        <config>
+            <variableName>PressureTesting</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <TraceID>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </TraceID>
+                <rqTime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </rqTime>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign-1">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>409</pd:x>
+        <pd:y>151</pd:y>
+        <config>
+            <variableName>PressureTesting</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <TraceID>
+                    <xsl:value-of select="$PressureTesting/root/TraceID"/>
+                </TraceID>
+                <rqTime>
+                    <xsl:value-of select="$PressureTesting/root/rqTime"/>
+                </rqTime>
+                <rsTime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </rsTime>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign-2">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>517</pd:x>
+        <pd:y>152</pd:y>
+        <config>
+            <variableName>PressureTesting</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <TraceID>
+                    <xsl:value-of select="$PressureTesting/root/TraceID"/>
+                </TraceID>
+                <rqTime>
+                    <xsl:value-of select="$PressureTesting/root/rqTime"/>
+                </rqTime>
+                <xsl:if test="$PressureTesting/root/rsTime">
+                    <rsTime>
+                        <xsl:value-of select="$PressureTesting/root/rsTime"/>
+                    </rsTime>
+                </xsl:if>
+                <difftime-ms>
+                    <xsl:value-of select="TM1:getDateTimeInMillis(tib:format-dateTime( &quot;yyyy-MM-dd HH:mm:ss&quot;,$PressureTesting/root/rsTime), &quot;yyyy-MM-dd HH:mm:ss&quot;)&#xA;-&#xA;TM1:getDateTimeInMillis(tib:format-dateTime( &quot;yyyy-MM-dd HH:mm:ss&quot;,$PressureTesting/root/rqTime),&quot;yyyy-MM-dd HH:mm:ss&quot;)"/>
+                </difftime-ms>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Performance  Testing Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>619</pd:x>
+        <pd:y>258</pd:y>
+        <config>
+            <processName>/PerformanceProcedure/Performance  Testing Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:for-each select="$PressureTesting/root">
+                <root>
+                    <Type>
+                        <xsl:value-of select="6"/>
+                    </Type>
+                    <TraceID>
+                        <xsl:value-of select="TraceID"/>
+                    </TraceID>
+                    <RqTime>
+                        <xsl:value-of select="rqTime"/>
+                    </RqTime>
+                    <RsTime>
+                        <xsl:value-of select="rsTime"/>
+                    </RsTime>
+                    <Difftime_ms>
+                        <xsl:value-of select="difftime-ms"/>
+                    </Difftime_ms>
+                </root>
+            </xsl:for-each>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>Assign-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign-1</pd:from>
+        <pd:to>Assign-2</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign-2</pd:from>
+        <pd:to>Performance  Testing Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Performance  Testing Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

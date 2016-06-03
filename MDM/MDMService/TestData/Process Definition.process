@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.trendmicro.com/ESB/schemas/Common" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" xmlns:pfx2="http://www.tibco.com/schemas/MDMService/XSD/Client/Navision/Schema.xsd" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.trendmicro.com/ESB/MDM/schemas/SMF/callFuzzy_Input" schemaLocation="/WSDL/Provider/SearchCustomer_Input.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/schemas/MDMService/XSD/Client/Navision/Schema.xsd"/>
+    <pd:name>TestData/Process Definition.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>123</pd:startX>
+    <pd:startY>136</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>457</pd:endX>
+    <pd:endY>134</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1338900545493</pd:targetNamespace>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>284</pd:x>
+        <pd:y>134</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx2:TrendMicro"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:TrendMicro>
+                <pfx2:MessageHeader>
+                    <pfx2:MessageName>
+                        <xsl:value-of select="&quot;test&quot;"/>
+                    </pfx2:MessageName>
+                    <pfx2:MessageGUID>
+                        <xsl:value-of select="&quot;84289B87-FB7D-4985-B043-754C010A233A&quot;"/>
+                    </pfx2:MessageGUID>
+                    <pfx2:MessageFunctionCode>
+                        <xsl:value-of select="&quot;test&quot;"/>
+                    </pfx2:MessageFunctionCode>
+                    <pfx2:DateTimeStamp>
+                        <xsl:value-of select="&quot;20100420T064800&quot;"/>
+                    </pfx2:DateTimeStamp>
+                    <pfx2:From>
+                        <xsl:value-of select="&quot;test&quot;"/>
+                    </pfx2:From>
+                    <pfx2:To>
+                        <xsl:value-of select="&quot;test&quot;"/>
+                    </pfx2:To>
+                    <pfx2:Correlation>
+                        <pfx2:MsgTrackingGUID>
+                            <xsl:value-of select="&quot;84289B87-FB7D-4985-B043-754C010A233A&quot;"/>
+                        </pfx2:MsgTrackingGUID>
+                    </pfx2:Correlation>
+                </pfx2:MessageHeader>
+                <pfx2:MessagePayload>
+                    <xsl:value-of select="&quot;test&quot;"/>
+                </pfx2:MessagePayload>
+            </pfx2:TrendMicro>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

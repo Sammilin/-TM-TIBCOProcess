@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx3="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" xmlns:pfx2="http://soap.sforce.com/schemas/class/PRMEU_SyncLocationWebService" xmlns:pfx="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <wsdl:import namespace="urn:partner.soap.sforce.com" location="/WSDL/Client/SalesforceTrendMicro.wsdl"/>
+    <wsdl:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncLocationWebService" location="/WSDL/Client/PRMEU_SyncLocationWebService.WSDL.wsdl"/>
+    <wsdl:import namespace="http://soap.sforce.com/schemas/class/PRMEU_SyncAccountWebService" location="/WSDL/Client/PRMEU_SyncAccountWebService.WSDL.wsdl"/>
+    <pd:name>TestData/SFDC Test Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>67</pd:startX>
+    <pd:startY>114</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>652</pd:endX>
+    <pd:endY>119</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1342174847897</pd:targetNamespace>
+    <pd:activity name="Login">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>179</pd:x>
+        <pd:y>116</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>login</operation>
+            <soapAction/>
+            <endpointURL>https://test.salesforce.com/services/Soap/u/25.0</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Resources/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx:login>
+                    <pfx:username>
+                        <xsl:value-of select="&quot;prmts01@trendmicro.com.prmdevhs&quot;"/>
+                    </pfx:username>
+                    <pfx:password>
+                        <xsl:value-of select="&quot;hisoft002&quot;"/>
+                    </pfx:password>
+                </pfx:login>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Create Partner">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>328</pd:x>
+        <pd:y>116</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx3:PRMEU_SyncAccountWebServiceService</service>
+            <servicePort>PRMEU_SyncAccountWebService</servicePort>
+            <operation>SFDCCreatePartner</operation>
+            <soapAction/>
+            <endpointURL>https://cs9-api.salesforce.com/services/Soap/class/PRMEU_SyncAccountWebService</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Resources/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx3:SFDCCreatePartner>
+                    <pfx3:inputBean>
+                        <pfx3:accountName>
+                            <xsl:value-of select="&quot;DuanTest&quot;"/>
+                        </pfx3:accountName>
+                        <pfx3:accountType>
+                            <xsl:value-of select="&quot;Reseller&quot;"/>
+                        </pfx3:accountType>
+                        <pfx3:active>
+                            <xsl:value-of select="&quot;Y&quot;"/>
+                        </pfx3:active>
+                        <pfx3:aka>
+                            <xsl:value-of select="&quot;DropzoneTest&quot;"/>
+                        </pfx3:aka>
+                        <pfx3:authorisation>
+                            <xsl:value-of select="&quot;Leakproof Authorised&quot;"/>
+                        </pfx3:authorisation>
+                        <pfx3:country>
+                            <xsl:value-of select="&quot;France&quot;"/>
+                        </pfx3:country>
+                        <pfx3:coverage>
+                            <xsl:value-of select="&quot;2011BU&quot;"/>
+                        </pfx3:coverage>
+                        <pfx3:customerCareRating>
+                            <xsl:value-of select="&quot;Excellent&quot;"/>
+                        </pfx3:customerCareRating>
+                        <pfx3:emailDomain>
+                            <xsl:value-of select="&quot;www.softcat.com&quot;"/>
+                        </pfx3:emailDomain>
+                        <pfx3:evolutionSinceLastRating>
+                            <xsl:value-of select="&quot;Stable&quot;"/>
+                        </pfx3:evolutionSinceLastRating>
+                        <pfx3:externalPartnerId>
+                            <xsl:value-of select="&quot;axxxxxxxxxxxxx07201a&quot;"/>
+                        </pfx3:externalPartnerId>
+                        <pfx3:fax>
+                            <xsl:value-of select="&quot;(043) 123-3221&quot;"/>
+                        </pfx3:fax>
+                        <pfx3:gCCTracking>
+                            <xsl:value-of select="&quot;Y&quot;"/>
+                        </pfx3:gCCTracking>
+                        <pfx3:mainPhoneNumber>
+                            <xsl:value-of select="&quot;(234) 567-8920&quot;"/>
+                        </pfx3:mainPhoneNumber>
+                        <pfx3:marketingCampaign>
+                            <xsl:value-of select="&quot;Miami Challenge&quot;"/>
+                        </pfx3:marketingCampaign>
+                        <pfx3:marketSegment>
+                            <xsl:value-of select="&quot;Home &amp; Home Office;Enterprise Business&quot;"/>
+                        </pfx3:marketSegment>
+                        <pfx3:note>
+                            <xsl:value-of select="&quot;test note. It is a testing account.&quot;"/>
+                        </pfx3:note>
+                        <pfx3:otherRating>
+                            <xsl:value-of select="&quot;111&quot;"/>
+                        </pfx3:otherRating>
+                        <pfx3:otherVendorAccreditation>
+                            <xsl:value-of select="&quot;CA&quot;"/>
+                        </pfx3:otherVendorAccreditation>
+                        <pfx3:partnerTier>
+                            <xsl:value-of select="&quot;Gold&quot;"/>
+                        </pfx3:partnerTier>
+                        <pfx3:primaryDistributor>
+                            <xsl:value-of select="&quot;Arrow&quot;"/>
+                        </pfx3:primaryDistributor>
+                        <pfx3:productFocus>
+                            <xsl:value-of select="&quot;Network Security&quot;"/>
+                        </pfx3:productFocus>
+                        <pfx3:purchasingBehavior>
+                            <xsl:value-of select="&quot;Occasional Buyer&quot;"/>
+                        </pfx3:purchasingBehavior>
+                        <pfx3:resellerClassification>
+                            <xsl:value-of select="&quot;Corporate Reseller&quot;"/>
+                        </pfx3:resellerClassification>
+                        <pfx3:secondaryDistributor>
+                            <xsl:value-of select="&quot;Fine Tec&quot;"/>
+                        </pfx3:secondaryDistributor>
+                        <pfx3:specialization>
+                            <xsl:value-of select="&quot;Endpoint Mobility Security&quot;"/>
+                        </pfx3:specialization>
+                        <pfx3:vatNumber>
+                            <xsl:value-of select="&quot;12468160150&quot;"/>
+                        </pfx3:vatNumber>
+                        <pfx3:website>
+                            <xsl:value-of select="&quot;www.coc.at&quot;"/>
+                        </pfx3:website>
+                        <pfx3:wfrm>
+                            <xsl:value-of select="&quot;Registered&quot;"/>
+                        </pfx3:wfrm>
+                        <pfx3:x5MarketSector>
+                            <xsl:value-of select="&quot;Automotive;Banking / Finance;Charity/Not-For-Profit;Transport&quot;"/>
+                        </pfx3:x5MarketSector>
+                    </pfx3:inputBean>
+                </pfx3:SFDCCreatePartner>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx3:SessionHeader>
+                            <pfx3:sessionId>
+                                <xsl:value-of select="$Login/outputMessage/pfx:loginResponse/pfx:result/pfx:sessionId"/>
+                            </pfx3:sessionId>
+                        </pfx3:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.CallOptions>
+                        <pfx3:CallOptions>
+                            <pfx3:client>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </pfx3:client>
+                        </pfx3:CallOptions>
+                    </Header.CallOptions>
+                    <Header.DebuggingHeader/>
+                    <Header.AllowFieldTruncationHeader/>
+                </headers>
+                <ns:_configData/>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Update Partner">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>507</pd:x>
+        <pd:y>49</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx3:PRMEU_SyncAccountWebServiceService</service>
+            <servicePort>PRMEU_SyncAccountWebService</servicePort>
+            <operation>SFDCUpdatePartner</operation>
+            <soapAction/>
+            <endpointURL>https://cs9-api.salesforce.com/services/Soap/class/PRMEU_SyncAccountWebService</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Resources/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx3:SFDCUpdatePartner>
+                    <pfx3:inputBean>
+                        <pfx3:accountName>
+                            <xsl:value-of select="&quot;DuanTest&quot;"/>
+                        </pfx3:accountName>
+                        <pfx3:accountType>
+                            <xsl:value-of select="&quot;Reseller&quot;"/>
+                        </pfx3:accountType>
+                        <pfx3:active>
+                            <xsl:value-of select="&quot;Y&quot;"/>
+                        </pfx3:active>
+                        <pfx3:aka>
+                            <xsl:value-of select="&quot;DropzoneTest&quot;"/>
+                        </pfx3:aka>
+                        <pfx3:authorisation>
+                            <xsl:value-of select="&quot;Leakproof Authorised&quot;"/>
+                        </pfx3:authorisation>
+                        <pfx3:country>
+                            <xsl:value-of select="&quot;France&quot;"/>
+                        </pfx3:country>
+                        <pfx3:coverage>
+                            <xsl:value-of select="&quot;2011BUUpdate&quot;"/>
+                        </pfx3:coverage>
+                        <pfx3:customerCareRating>
+                            <xsl:value-of select="&quot;Excellent&quot;"/>
+                        </pfx3:customerCareRating>
+                        <pfx3:emailDomain>
+                            <xsl:value-of select="&quot;www.softcat.com&quot;"/>
+                        </pfx3:emailDomain>
+                        <pfx3:evolutionSinceLastRating>
+                            <xsl:value-of select="&quot;Stable&quot;"/>
+                        </pfx3:evolutionSinceLastRating>
+                        <pfx3:externalPartnerId>
+                            <xsl:value-of select="&quot;axxxxxxxxxxxxx07201a&quot;"/>
+                        </pfx3:externalPartnerId>
+                        <pfx3:fax>
+                            <xsl:value-of select="&quot;(043) 123-3221&quot;"/>
+                        </pfx3:fax>
+                        <pfx3:gCCTracking>
+                            <xsl:value-of select="&quot;Y&quot;"/>
+                        </pfx3:gCCTracking>
+                        <pfx3:mainPhoneNumber>
+                            <xsl:value-of select="&quot;(234) 567-9999&quot;"/>
+                        </pfx3:mainPhoneNumber>
+                        <pfx3:marketingCampaign>
+                            <xsl:value-of select="&quot;Miami Challenge&quot;"/>
+                        </pfx3:marketingCampaign>
+                        <pfx3:marketSegment>
+                            <xsl:value-of select="&quot;Home &amp; Home Office;Enterprise Business&quot;"/>
+                        </pfx3:marketSegment>
+                        <pfx3:note>
+                            <xsl:value-of select="&quot;test note. It is a testing account.&quot;"/>
+                        </pfx3:note>
+                        <pfx3:otherRating>
+                            <xsl:value-of select="&quot;111&quot;"/>
+                        </pfx3:otherRating>
+                        <pfx3:otherVendorAccreditation>
+                            <xsl:value-of select="&quot;CA&quot;"/>
+                        </pfx3:otherVendorAccreditation>
+                        <pfx3:partnerTier>
+                            <xsl:value-of select="&quot;Gold&quot;"/>
+                        </pfx3:partnerTier>
+                        <pfx3:primaryDistributor>
+                            <xsl:value-of select="&quot;Arrow&quot;"/>
+                        </pfx3:primaryDistributor>
+                        <pfx3:productFocus>
+                            <xsl:value-of select="&quot;Network Security&quot;"/>
+                        </pfx3:productFocus>
+                        <pfx3:purchasingBehavior>
+                            <xsl:value-of select="&quot;Occasional Buyer&quot;"/>
+                        </pfx3:purchasingBehavior>
+                        <pfx3:resellerClassification>
+                            <xsl:value-of select="&quot;Corporate Reseller&quot;"/>
+                        </pfx3:resellerClassification>
+                        <pfx3:secondaryDistributor>
+                            <xsl:value-of select="&quot;Fine Tec&quot;"/>
+                        </pfx3:secondaryDistributor>
+                        <xsl:if test="$Create-Partner/outputMessage/pfx3:SFDCCreatePartnerResponse/pfx3:result/pfx3:sfdcPartnerId">
+                            <pfx3:sfdcPartnerId>
+                                <xsl:copy-of select="$Create-Partner/outputMessage/pfx3:SFDCCreatePartnerResponse/pfx3:result/pfx3:sfdcPartnerId/@xsi:nil"/>
+                                <xsl:value-of select="$Create-Partner/outputMessage/pfx3:SFDCCreatePartnerResponse/pfx3:result/pfx3:sfdcPartnerId"/>
+                            </pfx3:sfdcPartnerId>
+                        </xsl:if>
+                        <pfx3:sourceSystem>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx3:sourceSystem>
+                        <pfx3:specialization>
+                            <xsl:value-of select="&quot;Endpoint Mobility SecurityUpdate&quot;"/>
+                        </pfx3:specialization>
+                        <pfx3:vatNumber>
+                            <xsl:value-of select="&quot;12468160150&quot;"/>
+                        </pfx3:vatNumber>
+                        <pfx3:website>
+                            <xsl:value-of select="&quot;www.coc.at&quot;"/>
+                        </pfx3:website>
+                        <pfx3:wfrm>
+                            <xsl:value-of select="&quot;RegisteredUpdate&quot;"/>
+                        </pfx3:wfrm>
+                        <pfx3:x5MarketSector>
+                            <xsl:value-of select="&quot;Automotive;Banking / Finance;Charity/Not-For-Profit;Transport&quot;"/>
+                        </pfx3:x5MarketSector>
+                    </pfx3:inputBean>
+                </pfx3:SFDCUpdatePartner>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx3:SessionHeader>
+                            <pfx3:sessionId>
+                                <xsl:value-of select="$Login/outputMessage/pfx:loginResponse/pfx:result/pfx:sessionId"/>
+                            </pfx3:sessionId>
+                        </pfx3:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.CallOptions>
+                        <pfx3:CallOptions>
+                            <pfx3:client>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </pfx3:client>
+                        </pfx3:CallOptions>
+                    </Header.CallOptions>
+                    <Header.DebuggingHeader/>
+                    <Header.AllowFieldTruncationHeader/>
+                </headers>
+                <ns:_configData/>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Update-Partner-1">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>423</pd:x>
+        <pd:y>221</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx3:PRMEU_SyncAccountWebServiceService</service>
+            <servicePort>PRMEU_SyncAccountWebService</servicePort>
+            <operation>SFDCUpdatePartner</operation>
+            <soapAction/>
+            <endpointURL>https://cs9-api.salesforce.com/services/Soap/class/PRMEU_SyncAccountWebService</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Resources/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx3:SFDCUpdatePartner>
+                    <pfx3:inputBean>
+                        <pfx3:accountName>
+                            <xsl:value-of select="&quot;DuanTest_samCh&quot;"/>
+                        </pfx3:accountName>
+                        <pfx3:accountType>
+                            <xsl:value-of select="&quot;Reseller&quot;"/>
+                        </pfx3:accountType>
+                        <pfx3:active>
+                            <xsl:value-of select="&quot;Y&quot;"/>
+                        </pfx3:active>
+                        <pfx3:aka>
+                            <xsl:value-of select="&quot;DropzoneTest&quot;"/>
+                        </pfx3:aka>
+                        <pfx3:authorisation>
+                            <xsl:value-of select="&quot;Leakproof Authorised&quot;"/>
+                        </pfx3:authorisation>
+                        <pfx3:country>
+                            <xsl:value-of select="&quot;France&quot;"/>
+                        </pfx3:country>
+                        <pfx3:coverage>
+                            <xsl:value-of select="&quot;2011BU&quot;"/>
+                        </pfx3:coverage>
+                        <pfx3:customerCareRating>
+                            <xsl:value-of select="&quot;Excellent&quot;"/>
+                        </pfx3:customerCareRating>
+                        <pfx3:emailDomain>
+                            <xsl:value-of select="&quot;www.softcat.com&quot;"/>
+                        </pfx3:emailDomain>
+                        <pfx3:evolutionSinceLastRating>
+                            <xsl:value-of select="&quot;Stable&quot;"/>
+                        </pfx3:evolutionSinceLastRating>
+                        <pfx3:externalPartnerId>
+                            <xsl:value-of select="&quot;axxxxxxxxxxxxx07201a&quot;"/>
+                        </pfx3:externalPartnerId>
+                        <pfx3:fax>
+                            <xsl:value-of select="&quot;(043) 123-3221&quot;"/>
+                        </pfx3:fax>
+                        <pfx3:gCCTracking>
+                            <xsl:value-of select="&quot;Y&quot;"/>
+                        </pfx3:gCCTracking>
+                        <pfx3:mainPhoneNumber>
+                            <xsl:value-of select="&quot;(234) 567-8920&quot;"/>
+                        </pfx3:mainPhoneNumber>
+                        <pfx3:marketingCampaign>
+                            <xsl:value-of select="&quot;Miami Challenge&quot;"/>
+                        </pfx3:marketingCampaign>
+                        <pfx3:marketSegment>
+                            <xsl:value-of select="&quot;Home &amp; Home Office;Enterprise Business&quot;"/>
+                        </pfx3:marketSegment>
+                        <pfx3:note>
+                            <xsl:value-of select="&quot;test note. It is a testing account.&quot;"/>
+                        </pfx3:note>
+                        <pfx3:otherRating>
+                            <xsl:value-of select="&quot;111&quot;"/>
+                        </pfx3:otherRating>
+                        <pfx3:otherVendorAccreditation>
+                            <xsl:value-of select="&quot;CA&quot;"/>
+                        </pfx3:otherVendorAccreditation>
+                        <pfx3:partnerTier>
+                            <xsl:value-of select="&quot;Gold&quot;"/>
+                        </pfx3:partnerTier>
+                        <pfx3:primaryDistributor>
+                            <xsl:value-of select="&quot;Arrow&quot;"/>
+                        </pfx3:primaryDistributor>
+                        <pfx3:productFocus>
+                            <xsl:value-of select="&quot;Network Security&quot;"/>
+                        </pfx3:productFocus>
+                        <pfx3:purchasingBehavior>
+                            <xsl:value-of select="&quot;Occasional Buyer&quot;"/>
+                        </pfx3:purchasingBehavior>
+                        <pfx3:resellerClassification>
+                            <xsl:value-of select="&quot;Corporate Reseller&quot;"/>
+                        </pfx3:resellerClassification>
+                        <pfx3:secondaryDistributor>
+                            <xsl:value-of select="&quot;Fine Tec&quot;"/>
+                        </pfx3:secondaryDistributor>
+                        <pfx3:sfdcPartnerId>
+                            <xsl:value-of select="&quot;001K000000HtLUzIAN&quot;"/>
+                        </pfx3:sfdcPartnerId>
+                        <pfx3:specialization>
+                            <xsl:value-of select="&quot;Endpoint Mobility Security&quot;"/>
+                        </pfx3:specialization>
+                        <pfx3:vatNumber>
+                            <xsl:value-of select="&quot;12468160150&quot;"/>
+                        </pfx3:vatNumber>
+                        <pfx3:website>
+                            <xsl:value-of select="&quot;www.coc.at&quot;"/>
+                        </pfx3:website>
+                        <pfx3:wfrm>
+                            <xsl:value-of select="&quot;Registered&quot;"/>
+                        </pfx3:wfrm>
+                        <pfx3:x5MarketSector>
+                            <xsl:value-of select="&quot;Automotive;Banking / Finance;Charity/Not-For-Profit;Transport&quot;"/>
+                        </pfx3:x5MarketSector>
+                    </pfx3:inputBean>
+                </pfx3:SFDCUpdatePartner>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx3:SessionHeader>
+                            <pfx3:sessionId>
+                                <xsl:value-of select="$Login/outputMessage/pfx:loginResponse/pfx:result/pfx:sessionId"/>
+                            </pfx3:sessionId>
+                        </pfx3:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.CallOptions>
+                        <pfx3:CallOptions>
+                            <pfx3:client>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </pfx3:client>
+                        </pfx3:CallOptions>
+                    </Header.CallOptions>
+                    <Header.DebuggingHeader/>
+                    <Header.AllowFieldTruncationHeader/>
+                </headers>
+                <ns:_configData/>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Login</pd:from>
+        <pd:to>Create Partner</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create Partner</pd:from>
+        <pd:to>Update Partner</pd:to>
+        <pd:xpathDescription>status != "F"</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Create-Partner/outputMessage/pfx3:SFDCCreatePartnerResponse/pfx3:result/pfx3:processStatus !="F"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update Partner</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create Partner</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Login</pd:from>
+        <pd:to>Update-Partner-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update-Partner-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

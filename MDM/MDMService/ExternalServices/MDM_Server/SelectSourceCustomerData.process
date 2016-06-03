@@ -1,0 +1,1100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/EMEA_ERP/Customer" schemaLocation="/XSD/Client/Navision/Customer.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/Rallying/Partner" schemaLocation="/XSD/Client/Rallying/Partner.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/MDM/SFDC/Customer" schemaLocation="/XSD/Client/SFDC/sfdc_crosscheck.xsd"/>
+    <pd:name>ExternalServices/MDM_Server/SelectSourceCustomerData.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:choice>
+                        <xsd:element name="getNavision" type="xsd:boolean"/>
+                        <xsd:element name="getRallying" type="xsd:boolean"/>
+                        <xsd:element name="getSFDC" type="xsd:boolean"/>
+                    </xsd:choice>
+                    <xsd:element name="GoldID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>112</pd:startX>
+    <pd:startY>130</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:choose>
+                <xsl:when test="$Start/root/getNavision">
+                    <Navision>
+                        <xsl:for-each select="$Get-Navision-Data/resultSet/Record[1]">
+                            <pfx:Customer>
+                                <xsl:if test="not((MDMCustomerID/@xsi:nil=(&quot;true&quot;)) or (MDMCustomerID/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx:MDMCustID>
+                                        <xsl:value-of select="MDMCustomerID"/>
+                                    </pfx:MDMCustID>
+                                </xsl:if>
+                                <xsl:if test="not((DnBNo_/@xsi:nil=(&quot;true&quot;)) or (DnBNo_/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx:DnBNum>
+                                        <xsl:value-of select="DnBNo_"/>
+                                    </pfx:DnBNum>
+                                </xsl:if>
+                                <pfx:SiebelID>
+                                    <xsl:value-of select="SiebelID"/>
+                                </pfx:SiebelID>
+                                <xsl:if test="not((SFDCCustomerID/@xsi:nil=(&quot;true&quot;)) or (SFDCCustomerID/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx:SalesForceID>
+                                        <xsl:value-of select="SFDCCustomerID"/>
+                                    </pfx:SalesForceID>
+                                </xsl:if>
+                                <xsl:if test="not((B2BCustomerID/@xsi:nil=(&quot;true&quot;)) or (B2BCustomerID/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx:B2BCustID>
+                                        <xsl:value-of select="B2BCustomerID"/>
+                                    </pfx:B2BCustID>
+                                </xsl:if>
+                                <pfx:NavDistiID>
+                                    <xsl:value-of select="Bill-toCustomerNo_"/>
+                                </pfx:NavDistiID>
+                                <pfx:NAVID>
+                                    <xsl:value-of select="No_"/>
+                                </pfx:NAVID>
+                                <pfx:CustomerName>
+                                    <xsl:value-of select="Name"/>
+                                </pfx:CustomerName>
+                                <pfx:CustomerName2>
+                                    <xsl:value-of select="Name2"/>
+                                </pfx:CustomerName2>
+                                <pfx:Address>
+                                    <xsl:value-of select="Address"/>
+                                </pfx:Address>
+                                <pfx:Address2>
+                                    <xsl:value-of select="Address2"/>
+                                </pfx:Address2>
+                                <pfx:City>
+                                    <xsl:value-of select="City"/>
+                                </pfx:City>
+                                <pfx:County>
+                                    <xsl:value-of select="County"/>
+                                </pfx:County>
+                                <pfx:PostCode>
+                                    <xsl:value-of select="PostCode"/>
+                                </pfx:PostCode>
+                                <pfx:CountryCode>
+                                    <xsl:value-of select="Country_RegionCode"/>
+                                </pfx:CountryCode>
+                                <pfx:Phone>
+                                    <xsl:value-of select="PrimaryPhoneNo_"/>
+                                </pfx:Phone>
+                                <pfx:Fax>
+                                    <xsl:value-of select="PrimaryFaxNo_"/>
+                                </pfx:Fax>
+                                <pfx:Email>
+                                    <xsl:value-of select="PrimaryE-Mail"/>
+                                </pfx:Email>
+                                <pfx:LanguageCode>
+                                    <xsl:value-of select="LanguageCode"/>
+                                </pfx:LanguageCode>
+                                <pfx:LegalEntity>
+                                    <xsl:value-of select="GlobalDimension2Code"/>
+                                </pfx:LegalEntity>
+                                <pfx:EndCustomer>
+                                    <xsl:value-of select="EndCustomer"/>
+                                </pfx:EndCustomer>
+                                <pfx:Reseller>
+                                    <xsl:value-of select="Reseller"/>
+                                </pfx:Reseller>
+                                <pfx:TransactionProfile>
+                                    <xsl:value-of select="TransactionProfile"/>
+                                </pfx:TransactionProfile>
+                                <pfx:Segment>
+                                    <xsl:value-of select="SiebelSegment"/>
+                                </pfx:Segment>
+                                <pfx:MasterNAVID>
+                                    <xsl:value-of select="MasterCustomerNo_"/>
+                                </pfx:MasterNAVID>
+                                <pfx:Blocked>
+                                    <xsl:value-of select="Blocked"/>
+                                </pfx:Blocked>
+                                <pfx:PartnerTier>
+                                    <xsl:value-of select="ResellerAccreditation"/>
+                                </pfx:PartnerTier>
+                                <xsl:if test="not((DefaultAccreditationLevel/@xsi:nil=(&quot;true&quot;)) or (DefaultAccreditationLevel/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx:DefaultAccred>
+                                        <xsl:value-of select="DefaultAccreditationLevel"/>
+                                    </pfx:DefaultAccred>
+                                </xsl:if>
+                                <pfx:VATRegNo>
+                                    <xsl:value-of select="VATRegistrationNo_"/>
+                                </pfx:VATRegNo>
+                                <xsl:if test="not((PrimaryContactNo_/@xsi:nil=(&quot;true&quot;)) or (PrimaryContactNo_/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx:DefaultContactID>
+                                        <xsl:value-of select="PrimaryContactNo_"/>
+                                    </pfx:DefaultContactID>
+                                </xsl:if>
+                                <pfx:SourceSystemID>
+                                    <xsl:value-of select="&quot;Navision&quot;"/>
+                                </pfx:SourceSystemID>
+                                <xsl:if test="not((DistributorType/@xsi:nil=(&quot;true&quot;)) or (DistributorType/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx:DistributorType>
+                                        <xsl:value-of select="DistributorType"/>
+                                    </pfx:DistributorType>
+                                </xsl:if>
+                                <pfx:Company>
+                                    <xsl:value-of select="Company"/>
+                                </pfx:Company>
+                                <xsl:if test="not((CurrencyCode/@xsi:nil=(&quot;true&quot;)) or (CurrencyCode/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx:Currency>
+                                        <xsl:value-of select="CurrencyCode"/>
+                                    </pfx:Currency>
+                                </xsl:if>
+                                <xsl:if test="not((DeDupExlude/@xsi:nil=(&quot;true&quot;)) or (DeDupExlude/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx:DeDupExclude>
+                                        <xsl:value-of select="DeDupExlude"/>
+                                    </pfx:DeDupExclude>
+                                </xsl:if>
+                                <pfx:TEO_IsBlocked>
+                                    <xsl:copy-of select="TEO_IsBlocked/@xsi:nil"/>
+                                    <xsl:value-of select="TEO_IsBlocked"/>
+                                </pfx:TEO_IsBlocked>
+                                <pfx:MSP>
+                                    <xsl:value-of select="MSP"/>
+                                </pfx:MSP>
+                                <pfx:MarketPlace>
+                                    <xsl:value-of select="MarketPlace"/>
+                                </pfx:MarketPlace>
+                                <pfx:MSPContractSigned>
+                                    <xsl:value-of select="MSPContractSigned"/>
+                                </pfx:MSPContractSigned>
+                            </pfx:Customer>
+                        </xsl:for-each>
+                    </Navision>
+                </xsl:when>
+                <xsl:when test="$Start/root/getRallying">
+                    <xsl:for-each select="$Get-Rallying-Data/resultSet/Record[1]">
+                        <Rallying>
+                            <pfx3:Id>
+                                <xsl:value-of select="ROW_ID"/>
+                            </pfx3:Id>
+                            <xsl:if test="not((NAV_ADDRESS/@xsi:nil=(&quot;true&quot;)) or (NAV_ADDRESS/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:Address>
+                                    <xsl:value-of select="NAV_ADDRESS"/>
+                                </pfx3:Address>
+                            </xsl:if>
+                            <xsl:if test="not((BLOCK_FLG/@xsi:nil=(&quot;true&quot;)) or (BLOCK_FLG/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:BlockFlag>
+                                    <xsl:value-of select="BLOCK_FLG"/>
+                                </pfx3:BlockFlag>
+                            </xsl:if>
+                            <xsl:if test="not((NAV_CITY/@xsi:nil=(&quot;true&quot;)) or (NAV_CITY/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:City>
+                                    <xsl:value-of select="NAV_CITY"/>
+                                </pfx3:City>
+                            </xsl:if>
+                            <xsl:if test="not((NAV_COUNTRY/@xsi:nil=(&quot;true&quot;)) or (NAV_COUNTRY/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:Country>
+                                    <xsl:value-of select="NAV_COUNTRY"/>
+                                </pfx3:Country>
+                            </xsl:if>
+                            <pfx3:DistributorFlag>
+                                <xsl:value-of select="DISTY_FLG"/>
+                            </pfx3:DistributorFlag>
+                            <pfx3:Email>
+                                <xsl:value-of select="EMAIL"/>
+                            </pfx3:Email>
+                            <xsl:if test="not((ED_CUT_FLG/@xsi:nil=(&quot;true&quot;)) or (ED_CUT_FLG/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:EndCustomerFlag>
+                                    <xsl:value-of select="ED_CUT_FLG"/>
+                                </pfx3:EndCustomerFlag>
+                            </xsl:if>
+                            <xsl:if test="not((SRC_CD/@xsi:nil=(&quot;true&quot;)) or (SRC_CD/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:IntegrationSource>
+                                    <xsl:value-of select="SRC_CD"/>
+                                </pfx3:IntegrationSource>
+                            </xsl:if>
+                            <xsl:if test="not((NAV_NAME/@xsi:nil=(&quot;true&quot;)) or (NAV_NAME/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:Name>
+                                    <xsl:value-of select="NAV_NAME"/>
+                                </pfx3:Name>
+                            </xsl:if>
+                            <xsl:if test="not((PARTNER_TIER/@xsi:nil=(&quot;true&quot;)) or (PARTNER_TIER/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:PartnerTier>
+                                    <xsl:value-of select="PARTNER_TIER"/>
+                                </pfx3:PartnerTier>
+                            </xsl:if>
+                            <pfx3:PartnerTierDescription>
+                                <xsl:value-of select="PARTNER_TIER_DESC"/>
+                            </pfx3:PartnerTierDescription>
+                            <xsl:if test="not((PR_PRTNR_TIER_ID/@xsi:nil=(&quot;true&quot;)) or (PR_PRTNR_TIER_ID/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:PrimaryPartnerTierId>
+                                    <xsl:value-of select="PR_PRTNR_TIER_ID"/>
+                                </pfx3:PrimaryPartnerTierId>
+                            </xsl:if>
+                            <xsl:if test="not((PR_PRTNR_TYPE_ID/@xsi:nil=(&quot;true&quot;)) or (PR_PRTNR_TYPE_ID/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:PrimaryPartnerTypeId>
+                                    <xsl:value-of select="PR_PRTNR_TYPE_ID"/>
+                                </pfx3:PrimaryPartnerTypeId>
+                            </xsl:if>
+                            <xsl:if test="not((RESELLER_FLG/@xsi:nil=(&quot;true&quot;)) or (RESELLER_FLG/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:ResellerFlag>
+                                    <xsl:value-of select="RESELLER_FLG"/>
+                                </pfx3:ResellerFlag>
+                            </xsl:if>
+                            <xsl:if test="not((DISCOUNT/@xsi:nil=(&quot;true&quot;)) or (DISCOUNT/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:StandardDiscount>
+                                    <xsl:value-of select="DISCOUNT"/>
+                                </pfx3:StandardDiscount>
+                            </xsl:if>
+                            <xsl:if test="not((SYNC_DATE/@xsi:nil=(&quot;true&quot;)) or (SYNC_DATE/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:SyncDate>
+                                    <xsl:value-of select="SYNC_DATE"/>
+                                </pfx3:SyncDate>
+                            </xsl:if>
+                            <xsl:if test="not((X_NAV_ID/@xsi:nil=(&quot;true&quot;)) or (X_NAV_ID/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:NavisionId>
+                                    <xsl:value-of select="X_NAV_ID"/>
+                                </pfx3:NavisionId>
+                            </xsl:if>
+                            <xsl:if test="not((SFDCCustomerID/@xsi:nil=(&quot;true&quot;)) or (SFDCCustomerID/@xsi:nil=(&quot;1&quot;)))">
+                                <xsl:if test="not((SFDCCustomerID/@xsi:nil=(&quot;true&quot;)) or (SFDCCustomerID/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx3:SalesForceId>
+                                        <xsl:value-of select="SFDCCustomerID"/>
+                                    </pfx3:SalesForceId>
+                                </xsl:if>
+                            </xsl:if>
+                            <xsl:if test="not((MDMCustomerID/@xsi:nil=(&quot;true&quot;)) or (MDMCustomerID/@xsi:nil=(&quot;1&quot;)))">
+                                <pfx3:MDMId>
+                                    <xsl:value-of select="MDMCustomerID"/>
+                                </pfx3:MDMId>
+                            </xsl:if>
+                        </Rallying>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:if test="$Start/root/getSFDC">
+                        <xsl:for-each select="$Get-SFDC-Data/resultSet/Record[1]">
+                            <SFDC>
+                                <pfx2:SfdcPartnerId>
+                                    <xsl:value-of select="SfdcPartnerId"/>
+                                </pfx2:SfdcPartnerId>
+                                <pfx2:MdmPartnerId>
+                                    <xsl:copy-of select="MdmPartnerId/@xsi:nil"/>
+                                    <xsl:value-of select="MdmPartnerId"/>
+                                </pfx2:MdmPartnerId>
+                                <pfx2:Active>
+                                    <xsl:copy-of select="Active/@xsi:nil"/>
+                                    <xsl:value-of select="Active"/>
+                                </pfx2:Active>
+                                <pfx2:AccountName>
+                                    <xsl:copy-of select="AccountName/@xsi:nil"/>
+                                    <xsl:value-of select="AccountName"/>
+                                </pfx2:AccountName>
+                                <pfx2:AccountType>
+                                    <xsl:copy-of select="AccountType/@xsi:nil"/>
+                                    <xsl:value-of select="AccountType"/>
+                                </pfx2:AccountType>
+                                <xsl:if test="not((AccountOtherType/@xsi:nil=(&quot;true&quot;)) or (AccountOtherType/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx2:AccountOtherType>
+                                        <xsl:value-of select="AccountOtherType"/>
+                                    </pfx2:AccountOtherType>
+                                </xsl:if>
+                                <xsl:if test="not((AccountStatus/@xsi:nil=(&quot;true&quot;)) or (AccountStatus/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx2:AccountStatus>
+                                        <xsl:value-of select="AccountStatus"/>
+                                    </pfx2:AccountStatus>
+                                </xsl:if>
+                                <pfx2:AKA>
+                                    <xsl:copy-of select="AKA/@xsi:nil"/>
+                                    <xsl:value-of select="AKA"/>
+                                </pfx2:AKA>
+                                <pfx2:VatNumber>
+                                    <xsl:copy-of select="VatNumber/@xsi:nil"/>
+                                    <xsl:value-of select="VatNumber"/>
+                                </pfx2:VatNumber>
+                                <pfx2:MainPhoneNumber>
+                                    <xsl:copy-of select="MainPhoneNumber/@xsi:nil"/>
+                                    <xsl:value-of select="MainPhoneNumber"/>
+                                </pfx2:MainPhoneNumber>
+                                <pfx2:Fax>
+                                    <xsl:copy-of select="Fax/@xsi:nil"/>
+                                    <xsl:value-of select="Fax"/>
+                                </pfx2:Fax>
+                                <pfx2:Country>
+                                    <xsl:copy-of select="Country/@xsi:nil"/>
+                                    <xsl:value-of select="Country"/>
+                                </pfx2:Country>
+                                <pfx2:Website>
+                                    <xsl:copy-of select="Website/@xsi:nil"/>
+                                    <xsl:value-of select="Website"/>
+                                </pfx2:Website>
+                                <pfx2:EmailDomain>
+                                    <xsl:copy-of select="EmailDomain/@xsi:nil"/>
+                                    <xsl:value-of select="EmailDomain"/>
+                                </pfx2:EmailDomain>
+                                <pfx2:NavisionID>
+                                    <xsl:copy-of select="NavisionID/@xsi:nil"/>
+                                    <xsl:value-of select="NavisionID"/>
+                                </pfx2:NavisionID>
+                                <xsl:if test="not((DUNSName/@xsi:nil=(&quot;true&quot;)) or (DUNSName/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx2:DUNSName>
+                                        <xsl:value-of select="DUNSName"/>
+                                    </pfx2:DUNSName>
+                                </xsl:if>
+                                <pfx2:DUNS>
+                                    <xsl:copy-of select="DUNS/@xsi:nil"/>
+                                    <xsl:value-of select="DUNS"/>
+                                </pfx2:DUNS>
+                                <xsl:if test="not((DUNSDirectParent/@xsi:nil=(&quot;true&quot;)) or (DUNSDirectParent/@xsi:nil=(&quot;1&quot;)))">
+                                    <pfx2:DUNSDirectParent>
+                                        <xsl:value-of select="DUNSDirectParent"/>
+                                    </pfx2:DUNSDirectParent>
+                                </xsl:if>
+                                <pfx2:DUNSGlobalParent>
+                                    <xsl:copy-of select="DUNSGlobalParent/@xsi:nil"/>
+                                    <xsl:value-of select="DUNSGlobalParent"/>
+                                </pfx2:DUNSGlobalParent>
+                                <pfx2:BillingCity>
+                                    <xsl:copy-of select="BillingCity/@xsi:nil"/>
+                                    <xsl:value-of select="BillingCity"/>
+                                </pfx2:BillingCity>
+                                <pfx2:BillingCountry>
+                                    <xsl:copy-of select="BillingCountry/@xsi:nil"/>
+                                    <xsl:value-of select="BillingCountry"/>
+                                </pfx2:BillingCountry>
+                                <pfx2:BillingPostalCode>
+                                    <xsl:copy-of select="BillingPostalCode/@xsi:nil"/>
+                                    <xsl:value-of select="BillingPostalCode"/>
+                                </pfx2:BillingPostalCode>
+                                <pfx2:BillingState>
+                                    <xsl:copy-of select="BillingState/@xsi:nil"/>
+                                    <xsl:value-of select="BillingState"/>
+                                </pfx2:BillingState>
+                                <pfx2:BillingStreet>
+                                    <xsl:copy-of select="BillingStreet/@xsi:nil"/>
+                                    <xsl:value-of select="BillingStreet"/>
+                                </pfx2:BillingStreet>
+                                <pfx2:ParentAccount>
+                                    <xsl:copy-of select="ParentAccount/@xsi:nil"/>
+                                    <xsl:value-of select="ParentAccount"/>
+                                </pfx2:ParentAccount>
+                                <pfx2:PartnerTier>
+                                    <xsl:copy-of select="PartnerTier/@xsi:nil"/>
+                                    <xsl:value-of select="PartnerTier"/>
+                                </pfx2:PartnerTier>
+                                <pfx2:MergedToSfdcPartnerId>
+                                    <xsl:value-of select="MergedToSfdcPartnerId"/>
+                                </pfx2:MergedToSfdcPartnerId>
+                                <pfx2:recordType>
+                                    <xsl:value-of select="RecordType"/>
+                                </pfx2:recordType>
+                            </SFDC>
+                        </xsl:for-each>
+                    </xsl:if>
+                </xsl:otherwise>
+            </xsl:choose>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:choice minOccurs="0">
+                    <xsd:element name="Navision" type="pfx:CustomerInfo"/>
+                    <xsd:element name="Rallying" type="pfx3:Partner"/>
+                    <xsd:element name="SFDC" type="pfx2:CustomerType"/>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>528</pd:endX>
+    <pd:endY>128</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1345102892251</pd:targetNamespace>
+    <pd:activity name="Get Navision Data">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>318</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT  [No_],[Name],[Name 2],[Address],[Address 2],[City],[Primary Phone No_]
+,[Language Code],[Country_Region Code],[Bill-to Customer No_],[Primary Fax No_],[VAT Registration No_]
+,[Post Code],[County],[Legal Entity Code],[Master Customer No_]
+,[Reseller Accreditation],[Reseller],[Transaction Profile],[End Customer]
+,[Blocked],[Primary Contact No_],[Siebel Segment],[Siebel ID]
+,[MDM Customer ID],[SFDC Customer ID],[DnB No_],[B2B Customer ID],[Source System ID]
+,[Global Dimension 2 Code],[Primary E-Mail]
+,[Currency Code],[MSP],[MarketPlace],[MSP Contract Signed],[Default Accreditation Level],[TEO_IsBlocked],[DeDupExlude],[Distributor Type],[Company]
+  FROM [EMEA_MDM].[EMEA_MDM].[VIEW_NAV_CUSTOMER]
+  WHERE [MDM Customer ID] = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MDM_Customer_ID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <optionalOrNillable>true</optionalOrNillable>
+            <wizardData/>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>No_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Name</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Name2</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Address</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Address2</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>City</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PrimaryPhoneNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LanguageCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Country_RegionCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Bill-toCustomerNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PrimaryFaxNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>VATRegistrationNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PostCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>County</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LegalEntityCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MasterCustomerNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ResellerAccreditation</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Reseller</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TransactionProfile</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>EndCustomer</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Blocked</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PrimaryContactNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SiebelSegment</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SiebelID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MDMCustomerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SFDCCustomerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DnBNo_</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>B2BCustomerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SourceSystemID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>GlobalDimension2Code</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PrimaryE-Mail</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CurrencyCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MSP</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MarketPlace</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MSPContractSigned</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DefaultAccreditationLevel</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TEO_IsBlocked</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DeDupExlude</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DistributorType</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Company</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <MDM_Customer_ID>
+                    <xsl:value-of select="$Start/root/GoldID"/>
+                </MDM_Customer_ID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get SFDC Data">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>324</pd:x>
+        <pd:y>295</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT  [SfdcPartnerId]
+      ,[AccountName]
+      ,[AccountType]
+      ,[AKA]
+      ,[VatNumber]
+      ,[MainPhoneNumber]
+      ,[Fax]
+      ,[Country]
+      ,[Website]
+      ,[EmailDomain]
+      ,[NavisionID]
+      ,[DUNS]
+      ,[DUNSDirectParent]
+      ,[DUNSGlobalParent]
+      ,[BillingCity]
+      ,[BillingCountry]
+      ,[BillingPostalCode]
+      ,[BillingState]
+      ,[BillingStreet]
+      ,[ParentAccount]
+      ,[PartnerTier]
+      ,[MergedToSfdcPartnerId]
+      ,[RecordType]
+      ,[LastModifiedDate]
+      ,[MdmPartnerId]
+      ,[AccountOtherType]
+      ,[AccountStatus]
+      ,[DUNSName]
+      ,[Active]
+  FROM [EMEA_MDM].[EMEA_MDM].[VIEW_SFDC_CUSTOMER]
+  WHERE [MdmPartnerId] = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MDM_Customer_ID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <optionalOrNillable>true</optionalOrNillable>
+            <wizardData/>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>SfdcPartnerId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AccountName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AccountType</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AKA</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>VatNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MainPhoneNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Fax</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Country</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Website</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>EmailDomain</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NavisionID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUNS</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUNSDirectParent</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUNSGlobalParent</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BillingCity</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BillingCountry</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BillingPostalCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BillingState</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BillingStreet</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ParentAccount</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PartnerTier</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MergedToSfdcPartnerId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>RecordType</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LastModifiedDate</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MdmPartnerId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AccountOtherType</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AccountStatus</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUNSName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Active</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <MDM_Customer_ID>
+                    <xsl:value-of select="$Start/root/GoldID"/>
+                </MDM_Customer_ID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Rallying Data">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>323</pd:x>
+        <pd:y>191</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>true</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/MDM Server JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement> SELECT [ROW_ID]
+      ,[CREATED]
+      ,[CREATED_BY]
+      ,[LAST_UPD]
+      ,[LAST_UPD_BY]
+      ,[MODIFICATION_NUM]
+      ,[CONFLICT_ID]
+      ,[NAV_NAME]
+      ,[X_NAV_ID]
+      ,[DB_LAST_UPD]
+      ,CAST([DUP_FLG] AS NVARCHAR) AS [DUP_FLG]
+      ,CAST([ED_CUT_FLG] AS NVARCHAR) AS [ED_CUT_FLG]
+      ,[ACCOUNT_ID]
+      ,[DB_LAST_UPD_SRC]
+      ,[DUP_ACCOUNT_ID]
+      ,[NAV_ADDRESS]
+      ,[NAV_CITY]
+      ,[NAV_COUNTRY]
+      ,[PR_PRTNR_TYPE_ID]
+      ,[DISCOUNT]
+      ,CAST([DISTY_FLG] AS NVARCHAR) AS [DISTY_FLG]
+      ,[EMAIL]
+      ,[PARTNER_TIER]
+      ,[PARTNER_TYPE]
+      ,[PR_PRTNR_TIER_ID]
+      ,CAST([RESELLER_FLG] AS NVARCHAR) AS [RESELLER_FLG]
+      ,[SRC_CD]
+      ,[SYNC_DATE]
+      ,[PARTNER_TIER_DESC]
+      ,CAST([BLOCK_FLG] AS NVARCHAR) AS [BLOCK_FLG]
+      ,[SUB_REGION], NAV.[MDM Customer ID],NAV.[SFDC Customer ID]
+  FROM [EMEA_MDM].[EMEA_MDM].[VIEW_RAL_CX_NAV_ORG_EXT], [EMEA_MDM].[EMEA_MDM].[VIEW_NAV_CUSTOMER] NAV
+  WHERE [EMEA_MDM].[EMEA_MDM].[VIEW_RAL_CX_NAV_ORG_EXT].[X_NAV_ID] = NAV.[No_]
+  AND NAV.[MDM Customer ID] = ? </statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>MDM_Customer_ID</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <optionalOrNillable>true</optionalOrNillable>
+            <wizardData/>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>ROW_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CREATED</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CREATED_BY</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LAST_UPD</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LAST_UPD_BY</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MODIFICATION_NUM</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>numeric</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CONFLICT_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NAV_NAME</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>X_NAV_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DB_LAST_UPD</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUP_FLG</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ED_CUT_FLG</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ACCOUNT_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DB_LAST_UPD_SRC</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DUP_ACCOUNT_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NAV_ADDRESS</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NAV_CITY</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NAV_COUNTRY</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PR_PRTNR_TYPE_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DISCOUNT</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>numeric</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DISTY_FLG</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>EMAIL</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PARTNER_TIER</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PARTNER_TYPE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PR_PRTNR_TIER_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>RESELLER_FLG</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SRC_CD</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SYNC_DATE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PARTNER_TIER_DESC</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BLOCK_FLG</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SUB_REGION</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MDMCustomerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SFDCCustomerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <MDM_Customer_ID>
+                    <xsl:value-of select="$Start/root/GoldID"/>
+                </MDM_Customer_ID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>434</pd:x>
+        <pd:y>392</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <xsl:if test="$_error/ns:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <pfx4:Error>
+                        <pfx4:src>
+                            <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                        </pfx4:src>
+                        <pfx4:error_code>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </pfx4:error_code>
+                        <pfx4:error_message>
+                            <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                        </pfx4:error_message>
+                        <pfx4:stack_trace>
+                            <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                        </pfx4:stack_trace>
+                    </pfx4:Error>
+                </data>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>226</pd:x>
+        <pd:y>393</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Navision Data</pd:to>
+        <pd:xpathDescription>getNavision</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/root/getNavision)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Navision Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get SFDC Data</pd:to>
+        <pd:xpathDescription>getSFDC</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/getSFDC</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get SFDC Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Rallying Data</pd:to>
+        <pd:xpathDescription>getRallying</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/getRallying</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Rallying Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

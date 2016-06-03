@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.trendmicro.com/ESB/FRS/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Utilities/XSLTTransform/Transform XSLT Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="XSLTTransform">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="xsltString" type="xsd:string"/>
+                    <xsd:element name="xmString" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>49</pd:startX>
+    <pd:startY>68</pd:startY>
+    <pd:returnBindings>
+        <TransformOut>
+            <xmlString>
+                <xsl:value-of select="$Transform-XML/xmlString"/>
+            </xmlString>
+        </TransformOut>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="TransformOut">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="xmlString" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>360</pd:endX>
+    <pd:endY>68</pd:endY>
+    <pd:errorSchemas>
+        <ErrSchema ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:partners/>
+    <pd:targetNamespace>http://xmlns.example.com/1293434025290</pd:targetNamespace>
+    <pd:activity name="Transform XML">
+        <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
+        <pd:x>201</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <engine>TibcoXML</engine>
+            <stylesheet>/XSLT/XSLT File.xslt</stylesheet>
+        </config>
+        <pd:inputBindings>
+            <textInput>
+                <xmlString>
+                    <xsl:value-of select="TM:stringReplace($Start/XSLTTransform/xmString,'utf-16', 'utf-8')"/>
+                </xmlString>
+                <stylesheet>
+                    <xsl:value-of select="$Start/XSLTTransform/xsltString"/>
+                </stylesheet>
+            </textInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>125</pd:x>
+        <pd:y>187</pd:y>
+        <config>
+            <faultName>ErrSchema</faultName>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="$Transform-XML/xmlString = &quot;&quot;">
+                    <ns3:ActivityInput>
+                        <message>
+                            <xsl:value-of select="&quot;XSLT Transform Error! Got empty Translated xml string.&quot;"/>
+                        </message>
+                        <messageCode/>
+                        <data>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="&quot;Transform XSLT Process&quot;"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/StatusCode/Unsuccess"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="&quot;XSLT Transform Error! Got empty Translated xml string.&quot;"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </data>
+                    </ns3:ActivityInput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ns3:ActivityInput>
+                        <message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </message>
+                        <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                            <messageCode>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </messageCode>
+                        </xsl:if>
+                        <data>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="&quot;Transform XSLT Process&quot;"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </data>
+                    </ns3:ActivityInput>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>269</pd:x>
+        <pd:y>185</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Transform XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Transform XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transform XML</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transform XML</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:xpathDescription>Empty String</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16776961</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Transform-XML/xmlString = ""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
