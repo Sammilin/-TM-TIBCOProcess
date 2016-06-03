@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/QueryURLRatingRQ.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/QueryURLRatingRQ.xsd" schemaLocation="/XSD/Neuron/QueryURLRatingRQ.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>EventProcess/PSC_G2/WRS/GetURLResult.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Results" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="ServiceID" type="xsd:string"/>
+                                <xsd:element name="URL" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>119</pd:startX>
+    <pd:startY>174</pd:startY>
+    <pd:returnBindings>
+        <group>
+            <xsl:copy-of select="$AccuURLRs/AccumulatedOutput/Results"/>
+        </group>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Results" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="URL" type="xsd:string"/>
+                                <xsd:element name="PreviousCategory" type="xsd:string"/>
+                                <xsd:element name="NewCategory" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1032</pd:endX>
+    <pd:endY>169</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1428391184073</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>252</pd:x>
+        <pd:y>32</pd:y>
+        <pd:width>679</pd:width>
+        <pd:height>269</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/group/Results</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>AccuURLRs</pd:outSlot>
+            <pd:activityOutputName>Map Data</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetURLReputationInfoByDiffCondition</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetURLReputationInfoByDiffCondition</pd:from>
+            <pd:to>FTP-RQ</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>WCS End XML</pd:from>
+            <pd:to>Map Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP-RQ</pd:from>
+            <pd:to>QueryURLRating_CategoryLookUp</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>QueryURLRating_CategoryLookUp</pd:from>
+            <pd:to>WCS End XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="GetURLReputationInfoByDiffCondition">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>338</pd:x>
+            <pd:y>174</pd:y>
+            <config>
+                <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetURLReputationInfoByDiffCondition.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <Status>
+                        <xsl:value-of select="5"/>
+                    </Status>
+                    <ServiceID>
+                        <xsl:value-of select="$cu/Results/ServiceID"/>
+                    </ServiceID>
+                    <URL>
+                        <xsl:value-of select="$cu/Results/URL"/>
+                    </URL>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>803</pd:x>
+            <pd:y>177</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="Results">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="URL" type="xsd:string"/>
+                                <xsd:element name="PreviousCategory" type="xsd:string"/>
+                                <xsd:element name="NewCategory" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <Results>
+                    <URL>
+                        <xsl:value-of select="$cu/Results/URL"/>
+                    </URL>
+                    <PreviousCategory>
+                        <xsl:value-of select="$QueryURLRating_CategoryLookUp/ns3:ActivityOutput/Body"/>
+                    </PreviousCategory>
+                    <NewCategory>
+                        <xsl:value-of select="tib:concat-sequence-format($WCS-End-XML/response/categories/category/catname, &quot;,&quot;)"/>
+                    </NewCategory>
+                </Results>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="WCS End XML">
+            <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+            <pd:x>700</pd:x>
+            <pd:y>114</pd:y>
+            <config>
+                <inputStyle>text</inputStyle>
+                <xsdVersion>default</xsdVersion>
+                <validateOutput>true</validateOutput>
+                <term ref="pfx:response"/>
+            </config>
+            <pd:inputBindings>
+                <xmlString>
+                    <xsl:value-of select="$GetURLReputationInfoByDiffCondition/Resultsets/ResultSet1/Record1[1]/WRS_WCS_END_RS"/>
+                </xmlString>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="FTP-RQ">
+            <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+            <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+            <pd:x>445</pd:x>
+            <pd:y>109</pd:y>
+            <config>
+                <InputType>String</InputType>
+                <Encoding>ASCII</Encoding>
+                <ParseSharedConfig>/EventProcess/SubProcess/WRS_Processed_DataFormat.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <text>
+                        <xsl:value-of select="$GetURLReputationInfoByDiffCondition/Resultsets/ResultSet1/Record1[1]/WRS_FTP_RQ"/>
+                    </text>
+                    <noOfRecords>
+                        <xsl:value-of select="-1"/>
+                    </noOfRecords>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="QueryURLRating_CategoryLookUp">
+            <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+            <pd:x>580</pd:x>
+            <pd:y>176</pd:y>
+            <config>
+                <PermittedMessageType>Text</PermittedMessageType>
+                <SessionAttributes>
+                    <transacted>false</transacted>
+                    <acknowledgeMode>1</acknowledgeMode>
+                    <maxSessions>1</maxSessions>
+                    <destination>%%EventProcess/PSC_G2/WRS/GetWCSCatNameQueue%%</destination>
+                </SessionAttributes>
+                <ConfigurableHeaders>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSExpiration>0</JMSExpiration>
+                    <JMSPriority>4</JMSPriority>
+                </ConfigurableHeaders>
+                <ConnectionReference>/Resources/JMS/JMSConnection7222.sharedjmscon</ConnectionReference>
+            </config>
+            <pd:inputBindings>
+                <ns3:ActivityInput>
+                    <Body>
+                        <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/Services/NeuronService/ATSSWRSCloseCallback/WCSLanguage,&quot;:&quot;,$FTP-RQ/Output/Rows/WRSFTPFormat[2]/CATEGORY)"/>
+                    </Body>
+                </ns3:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>338</pd:x>
+        <pd:y>368</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>513</pd:x>
+        <pd:y>370</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <pfx2:Error>
+                        <pfx2:src>
+                            <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                        </pfx2:src>
+                        <pfx2:error_code>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </pfx2:error_code>
+                        <pfx2:error_message>
+                            <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                        </pfx2:error_message>
+                        <pfx2:stack_trace>
+                            <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                        </pfx2:stack_trace>
+                    </pfx2:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

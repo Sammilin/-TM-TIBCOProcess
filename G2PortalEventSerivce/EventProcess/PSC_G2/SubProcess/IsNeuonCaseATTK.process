@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns5="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns13="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx="http://tempuri.org/" xmlns:ns2="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/GetAMSSToBeCreatedResponse" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/InsertSRNumberResponse" xmlns:pfx3="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/IsNeuonCaseATTKResponse" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" xmlns:pfx6="http://xmlns.tibco.com/body">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" schemaLocation="/XSD/Common/SRCreatedCallbackRQ.xsd"/>
+    <pd:name>EventProcess/PSC_G2/SubProcess/IsNeuonCaseATTK.process</pd:name>
+    <pd:description>2.0 SR Created Callback</pd:description>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>85</pd:x>
+        <pd:y>302</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+            <OutDataxsdString ref="pfx2:SRCreatedCallbackRQ"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1065</pd:endX>
+    <pd:endY>301</pd:endY>
+    <pd:errorSchemas>
+        <Error ref="ns3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <Variable0>
+            <xsd:element name="mailSwitch" type="xsd:boolean"/>
+        </Variable0>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1363317854865</pd:targetNamespace>
+    <pd:activity name="CreateAMSSTask For SIC Analysis">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>852</pd:x>
+        <pd:y>587</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/CreateAMSSTasks.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ServiceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                </ServiceID>
+                <FileSHA1>
+                    <xsl:value-of select="''"/>
+                </FileSHA1>
+                <TaskType>
+                    <xsl:value-of select="'SIC Log Analysis'"/>
+                </TaskType>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1347</pd:x>
+        <pd:y>36</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>1354</pd:x>
+        <pd:y>298</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="if($JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/IsNeuonCaseATTKRetryTimes = $_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/maxRetryCount) then&#xA;&#x9;'isNeuonCaseATTK cant get information'&#xA;else&#xA;&#x9;concat(&quot;isNeuonCaseATTKError_&quot;,&quot;SRNumber:&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SRNumber,&quot;,ServiceId&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID,&quot;,StackTrace:&quot;,$_error/ns4:ErrorReport/StackTrace)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="'SRCreatedCallbackError'"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Mail">
+        <pd:type>com.tibco.plugin.mail.MailPubActivity</pd:type>
+        <pd:resourceType>ae.activities.MailActivityResource</pd:resourceType>
+        <pd:x>1209</pd:x>
+        <pd:y>300</pd:y>
+        <config>
+            <newMimeSupport>true</newMimeSupport>
+            <inputOutputVersion>5.2.0</inputOutputVersion>
+            <host>%%Utilities/MailNotify/MailServer%%</host>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns4:ErrorReport/Data/*" element="ns3:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns5:mailActivityInput>
+                <from>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/From"/>
+                </from>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/to"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="concat(&quot;[&quot;,$_globalVariables/ns:GlobalVariables/ESBBW/Environment,&quot;-&quot;,$_globalVariables/ns:GlobalVariables/ESBBW/ProjectName,&quot;]&quot;, &quot;BW Process Error at :&quot;, $_error/ns4:ErrorReport/ProcessStack)"/>
+                </subject>
+                <pfx6:bodyElement>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns4:ErrorReport/Data/ns3:Error)">
+                            <bodyText>
+                                <xsl:value-of select="concat(&#xA;&quot;Process Name:  IsNeuonCaseATTK&quot;,  &quot;&#xD;&quot;, &#xA;&quot;Process locate:&quot;, $_error/ns4:ErrorReport/Data/ns3:Error/ns3:src, &quot;&#xD;&quot;,&#xA;&quot;SERVICE_ID:  &quot;, $JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID, &quot;&#xD;&quot;, &#xA;&quot;SRNumber:  &quot;, $JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SRNumber, &quot;&#xD;&quot;, &#xA;&quot;&#xD;&quot;, &#xA;&quot;Error Detail:&#xD;&quot;,&#xA;$_error/ns4:ErrorReport/Data/ns3:Error/ns3:error_message,  &quot;&#xD;&quot;,&#xA;$_error/ns4:ErrorReport/Data/ns3:Error/ns3:stack_trace,  &quot;&#xD;&quot;,&#xA;&quot;&#xD;&quot;, &#xA;&quot;Regards,&quot;,  &quot;&#xD;&quot;, &#xA;&quot;Trend Micro&quot;, &quot;&#xD;&quot;&#xA;)"/>
+                            </bodyText>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <bodyText>
+                                <xsl:value-of select="concat(&#xA;&quot;Process Name:  IsNeuonCaseATTK&quot;,  &quot;&#xD;&quot;, &#xA;&quot;Process locate:&quot;, $_error/ns4:ErrorReport/ProcessStack, &quot;&#xD;&quot;,&#xA;&quot;SERVICE_ID:  &quot;, $JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID, &quot;&#xD;&quot;, &#xA;&quot;SRNumber:  &quot;, $JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SRNumber, &quot;&#xD;&quot;, &#xA;&quot;&#xD;&quot;, &#xA;&quot;Error Detail:&#xD;&quot;,&#xA;$_error/ns4:ErrorReport/Msg,  &quot;&#xD;&quot;,&#xA;$_error/ns4:ErrorReport/StackTrace,  &quot;&#xD;&quot;,&#xA;&quot;&#xD;&quot;, &#xA;&quot;Regards,&quot;,  &quot;&#xD;&quot;, &#xA;&quot;Trend Micro&quot;, &quot;&#xD;&quot;&#xA;)"/>
+                            </bodyText>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </pfx6:bodyElement>
+            </ns5:mailActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CheckIsNeuronATTK">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>302</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>707</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <message>
+                    <xsl:value-of select="'isNeuonCaseATTK cant get information'"/>
+                </message>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="IsNeuonCaseATTK">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>406</pd:x>
+        <pd:y>302</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/IsNeuonCaseATTK.process</processName>
+        </config>
+        <pd:inputBindings>
+            <IsNeuonCaseATTK_Input>
+                <ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                </ServiceId>
+            </IsNeuonCaseATTK_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="IsNeuonCaseATTKRetry">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>861</pd:x>
+        <pd:y>172</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/WaitingQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+            <InDataxsdString ref="pfx2:SRCreatedCallbackRQ"/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/WaitingQueue"/>
+                </destinationQueue>
+                <xsl:choose>
+                    <xsl:when test="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/IsNeuonCaseATTKRetryTimes > 12">
+                        <JMSExpiration>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/longRetryInterval_Sec"/>
+                        </JMSExpiration>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <JMSExpiration>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/retryInterval_Sec"/>
+                        </JMSExpiration>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <JMSProperties>
+                    <ns1:JMSXGroupID>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ESBBW/ProjectName"/>
+                    </ns1:JMSXGroupID>
+                </JMSProperties>
+                <OtherProperties>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="true()"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                    <RedeliveredQueue>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/DestinationQueue"/>
+                    </RedeliveredQueue>
+                    <CheckIsNeuronATTK>
+                        <xsl:value-of select="true()"/>
+                    </CheckIsNeuronATTK>
+                    <IsNeuonCaseATTKRetryTimes>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/IsNeuonCaseATTKRetryTimes + 1"/>
+                    </IsNeuonCaseATTKRetryTimes>
+                    <xsl:if test="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/ATTK_CheckSessionByNeuronIDRetryTimes">
+                        <ATTK_CheckSessionByNeuronIDRetryTimes>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/ATTK_CheckSessionByNeuronIDRetryTimes"/>
+                        </ATTK_CheckSessionByNeuronIDRetryTimes>
+                    </xsl:if>
+                </OtherProperties>
+                <xsl:copy-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body"/>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ExtractedStatus">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>552</pd:x>
+        <pd:y>302</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="IsATTK">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>554</pd:x>
+        <pd:y>443</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="IsRetry">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>551</pd:x>
+        <pd:y>169</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ATTK_CheckSessionByNeuronID">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>556</pd:x>
+        <pd:y>720</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/ATTK_CheckSessionByNeuronID.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:ATTK_CheckSessionByNeuronID>
+                <pfx:NeuronID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                </pfx:NeuronID>
+            </pfx:ATTK_CheckSessionByNeuronID>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="IsATTKReady">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>692</pd:x>
+        <pd:y>719</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ATTK_CheckSessionByNeuronIDRetry">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>689</pd:x>
+        <pd:y>865</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/WaitingQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+            <InDataxsdString ref="pfx2:SRCreatedCallbackRQ"/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/WaitingQueue"/>
+                </destinationQueue>
+                <JMSExpiration>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/longRetryInterval_Sec"/>
+                </JMSExpiration>
+                <JMSProperties>
+                    <ns1:JMSXGroupID>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ESBBW/ProjectName"/>
+                    </ns1:JMSXGroupID>
+                </JMSProperties>
+                <OtherProperties>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="true()"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                    <RedeliveredQueue>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/DestinationQueue"/>
+                    </RedeliveredQueue>
+                    <CheckIsNeuronATTK>
+                        <xsl:value-of select="false()"/>
+                    </CheckIsNeuronATTK>
+                    <xsl:if test="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/IsNeuonCaseATTKRetryTimes">
+                        <IsNeuonCaseATTKRetryTimes>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/IsNeuonCaseATTKRetryTimes"/>
+                        </IsNeuonCaseATTKRetryTimes>
+                    </xsl:if>
+                    <ATTK_CheckSessionByNeuronIDRetryTimes>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/ATTK_CheckSessionByNeuronIDRetryTimes + 1"/>
+                    </ATTK_CheckSessionByNeuronIDRetryTimes>
+                </OtherProperties>
+                <xsl:copy-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body"/>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="IsSendMail">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1069</pd:x>
+        <pd:y>869</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>1221</pd:x>
+        <pd:y>870</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;ATTK Session is not ready over 24 hours&quot;"/>
+                </message>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call ACS Log Process CreateTask End">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>854</pd:x>
+        <pd:y>440</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:InsertTaskLog>
+                <pfx:serviceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                </pfx:serviceID>
+                <xsl:choose>
+                    <xsl:when test="$CreateAMSSTask-For-SIC-Analysis/result = &quot;true&quot;">
+                        <pfx:stepTypeID>
+                            <xsl:value-of select="53"/>
+                        </pfx:stepTypeID>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx:stepTypeID>
+                            <xsl:value-of select="9053"/>
+                        </pfx:stepTypeID>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="$CreateAMSSTask-For-SIC-Analysis/result = &quot;true&quot;">
+                        <pfx:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx:message>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx:message>
+                            <xsl:value-of select="&quot;return false&quot;"/>
+                        </pfx:message>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pfx:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call ACS Log Process CreateTask start">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>852</pd:x>
+        <pd:y>739</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:InsertTaskLog>
+                <pfx:serviceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                </pfx:serviceID>
+                <pfx:stepTypeID>
+                    <xsl:value-of select="50"/>
+                </pfx:stepTypeID>
+                <pfx:message>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </pfx:message>
+            </pfx:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call ACS Log Process CreateTask Fail">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1486</pd:x>
+        <pd:y>181</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:InsertTaskLog>
+                <pfx:serviceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                </pfx:serviceID>
+                <pfx:stepTypeID>
+                    <xsl:value-of select="9053"/>
+                </pfx:stepTypeID>
+                <xsl:choose>
+                    <xsl:when test="exists($_error/ns4:ErrorReport/MsgCode)">
+                        <xsl:if test="$_error/ns4:ErrorReport/MsgCode">
+                            <pfx:message>
+                                <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                            </pfx:message>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx:message>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pfx:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="IsCreateTaskFail">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1351</pd:x>
+        <pd:y>165</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="IsNeuonCaseATTK_input">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>82</pd:x>
+        <pd:y>173</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;OtherProperties&quot;,tib:render-xml($JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties),&quot;Body&quot;,tib:render-xml($JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ))"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log-1">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>1064</pd:x>
+        <pd:y>169</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($IsNeuonCaseATTKRetry)">
+                    <ns12:ActivityInput>
+                        <message>
+                            <xsl:value-of select="concat(&quot;ServiceID:&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID,&quot;;SRNumber:&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SRNumber,&quot;;path:IsNeuonCaseATTK_Retry;detail:&quot;,tib:render-xml($IsNeuonCaseATTK/pfx3:Resultsets))"/>
+                        </message>
+                        <msgCode>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                        </msgCode>
+                    </ns12:ActivityInput>
+                </xsl:when>
+                <xsl:when test="$IsNeuonCaseATTK/pfx3:Resultsets/pfx3:ResultSet1/pfx3:Record1/pfx3:IsExtracted = 1 and $IsNeuonCaseATTK/pfx3:Resultsets/pfx3:ResultSet1/pfx3:Record1/pfx3:IsATTK !='true'">
+                    <ns12:ActivityInput>
+                        <message>
+                            <xsl:value-of select="concat(&quot;ServiceID:&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID,&quot;;SRNumber:&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SRNumber,&quot;;path:IsNeuonCaseATTK_NormalEndB;detail:&quot;,tib:render-xml($IsNeuonCaseATTK/pfx3:Resultsets))"/>
+                        </message>
+                        <msgCode>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                        </msgCode>
+                    </ns12:ActivityInput>
+                </xsl:when>
+                <xsl:when test="exists($CreateAMSSTask-For-SIC-Analysis)">
+                    <ns12:ActivityInput>
+                        <message>
+                            <xsl:value-of select="concat(&quot;ServiceID:&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID,&quot;;SRNumber:&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SRNumber,&quot;;path:IsNeuonCaseATTK_NormalEndC;detail:&quot;,tib:render-xml($IsNeuonCaseATTK/pfx3:Resultsets), &quot;;ATTK_ChecksessionResult:&quot;, $ATTK_CheckSessionByNeuronID/pfx:ATTK_CheckSessionByNeuronIDResponse/pfx:ATTK_CheckSessionByNeuronIDResult)"/>
+                        </message>
+                        <msgCode>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                        </msgCode>
+                    </ns12:ActivityInput>
+                </xsl:when>
+                <xsl:when test="exists($ATTK_CheckSessionByNeuronIDRetry)">
+                    <ns12:ActivityInput>
+                        <message>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                        </message>
+                        <msgCode>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                        </msgCode>
+                    </ns12:ActivityInput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ns12:ActivityInput>
+                        <message>
+                            <xsl:value-of select="concat(&quot;ServiceID:&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID,&quot;;SRNumber:&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SRNumber,&quot;;path:IsNeuonCaseATTK_NormalEndA;detail:&quot;,tib:render-xml($IsNeuonCaseATTK/pfx3:Resultsets))"/>
+                        </message>
+                        <msgCode>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx2:SRCreatedCallbackRQ/pfx2:SERVICE_ID"/>
+                        </msgCode>
+                    </ns12:ActivityInput>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="isOpenTraceLog">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>857</pd:x>
+        <pd:y>299</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>CreateAMSSTask For SIC Analysis</pd:from>
+        <pd:to>Call ACS Log Process CreateTask End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>IsCreateTaskFail</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Send Mail</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>CheckIsNeuronATTK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Mail</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CheckIsNeuronATTK</pd:from>
+        <pd:to>IsNeuonCaseATTK</pd:to>
+        <pd:xpathDescription>Need</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/CheckIsNeuronATTK = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CheckIsNeuronATTK</pd:from>
+        <pd:to>ATTK_CheckSessionByNeuronID</pd:to>
+        <pd:xpathDescription>DontNeed</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsNeuonCaseATTK</pd:from>
+        <pd:to>ExtractedStatus</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExtractedStatus</pd:from>
+        <pd:to>isOpenTraceLog</pd:to>
+        <pd:xpathDescription>-1</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExtractedStatus</pd:from>
+        <pd:to>IsRetry</pd:to>
+        <pd:xpathDescription>0</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$IsNeuonCaseATTK/pfx3:Resultsets/pfx3:ResultSet1/pfx3:Record1/pfx3:IsExtracted = 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExtractedStatus</pd:from>
+        <pd:to>IsATTK</pd:to>
+        <pd:xpathDescription>1</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$IsNeuonCaseATTK/pfx3:Resultsets/pfx3:ResultSet1/pfx3:Record1/pfx3:IsExtracted = 1</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsATTK</pd:from>
+        <pd:to>isOpenTraceLog</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsATTK</pd:from>
+        <pd:to>ATTK_CheckSessionByNeuronID</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$IsNeuonCaseATTK/pfx3:Resultsets/pfx3:ResultSet1/pfx3:Record1/pfx3:IsATTK = 'true'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsRetry</pd:from>
+        <pd:to>IsNeuonCaseATTKRetry</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsRetry</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/IsNeuonCaseATTKRetryTimes = $_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/maxRetryCount</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ATTK_CheckSessionByNeuronID</pd:from>
+        <pd:to>IsATTKReady</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsATTKReady</pd:from>
+        <pd:to>Call ACS Log Process CreateTask start</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$ATTK_CheckSessionByNeuronID/pfx:ATTK_CheckSessionByNeuronIDResponse/pfx:ATTK_CheckSessionByNeuronIDResult = 'true'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsATTKReady</pd:from>
+        <pd:to>ATTK_CheckSessionByNeuronIDRetry</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ATTK_CheckSessionByNeuronIDRetry</pd:from>
+        <pd:to>IsSendMail</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsSendMail</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$JMS-Queue-Receiver/ns1:ActivityOutput/OtherProperties/ATTK_CheckSessionByNeuronIDRetryTimes =1440</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsSendMail</pd:from>
+        <pd:to>isOpenTraceLog</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call ACS Log Process CreateTask start</pd:from>
+        <pd:to>CreateAMSSTask For SIC Analysis</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsCreateTaskFail</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsCreateTaskFail</pd:from>
+        <pd:to>Call ACS Log Process CreateTask Fail</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($_error_CreateAMSSTask-For-SIC-Analysis/ns3:Error)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call ACS Log Process CreateTask Fail</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>IsNeuonCaseATTK_input</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/isOpenTraceLog = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsNeuonCaseATTK_input</pd:from>
+        <pd:to>CheckIsNeuronATTK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>isOpenTraceLog</pd:from>
+        <pd:to>Log-1</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Subprocess/IsNeuonCaseATTK/isOpenTraceLog = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>isOpenTraceLog</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IsNeuonCaseATTKRetry</pd:from>
+        <pd:to>isOpenTraceLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call ACS Log Process CreateTask End</pd:from>
+        <pd:to>isOpenTraceLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

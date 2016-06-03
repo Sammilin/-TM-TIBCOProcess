@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="Resultsets">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UpdateCount" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="ResultSet1" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Record1" nillable="true" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="AnalysisResult" type="xs:string" nillable="true"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="NEURON">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PROCESS_STATUS">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Normal" type="xs:string"/>
+							<xs:element name="Malicious" type="xs:string"/>
+							<xs:element name="Analyzing" type="xs:string"/>
+							<xs:element name="Undecided" type="xs:string"/>
+							<xs:element name="UnknownPassword" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ANALYSIS_RESULTS">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ANALYSIS_RESULT" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="FILEID" type="xs:string"/>
+										<xs:element name="SHA1" type="xs:string"/>
+										<xs:element name="FILENAME" type="xs:string"/>
+										<xs:element name="FILESIZE" type="xs:string"/>
+										<xs:element name="FILEURL" type="xs:string"/>
+										<xs:element name="RESULT" type="xs:string"/>
+										<xs:element name="DETECTION" type="xs:string"/>
+										<xs:element name="VERSION" type="xs:string"/>
+										<xs:element name="ANALYSIS">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="PATTERN">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:string">
+																	<xs:attribute name="name" type="xs:string"/>
+																	<xs:attribute name="version" type="xs:string"/>
+																	<xs:attribute name="detection" type="xs:string"/>
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="BranchStatus" type="xs:string"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PAGE_META">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TOTAL_COUNT" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

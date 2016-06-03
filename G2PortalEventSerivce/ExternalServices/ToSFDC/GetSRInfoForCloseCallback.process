@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/G2/SFDC_UpsetThreatServiceRq" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns9="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns5="http://xmlns.tibco.com/encodings/mime" xmlns:ns6="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRq" xmlns:ns10="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns7="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRs" xmlns:pfx="http://xmlns.example.com/1414725429675" xmlns:ns8="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/G2/SFDC_UpsertThreatServiceRs.xsd" xmlns:ns1="http://www.trendmicro.com/G2/SFDC_UpsertThreatServiceRq" xmlns:ns4="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRs.xsd" xmlns:ns3="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRq.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://xmlns.example.com/1427951864507" xmlns:pfx3="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/WSDL/Client/AMSS Solution Provided XSD/Schema.xsd" xmlns:pfx2="http://tempuri.org/">
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/WSDL/Client/AMSS Solution Provided XSD/Schema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/WSDL/Client/AMSS Solution Provided XSD/Schema.xsd" schemaLocation="/WSDL/Provider/GetSFDCSRByClosecallback.wsdl"/>
+    <wsdl:import namespace="http://xmlns.example.com/1414725429675" location="/WSDL/Provider/G2Service.wsdl"/>
+    <wsdl:import namespace="http://xmlns.example.com/1427951864507" location="/WSDL/Provider/GetSFDCSRByClosecallback.wsdl"/>
+    <pd:name>ExternalServices/ToSFDC/GetSRInfoForCloseCallback.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx3:GetSRInfoByClosecallbackRq"/>
+    <pd:startX>83</pd:startX>
+    <pd:startY>146</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$JMS-Queue-Requestor/ns10:ActivityOutput/Body/pfx3:GetSRInfoByClosecallbackRs"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx3:GetSRInfoByClosecallbackRs"/>
+    <pd:endX>439</pd:endX>
+    <pd:endY>144</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1417072822941</pd:targetNamespace>
+    <pd:activity name="JMS Queue Requestor">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>260</pd:x>
+        <pd:y>156</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%ExternalServices/ToSFDC/GetSRInfo/GetSFDCSRInfoByClosecallback/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMSConnection7222.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx3:GetSRInfoByClosecallbackRq"/>
+            <OutDataxsdString ref="pfx3:GetSRInfoByClosecallbackRs"/>
+        </config>
+        <pd:inputBindings>
+            <ns10:ActivityInput>
+                <Body>
+                    <xsl:copy-of select="$Start/pfx3:GetSRInfoByClosecallbackRq"/>
+                </Body>
+            </ns10:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JMS Queue Requestor</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Requestor</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

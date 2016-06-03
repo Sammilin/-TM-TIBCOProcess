@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:xsdLocal2="http://www.siebel.com/xml/ATSS%20Case%20URL%20IO" xmlns:tns="ATSS_WRS_Case_Common_WS" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsdLocal1="http://www.siebel.com/xml/AMSS%20Task%20Attachment%20IO" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="ATSS_WRS_Case_Common_WS">
+    <types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsdLocal1="http://www.siebel.com/xml/AMSS%20Task%20Attachment%20IO" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://www.siebel.com/xml/AMSS%20Task%20Attachment%20IO">
+            <xsd:annotation>
+                <xsd:documentation>Copyright (C) 2001-2004 Siebel Systems, Inc. All rights reserved. Siebel XSD Generation</xsd:documentation>
+            </xsd:annotation>
+            <xsd:element name="ListOfAmssTaskAttachmentIo" type="xsdLocal1:ListOfAmssTaskAttachmentIo"/>
+            <xsd:complexType name="ListOfAmssTaskAttachmentIoTopElmt">
+                <xsd:sequence>
+                    <xsd:element name="ListOfAmssTaskAttachmentIo" maxOccurs="1" minOccurs="1" type="xsdLocal1:ListOfAmssTaskAttachmentIo"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ListOfAmssTaskAttachmentIo">
+                <xsd:sequence>
+                    <xsd:element name="AmssTask-Lite" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:AmssTask-Lite"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="AmssTask-Lite">
+                <xsd:sequence>
+                    <xsd:element name="Id" maxOccurs="1" minOccurs="0" type="xsdLocal1:string30"/>
+                    <xsd:element name="Searchspec" maxOccurs="1" minOccurs="0" type="xsdLocal1:string250"/>
+                    <xsd:element name="ActivityId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="ActivityUID" maxOccurs="1" minOccurs="0" type="xsdLocal1:string30"/>
+                    <xsd:element name="ListOfActionAttachment" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfActionAttachment"/>
+                </xsd:sequence>
+                <xsd:attribute name="operation" type="xsd:string"/>
+            </xsd:complexType>
+            <xsd:complexType name="ListOfActionAttachment">
+                <xsd:sequence>
+                    <xsd:element name="ActionAttachment" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:ActionAttachment"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ActionAttachment">
+                <xsd:sequence>
+                    <xsd:element name="Id" maxOccurs="1" minOccurs="0" type="xsdLocal1:string30"/>
+                    <xsd:element name="Searchspec" maxOccurs="1" minOccurs="0" type="xsdLocal1:string250"/>
+                    <xsd:element name="ActivityId" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+                    <xsd:element name="ActivityFileExt" maxOccurs="1" minOccurs="0" type="xsdLocal1:string10"/>
+                    <xsd:element name="ActivityFileName" maxOccurs="1" minOccurs="1" type="xsdLocal1:string200"/>
+                    <xsd:element name="ActivityFileSrcPath" maxOccurs="1" minOccurs="0" type="xsdLocal1:string220"/>
+                    <xsd:element name="ActivityFileSrcType" maxOccurs="1" minOccurs="0" type="xsdLocal1:string30"/>
+                    <xsd:element name="Comment" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="MailAttachmentType" maxOccurs="1" minOccurs="0" type="xsdLocal1:string30"/>
+                    <xsd:element name="ActivityFileBuffer" maxOccurs="1" minOccurs="0" type="xsd:base64Binary"/>
+                </xsd:sequence>
+                <xsd:attribute name="operation" type="xsd:string"/>
+            </xsd:complexType>
+            <xsd:simpleType name="string250">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="250"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string10">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="10"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string30">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="30"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string200">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="200"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string220">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="220"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="ATSS_WRS_Case_Common_WS">
+            <xsd:import namespace="http://www.siebel.com/xml/ATSS%20Case%20URL%20IO"/>
+            <xsd:import namespace="http://www.siebel.com/xml/AMSS%20Task%20Attachment%20IO"/>
+            <xsd:element name="ATSS_WRS_Case_Common_WS_InternalSubmissionAuth2_Input">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="UserId" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ATSS_WRS_Case_Common_WS_InternalSubmissionAuth2_Output">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="psBusinessUnit" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psContactNumber" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psDepartment" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psEmailAddress" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psError" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psFirstName" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psLastName" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psManager" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psStatus" type="xsd:string"/>
+                        <xsd:element name="psSubmissionPortalAccess" type="xsd:string"/>
+                        <xsd:element name="psTeam" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psUserId" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ATSS_WRS_Case_Common_WS_CreateCaseAttachment2_Input">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="xsdLocal1:ListOfAmssTaskAttachmentIo"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ATSS_WRS_Case_Common_WS_CreateCaseAttachment2_Output">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="psError" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psStatus" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ATSS_WRS_Case_Common_WS_InboundCommunication2_Input">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="CC" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="CaseId" type="xsd:string"/>
+                        <xsd:element name="Subject" type="xsd:string"/>
+                        <xsd:element name="Type" type="xsd:string"/>
+                        <xsd:element name="Description" type="xsd:string"/>
+                        <xsd:element name="Email" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ATSS_WRS_Case_Common_WS_InboundCommunication2_Output">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="psActId" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psError" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psStatus" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ATSS_WRS_Case_Common_WS_CreateWRSCase2_Input">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="xsdLocal2:ListOfAtssCaseUrlIo"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="psCaseId" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psError" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psStatus" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ATSS_WRS_Case_Common_WS_InternalSubmissionReg2_Input">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="BusinessUnit" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="FirstName" type="xsd:string"/>
+                        <xsd:element name="Team" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="Manager" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="UserId" type="xsd:string"/>
+                        <xsd:element name="ContactNumber" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="EmailAddress" type="xsd:string"/>
+                        <xsd:element name="Title" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="Department" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="LastName" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ATSS_WRS_Case_Common_WS_InternalSubmissionReg2_Output">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="psError" minOccurs="0" type="xsd:string"/>
+                        <xsd:element name="psStatus" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+        <xsd:schema xmlns:xsdLocal2="http://www.siebel.com/xml/ATSS%20Case%20URL%20IO" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://www.siebel.com/xml/ATSS%20Case%20URL%20IO">
+            <xsd:annotation>
+                <xsd:documentation>Copyright (C) 2001-2004 Siebel Systems, Inc. All rights reserved. Siebel XSD Generation</xsd:documentation>
+            </xsd:annotation>
+            <xsd:element name="ListOfAtssCaseUrlIo" type="xsdLocal2:ListOfAtssCaseUrlIo"/>
+            <xsd:complexType name="ListOfAtssCaseUrlIoTopElmt">
+                <xsd:sequence>
+                    <xsd:element name="ListOfAtssCaseUrlIo" maxOccurs="1" minOccurs="1" type="xsdLocal2:ListOfAtssCaseUrlIo"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ListOfAtssCaseUrlIo">
+                <xsd:sequence>
+                    <xsd:element name="AtssWrsCase" maxOccurs="unbounded" minOccurs="0" type="xsdLocal2:AtssWrsCase"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="AtssWrsCase">
+                <xsd:sequence>
+                    <xsd:element name="CC" maxOccurs="1" minOccurs="0" type="xsdLocal2:string50"/>
+                    <xsd:element name="Country" maxOccurs="1" minOccurs="0" type="xsdLocal2:string50"/>
+                    <xsd:element name="Email" maxOccurs="1" minOccurs="1" type="xsdLocal2:string150"/>
+                    <xsd:element name="ATSSEngineerNotes" maxOccurs="1" minOccurs="0" type="xsdLocal2:string2000"/>
+                    <xsd:element name="FirstName" maxOccurs="1" minOccurs="1" type="xsdLocal2:string50"/>
+                    <xsd:element name="LastName" maxOccurs="1" minOccurs="1" type="xsdLocal2:string50"/>
+                    <xsd:element name="Notes" maxOccurs="1" minOccurs="0" type="xsdLocal2:string2000"/>
+                    <xsd:element name="OS" maxOccurs="1" minOccurs="0" type="xsdLocal2:string50"/>
+                    <xsd:element name="PreProcessed" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="Priority" maxOccurs="1" minOccurs="1" type="xsdLocal2:string30"/>
+                    <xsd:element name="Product" maxOccurs="1" minOccurs="0" type="xsdLocal2:string150"/>
+                    <xsd:element name="Region" maxOccurs="1" minOccurs="0" type="xsdLocal2:string30"/>
+                    <xsd:element name="Source" maxOccurs="1" minOccurs="1" type="xsdLocal2:string30"/>
+                    <xsd:element name="SourceId" maxOccurs="1" minOccurs="0" type="xsdLocal2:string100"/>
+                    <xsd:element name="SubmissionType" maxOccurs="1" minOccurs="1" type="xsdLocal2:string30"/>
+                    <xsd:element name="SubmitDate" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+                    <xsd:element name="Title" maxOccurs="1" minOccurs="0" type="xsdLocal2:string255"/>
+                    <xsd:element name="SRType" maxOccurs="1" minOccurs="1" type="xsdLocal2:string30"/>
+                    <xsd:element name="Attachment" maxOccurs="1" minOccurs="0" type="xsdLocal2:string200"/>
+                    <xsd:element name="EscalationSourceId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="EscalatedByLoginName" maxOccurs="1" minOccurs="0" type="xsdLocal2:string50"/>
+                    <xsd:element name="CustomerAccountName" maxOccurs="1" minOccurs="0" type="xsdLocal2:string150"/>
+                    <xsd:element name="CustomerCountry" maxOccurs="1" minOccurs="0" type="xsdLocal2:string255"/>
+                    <xsd:element name="CustomerEmail" maxOccurs="1" minOccurs="0" type="xsdLocal2:string150"/>
+                    <xsd:element name="CustomerFullName" maxOccurs="1" minOccurs="0" type="xsdLocal2:string150"/>
+                    <xsd:element name="AutomationSourceId" maxOccurs="1" minOccurs="0" type="xsdLocal2:string100"/>
+                    <xsd:element name="ListOfAtssUrl" maxOccurs="1" minOccurs="0" type="xsdLocal2:ListOfAtssUrl"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ListOfAtssUrl">
+                <xsd:sequence>
+                    <xsd:element name="AtssUrl" maxOccurs="unbounded" minOccurs="0" type="xsdLocal2:AtssUrl"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="AtssUrl">
+                <xsd:sequence>
+                    <xsd:element name="Action" maxOccurs="1" minOccurs="0" type="xsdLocal2:string50"/>
+                    <xsd:element name="CascadeID" maxOccurs="1" minOccurs="0" type="xsdLocal2:string100"/>
+                    <xsd:element name="CategoryAssigned1" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="CategoryAssigned2" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="CategoryAssigned3" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="CategoryAssigned4" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="CategoryAssigned5" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="DestinationURL" maxOccurs="1" minOccurs="1" type="xsdLocal2:string1500"/>
+                    <xsd:element name="DomainHash" maxOccurs="1" minOccurs="0" type="xsdLocal2:string50"/>
+                    <xsd:element name="Engineer-CategoryAssigned1" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="Engineer-CategoryAssigned2" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="Engineer-CategoryAssigned3" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="Engineer-CategoryAssigned4" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="Engineer-CategoryAssigned5" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="EngineersRemarks" maxOccurs="1" minOccurs="0" type="xsdLocal2:string255"/>
+                    <xsd:element name="HitCount" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="Host" maxOccurs="1" minOccurs="1" type="xsdLocal2:string1500"/>
+                    <xsd:element name="MalwareName" maxOccurs="1" minOccurs="0" type="xsdLocal2:string255"/>
+                    <xsd:element name="NormalizedURL" maxOccurs="1" minOccurs="0" type="xsdLocal2:string1500"/>
+                    <xsd:element name="Path" maxOccurs="1" minOccurs="1" type="xsdLocal2:string1500"/>
+                    <xsd:element name="Port" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+                    <xsd:element name="PreviousCascadeFlag" maxOccurs="1" minOccurs="0" type="xsdLocal2:string1"/>
+                    <xsd:element name="Score" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="SuggestedCategory" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="TTL" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="TestingURL" maxOccurs="1" minOccurs="0" type="xsdLocal2:string1500"/>
+                    <xsd:element name="URL" maxOccurs="1" minOccurs="1" type="xsdLocal2:string1500"/>
+                    <xsd:element name="URLDescription" maxOccurs="1" minOccurs="0" type="xsdLocal2:string1500"/>
+                    <xsd:element name="URLStatus" maxOccurs="1" minOccurs="0" type="xsdLocal2:string50"/>
+                    <xsd:element name="WCSCategory" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="WhitelistHit" maxOccurs="1" minOccurs="0" type="xsdLocal2:string1"/>
+                    <xsd:element name="WhitelistFlag" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                    <xsd:element name="Country" maxOccurs="1" minOccurs="0" type="xsdLocal2:string100"/>
+                    <xsd:element name="CompanyAttacked" maxOccurs="1" minOccurs="0" type="xsdLocal2:string100"/>
+                    <xsd:element name="WhitelistParentFlag" maxOccurs="1" minOccurs="0" type="xsdLocal2:string1"/>
+                    <xsd:element name="WhitelistType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:simpleType name="string2000">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="2000"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string50">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="50"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string255">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="255"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string30">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="30"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string150">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="150"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string1">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string100">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="100"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string200">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="200"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="string1500">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="1500"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:schema>
+    </types>
+    <message name="ATSS_WRS_Case_Common_WS_InternalSubmissionAuth2_Input">
+        <part name="ATSS_WRS_Case_Common_WS_InternalSubmissionAuth2_Input" element="tns:ATSS_WRS_Case_Common_WS_InternalSubmissionAuth2_Input"/>
+    </message>
+    <message name="ATSS_WRS_Case_Common_WS_InternalSubmissionAuth2_Output">
+        <part name="ATSS_WRS_Case_Common_WS_InternalSubmissionAuth2_Output" element="tns:ATSS_WRS_Case_Common_WS_InternalSubmissionAuth2_Output"/>
+    </message>
+    <message name="ATSS_WRS_Case_Common_WS_CreateCaseAttachment2_Input">
+        <part name="ATSS_WRS_Case_Common_WS_CreateCaseAttachment2_Input" element="tns:ATSS_WRS_Case_Common_WS_CreateCaseAttachment2_Input"/>
+    </message>
+    <message name="ATSS_WRS_Case_Common_WS_CreateCaseAttachment2_Output">
+        <part name="ATSS_WRS_Case_Common_WS_CreateCaseAttachment2_Output" element="tns:ATSS_WRS_Case_Common_WS_CreateCaseAttachment2_Output"/>
+    </message>
+    <message name="ATSS_WRS_Case_Common_WS_InboundCommunication2_Input">
+        <part name="ATSS_WRS_Case_Common_WS_InboundCommunication2_Input" element="tns:ATSS_WRS_Case_Common_WS_InboundCommunication2_Input"/>
+    </message>
+    <message name="ATSS_WRS_Case_Common_WS_InboundCommunication2_Output">
+        <part name="ATSS_WRS_Case_Common_WS_InboundCommunication2_Output" element="tns:ATSS_WRS_Case_Common_WS_InboundCommunication2_Output"/>
+    </message>
+    <message name="ATSS_WRS_Case_Common_WS_CreateWRSCase2_Input">
+        <part name="ATSS_WRS_Case_Common_WS_CreateWRSCase2_Input" element="tns:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Input"/>
+    </message>
+    <message name="ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output">
+        <part name="ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output" element="tns:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output"/>
+    </message>
+    <message name="ATSS_WRS_Case_Common_WS_InternalSubmissionReg2_Input">
+        <part name="ATSS_WRS_Case_Common_WS_InternalSubmissionReg2_Input" element="tns:ATSS_WRS_Case_Common_WS_InternalSubmissionReg2_Input"/>
+    </message>
+    <message name="ATSS_WRS_Case_Common_WS_InternalSubmissionReg2_Output">
+        <part name="ATSS_WRS_Case_Common_WS_InternalSubmissionReg2_Output" element="tns:ATSS_WRS_Case_Common_WS_InternalSubmissionReg2_Output"/>
+    </message>
+    <portType name="ATSS_WRS_Case_Common_WS">
+        <operation name="InternalSubmissionAuth2">
+            <input message="tns:ATSS_WRS_Case_Common_WS_InternalSubmissionAuth2_Input"/>
+            <output message="tns:ATSS_WRS_Case_Common_WS_InternalSubmissionAuth2_Output"/>
+        </operation>
+        <operation name="CreateCaseAttachment2">
+            <input message="tns:ATSS_WRS_Case_Common_WS_CreateCaseAttachment2_Input"/>
+            <output message="tns:ATSS_WRS_Case_Common_WS_CreateCaseAttachment2_Output"/>
+        </operation>
+        <operation name="InboundCommunication2">
+            <input message="tns:ATSS_WRS_Case_Common_WS_InboundCommunication2_Input"/>
+            <output message="tns:ATSS_WRS_Case_Common_WS_InboundCommunication2_Output"/>
+        </operation>
+        <operation name="CreateWRSCase2">
+            <input message="tns:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Input"/>
+            <output message="tns:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output"/>
+        </operation>
+        <operation name="InternalSubmissionReg2">
+            <input message="tns:ATSS_WRS_Case_Common_WS_InternalSubmissionReg2_Input"/>
+            <output message="tns:ATSS_WRS_Case_Common_WS_InternalSubmissionReg2_Output"/>
+        </operation>
+    </portType>
+    <binding name="ATSS_WRS_Case_Common_WS" type="tns:ATSS_WRS_Case_Common_WS">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="InternalSubmissionAuth2">
+            <soap:operation soapAction="document/ATSS_WRS_Case_Common_WS:InternalSubmissionAuth2"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="CreateCaseAttachment2">
+            <soap:operation soapAction="document/ATSS_WRS_Case_Common_WS:CreateCaseAttachment2"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="InboundCommunication2">
+            <soap:operation soapAction="document/ATSS_WRS_Case_Common_WS:InboundCommunication2"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="CreateWRSCase2">
+            <soap:operation soapAction="document/ATSS_WRS_Case_Common_WS:CreateWRSCase2"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="InternalSubmissionReg2">
+            <soap:operation soapAction="document/ATSS_WRS_Case_Common_WS:InternalSubmissionReg2"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="ATSS_WRS_Case_Common_WS">
+        <port binding="tns:ATSS_WRS_Case_Common_WS" name="ATSS_WRS_Case_Common_WS">
+            <soap:address location="http://sjdc-atsswsweb/eai_enu/start.swe?SWEExtSource=WebService&amp;SWEExtCmd=Execute"/>
+        </port>
+    </service>
+</definitions>

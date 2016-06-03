@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>EventProcess/PSC_G2/WRS/TimerToCheckFireOnCompleted.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>204</pd:x>
+        <pd:y>93</pd:y>
+        <config>
+            <StartTime>1427945360000</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>%%EventProcess/PSC_G2/WRS/TimerToOncompletedms%%</TimeInterval>
+            <FrequencyIndex>Millisecond</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>741</pd:endX>
+    <pd:endY>95</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1427940887515</pd:targetNamespace>
+    <pd:activity name="GetURL_Status=4">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>336</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetURLReputationInfoByDiffCondition.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Status>
+                    <xsl:value-of select="4"/>
+                </Status>
+                <Consumer>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Consumer"/>
+                </Consumer>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>446</pd:x>
+        <pd:y>19</pd:y>
+        <pd:width>182</pd:width>
+        <pd:height>142</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$GetURL_Status4/Resultsets/ResultSet1/Record1</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>OnCompleted</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>OnCompleted</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="OnCompleted">
+            <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+            <pd:x>535</pd:x>
+            <pd:y>100</pd:y>
+            <config>
+                <PermittedMessageType>XML Text</PermittedMessageType>
+                <SessionAttributes>
+                    <transacted>false</transacted>
+                    <acknowledgeMode>1</acknowledgeMode>
+                    <maxSessions>1</maxSessions>
+                    <destination>%%EventProcess/EventCenterQueue%%%%EventProcess/version%%</destination>
+                </SessionAttributes>
+                <ConfigurableHeaders>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSExpiration>0</JMSExpiration>
+                    <JMSPriority>4</JMSPriority>
+                </ConfigurableHeaders>
+                <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+                <InDataxsdString ref="pfx:SMF"/>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInput>
+                    <destinationQueue>
+                        <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/EventProcess/EventCenterQueue, $_globalVariables/ns:GlobalVariables/EventProcess/version)"/>
+                    </destinationQueue>
+                    <Body>
+                        <pfx:SMF>
+                            <pfx:SMFHeader>
+                                <pfx:MessageKey>
+                                    <xsl:value-of select="$cu/Record1/ServiceID"/>
+                                </pfx:MessageKey>
+                                <pfx:ServiceName>
+                                    <xsl:value-of select="&quot;EventCenter&quot;"/>
+                                </pfx:ServiceName>
+                                <pfx:ServiceVersion>
+                                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/version"/>
+                                </pfx:ServiceVersion>
+                                <pfx:SourceID>
+                                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/Consumer"/>
+                                </pfx:SourceID>
+                                <pfx:RqTimestamp>
+                                    <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                                </pfx:RqTimestamp>
+                            </pfx:SMFHeader>
+                            <pfx:SMFBody>
+                                <pfx:Message>
+                                    <pfx:EventProcessMsg>
+                                        <pfx:OnCompleted>
+                                            <pfx:serviceId>
+                                                <xsl:value-of select="$cu/Record1/ServiceID"/>
+                                            </pfx:serviceId>
+                                            <pfx:statusCode>
+                                                <xsl:value-of select="3"/>
+                                            </pfx:statusCode>
+                                        </pfx:OnCompleted>
+                                    </pfx:EventProcessMsg>
+                                </pfx:Message>
+                                <pfx:EventMsg>
+                                    <pfx:ServiceID>
+                                        <xsl:value-of select="$cu/Record1/ServiceID"/>
+                                    </pfx:ServiceID>
+                                    <pfx:EventKey>
+                                        <xsl:value-of select="TM:getGUID()"/>
+                                    </pfx:EventKey>
+                                    <pfx:EventName>
+                                        <xsl:value-of select="&quot;OnCompleted&quot;"/>
+                                    </pfx:EventName>
+                                    <pfx:Consumer>
+                                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/Consumer"/>
+                                    </pfx:Consumer>
+                                    <pfx:EventStepTypeId>
+                                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/EventTypeId/OnCompleted"/>
+                                    </pfx:EventStepTypeId>
+                                </pfx:EventMsg>
+                            </pfx:SMFBody>
+                        </pfx:SMF>
+                    </Body>
+                </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>555</pd:x>
+        <pd:y>241</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;TimerToCheckFireOnCompleted Fail&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;PSC - WRS&quot;"/>
+                </messageCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>270</pd:x>
+        <pd:y>242</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>409</pd:x>
+        <pd:y>249</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="ns6:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <pfx:SMF>
+                    <pfx:SMFHeader>
+                        <pfx:MessageKey>
+                            <xsl:value-of select="TM:getGUID()"/>
+                        </pfx:MessageKey>
+                        <pfx:ServiceName>
+                            <xsl:value-of select="&quot;TimerToCheckFireOnCompleted&quot;"/>
+                        </pfx:ServiceName>
+                        <pfx:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </pfx:ServiceVersion>
+                        <pfx:SourceID>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/Consumer"/>
+                        </pfx:SourceID>
+                        <pfx:RqTimestamp>
+                            <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                        </pfx:RqTimestamp>
+                    </pfx:SMFHeader>
+                    <pfx:SMFBody>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns1:ErrorReport/Data/ns6:Error)">
+                                <pfx:Error>
+                                    <pfx:src>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/Data/ns6:Error/ns6:src"/>
+                                    </pfx:src>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/Data/ns6:Error/ns6:error_code"/>
+                                    </pfx:error_code>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/Data/ns6:Error/ns6:error_message"/>
+                                    </pfx:error_message>
+                                    <xsl:if test="$_error/ns1:ErrorReport/Data/ns6:Error/ns6:stack_trace">
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="$_error/ns1:ErrorReport/Data/ns6:Error/ns6:stack_trace"/>
+                                        </pfx:error_detail>
+                                    </xsl:if>
+                                </pfx:Error>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx:Error>
+                                    <pfx:src>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                    </pfx:src>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                    </pfx:error_code>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                    </pfx:error_message>
+                                    <xsl:if test="$_error/ns1:ErrorReport/StackTrace">
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                        </pfx:error_detail>
+                                    </xsl:if>
+                                </pfx:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx:SMFBody>
+                </pfx:SMF>
+                <isESBLog>
+                    <xsl:value-of select="true()"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>GetURL_Status=4</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetURL_Status=4</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

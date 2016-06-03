@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:pfx2="http://stgspnsupport.trendmicro.com/" xmlns:pfx="http://tempuri.org/">
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Provider/PSCCallbackWS.wsdl"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Provider/NeuronCallBack.wsdl"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Provider/PSCCallbackWS.wsdl"/>
+    <pd:name>Services/SharedOperations/PSC Call Back.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:UpdateCallbackInfo"/>
+    <pd:startX>151</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1347959975848</pd:targetNamespace>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>302</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:PSCCallbackWS</service>
+            <servicePort>PSCCallbackWSSoap</servicePort>
+            <operation>UpdateCallbackInfo</operation>
+            <soapAction>http://tempuri.org/UpdateCallbackInfo</soapAction>
+            <endpointURL>%%Resources/WebService/PSCCallBack/URL%%</endpointURL>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <xsl:copy-of select="$Start/pfx:UpdateCallbackInfo"/>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>383</pd:x>
+        <pd:y>169</pd:y>
+        <config>
+            <role>User</role>
+            <suppressHeader>false</suppressHeader>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Start/pfx:UpdateCallbackInfo)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="'PSCCallBack'"/>
+                </msgCode>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

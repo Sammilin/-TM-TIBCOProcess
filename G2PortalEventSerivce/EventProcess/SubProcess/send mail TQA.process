@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://tempuri.org/" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>EventProcess/SubProcess/send mail TQA.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceId" type="xsd:string"/>
+                    <xsd:element name="TypeId" type="xsd:string"/>
+                    <xsd:element name="EmailSubject" type="xsd:string"/>
+                    <xsd:element name="JsonData" type="xsd:string"/>
+                    <xsd:element name="Recipient" type="xsd:string"/>
+                    <xsd:element name="CCRecipient" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>68</pd:startX>
+    <pd:startY>106</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:for-each select="$Call-Bifrost-to-send-Email/RequestActivityOutput/statusLine">
+                <statusLine>
+                    <httpVersion>
+                        <xsl:value-of select="httpVersion"/>
+                    </httpVersion>
+                    <statusCode>
+                        <xsl:value-of select="statusCode"/>
+                    </statusCode>
+                    <reasonPhrase>
+                        <xsl:value-of select="reasonPhrase"/>
+                    </reasonPhrase>
+                </statusLine>
+            </xsl:for-each>
+            <asciiContent>
+                <xsl:value-of select="$Call-Bifrost-to-send-Email/RequestActivityOutput/asciiContent"/>
+            </asciiContent>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="statusLine">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="httpVersion" type="xsd:string"/>
+                                <xsd:element name="statusCode" type="xsd:string"/>
+                                <xsd:element name="reasonPhrase" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="asciiContent" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>728</pd:endX>
+    <pd:endY>109</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1406797516293</pd:targetNamespace>
+    <pd:activity name="Call Bifrost to send Email">
+        <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+        <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+        <pd:x>324</pd:x>
+        <pd:y>118</pd:y>
+        <config>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <serverhost>10.31.165.5</serverhost>
+            <serverport>30000</serverport>
+            <customField>
+                <row>
+                    <attribute>TypeID</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>required</attributeCard>
+                </row>
+                <row>
+                    <attribute>JSONData</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>required</attributeCard>
+                </row>
+                <row>
+                    <attribute>System</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>optional</attributeCard>
+                </row>
+                <row>
+                    <attribute>Subject</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>required</attributeCard>
+                </row>
+                <row>
+                    <attribute>Recipient</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>required</attributeCard>
+                </row>
+                <row>
+                    <attribute>CCRecipient</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>optional</attributeCard>
+                </row>
+                <row>
+                    <attribute>BCCRecipient</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>optional</attributeCard>
+                </row>
+            </customField>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+            <OutputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </OutputHeaders>
+        </config>
+        <pd:inputBindings>
+            <RequestActivityInput>
+                <Host>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/SRF/MailTQA/HOST"/>
+                </Host>
+                <Port>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/SRF/MailTQA/PORT"/>
+                </Port>
+                <Method>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/SRF/MailTQA/RequestNotificationMail/Method"/>
+                </Method>
+                <RequestURI>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/SRF/MailTQA/RequestNotificationMail/requestURI"/>
+                </RequestURI>
+                <Timeout>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/SRF/MailTQA/RequestNotificationMail/TimeoutMillSec"/>
+                </Timeout>
+                <parameters>
+                    <TypeID>
+                        <xsl:value-of select="$Start/root/TypeId"/>
+                    </TypeID>
+                    <JSONData>
+                        <xsl:value-of select="TM:URLEncode($Start/root/JsonData)"/>
+                    </JSONData>
+                    <System>
+                        <xsl:value-of select="&quot;Neuron&quot;"/>
+                    </System>
+                    <Subject>
+                        <xsl:value-of select="$Start/root/EmailSubject"/>
+                    </Subject>
+                    <Recipient>
+                        <xsl:value-of select="$Start/root/Recipient"/>
+                    </Recipient>
+                    <xsl:if test="$Start/root/CCRecipient">
+                        <CCRecipient>
+                            <xsl:value-of select="$Start/root/CCRecipient"/>
+                        </CCRecipient>
+                    </xsl:if>
+                </parameters>
+            </RequestActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>429</pd:x>
+        <pd:y>261</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Bifrost-Response-Error/pfx:Error)">
+                            <pfx:Error>
+                                <pfx:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx:src>
+                                <pfx:error_code>
+                                    <xsl:value-of select="$_error_Bifrost-Response-Error/pfx:Error/pfx:error_code"/>
+                                </pfx:error_code>
+                                <pfx:error_message>
+                                    <xsl:value-of select="$_error_Bifrost-Response-Error/pfx:Error/pfx:error_message"/>
+                                </pfx:error_message>
+                                <pfx:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx:stack_trace>
+                                <xsl:if test="$_error_Bifrost-Response-Error/pfx:Error/pfx:traceMessageKey">
+                                    <pfx:traceMessageKey>
+                                        <xsl:value-of select="$_error_Bifrost-Response-Error/pfx:Error/pfx:traceMessageKey"/>
+                                    </pfx:traceMessageKey>
+                                </xsl:if>
+                            </pfx:Error>
+                        </xsl:when>
+                        <xsl:when test="exists($_error/ns1:ErrorReport/Data/pfx:Error)">
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx:Error>
+                                <pfx:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx:src>
+                                <pfx:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx:error_code>
+                                <pfx:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx:error_message>
+                                <pfx:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx:stack_trace>
+                            </pfx:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>240</pd:x>
+        <pd:y>261</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="CallACSLog(91)">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>188</pd:x>
+        <pd:y>108</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:InsertTaskLog>
+                <ns12:serviceID>
+                    <xsl:value-of select="$Start/root/ServiceId"/>
+                </ns12:serviceID>
+                <ns12:stepTypeID>
+                    <xsl:value-of select="91"/>
+                </ns12:stepTypeID>
+                <ns12:message>
+                    <xsl:value-of select="&quot;Send Notification through Bifrost &quot;"/>
+                </ns12:message>
+            </ns12:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CallACSLog(92)">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>575</pd:x>
+        <pd:y>110</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:InsertTaskLog>
+                <ns12:serviceID>
+                    <xsl:value-of select="$Start/root/ServiceId"/>
+                </ns12:serviceID>
+                <ns12:stepTypeID>
+                    <xsl:value-of select="92"/>
+                </ns12:stepTypeID>
+                <ns12:message>
+                    <xsl:value-of select="tib:render-xml($Call-Bifrost-to-send-Email/RequestActivityOutput,1)"/>
+                </ns12:message>
+            </ns12:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>445</pd:x>
+        <pd:y>109</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="BiFrostResponse">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:all>
+                                <xsd:element name="Msg" type="xsd:string"/>
+                                <xsd:element name="ReqID" type="xsd:string"/>
+                                <xsd:element name="Code" type="xsd:string"/>
+                            </xsd:all>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="concat(&quot;&lt;BiFrostResponse>&quot;,TM:parseJSONtoXML($Call-Bifrost-to-send-Email/RequestActivityOutput/asciiContent, 1), &quot;&lt;/BiFrostResponse>&quot;)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CallACSLog-8091">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>567</pd:x>
+        <pd:y>205</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:InsertTaskLog>
+                <ns12:serviceID>
+                    <xsl:value-of select="$Start/root/ServiceId"/>
+                </ns12:serviceID>
+                <ns12:stepTypeID>
+                    <xsl:value-of select="8091"/>
+                </ns12:stepTypeID>
+                <ns12:message>
+                    <xsl:value-of select="tib:render-xml($Parse-XML/BiFrostResponse,1)"/>
+                </ns12:message>
+            </ns12:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Bifrost Response Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>717</pd:x>
+        <pd:y>214</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="8091"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="$Call-Bifrost-to-send-Email/RequestActivityOutput/asciiContent"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx:stack_trace>
+                        <pfx:traceMessageKey>
+                            <xsl:value-of select="$Start/root/ServiceId"/>
+                        </pfx:traceMessageKey>
+                    </pfx:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>CallACSLog(91)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallACSLog(91)</pd:from>
+        <pd:to>Call Bifrost to send Email</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallACSLog(92)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Bifrost to send Email</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>CallACSLog(92)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>CallACSLog-8091</pd:to>
+        <pd:xpathDescription>code !=100</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-XML/BiFrostResponse/Code!=100</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallACSLog-8091</pd:from>
+        <pd:to>Bifrost Response Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

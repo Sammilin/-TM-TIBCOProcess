@@ -1,0 +1,904 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRq" xmlns:pfx15="http://www.tibco.com/schemas/GCCProtal/XSD/G2/SFDC_Account.xsd" xmlns:pfx14="http://www.trendmicro.com/G2/SFDC_UpsertThreatServiceRq" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx13="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_TSSupportEmail.xsd" xmlns:pfx12="http://xmlns.example.com/1414725429675" xmlns:pfx11="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd" xmlns:pfx10="http://www.tibco.com/schemas/GCCPortal/XSD/GCCJP/Schema.xsd3" xmlns:TM1="java://com.trendmicro.TMBWUtilities" xmlns:B2BUtility="java://B2BUtility" xmlns:ns41="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/XSD/Schema.xsd8" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns16="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRs" xmlns:ns17="http://www.trendmicro.com/G2/SFDC_CreateMalwareEmailNotificationRq" xmlns:ns14="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRs" xmlns:ns15="http://tempuri.org/" xmlns:ns18="http://www.tibco.com/schemas/GCCPortal_For_G2_v1.1/WSDL/Client/G2XSD/SFDC_GetThreatServiceInfoRq.xsd" xmlns:ns19="http://www.tibco.com/schemas/GCCPortal_For_G2_v1.1/WSDL/Client/G2XSD/SFDC_GetThreatServiceInfoRs.xsd" xmlns:ns12="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Account.xsd" xmlns:ns13="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:pfx="http://trend.com.tw/PSCWSDL" xmlns:ns10="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetAccountActivityId.xsd" xmlns:ns11="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetSRInfoResult.xsd" xmlns:ns51="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx5="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx31="JP Common WS" xmlns:pfx4="http://www.tibco.com/schemas/GCCPortal/XSD/Neuron/EvnetMsg/Schema.xsd" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx9="http://xmlns.example.com/1429586505852" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" xmlns:pfx7="http://www.tibco.com/schemas/GCCPortal/WSDL/Client/GCCJPXSD/Schema.xsd4" xmlns:pfx6="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" xmlns:ns5="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns31="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/XSD/Schema.xsd7" xmlns:ns7="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/XSD/Schema.xsd9" xmlns:ns8="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd6" xmlns:ns2="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetNeuronServiceMainByServiceID.xsd" xmlns:ns1="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRq" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" schemaLocation="/XSD/Common/EvnetMsg/SubmittingInput.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/EvnetMsg/OnCompleted.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch" schemaLocation="/XSD/Common/SRFDispatch.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd" schemaLocation="/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd"/>
+    <pd:name>EventProcess/PSC_G2/FRS/OnCompleted.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>65</pd:x>
+        <pd:y>84</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%EventProcess/OnCompletedQueue%%%%EventProcess/version%%</destination>
+                <selector>JMSXGroupID='%%EventProcess/PSC_G2/FRS/Consumer%%'</selector>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx2:SMF"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1169</pd:endX>
+    <pd:endY>153</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="ns6:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <Info>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ThreatServiceID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Info>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1403150137286</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1165</pd:x>
+        <pd:y>389</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1167</pd:x>
+        <pd:y>280</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns51:ErrorReport/Data/*" element="ns6:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <pfx2:SMF>
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader"/>
+                    <pfx2:SMFBody>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody/pfx2:Message"/>
+                        <pfx2:XMLPayload>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:XMLPayload"/>
+                        </pfx2:XMLPayload>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody/pfx2:MessagePayload"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns51:ErrorReport/Data/ns6:Error)">
+                                <pfx2:Error>
+                                    <pfx2:src>
+                                        <xsl:value-of select="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:src"/>
+                                    </pfx2:src>
+                                    <pfx2:error_code>
+                                        <xsl:value-of select="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:error_code"/>
+                                    </pfx2:error_code>
+                                    <pfx2:error_message>
+                                        <xsl:value-of select="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:error_message"/>
+                                    </pfx2:error_message>
+                                    <xsl:if test="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:stack_trace">
+                                        <pfx2:error_detail>
+                                            <xsl:value-of select="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:stack_trace"/>
+                                        </pfx2:error_detail>
+                                    </xsl:if>
+                                </pfx2:Error>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx2:Error>
+                                    <pfx2:src>
+                                        <xsl:value-of select="$_error/ns51:ErrorReport/StackTrace"/>
+                                    </pfx2:src>
+                                    <pfx2:error_code>
+                                        <xsl:value-of select="$_error/ns51:ErrorReport/MsgCode"/>
+                                    </pfx2:error_code>
+                                    <pfx2:error_message>
+                                        <xsl:value-of select="$_error/ns51:ErrorReport/Msg"/>
+                                    </pfx2:error_message>
+                                    <pfx2:error_detail>
+                                        <xsl:value-of select="$_error/ns51:ErrorReport/ProcessStack"/>
+                                    </pfx2:error_detail>
+                                </pfx2:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx2:SMFBody>
+                </pfx2:SMF>
+                <ns9:InsertNeuronEventLog>
+                    <ns9:ServiceId>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:EventMsg/pfx2:ServiceID"/>
+                    </ns9:ServiceId>
+                    <ns9:Consumer>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:EventMsg/pfx2:Consumer"/>
+                    </ns9:Consumer>
+                    <ns9:FILESHA1>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:EventMsg/pfx2:FileSha1"/>
+                    </ns9:FILESHA1>
+                    <ns9:EventId>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:EventMsg/pfx2:EventStepTypeId"/>
+                    </ns9:EventId>
+                    <ns9:TypeId>
+                        <xsl:value-of select="4"/>
+                    </ns9:TypeId>
+                    <ns9:Log>
+                        <xsl:value-of select="tib:render-xml($Catch/exceptiondata, true())"/>
+                    </ns9:Log>
+                    <ns9:EventKey>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:EventMsg/pfx2:EventKey"/>
+                    </ns9:EventKey>
+                </ns9:InsertNeuronEventLog>
+                <isESBLog>
+                    <xsl:value-of select="true()"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetAnalysisResultForOnCompleteEvent">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>233</pd:x>
+        <pd:y>300</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetAnalysisResultForOnCompleteEvent.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:EventMsg/pfx2:ServiceID"/>
+                </ServiceId>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetNeuronServiceMainByServiceID">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>186</pd:x>
+        <pd:y>77</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetNeuronServiceMainByServiceID.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GetNeuronServiceMainByServiceID_Input>
+                <ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:EventProcessMsg/pfx2:OnCompleted/pfx2:serviceId"/>
+                </ServiceId>
+            </GetNeuronServiceMainByServiceID_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InsertServiceCompleteInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>933</pd:x>
+        <pd:y>153</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/InsertServiceCompleteInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <InsertServiceCompleteInfo_Input>
+                <ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:EventMsg/pfx2:ServiceID"/>
+                </ServiceId>
+                <CaseSummary>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </CaseSummary>
+                <xsl:choose>
+                    <xsl:when test="$GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1[1]/Record1/IsATTK=1 or $GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1[1]/Record1/IsATTK=&quot;true&quot;">
+                        <FileSummary>
+                            <xsl:value-of select="$Reset-SuspiciousFiles-JSON/root/GetAnalyResultOnCompleteEventJson"/>
+                        </FileSummary>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <FileSummary>
+                            <xsl:value-of select="$GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1/Record1[1]/AnalysisResultSummaryJson"/>
+                        </FileSummary>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Type>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:EventProcessMsg/pfx2:OnCompleted/pfx2:type"/>
+                </Type>
+                <Status>
+                    <xsl:value-of select="1"/>
+                </Status>
+            </InsertServiceCompleteInfo_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse SRF XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>238</pd:x>
+        <pd:y>191</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="NEURON" type="pfx11:NEURONFRSType"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$GetNeuronServiceMainByServiceID/ns2:Resultsets/ns2:ResultSet1/ns2:Record1[1]/ns2:InputData"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SendEventLog-Competed">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1075</pd:x>
+        <pd:y>155</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:for-each select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:EventMsg">
+                <ns9:InsertNeuronEventLog>
+                    <ns9:ServiceId>
+                        <xsl:value-of select="pfx2:ServiceID"/>
+                    </ns9:ServiceId>
+                    <ns9:Consumer>
+                        <xsl:value-of select="pfx2:Consumer"/>
+                    </ns9:Consumer>
+                    <ns9:FILESHA1>
+                        <xsl:value-of select="pfx2:FileSha1"/>
+                    </ns9:FILESHA1>
+                    <ns9:EventId>
+                        <xsl:value-of select="pfx2:EventStepTypeId"/>
+                    </ns9:EventId>
+                    <ns9:TypeId>
+                        <xsl:value-of select="9"/>
+                    </ns9:TypeId>
+                    <ns9:Log>
+                        <xsl:value-of select="&quot;Completed&quot;"/>
+                    </ns9:Log>
+                    <ns9:EventKey>
+                        <xsl:value-of select="pfx2:EventKey"/>
+                    </ns9:EventKey>
+                </ns9:InsertNeuronEventLog>
+            </xsl:for-each>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SendEventLog-Start">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>62</pd:x>
+        <pd:y>212</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:for-each select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:EventMsg">
+                <ns9:InsertNeuronEventLog>
+                    <ns9:ServiceId>
+                        <xsl:value-of select="pfx2:ServiceID"/>
+                    </ns9:ServiceId>
+                    <ns9:Consumer>
+                        <xsl:value-of select="pfx2:Consumer"/>
+                    </ns9:Consumer>
+                    <ns9:FILESHA1>
+                        <xsl:value-of select="pfx2:FileSha1"/>
+                    </ns9:FILESHA1>
+                    <ns9:EventKey>
+                        <xsl:value-of select="pfx2:EventKey"/>
+                    </ns9:EventKey>
+                    <ns9:EventId>
+                        <xsl:value-of select="pfx2:EventStepTypeId"/>
+                    </ns9:EventId>
+                    <ns9:TypeId>
+                        <xsl:value-of select="1"/>
+                    </ns9:TypeId>
+                    <ns9:Log>
+                        <xsl:value-of select="tib:render-xml(../.., true())"/>
+                    </ns9:Log>
+                </ns9:InsertNeuronEventLog>
+            </xsl:for-each>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetTemplateRenderResult">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>376</pd:x>
+        <pd:y>299</pd:y>
+        <config>
+            <processName>/EventProcess/SubProcess/GetTemplateRenderResult.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <xsl:choose>
+                    <xsl:when test="$GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1[1]/Record1/IsATTK=1 or $GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1[1]/Record1/IsATTK=&quot;true&quot;">
+                        <JSONData>
+                            <xsl:value-of select="$Reset-SuspiciousFiles-JSON/root/GetAnalyResultOnCompleteEventJson"/>
+                        </JSONData>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <JSONData>
+                            <xsl:value-of select="$GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1/Record1[1]/AnalysisResultSummaryJson"/>
+                        </JSONData>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <TypeId>
+                    <xsl:value-of select="48"/>
+                </TypeId>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Has Threat Service Id">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>513</pd:x>
+        <pd:y>164</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Call Bifrost to send Email Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>374</pd:x>
+        <pd:y>162</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx1:ActivityInput>
+                <data>
+                    <ns6:Error>
+                        <ns6:src>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns6:src>
+                        <ns6:error_code>
+                            <xsl:value-of select="$GetTemplateRenderResult/BiFrostResponse/Code"/>
+                        </ns6:error_code>
+                        <ns6:error_message>
+                            <xsl:value-of select="$GetTemplateRenderResult/BiFrostResponse/Msg"/>
+                        </ns6:error_message>
+                        <ns6:stack_trace>
+                            <xsl:value-of select="$_processContext/ns51:ProcessContext/TrackingInfo[1]"/>
+                        </ns6:stack_trace>
+                    </ns6:Error>
+                </data>
+            </pfx1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Suspicious Files">
+        <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+        <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+        <pd:x>230</pd:x>
+        <pd:y>437</pd:y>
+        <config>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <serverhost>sjdc-ctisds01d.us.trendnet.org</serverhost>
+            <customField/>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+            <OutputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </OutputHeaders>
+        </config>
+        <pd:inputBindings>
+            <RequestActivityInput>
+                <Host>
+                    <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/EventProcess/SRF/CTISDataService/HOST"/>
+                </Host>
+                <RequestURI>
+                    <xsl:value-of select="TM1:stringReplace($_globalVariables/ns4:GlobalVariables/EventProcess/SRF/CTISDataService/RequestURI&#xA;,$_globalVariables/ns4:GlobalVariables/EventProcess/SRF/CTISDataService/ReplaceString&#xA;,$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:EventMsg/pfx2:ServiceID)"/>
+                </RequestURI>
+                <Timeout>
+                    <xsl:value-of select="110000"/>
+                </Timeout>
+            </RequestActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reset SuspiciousFiles JSON">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>374</pd:x>
+        <pd:y>435</pd:y>
+        <config>
+            <element>
+                <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="root">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="GetAnalyResultOnCompleteEventJson" type="xsd:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="var" select="tib:substring-before-last(substring-after($Get-Suspicious-Files/RequestActivityOutput/asciiContent, '&quot;Rows&quot;:'), ',&quot;uid&quot;')"/>
+                <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:when test="tib:trim($var)=&quot;&quot;">
+                        <GetAnalyResultOnCompleteEventJson>
+                            <xsl:value-of select="$GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1/Record1[1]/AnalysisResultSummaryJson"/>
+                        </GetAnalyResultOnCompleteEventJson>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <GetAnalyResultOnCompleteEventJson>
+                            <xsl:value-of select="concat(tib:left($GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1/Record1[1]/AnalysisResultSummaryJson,&#xA;tib:index-of($GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1/Record1[1]/AnalysisResultSummaryJson, '&quot;SuspiciousFiles&quot;')),&#xA; 'SuspiciousFiles&quot;:',$var,'}')"/>
+                        </GetAnalyResultOnCompleteEventJson>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateMalwareEmailNotification">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>933</pd:x>
+        <pd:y>275</pd:y>
+        <config>
+            <processName>/ExternalServices/ToSFDC/CreateMalwareEmailNotification.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx12:SFDC_CreateMalwareEmailNotificationRq>
+                <Input>
+                    <ns17:SFDC_CreateMalwareEmailNotificationRq>
+                        <ns17:RequestHeader>
+                            <pfx3:MessageKey>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:MessageKey"/>
+                            </pfx3:MessageKey>
+                            <pfx3:ServiceName>
+                                <xsl:value-of select="&quot;SFDC_CreateMalwareEmailNotification&quot;"/>
+                            </pfx3:ServiceName>
+                            <pfx3:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </pfx3:ServiceVersion>
+                            <pfx3:SourceID>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:SourceID"/>
+                            </pfx3:SourceID>
+                            <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:RqTimestamp">
+                                <pfx3:RqTimestamp>
+                                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:RqTimestamp"/>
+                                </pfx3:RqTimestamp>
+                            </xsl:if>
+                        </ns17:RequestHeader>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($GetSRInfo/pfx12:SFDC_GetSRInfoRs/SFDC_GetSRInfoRsMsg/ns16:SFDC_GetSRInfoRs/ns16:ResponseBody/ns16:Result/ns11:ResultSet1/ns11:Record1/ns11:SRNumber)=&quot;&quot;">
+                                <ns17:RequestBody>
+                                    <pfx13:Scenario>
+                                        <xsl:value-of select="4"/>
+                                    </pfx13:Scenario>
+                                    <pfx13:NotificationName>
+                                        <xsl:value-of select="&quot;Threat Service Analysis Completed&quot;"/>
+                                    </pfx13:NotificationName>
+                                    <pfx13:ThreatService>
+                                        <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/ThreatServiceID"/>
+                                    </pfx13:ThreatService>
+                                    <pfx13:CaseNumber>
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </pfx13:CaseNumber>
+                                    <pfx13:Type>
+                                        <xsl:value-of select="&quot;Completed&quot;"/>
+                                    </pfx13:Type>
+                                    <pfx13:Message>
+                                        <xsl:value-of select="$GetTemplateRenderResult/BiFrostResponse/Result"/>
+                                    </pfx13:Message>
+                                </ns17:RequestBody>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <ns17:RequestBody>
+                                    <pfx13:Scenario>
+                                        <xsl:value-of select="5"/>
+                                    </pfx13:Scenario>
+                                    <pfx13:NotificationName>
+                                        <xsl:value-of select="&quot;Threat Service Analysis Completed with Case ID&quot;"/>
+                                    </pfx13:NotificationName>
+                                    <pfx13:ThreatService>
+                                        <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/ThreatServiceID"/>
+                                    </pfx13:ThreatService>
+                                    <pfx13:CaseNumber>
+                                        <xsl:value-of select="$GetSRInfo/pfx12:SFDC_GetSRInfoRs/SFDC_GetSRInfoRsMsg/ns16:SFDC_GetSRInfoRs/ns16:ResponseBody/ns16:Result/ns11:ResultSet1/ns11:Record1/ns11:SFDCCaseID"/>
+                                    </pfx13:CaseNumber>
+                                    <pfx13:Type>
+                                        <xsl:value-of select="&quot;Completed&quot;"/>
+                                    </pfx13:Type>
+                                    <pfx13:Message>
+                                        <xsl:value-of select="$GetTemplateRenderResult/BiFrostResponse/Result"/>
+                                    </pfx13:Message>
+                                </ns17:RequestBody>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ns17:SFDC_CreateMalwareEmailNotificationRq>
+                </Input>
+            </pfx12:SFDC_CreateMalwareEmailNotificationRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpsertThreatService">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>809</pd:x>
+        <pd:y>272</pd:y>
+        <config>
+            <processName>/ExternalServices/ToSFDC/UpsertThreatService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx12:SFDC_UpsertThreatServiceRq>
+                <Input>
+                    <pfx14:SFDC_UpsertThreatServiceRq>
+                        <pfx14:RequestHeader>
+                            <pfx3:MessageKey>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:MessageKey"/>
+                            </pfx3:MessageKey>
+                            <pfx3:ServiceName>
+                                <xsl:value-of select="&quot;SFDC_UpsertThreatService&quot;"/>
+                            </pfx3:ServiceName>
+                            <pfx3:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </pfx3:ServiceVersion>
+                            <pfx3:SourceID>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:SourceID"/>
+                            </pfx3:SourceID>
+                            <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:RqTimestamp">
+                                <pfx3:RqTimestamp>
+                                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:RqTimestamp"/>
+                                </pfx3:RqTimestamp>
+                            </xsl:if>
+                        </pfx14:RequestHeader>
+                        <pfx14:RequestBody>
+                            <pfx14:UpsetThreatService>
+                                <pfx15:EndDate>
+                                    <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                                </pfx15:EndDate>
+                                <pfx15:Status>
+                                    <xsl:value-of select="&quot;Done&quot;"/>
+                                </pfx15:Status>
+                                <pfx15:Title>
+                                    <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/Title"/>
+                                </pfx15:Title>
+                                <pfx15:ActivityId>
+                                    <xsl:value-of select="$Info/root/ThreatServiceID"/>
+                                </pfx15:ActivityId>
+                                <pfx15:Type>
+                                    <xsl:value-of select="'Threat Service'"/>
+                                </pfx15:Type>
+                                <pfx15:AccountId>
+                                    <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/AccountId"/>
+                                </pfx15:AccountId>
+                                <pfx15:Description>
+                                    <xsl:value-of select="concat(&quot;For file analysis result, please refer here: &quot;, $_globalVariables/ns4:GlobalVariables/EventProcess/PSC_G2/FRS/RTLWCaseDetailURL,$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:EventProcessMsg/pfx2:OnCompleted/pfx2:serviceId)"/>
+                                </pfx15:Description>
+                                <pfx15:RetryFlag>
+                                    <xsl:value-of select="0"/>
+                                </pfx15:RetryFlag>
+                            </pfx14:UpsetThreatService>
+                        </pfx14:RequestBody>
+                    </pfx14:SFDC_UpsertThreatServiceRq>
+                </Input>
+            </pfx12:SFDC_UpsertThreatServiceRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetSRInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>581</pd:x>
+        <pd:y>272</pd:y>
+        <config>
+            <processName>/ExternalServices/ToSFDC/GetSRInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx12:SFDC_GetSRInfoRq>
+                <SFDC_GetSRInfoRqMsg>
+                    <pfx16:SFDC_GetSRInfoRq>
+                        <pfx16:RequestHeader>
+                            <pfx3:MessageKey>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:MessageKey"/>
+                            </pfx3:MessageKey>
+                            <pfx3:ServiceName>
+                                <xsl:value-of select="&quot;SFDC_GetSRInfo&quot;"/>
+                            </pfx3:ServiceName>
+                            <pfx3:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </pfx3:ServiceVersion>
+                            <pfx3:SourceID>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:SourceID"/>
+                            </pfx3:SourceID>
+                            <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:RqTimestamp">
+                                <pfx3:RqTimestamp>
+                                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader/pfx2:RqTimestamp"/>
+                                </pfx3:RqTimestamp>
+                            </xsl:if>
+                        </pfx16:RequestHeader>
+                        <pfx16:RequestBody>
+                            <pfx16:SRNumber>
+                                <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/SupportCaseNumber"/>
+                            </pfx16:SRNumber>
+                            <pfx16:ThreatServiceName>
+                                <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/ThreatServiceID"/>
+                            </pfx16:ThreatServiceName>
+                        </pfx16:RequestBody>
+                    </pfx16:SFDC_GetSRInfoRq>
+                </SFDC_GetSRInfoRqMsg>
+            </pfx12:SFDC_GetSRInfoRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetThreatServiceInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>646</pd:x>
+        <pd:y>367</pd:y>
+        <config>
+            <processName>/ExternalServices/ToSFDC/GetThreatServiceInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx12:SFDC_GetThreatServiceInfoRq>
+                <Input>
+                    <ns18:GetThreatServiceInfoRq>
+                        <xsl:for-each select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx2:SMF/pfx2:SMFHeader">
+                            <ns18:RequestHeader>
+                                <pfx3:MessageKey>
+                                    <xsl:value-of select="pfx2:MessageKey"/>
+                                </pfx3:MessageKey>
+                                <pfx3:ServiceName>
+                                    <xsl:value-of select="&quot;SFDC_GetThreatServiceInfo&quot;"/>
+                                </pfx3:ServiceName>
+                                <pfx3:ServiceVersion>
+                                    <xsl:value-of select="&quot;V1.0&quot;"/>
+                                </pfx3:ServiceVersion>
+                                <pfx3:SourceID>
+                                    <xsl:value-of select="pfx2:SourceID"/>
+                                </pfx3:SourceID>
+                                <xsl:if test="pfx2:RqTimestamp">
+                                    <pfx3:RqTimestamp>
+                                        <xsl:value-of select="pfx2:RqTimestamp"/>
+                                    </pfx3:RqTimestamp>
+                                </xsl:if>
+                            </ns18:RequestHeader>
+                        </xsl:for-each>
+                        <ns18:RequestBody>
+                            <ns18:ThreatServiceName>
+                                <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/ThreatServiceID"/>
+                            </ns18:ThreatServiceName>
+                        </ns18:RequestBody>
+                    </ns18:GetThreatServiceInfoRq>
+                </Input>
+            </pfx12:SFDC_GetThreatServiceInfoRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>690</pd:x>
+        <pd:y>270</pd:y>
+        <config>
+            <variableName>Info</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ThreatServiceID>
+                    <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/ThreatServiceID"/>
+                </ThreatServiceID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign-1">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>753</pd:x>
+        <pd:y>371</pd:y>
+        <config>
+            <variableName>Info</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ThreatServiceID>
+                    <xsl:value-of select="$GetThreatServiceInfo/pfx12:SFDC_GetThreatServiceInfoRs/Output/ns19:GetThreatServiceInfoRs/ns19:ResponseBody/ns19:Result/ns19:ThreatServiceId[1]"/>
+                </ThreatServiceID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>SendEventLog-Start</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetNeuronServiceMainByServiceID</pd:from>
+        <pd:to>Parse SRF XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse SRF XML</pd:from>
+        <pd:to>GetAnalysisResultForOnCompleteEvent</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetAnalysisResultForOnCompleteEvent</pd:from>
+        <pd:to>GetTemplateRenderResult</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendEventLog-Start</pd:from>
+        <pd:to>GetNeuronServiceMainByServiceID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendEventLog-Competed</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertServiceCompleteInfo</pd:from>
+        <pd:to>SendEventLog-Competed</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetTemplateRenderResult</pd:from>
+        <pd:to>Has Threat Service Id</pd:to>
+        <pd:xpathDescription>Code=100</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$GetTemplateRenderResult/BiFrostResponse/Code='100'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Has Threat Service Id</pd:from>
+        <pd:to>InsertServiceCompleteInfo</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Parse-SRF-XML/NEURON/ADDITIONAL_INFO/ThreatServiceID) =""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetTemplateRenderResult</pd:from>
+        <pd:to>Call Bifrost to send Email Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-6750157</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Has Threat Service Id</pd:from>
+        <pd:to>GetSRInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetAnalysisResultForOnCompleteEvent</pd:from>
+        <pd:to>Get Suspicious Files</pd:to>
+        <pd:xpathDescription>ATTK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1[1]/Record1/IsATTK=1 or $GetAnalysisResultForOnCompleteEvent/Resultsets/ResultSet1[1]/Record1/IsATTK="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Suspicious Files</pd:from>
+        <pd:to>Reset SuspiciousFiles JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reset SuspiciousFiles JSON</pd:from>
+        <pd:to>GetTemplateRenderResult</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateMalwareEmailNotification</pd:from>
+        <pd:to>InsertServiceCompleteInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpsertThreatService</pd:from>
+        <pd:to>CreateMalwareEmailNotification</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSRInfo</pd:from>
+        <pd:to>GetThreatServiceInfo</pd:to>
+        <pd:xpathDescription>TS</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>upper-case(tib:left($Parse-SRF-XML/NEURON/ADDITIONAL_INFO/ThreatServiceID,2))="TS"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetThreatServiceInfo</pd:from>
+        <pd:to>Assign-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSRInfo</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>UpsertThreatService</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign-1</pd:from>
+        <pd:to>UpsertThreatService</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

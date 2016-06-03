@@ -1,0 +1,1218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetURLReputationResult.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx4="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx6="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetURLReputationResult.xsd" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetURLReputationResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/Schema.xsd" schemaLocation="/EventProcess/SubProcess/WRSFTPFormat.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>EventProcess/PSC_G2/WRS/CheckingTaskGroup.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>51</pd:startX>
+    <pd:startY>313</pd:startY>
+    <pd:returnBindings>
+        <TasksOutput>
+            <xsl:for-each select="$ReTaskGruoping/AccumulatedOutput/group">
+                <group>
+                    <xsl:for-each select="Task">
+                        <Task>
+                            <xsl:attribute name="TaskType">
+                                <xsl:value-of select="@TaskType"/>
+                            </xsl:attribute>
+                            <xsl:for-each select="URLs">
+                                <URLs>
+                                    <URLID>
+                                        <xsl:value-of select="URLID"/>
+                                    </URLID>
+                                    <URLStatus>
+                                        <xsl:value-of select="URLStatus"/>
+                                    </URLStatus>
+                                </URLs>
+                            </xsl:for-each>
+                            <CaseType>
+                                <xsl:value-of select="CaseType"/>
+                            </CaseType>
+                            <SubmissionType>
+                                <xsl:value-of select="SubmissionType"/>
+                            </SubmissionType>
+                            <Title>
+                                <xsl:value-of select="Title"/>
+                            </Title>
+                        </Task>
+                    </xsl:for-each>
+                </group>
+            </xsl:for-each>
+        </TasksOutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="TasksOutput">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="group" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Task" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="URLs" minOccurs="0" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="URLID" type="xsd:string"/>
+                                                        <xsd:element name="URLStatus" type="xsd:string"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="CaseType" type="xsd:string"/>
+                                            <xsd:element name="SubmissionType" type="xsd:string"/>
+                                            <xsd:element name="Title" type="xsd:string"/>
+                                        </xsd:sequence>
+                                        <xsd:attribute name="TaskType" type="xsd:string" use="required"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1294</pd:endX>
+    <pd:endY>317</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx6:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <taskInfo>
+            <xsd:element name="URL">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="URLID" type="xsd:string"/>
+                        <xsd:element name="CaseType" type="xsd:string"/>
+                        <xsd:element name="Title" type="xsd:string"/>
+                        <xsd:element name="SubmissionType" type="xsd:string"/>
+                        <xsd:element name="URLStatus" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </taskInfo>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1427366909886</pd:targetNamespace>
+    <pd:activity name="GetURLOpenTaskInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>176</pd:x>
+        <pd:y>319</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetURLReputationInfoByDiffCondition.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Status>
+                    <xsl:value-of select="2"/>
+                </Status>
+                <ServiceID>
+                    <xsl:value-of select="$Start/root/ServiceID"/>
+                </ServiceID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="GroupingTask">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>304</pd:x>
+        <pd:y>46</pd:y>
+        <pd:width>723</pd:width>
+        <pd:height>526</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$GetURLOpenTaskInfo/Resultsets/ResultSet1/Record1</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>TotalURLInfoForTask</pd:outSlot>
+            <pd:activityOutputName>URLInfoForCreateTask</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Checking</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>URLInfoForCreateTask</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>WCS_RS</pd:from>
+            <pd:to>Assign</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign</pd:from>
+            <pd:to>Map Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>Assign-SubmissionType</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign-SubmissionType</pd:from>
+            <pd:to>URLInfoForCreateTask</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP RS</pd:from>
+            <pd:to>WCS_RS</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Checking</pd:from>
+            <pd:to>FTP RS</pd:to>
+            <pd:xpathDescription>both exist</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$cu/Record1/WRS_FTP_RS !='' and $cu/Record1/WRS_WCS_BEGIN_RS !=""</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Checking</pd:from>
+            <pd:to>FTP-RQ</pd:to>
+            <pd:xpathDescription>Both not Exists</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>tib:trim($cu/Record1/WRS_FTP_RS) ='' and tib:trim($cu/Record1/WRS_WCS_END_RS) =""</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP-RQ</pd:from>
+            <pd:to>Assign-2</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map-Data-1</pd:from>
+            <pd:to>Assign-SubmissionType-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign-2</pd:from>
+            <pd:to>Map-Data-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Checking</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:xpathDescription>only One exist</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>FTP-RS-1</pd:to>
+            <pd:xpathDescription>FTP RS Exists</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP-RS-1</pd:from>
+            <pd:to>Assign-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign-1</pd:from>
+            <pd:to>Map-Data-1-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map-Data-1-1</pd:from>
+            <pd:to>Assign-SubmissionType-2</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>FTP-RQ-1</pd:to>
+            <pd:xpathDescription>WCS RS exist</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$cu/Record1/WRS_WCS_BEGIN_RS !=""</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>WCS_RS-1</pd:from>
+            <pd:to>Assign-3</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP-RQ-1</pd:from>
+            <pd:to>WCS_RS-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign-3</pd:from>
+            <pd:to>Map-Data-2</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map-Data-2</pd:from>
+            <pd:to>Assign-SubmissionType-3</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign-SubmissionType-1</pd:from>
+            <pd:to>URLInfoForCreateTask</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign-SubmissionType-2</pd:from>
+            <pd:to>URLInfoForCreateTask</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign-SubmissionType-3</pd:from>
+            <pd:to>URLInfoForCreateTask</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="WCS_RS">
+            <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+            <pd:x>456</pd:x>
+            <pd:y>119</pd:y>
+            <config>
+                <inputStyle>text</inputStyle>
+                <xsdVersion>default</xsdVersion>
+                <validateOutput>true</validateOutput>
+                <term ref="response"/>
+            </config>
+            <pd:inputBindings>
+                <xmlString>
+                    <xsl:value-of select="$cu/Record1/WRS_WCS_BEGIN_RS"/>
+                </xmlString>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>650</pd:x>
+            <pd:y>118</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="URL">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="CatetoryChecking" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($WCS_RS/response/categories/category/@rating[.=91]) !=&quot;&quot;">
+                            <CatetoryChecking>
+                                <xsl:value-of select="&quot;CC Server&quot;"/>
+                            </CatetoryChecking>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:for-each select="$WCS_RS/response/categories/category">
+                                <xsl:choose>
+                                    <xsl:when test="tib:tokenize-allow-empty($_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/malicious_category_list, &quot;,&quot;)[.=current()/@rating] !=''">
+                                        <CatetoryChecking>
+                                            <xsl:value-of select="&quot;malicious&quot;"/>
+                                        </CatetoryChecking>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <CatetoryChecking>
+                                            <xsl:value-of select="&quot;non-malicious&quot;"/>
+                                        </CatetoryChecking>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:for-each>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>549</pd:x>
+            <pd:y>117</pd:y>
+            <config>
+                <variableName>taskInfo</variableName>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <URLID>
+                        <xsl:value-of select="$cu/Record1/URLID"/>
+                    </URLID>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($WCS_RS/response/categories/category/@rating[.=91]) !=&quot;&quot; or tib:trim($FTP-RS/Output/Rows/WRSFTPFormat[2]/SUGGESTED_CATEGORY)=91">
+                            <CaseType>
+                                <xsl:value-of select="1"/>
+                            </CaseType>
+                            <Title>
+                                <xsl:value-of select="&quot;C&amp;C Submission&quot;"/>
+                            </Title>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <CaseType>
+                                <xsl:value-of select="2"/>
+                            </CaseType>
+                            <Title>
+                                <xsl:value-of select="&quot;ISP WRS Submission&quot;"/>
+                            </Title>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <SubmissionType>
+                        <xsl:value-of select="''"/>
+                    </SubmissionType>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($WCS_RS/response/categories/category/@rating[.=91]) !=&quot;&quot; and  tib:trim($FTP-RS/Output/Rows/WRSFTPFormat[2]/SUGGESTED_CATEGORY)!=91">
+                            <URLStatus>
+                                <xsl:value-of select="&quot;False Positive&quot;"/>
+                            </URLStatus>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <URLStatus>
+                                <xsl:value-of select="&quot;Active&quot;"/>
+                            </URLStatus>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign-SubmissionType">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>785</pd:x>
+            <pd:y>124</pd:y>
+            <config>
+                <variableName>taskInfo</variableName>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <URLID>
+                        <xsl:value-of select="$taskInfo/URL/URLID"/>
+                    </URLID>
+                    <CaseType>
+                        <xsl:value-of select="$taskInfo/URL/CaseType"/>
+                    </CaseType>
+                    <Title>
+                        <xsl:value-of select="$taskInfo/URL/Title"/>
+                    </Title>
+                    <xsl:choose>
+                        <xsl:when test="$taskInfo/URL/CaseType=1">
+                            <xsl:choose>
+                                <xsl:when test="tib:trim($WCS_RS/response/categories/category/@rating[.=91]) !=&quot;&quot;">
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;FP Mitigation&quot;"/>
+                                    </SubmissionType>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;Rating Request&quot;"/>
+                                    </SubmissionType>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="tib:trim($Map-Data/URL/CatetoryChecking[.=&quot;malicious&quot;]) !=&quot;&quot;">
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;FP Mitigation&quot;"/>
+                                    </SubmissionType>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;Rating Request&quot;"/>
+                                    </SubmissionType>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <URLStatus>
+                        <xsl:value-of select="$taskInfo/URL/URLStatus"/>
+                    </URLStatus>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="URLInfoForCreateTask">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>934</pd:x>
+            <pd:y>206</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="URL">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="URLID" type="xsd:string"/>
+                                <xsd:element name="CaseType" type="xsd:string"/>
+                                <xsd:element name="Title" type="xsd:string"/>
+                                <xsd:element name="SubmissionType" type="xsd:string"/>
+                                <xsd:element name="URLStatus" type="xsd:string"/>
+                                <xsd:element name="TaskType" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <xsl:for-each select="$taskInfo/URL">
+                    <URL>
+                        <URLID>
+                            <xsl:value-of select="URLID"/>
+                        </URLID>
+                        <CaseType>
+                            <xsl:value-of select="CaseType"/>
+                        </CaseType>
+                        <Title>
+                            <xsl:value-of select="Title"/>
+                        </Title>
+                        <SubmissionType>
+                            <xsl:value-of select="SubmissionType"/>
+                        </SubmissionType>
+                        <URLStatus>
+                            <xsl:value-of select="URLStatus"/>
+                        </URLStatus>
+                        <xsl:choose>
+                            <xsl:when test="current()/CaseType =1 and current()/SubmissionType=&quot;FP Mitigation&quot;">
+                                <TaskType>
+                                    <xsl:value-of select="1"/>
+                                </TaskType>
+                            </xsl:when>
+                            <xsl:when test="current()/CaseType =1 and current()/SubmissionType=&quot;Rating Request&quot;">
+                                <TaskType>
+                                    <xsl:value-of select="2"/>
+                                </TaskType>
+                            </xsl:when>
+                            <xsl:when test="current()/CaseType =2 and current()/SubmissionType=&quot;FP Mitigation&quot;">
+                                <TaskType>
+                                    <xsl:value-of select="3"/>
+                                </TaskType>
+                            </xsl:when>
+                            <xsl:when test="current()/CaseType =2 and current()/SubmissionType=&quot;Rating Request&quot;">
+                                <TaskType>
+                                    <xsl:value-of select="4"/>
+                                </TaskType>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <TaskType>
+                                    <xsl:value-of select="''"/>
+                                </TaskType>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </URL>
+                </xsl:for-each>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="FTP RS">
+            <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+            <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+            <pd:x>374</pd:x>
+            <pd:y>118</pd:y>
+            <config>
+                <InputType>String</InputType>
+                <Encoding>ASCII</Encoding>
+                <ParseSharedConfig>/EventProcess/SubProcess/WRS_Processed_DataFormat.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <text>
+                        <xsl:value-of select="$cu/Record1/WRS_FTP_RS"/>
+                    </text>
+                    <noOfRecords>
+                        <xsl:value-of select="2"/>
+                    </noOfRecords>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Checking">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>380</pd:x>
+            <pd:y>245</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="FTP-RQ">
+            <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+            <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+            <pd:x>478</pd:x>
+            <pd:y>240</pd:y>
+            <config>
+                <InputType>String</InputType>
+                <Encoding>ASCII</Encoding>
+                <ParseSharedConfig>/EventProcess/SubProcess/WRS_UnProcess_DataFormat.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <text>
+                        <xsl:value-of select="$cu/Record1/WRS_FTP_RQ"/>
+                    </text>
+                    <noOfRecords>
+                        <xsl:value-of select="2"/>
+                    </noOfRecords>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map-Data-1">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>674</pd:x>
+            <pd:y>242</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="URL">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="CatetoryChecking" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($FTP-RQ/Output/Rows/WRSFTPFormat[2]/CATEGORY[.=91]) !=&quot;&quot;">
+                            <CatetoryChecking>
+                                <xsl:value-of select="&quot;CC Server&quot;"/>
+                            </CatetoryChecking>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="tib:tokenize-allow-empty($_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/malicious_category_list, &quot;,&quot;)[.=$FTP-RQ/Output/Rows/WRSFTPFormat[2]/CATEGORY] !=''">
+                                    <CatetoryChecking>
+                                        <xsl:value-of select="&quot;malicious&quot;"/>
+                                    </CatetoryChecking>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <CatetoryChecking>
+                                        <xsl:value-of select="&quot;non-malicious&quot;"/>
+                                    </CatetoryChecking>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign-2">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>567</pd:x>
+            <pd:y>241</pd:y>
+            <config>
+                <variableName>taskInfo</variableName>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <URLID>
+                        <xsl:value-of select="$cu/Record1/URLID"/>
+                    </URLID>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($FTP-RQ/Output/Rows/WRSFTPFormat[2]/CATEGORY[.=91]) !=&quot;&quot; or tib:trim($FTP-RQ/Output/Rows/WRSFTPFormat[2]/SUGGESTED_CATEGORY)=91">
+                            <CaseType>
+                                <xsl:value-of select="1"/>
+                            </CaseType>
+                            <Title>
+                                <xsl:value-of select="&quot;C&amp;C Submission&quot;"/>
+                            </Title>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <CaseType>
+                                <xsl:value-of select="2"/>
+                            </CaseType>
+                            <Title>
+                                <xsl:value-of select="&quot;ISP WRS Submission&quot;"/>
+                            </Title>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <SubmissionType>
+                        <xsl:value-of select="''"/>
+                    </SubmissionType>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($FTP-RQ/Output/Rows/WRSFTPFormat[2]/CATEGORY[.=91]) !=&quot;&quot; and  tib:trim($FTP-RQ/Output/Rows/WRSFTPFormat[2]/SUGGESTED_CATEGORY)!=91">
+                            <URLStatus>
+                                <xsl:value-of select="&quot;False Positive&quot;"/>
+                            </URLStatus>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <URLStatus>
+                                <xsl:value-of select="&quot;Active&quot;"/>
+                            </URLStatus>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>379</pd:x>
+            <pd:y>390</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="FTP-RS-1">
+            <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+            <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+            <pd:x>507</pd:x>
+            <pd:y>347</pd:y>
+            <config>
+                <InputType>String</InputType>
+                <Encoding>ASCII</Encoding>
+                <ParseSharedConfig>/EventProcess/SubProcess/WRS_Processed_DataFormat.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <text>
+                        <xsl:value-of select="$cu/Record1/WRS_FTP_RS"/>
+                    </text>
+                    <noOfRecords>
+                        <xsl:value-of select="-1"/>
+                    </noOfRecords>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign-1">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>624</pd:x>
+            <pd:y>349</pd:y>
+            <config>
+                <variableName>taskInfo</variableName>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <URLID>
+                        <xsl:value-of select="$cu/Record1/URLID"/>
+                    </URLID>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($FTP-RS-1/Output/Rows/WRSFTPFormat[2]/FINAL_CATEGORY[.=91]) !=&quot;&quot; or tib:trim($FTP-RS-1/Output/Rows/WRSFTPFormat[2]/SUGGESTED_CATEGORY)=91">
+                            <CaseType>
+                                <xsl:value-of select="1"/>
+                            </CaseType>
+                            <Title>
+                                <xsl:value-of select="&quot;C&amp;C Submission&quot;"/>
+                            </Title>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <CaseType>
+                                <xsl:value-of select="2"/>
+                            </CaseType>
+                            <Title>
+                                <xsl:value-of select="&quot;ISP WRS Submission&quot;"/>
+                            </Title>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <SubmissionType>
+                        <xsl:value-of select="''"/>
+                    </SubmissionType>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($FTP-RS-1/Output/Rows/WRSFTPFormat[2]/FINAL_CATEGORY[.=91]) !=&quot;&quot; and  tib:trim($FTP-RS-1/Output/Rows/WRSFTPFormat[2]/SUGGESTED_CATEGORY)!=91">
+                            <URLStatus>
+                                <xsl:value-of select="&quot;False Positive&quot;"/>
+                            </URLStatus>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <URLStatus>
+                                <xsl:value-of select="&quot;Active&quot;"/>
+                            </URLStatus>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map-Data-1-1">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>725</pd:x>
+            <pd:y>350</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="URL">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="CatetoryChecking" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($FTP-RS-1/Output/Rows/WRSFTPFormat[2]/FINAL_CATEGORY[.=91]) !=&quot;&quot;">
+                            <CatetoryChecking>
+                                <xsl:value-of select="&quot;CC Server&quot;"/>
+                            </CatetoryChecking>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="tib:tokenize-allow-empty($_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/malicious_category_list, &quot;,&quot;)[.=$FTP-RS-1/Output/Rows/WRSFTPFormat[2]/FINAL_CATEGORY] !=''">
+                                    <CatetoryChecking>
+                                        <xsl:value-of select="&quot;malicious&quot;"/>
+                                    </CatetoryChecking>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <CatetoryChecking>
+                                        <xsl:value-of select="&quot;non-malicious&quot;"/>
+                                    </CatetoryChecking>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="WCS_RS-1">
+            <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+            <pd:x>583</pd:x>
+            <pd:y>488</pd:y>
+            <config>
+                <inputStyle>text</inputStyle>
+                <xsdVersion>default</xsdVersion>
+                <validateOutput>true</validateOutput>
+                <term ref="response"/>
+            </config>
+            <pd:inputBindings>
+                <xmlString>
+                    <xsl:value-of select="$cu/Record1/WRS_WCS_BEGIN_RS"/>
+                </xmlString>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign-3">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>668</pd:x>
+            <pd:y>484</pd:y>
+            <config>
+                <variableName>taskInfo</variableName>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <URLID>
+                        <xsl:value-of select="$cu/Record1/URLID"/>
+                    </URLID>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($WCS_RS-1/response/categories/category/@rating[.=91]) !=&quot;&quot; or tib:trim($FTP-RQ-1/Output/Rows/WRSFTPFormat[2]/SUGGESTED_CATEGORY)=91">
+                            <CaseType>
+                                <xsl:value-of select="1"/>
+                            </CaseType>
+                            <Title>
+                                <xsl:value-of select="&quot;C&amp;C Submission&quot;"/>
+                            </Title>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <CaseType>
+                                <xsl:value-of select="2"/>
+                            </CaseType>
+                            <Title>
+                                <xsl:value-of select="&quot;ISP WRS Submission&quot;"/>
+                            </Title>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <SubmissionType>
+                        <xsl:value-of select="''"/>
+                    </SubmissionType>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($WCS_RS-1/response/categories/category/@rating[.=91]) !=&quot;&quot; and  tib:trim($FTP-RQ-1/Output/Rows/WRSFTPFormat[2]/SUGGESTED_CATEGORY)!=91">
+                            <URLStatus>
+                                <xsl:value-of select="&quot;False Positive&quot;"/>
+                            </URLStatus>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <URLStatus>
+                                <xsl:value-of select="&quot;Active&quot;"/>
+                            </URLStatus>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="FTP-RQ-1">
+            <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+            <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+            <pd:x>439</pd:x>
+            <pd:y>485</pd:y>
+            <config>
+                <InputType>String</InputType>
+                <Encoding>ASCII</Encoding>
+                <ParseSharedConfig>/EventProcess/SubProcess/WRS_UnProcess_DataFormat.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <text>
+                        <xsl:value-of select="$cu/Record1/WRS_FTP_RQ"/>
+                    </text>
+                    <noOfRecords>
+                        <xsl:value-of select="-1"/>
+                    </noOfRecords>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map-Data-2">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>783</pd:x>
+            <pd:y>488</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="URL">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="CatetoryChecking" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($WCS_RS-1/response/categories/category/@rating[.=91]) !=&quot;&quot;">
+                            <CatetoryChecking>
+                                <xsl:value-of select="&quot;CC Server&quot;"/>
+                            </CatetoryChecking>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:for-each select="$WCS_RS-1/response/categories/category">
+                                <xsl:choose>
+                                    <xsl:when test="tib:tokenize-allow-empty($_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/malicious_category_list, &quot;,&quot;)[.=current()/@rating] !=''">
+                                        <CatetoryChecking>
+                                            <xsl:value-of select="&quot;malicious&quot;"/>
+                                        </CatetoryChecking>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <CatetoryChecking>
+                                            <xsl:value-of select="&quot;non-malicious&quot;"/>
+                                        </CatetoryChecking>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:for-each>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign-SubmissionType-1">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>815</pd:x>
+            <pd:y>244</pd:y>
+            <config>
+                <variableName>taskInfo</variableName>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <URLID>
+                        <xsl:value-of select="$taskInfo/URL/URLID"/>
+                    </URLID>
+                    <CaseType>
+                        <xsl:value-of select="$taskInfo/URL/CaseType"/>
+                    </CaseType>
+                    <Title>
+                        <xsl:value-of select="$taskInfo/URL/Title"/>
+                    </Title>
+                    <xsl:choose>
+                        <xsl:when test="$taskInfo/URL/CaseType=1">
+                            <xsl:choose>
+                                <xsl:when test="tib:trim($FTP-RQ/Output/Rows/WRSFTPFormat/SUGGESTED_CATEGORY[.=91]) !=&quot;&quot;">
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;FP Mitigation&quot;"/>
+                                    </SubmissionType>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;Rating Request&quot;"/>
+                                    </SubmissionType>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="tib:trim($Map-Data-1/URL/CatetoryChecking[.=&quot;malicious&quot;]) !=&quot;&quot;">
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;FP Mitigation&quot;"/>
+                                    </SubmissionType>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;Rating Request&quot;"/>
+                                    </SubmissionType>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <URLStatus>
+                        <xsl:value-of select="$taskInfo/URL/URLStatus"/>
+                    </URLStatus>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign-SubmissionType-2">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>846</pd:x>
+            <pd:y>349</pd:y>
+            <config>
+                <variableName>taskInfo</variableName>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <URLID>
+                        <xsl:value-of select="$taskInfo/URL/URLID"/>
+                    </URLID>
+                    <CaseType>
+                        <xsl:value-of select="$taskInfo/URL/CaseType"/>
+                    </CaseType>
+                    <Title>
+                        <xsl:value-of select="$taskInfo/URL/Title"/>
+                    </Title>
+                    <xsl:choose>
+                        <xsl:when test="$taskInfo/URL/CaseType=1">
+                            <xsl:choose>
+                                <xsl:when test="tib:trim($FTP-RS-1/Output/Rows/WRSFTPFormat[2]/FINAL_CATEGORY[.=91]) !=&quot;&quot;">
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;FP Mitigation&quot;"/>
+                                    </SubmissionType>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;Rating Request&quot;"/>
+                                    </SubmissionType>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="tib:trim($Map-Data-1-1/URL/CatetoryChecking[.=&quot;malicious&quot;]) !=&quot;&quot;">
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;FP Mitigation&quot;"/>
+                                    </SubmissionType>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;Rating Request&quot;"/>
+                                    </SubmissionType>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <URLStatus>
+                        <xsl:value-of select="$taskInfo/URL/URLStatus"/>
+                    </URLStatus>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign-SubmissionType-3">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>928</pd:x>
+            <pd:y>485</pd:y>
+            <config>
+                <variableName>taskInfo</variableName>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <URLID>
+                        <xsl:value-of select="$taskInfo/URL/URLID"/>
+                    </URLID>
+                    <CaseType>
+                        <xsl:value-of select="$taskInfo/URL/CaseType"/>
+                    </CaseType>
+                    <Title>
+                        <xsl:value-of select="$taskInfo/URL/Title"/>
+                    </Title>
+                    <xsl:choose>
+                        <xsl:when test="$taskInfo/URL/CaseType=1">
+                            <xsl:choose>
+                                <xsl:when test="tib:trim($WCS_RS-1/response/categories/category/@rating[.=91]) !=&quot;&quot;">
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;FP Mitigation&quot;"/>
+                                    </SubmissionType>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;Rating Request&quot;"/>
+                                    </SubmissionType>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="tib:trim($Map-Data-2/URL/CatetoryChecking[.=&quot;malicious&quot;]) !=&quot;&quot;">
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;FP Mitigation&quot;"/>
+                                    </SubmissionType>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <SubmissionType>
+                                        <xsl:value-of select="&quot;Rating Request&quot;"/>
+                                    </SubmissionType>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <URLStatus>
+                        <xsl:value-of select="$taskInfo/URL/URLStatus"/>
+                    </URLStatus>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="ReTaskGruoping">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1127</pd:x>
+        <pd:y>315</pd:y>
+        <config>
+            <processName>/EventProcess/PSC_G2/WRS/ReTaskGruoping.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <xsl:copy-of select="$TotalURLInfoForTask/AccumulatedOutput/URL"/>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>605</pd:x>
+        <pd:y>628</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <data>
+                    <pfx6:Error>
+                        <pfx6:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx6:src>
+                        <pfx6:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx6:error_code>
+                        <pfx6:error_message>
+                            <xsl:value-of select="concat(&quot;ServiceID=&quot;,$Start/root/ServiceID,&quot; ErrorMsg:&quot;,$_error/ns1:ErrorReport/Msg)"/>
+                        </pfx6:error_message>
+                        <pfx6:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx6:stack_trace>
+                        <pfx6:traceMessageKey>
+                            <xsl:value-of select="$Start/root/ServiceID"/>
+                        </pfx6:traceMessageKey>
+                    </pfx6:Error>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>413</pd:x>
+        <pd:y>629</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetURLOpenTaskInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetURLOpenTaskInfo</pd:from>
+        <pd:to>GroupingTask</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GroupingTask</pd:from>
+        <pd:to>ReTaskGruoping</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ReTaskGruoping</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

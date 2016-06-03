@@ -1,0 +1,2590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/">
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+            <s:import namespace="http://microsoft.com/wsdl/types/"/>
+            <s:element name="SampleSubmission">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="submissionInput" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SampleSubmissionResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="SampleSubmissionResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SampleSubmissionWithFile">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="submissionInput" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="filebuffer" type="s:base64Binary"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="filename" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SampleSubmissionWithFileResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="SampleSubmissionWithFileResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RerunSampleSubmission">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceId" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RerunSampleSubmissionResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="RerunSampleSubmission_GetSample">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceId" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RerunSampleSubmission_GetSampleResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="RerunSampleSubmission_GetSampleResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RescanSampleSubmissionOnlyByServiceId">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceId" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RescanSampleSubmissionOnlyByServiceIdResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="RescanSampleSubmissionOnlyByServiceIdResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RescanSampleSubmission">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceId" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="hashList" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RescanSampleSubmissionResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="RescanSampleSubmissionResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RescanSampleSubmissionWithoutChangeServiceStatus">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceId" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="hashList" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RescanSampleSubmissionWithoutChangeServiceStatusResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="RescanSampleSubmissionWithoutChangeServiceStatusResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SampleSubmissionWithLargeFile">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ServiceId" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="SubmissionInput" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileBuffer" type="s:base64Binary"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="Offset" type="s:long"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="Completed" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SampleSubmissionWithLargeFileResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="SampleSubmissionWithLargeFileResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCurrentSampleSize">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceId" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCurrentSampleSizeResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="GetCurrentSampleSizeResult" type="s:long"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetFileListByServiceID">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceID" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetFileListByServiceIDResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetFileListByServiceIDResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetFileHashByServiceID">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSha1" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetFileHashByServiceIDResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetFileHashByServiceIDResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetSampleFileByServiceIDSHA1">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="fileSHA1" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetSampleFileByServiceIDSHA1Response">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetSampleFileByServiceIDSHA1Result" type="s:base64Binary"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertTaskLog">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="stepTypeID" type="s:int"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertTaskLogResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="GetTaskLogByServiceID">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetTaskLogByServiceIDResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetTaskLogByServiceIDResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileActivityLog">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="fileSHA1" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="stepTypeID" type="s:int"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileActivityLogResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="InsertFileActivityLogResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileActivityLogWithKey">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="fileSHA1" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="stepTypeID" type="s:int"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="MessageKey" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileActivityLogWithKeyResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="InsertFileActivityLogWithKeyResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileActivityLogWithRequestType">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="fileSHA1" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="stepTypeID" type="s:int"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="MessageKey" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="RequestType" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileActivityLogWithRequestTypeResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="InsertFileActivityLogWithRequestTypeResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileScanResult">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="fileSHA1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="scanResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileScanResultResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="InsertFileScanResultResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileScanResultWithRequestType">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="fileSHA1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="scanResult" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="RequestType" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="BranchStatus" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="MessageKey" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileScanResultWithRequestTypeResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="InsertFileScanResultWithRequestTypeResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileScanResultForCharonQueryOnly">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="fileSHA1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="scanResult" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="status" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="MessageKey" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertFileScanResultForCharonQueryOnlyResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="InsertFileScanResultForCharonQueryOnlyResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetFileActivityLog">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="fileSHA1" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetFileActivityLogResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetFileActivityLogResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateAMSS_TaskId">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="SourceReferenceNumber" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="Task_id" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateAMSS_TaskIdResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="UpdateAMSS_TaskIdResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SubmitFileToAtlas">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSHA1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileMD5" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SubmitFileToAtlasResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="SubmitFileToAtlasResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SubmitFileToFRS">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSHA1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileMD5" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="RequestType" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SubmitFileToFRSResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="SubmitFileToFRSResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SubmitFileToCharonNP">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSHA1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileMD5" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SubmitFileToCharonNPResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="SubmitFileToCharonNPResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UploadFileToAM">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceId" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSHA1" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UploadFileToAMResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="UploadFileToAMResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdatePSC_SRNumber">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="inputXML" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdatePSC_SRNumberResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="UpdatePSC_SRNumberResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ATTK_CheckSessionByNeuronID">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="NeuronID" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ATTK_CheckSessionByNeuronIDResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ATTK_CheckSessionByNeuronIDResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_ThreatServiceCaseQuery">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="inputXml" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_ThreatServiceCaseQueryResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="PSC_ThreatServiceCaseQueryResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_AnalysisResultQuery">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="inputXml" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_AnalysisResultQueryResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="PSC_AnalysisResultQueryResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_IsATTKorOSCEPackage">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="inputXml" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_IsATTKorOSCEPackageResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="PSC_IsATTKorOSCEPackageResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_ProvidePwd4UnknownPwdInnerArchive">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="fileSHA1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_ProvidePwd4UnknownPwdInnerArchiveResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="PSC_ProvidePwd4UnknownPwdInnerArchiveResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ForceToRestore">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="fileSHA1" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="decryptSource" type="tns:ACS_DecryptSource"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:simpleType name="ACS_DecryptSource">
+                <s:restriction base="s:string">
+                    <s:enumeration value="NA"/>
+                    <s:enumeration value="VSAPI"/>
+                    <s:enumeration value="DCE"/>
+                    <s:enumeration value="SSAPI"/>
+                    <s:enumeration value="ATTK_BINARY_SHIFT"/>
+                </s:restriction>
+            </s:simpleType>
+            <s:element name="ForceToRestoreResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="RenewPSC_Status">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceId" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RenewPSC_StatusResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="RenewPSC_StatusResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateATTKLogAnalysisTask">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="serviceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="taskID" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="attkGuid" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="attkSessionId" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="createdTime" type="s:dateTime"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateATTKLogAnalysisTaskResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="UpdateATTKLogAnalysisTaskResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RequestCreateAMSSTask">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="taskType" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="taskKey" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RequestCreateAMSSTaskResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="RequestCreateAMSSTaskResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertATTKCheckComplete">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ServiceID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="EndpointGuid" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="ATTKSesstionID" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertATTKCheckCompleteResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="InsertATTKCheckCompleteResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="NotifyAMSSTaskClosed">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSha1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="TaskType" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="Determination" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="AMSSTaskID" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="NotifyAMSSTaskClosedResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="NotifyAMSSTaskClosedResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="NotifyAmssTaskCreated">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="AMSSID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="Sha1" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="AMSSCreatedDatetime" type="s:dateTime"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="taskType" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="NotifyAmssTaskCreatedResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="NotifyAmssTaskCreatedResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_DoesSubmissionArrived">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="AttachmentID" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_DoesSubmissionArrivedResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="PSC_DoesSubmissionArrivedResult" type="tns:Result"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Result">
+                <s:sequence>
+                    <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="output" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="DoesSubmissionArrived">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="CommunicationId" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="DoesSubmissionArrivedResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="DoesSubmissionArrivedResult" type="tns:Result"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="NotifySREscalated">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="NeuronID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="SRnumber" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="CreateTime" type="s:dateTime"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="NotifySREscalatedResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="NotifySREscalatedResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_CheckCaseCompleteStatus">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="NeuronID" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="PSC_CheckCaseCompleteStatusResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="PSC_CheckCaseCompleteStatusResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RequestCreateLogAnalysisSR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceID" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RequestCreateLogAnalysisSRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="RequestCreateLogAnalysisSRResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CreateAMSSTask">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSha1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="TaskType" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CreateAMSSTaskResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="CreateAMSSTaskResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SendMailToAVQuery">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSha1" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SendMailToAVQueryResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="SendMailToAVQueryResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CreateSR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceID" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CreateSRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="CreateSRResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TIBCO_UpdateSHA1Result">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSha1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="Determination" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TIBCO_UpdateSHA1ResultResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="TIBCO_UpdateSHA1ResultResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TIBCO_UpdateSRType">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="SRNumber" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TIBCO_UpdateSRTypeResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="GetFileScanResult">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSha1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="DataSource" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="RequestType" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetFileScanResultResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetFileScanResultResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="IsCreateAMSSTask">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceID" type="s1:guid"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="FileSha1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="Consumer" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="IsCreateAMSSTaskResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="IsCreateAMSSTaskResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="IsAlive">
+                <s:complexType/>
+            </s:element>
+            <s:element name="IsAliveResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="IsAliveResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="TestTimeOut">
+                <s:complexType/>
+            </s:element>
+            <s:element name="TestTimeOutResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="TestTimeOutResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GuidToBase64">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="guid" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GuidToBase64Response">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GuidToBase64Result" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="Base64ToGuid">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="base64" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="Base64ToGuidResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="Base64ToGuidResult" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RSVP_AnalysisSummary">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ServiceId" type="s1:guid"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="RSVP_AnalysisSummaryResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="RSVP_AnalysisSummaryResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateAttkSessionAndForensicResult">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="serviceId" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="endpointGuid" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sessionId" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="forensicResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateAttkSessionAndForensicResultResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="UpdateAttkSessionAndForensicResultResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ExtractSample">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="serviceId" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ExtractSampleResponse">
+                <s:complexType/>
+            </s:element>
+        </s:schema>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+            <s:simpleType name="guid">
+                <s:restriction base="s:string">
+                    <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"/>
+                </s:restriction>
+            </s:simpleType>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="SampleSubmissionSoapIn">
+        <wsdl:part name="parameters" element="tns:SampleSubmission"/>
+    </wsdl:message>
+    <wsdl:message name="SampleSubmissionSoapOut">
+        <wsdl:part name="parameters" element="tns:SampleSubmissionResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SampleSubmissionWithFileSoapIn">
+        <wsdl:part name="parameters" element="tns:SampleSubmissionWithFile"/>
+    </wsdl:message>
+    <wsdl:message name="SampleSubmissionWithFileSoapOut">
+        <wsdl:part name="parameters" element="tns:SampleSubmissionWithFileResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RerunSampleSubmissionSoapIn">
+        <wsdl:part name="parameters" element="tns:RerunSampleSubmission"/>
+    </wsdl:message>
+    <wsdl:message name="RerunSampleSubmissionSoapOut">
+        <wsdl:part name="parameters" element="tns:RerunSampleSubmissionResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RerunSampleSubmission_GetSampleSoapIn">
+        <wsdl:part name="parameters" element="tns:RerunSampleSubmission_GetSample"/>
+    </wsdl:message>
+    <wsdl:message name="RerunSampleSubmission_GetSampleSoapOut">
+        <wsdl:part name="parameters" element="tns:RerunSampleSubmission_GetSampleResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RescanSampleSubmissionOnlyByServiceIdSoapIn">
+        <wsdl:part name="parameters" element="tns:RescanSampleSubmissionOnlyByServiceId"/>
+    </wsdl:message>
+    <wsdl:message name="RescanSampleSubmissionOnlyByServiceIdSoapOut">
+        <wsdl:part name="parameters" element="tns:RescanSampleSubmissionOnlyByServiceIdResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RescanSampleSubmissionSoapIn">
+        <wsdl:part name="parameters" element="tns:RescanSampleSubmission"/>
+    </wsdl:message>
+    <wsdl:message name="RescanSampleSubmissionSoapOut">
+        <wsdl:part name="parameters" element="tns:RescanSampleSubmissionResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RescanSampleSubmissionWithoutChangeServiceStatusSoapIn">
+        <wsdl:part name="parameters" element="tns:RescanSampleSubmissionWithoutChangeServiceStatus"/>
+    </wsdl:message>
+    <wsdl:message name="RescanSampleSubmissionWithoutChangeServiceStatusSoapOut">
+        <wsdl:part name="parameters" element="tns:RescanSampleSubmissionWithoutChangeServiceStatusResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SampleSubmissionWithLargeFileSoapIn">
+        <wsdl:part name="parameters" element="tns:SampleSubmissionWithLargeFile"/>
+    </wsdl:message>
+    <wsdl:message name="SampleSubmissionWithLargeFileSoapOut">
+        <wsdl:part name="parameters" element="tns:SampleSubmissionWithLargeFileResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetCurrentSampleSizeSoapIn">
+        <wsdl:part name="parameters" element="tns:GetCurrentSampleSize"/>
+    </wsdl:message>
+    <wsdl:message name="GetCurrentSampleSizeSoapOut">
+        <wsdl:part name="parameters" element="tns:GetCurrentSampleSizeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetFileListByServiceIDSoapIn">
+        <wsdl:part name="parameters" element="tns:GetFileListByServiceID"/>
+    </wsdl:message>
+    <wsdl:message name="GetFileListByServiceIDSoapOut">
+        <wsdl:part name="parameters" element="tns:GetFileListByServiceIDResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetFileHashByServiceIDSoapIn">
+        <wsdl:part name="parameters" element="tns:GetFileHashByServiceID"/>
+    </wsdl:message>
+    <wsdl:message name="GetFileHashByServiceIDSoapOut">
+        <wsdl:part name="parameters" element="tns:GetFileHashByServiceIDResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetSampleFileByServiceIDSHA1SoapIn">
+        <wsdl:part name="parameters" element="tns:GetSampleFileByServiceIDSHA1"/>
+    </wsdl:message>
+    <wsdl:message name="GetSampleFileByServiceIDSHA1SoapOut">
+        <wsdl:part name="parameters" element="tns:GetSampleFileByServiceIDSHA1Response"/>
+    </wsdl:message>
+    <wsdl:message name="InsertTaskLogSoapIn">
+        <wsdl:part name="parameters" element="tns:InsertTaskLog"/>
+    </wsdl:message>
+    <wsdl:message name="InsertTaskLogSoapOut">
+        <wsdl:part name="parameters" element="tns:InsertTaskLogResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetTaskLogByServiceIDSoapIn">
+        <wsdl:part name="parameters" element="tns:GetTaskLogByServiceID"/>
+    </wsdl:message>
+    <wsdl:message name="GetTaskLogByServiceIDSoapOut">
+        <wsdl:part name="parameters" element="tns:GetTaskLogByServiceIDResponse"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileActivityLogSoapIn">
+        <wsdl:part name="parameters" element="tns:InsertFileActivityLog"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileActivityLogSoapOut">
+        <wsdl:part name="parameters" element="tns:InsertFileActivityLogResponse"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileActivityLogWithKeySoapIn">
+        <wsdl:part name="parameters" element="tns:InsertFileActivityLogWithKey"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileActivityLogWithKeySoapOut">
+        <wsdl:part name="parameters" element="tns:InsertFileActivityLogWithKeyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileActivityLogWithRequestTypeSoapIn">
+        <wsdl:part name="parameters" element="tns:InsertFileActivityLogWithRequestType"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileActivityLogWithRequestTypeSoapOut">
+        <wsdl:part name="parameters" element="tns:InsertFileActivityLogWithRequestTypeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileScanResultSoapIn">
+        <wsdl:part name="parameters" element="tns:InsertFileScanResult"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileScanResultSoapOut">
+        <wsdl:part name="parameters" element="tns:InsertFileScanResultResponse"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileScanResultWithRequestTypeSoapIn">
+        <wsdl:part name="parameters" element="tns:InsertFileScanResultWithRequestType"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileScanResultWithRequestTypeSoapOut">
+        <wsdl:part name="parameters" element="tns:InsertFileScanResultWithRequestTypeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileScanResultForCharonQueryOnlySoapIn">
+        <wsdl:part name="parameters" element="tns:InsertFileScanResultForCharonQueryOnly"/>
+    </wsdl:message>
+    <wsdl:message name="InsertFileScanResultForCharonQueryOnlySoapOut">
+        <wsdl:part name="parameters" element="tns:InsertFileScanResultForCharonQueryOnlyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetFileActivityLogSoapIn">
+        <wsdl:part name="parameters" element="tns:GetFileActivityLog"/>
+    </wsdl:message>
+    <wsdl:message name="GetFileActivityLogSoapOut">
+        <wsdl:part name="parameters" element="tns:GetFileActivityLogResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateAMSS_TaskIdSoapIn">
+        <wsdl:part name="parameters" element="tns:UpdateAMSS_TaskId"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateAMSS_TaskIdSoapOut">
+        <wsdl:part name="parameters" element="tns:UpdateAMSS_TaskIdResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SubmitFileToAtlasSoapIn">
+        <wsdl:part name="parameters" element="tns:SubmitFileToAtlas"/>
+    </wsdl:message>
+    <wsdl:message name="SubmitFileToAtlasSoapOut">
+        <wsdl:part name="parameters" element="tns:SubmitFileToAtlasResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SubmitFileToFRSSoapIn">
+        <wsdl:part name="parameters" element="tns:SubmitFileToFRS"/>
+    </wsdl:message>
+    <wsdl:message name="SubmitFileToFRSSoapOut">
+        <wsdl:part name="parameters" element="tns:SubmitFileToFRSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SubmitFileToCharonNPSoapIn">
+        <wsdl:part name="parameters" element="tns:SubmitFileToCharonNP"/>
+    </wsdl:message>
+    <wsdl:message name="SubmitFileToCharonNPSoapOut">
+        <wsdl:part name="parameters" element="tns:SubmitFileToCharonNPResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UploadFileToAMSoapIn">
+        <wsdl:part name="parameters" element="tns:UploadFileToAM"/>
+    </wsdl:message>
+    <wsdl:message name="UploadFileToAMSoapOut">
+        <wsdl:part name="parameters" element="tns:UploadFileToAMResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdatePSC_SRNumberSoapIn">
+        <wsdl:part name="parameters" element="tns:UpdatePSC_SRNumber"/>
+    </wsdl:message>
+    <wsdl:message name="UpdatePSC_SRNumberSoapOut">
+        <wsdl:part name="parameters" element="tns:UpdatePSC_SRNumberResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ATTK_CheckSessionByNeuronIDSoapIn">
+        <wsdl:part name="parameters" element="tns:ATTK_CheckSessionByNeuronID"/>
+    </wsdl:message>
+    <wsdl:message name="ATTK_CheckSessionByNeuronIDSoapOut">
+        <wsdl:part name="parameters" element="tns:ATTK_CheckSessionByNeuronIDResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_ThreatServiceCaseQuerySoapIn">
+        <wsdl:part name="parameters" element="tns:PSC_ThreatServiceCaseQuery"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_ThreatServiceCaseQuerySoapOut">
+        <wsdl:part name="parameters" element="tns:PSC_ThreatServiceCaseQueryResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_AnalysisResultQuerySoapIn">
+        <wsdl:part name="parameters" element="tns:PSC_AnalysisResultQuery"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_AnalysisResultQuerySoapOut">
+        <wsdl:part name="parameters" element="tns:PSC_AnalysisResultQueryResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_IsATTKorOSCEPackageSoapIn">
+        <wsdl:part name="parameters" element="tns:PSC_IsATTKorOSCEPackage"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_IsATTKorOSCEPackageSoapOut">
+        <wsdl:part name="parameters" element="tns:PSC_IsATTKorOSCEPackageResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_ProvidePwd4UnknownPwdInnerArchiveSoapIn">
+        <wsdl:part name="parameters" element="tns:PSC_ProvidePwd4UnknownPwdInnerArchive"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_ProvidePwd4UnknownPwdInnerArchiveSoapOut">
+        <wsdl:part name="parameters" element="tns:PSC_ProvidePwd4UnknownPwdInnerArchiveResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ForceToRestoreSoapIn">
+        <wsdl:part name="parameters" element="tns:ForceToRestore"/>
+    </wsdl:message>
+    <wsdl:message name="ForceToRestoreSoapOut">
+        <wsdl:part name="parameters" element="tns:ForceToRestoreResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RenewPSC_StatusSoapIn">
+        <wsdl:part name="parameters" element="tns:RenewPSC_Status"/>
+    </wsdl:message>
+    <wsdl:message name="RenewPSC_StatusSoapOut">
+        <wsdl:part name="parameters" element="tns:RenewPSC_StatusResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateATTKLogAnalysisTaskSoapIn">
+        <wsdl:part name="parameters" element="tns:UpdateATTKLogAnalysisTask"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateATTKLogAnalysisTaskSoapOut">
+        <wsdl:part name="parameters" element="tns:UpdateATTKLogAnalysisTaskResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RequestCreateAMSSTaskSoapIn">
+        <wsdl:part name="parameters" element="tns:RequestCreateAMSSTask"/>
+    </wsdl:message>
+    <wsdl:message name="RequestCreateAMSSTaskSoapOut">
+        <wsdl:part name="parameters" element="tns:RequestCreateAMSSTaskResponse"/>
+    </wsdl:message>
+    <wsdl:message name="InsertATTKCheckCompleteSoapIn">
+        <wsdl:part name="parameters" element="tns:InsertATTKCheckComplete"/>
+    </wsdl:message>
+    <wsdl:message name="InsertATTKCheckCompleteSoapOut">
+        <wsdl:part name="parameters" element="tns:InsertATTKCheckCompleteResponse"/>
+    </wsdl:message>
+    <wsdl:message name="NotifyAMSSTaskClosedSoapIn">
+        <wsdl:part name="parameters" element="tns:NotifyAMSSTaskClosed"/>
+    </wsdl:message>
+    <wsdl:message name="NotifyAMSSTaskClosedSoapOut">
+        <wsdl:part name="parameters" element="tns:NotifyAMSSTaskClosedResponse"/>
+    </wsdl:message>
+    <wsdl:message name="NotifyAmssTaskCreatedSoapIn">
+        <wsdl:part name="parameters" element="tns:NotifyAmssTaskCreated"/>
+    </wsdl:message>
+    <wsdl:message name="NotifyAmssTaskCreatedSoapOut">
+        <wsdl:part name="parameters" element="tns:NotifyAmssTaskCreatedResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_DoesSubmissionArrivedSoapIn">
+        <wsdl:part name="parameters" element="tns:PSC_DoesSubmissionArrived"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_DoesSubmissionArrivedSoapOut">
+        <wsdl:part name="parameters" element="tns:PSC_DoesSubmissionArrivedResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DoesSubmissionArrivedSoapIn">
+        <wsdl:part name="parameters" element="tns:DoesSubmissionArrived"/>
+    </wsdl:message>
+    <wsdl:message name="DoesSubmissionArrivedSoapOut">
+        <wsdl:part name="parameters" element="tns:DoesSubmissionArrivedResponse"/>
+    </wsdl:message>
+    <wsdl:message name="NotifySREscalatedSoapIn">
+        <wsdl:part name="parameters" element="tns:NotifySREscalated"/>
+    </wsdl:message>
+    <wsdl:message name="NotifySREscalatedSoapOut">
+        <wsdl:part name="parameters" element="tns:NotifySREscalatedResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_CheckCaseCompleteStatusSoapIn">
+        <wsdl:part name="parameters" element="tns:PSC_CheckCaseCompleteStatus"/>
+    </wsdl:message>
+    <wsdl:message name="PSC_CheckCaseCompleteStatusSoapOut">
+        <wsdl:part name="parameters" element="tns:PSC_CheckCaseCompleteStatusResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RequestCreateLogAnalysisSRSoapIn">
+        <wsdl:part name="parameters" element="tns:RequestCreateLogAnalysisSR"/>
+    </wsdl:message>
+    <wsdl:message name="RequestCreateLogAnalysisSRSoapOut">
+        <wsdl:part name="parameters" element="tns:RequestCreateLogAnalysisSRResponse"/>
+    </wsdl:message>
+    <wsdl:message name="CreateAMSSTaskSoapIn">
+        <wsdl:part name="parameters" element="tns:CreateAMSSTask"/>
+    </wsdl:message>
+    <wsdl:message name="CreateAMSSTaskSoapOut">
+        <wsdl:part name="parameters" element="tns:CreateAMSSTaskResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SendMailToAVQuerySoapIn">
+        <wsdl:part name="parameters" element="tns:SendMailToAVQuery"/>
+    </wsdl:message>
+    <wsdl:message name="SendMailToAVQuerySoapOut">
+        <wsdl:part name="parameters" element="tns:SendMailToAVQueryResponse"/>
+    </wsdl:message>
+    <wsdl:message name="CreateSRSoapIn">
+        <wsdl:part name="parameters" element="tns:CreateSR"/>
+    </wsdl:message>
+    <wsdl:message name="CreateSRSoapOut">
+        <wsdl:part name="parameters" element="tns:CreateSRResponse"/>
+    </wsdl:message>
+    <wsdl:message name="TIBCO_UpdateSHA1ResultSoapIn">
+        <wsdl:part name="parameters" element="tns:TIBCO_UpdateSHA1Result"/>
+    </wsdl:message>
+    <wsdl:message name="TIBCO_UpdateSHA1ResultSoapOut">
+        <wsdl:part name="parameters" element="tns:TIBCO_UpdateSHA1ResultResponse"/>
+    </wsdl:message>
+    <wsdl:message name="TIBCO_UpdateSRTypeSoapIn">
+        <wsdl:part name="parameters" element="tns:TIBCO_UpdateSRType"/>
+    </wsdl:message>
+    <wsdl:message name="TIBCO_UpdateSRTypeSoapOut">
+        <wsdl:part name="parameters" element="tns:TIBCO_UpdateSRTypeResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetFileScanResultSoapIn">
+        <wsdl:part name="parameters" element="tns:GetFileScanResult"/>
+    </wsdl:message>
+    <wsdl:message name="GetFileScanResultSoapOut">
+        <wsdl:part name="parameters" element="tns:GetFileScanResultResponse"/>
+    </wsdl:message>
+    <wsdl:message name="IsCreateAMSSTaskSoapIn">
+        <wsdl:part name="parameters" element="tns:IsCreateAMSSTask"/>
+    </wsdl:message>
+    <wsdl:message name="IsCreateAMSSTaskSoapOut">
+        <wsdl:part name="parameters" element="tns:IsCreateAMSSTaskResponse"/>
+    </wsdl:message>
+    <wsdl:message name="IsAliveSoapIn">
+        <wsdl:part name="parameters" element="tns:IsAlive"/>
+    </wsdl:message>
+    <wsdl:message name="IsAliveSoapOut">
+        <wsdl:part name="parameters" element="tns:IsAliveResponse"/>
+    </wsdl:message>
+    <wsdl:message name="TestTimeOutSoapIn">
+        <wsdl:part name="parameters" element="tns:TestTimeOut"/>
+    </wsdl:message>
+    <wsdl:message name="TestTimeOutSoapOut">
+        <wsdl:part name="parameters" element="tns:TestTimeOutResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GuidToBase64SoapIn">
+        <wsdl:part name="parameters" element="tns:GuidToBase64"/>
+    </wsdl:message>
+    <wsdl:message name="GuidToBase64SoapOut">
+        <wsdl:part name="parameters" element="tns:GuidToBase64Response"/>
+    </wsdl:message>
+    <wsdl:message name="Base64ToGuidSoapIn">
+        <wsdl:part name="parameters" element="tns:Base64ToGuid"/>
+    </wsdl:message>
+    <wsdl:message name="Base64ToGuidSoapOut">
+        <wsdl:part name="parameters" element="tns:Base64ToGuidResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RSVP_AnalysisSummarySoapIn">
+        <wsdl:part name="parameters" element="tns:RSVP_AnalysisSummary"/>
+    </wsdl:message>
+    <wsdl:message name="RSVP_AnalysisSummarySoapOut">
+        <wsdl:part name="parameters" element="tns:RSVP_AnalysisSummaryResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateAttkSessionAndForensicResultSoapIn">
+        <wsdl:part name="parameters" element="tns:UpdateAttkSessionAndForensicResult"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateAttkSessionAndForensicResultSoapOut">
+        <wsdl:part name="parameters" element="tns:UpdateAttkSessionAndForensicResultResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ExtractSampleSoapIn">
+        <wsdl:part name="parameters" element="tns:ExtractSample"/>
+    </wsdl:message>
+    <wsdl:message name="ExtractSampleSoapOut">
+        <wsdl:part name="parameters" element="tns:ExtractSampleResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="ACSServicesSoap">
+        <wsdl:operation name="SampleSubmission">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sample submit without filestream</wsdl:documentation>
+            <wsdl:input message="tns:SampleSubmissionSoapIn"/>
+            <wsdl:output message="tns:SampleSubmissionSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SampleSubmissionWithFile">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sample submit with filestream</wsdl:documentation>
+            <wsdl:input message="tns:SampleSubmissionWithFileSoapIn"/>
+            <wsdl:output message="tns:SampleSubmissionWithFileSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="RerunSampleSubmission">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Re-Run sample submit</wsdl:documentation>
+            <wsdl:input message="tns:RerunSampleSubmissionSoapIn"/>
+            <wsdl:output message="tns:RerunSampleSubmissionSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="RerunSampleSubmission_GetSample">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Re-Run sample submit</wsdl:documentation>
+            <wsdl:input message="tns:RerunSampleSubmission_GetSampleSoapIn"/>
+            <wsdl:output message="tns:RerunSampleSubmission_GetSampleSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="RescanSampleSubmissionOnlyByServiceId">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Re-Scan sample submit</wsdl:documentation>
+            <wsdl:input message="tns:RescanSampleSubmissionOnlyByServiceIdSoapIn"/>
+            <wsdl:output message="tns:RescanSampleSubmissionOnlyByServiceIdSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="RescanSampleSubmission">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Re-Scan sample submit</wsdl:documentation>
+            <wsdl:input message="tns:RescanSampleSubmissionSoapIn"/>
+            <wsdl:output message="tns:RescanSampleSubmissionSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="RescanSampleSubmissionWithoutChangeServiceStatus">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Re-Scan sample submit</wsdl:documentation>
+            <wsdl:input message="tns:RescanSampleSubmissionWithoutChangeServiceStatusSoapIn"/>
+            <wsdl:output message="tns:RescanSampleSubmissionWithoutChangeServiceStatusSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SampleSubmissionWithLargeFile">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sample submit with large filestream</wsdl:documentation>
+            <wsdl:input message="tns:SampleSubmissionWithLargeFileSoapIn"/>
+            <wsdl:output message="tns:SampleSubmissionWithLargeFileSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetCurrentSampleSize">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get upload sample file size by ServiceID</wsdl:documentation>
+            <wsdl:input message="tns:GetCurrentSampleSizeSoapIn"/>
+            <wsdl:output message="tns:GetCurrentSampleSizeSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileListByServiceID">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get File List by ServiceID</wsdl:documentation>
+            <wsdl:input message="tns:GetFileListByServiceIDSoapIn"/>
+            <wsdl:output message="tns:GetFileListByServiceIDSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileHashByServiceID">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get File Hash by ServiceID</wsdl:documentation>
+            <wsdl:input message="tns:GetFileHashByServiceIDSoapIn"/>
+            <wsdl:output message="tns:GetFileHashByServiceIDSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetSampleFileByServiceIDSHA1">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Extract File By ServiceID and FileSHA1</wsdl:documentation>
+            <wsdl:input message="tns:GetSampleFileByServiceIDSHA1SoapIn"/>
+            <wsdl:output message="tns:GetSampleFileByServiceIDSHA1SoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTaskLog">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert Task Step Log</wsdl:documentation>
+            <wsdl:input message="tns:InsertTaskLogSoapIn"/>
+            <wsdl:output message="tns:InsertTaskLogSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetTaskLogByServiceID">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Task Log By ServiceID</wsdl:documentation>
+            <wsdl:input message="tns:GetTaskLogByServiceIDSoapIn"/>
+            <wsdl:output message="tns:GetTaskLogByServiceIDSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileActivityLog">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert File Activity Log</wsdl:documentation>
+            <wsdl:input message="tns:InsertFileActivityLogSoapIn"/>
+            <wsdl:output message="tns:InsertFileActivityLogSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileActivityLogWithKey">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert File Activity Log with MessageKey</wsdl:documentation>
+            <wsdl:input message="tns:InsertFileActivityLogWithKeySoapIn"/>
+            <wsdl:output message="tns:InsertFileActivityLogWithKeySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileActivityLogWithRequestType">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert File Activity Log with RequestType</wsdl:documentation>
+            <wsdl:input message="tns:InsertFileActivityLogWithRequestTypeSoapIn"/>
+            <wsdl:output message="tns:InsertFileActivityLogWithRequestTypeSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileScanResult">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert File Scan Result</wsdl:documentation>
+            <wsdl:input message="tns:InsertFileScanResultSoapIn"/>
+            <wsdl:output message="tns:InsertFileScanResultSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileScanResultWithRequestType">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert File Scan Result with RequestType</wsdl:documentation>
+            <wsdl:input message="tns:InsertFileScanResultWithRequestTypeSoapIn"/>
+            <wsdl:output message="tns:InsertFileScanResultWithRequestTypeSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileScanResultForCharonQueryOnly">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Insert File Scan Result</wsdl:documentation>
+            <wsdl:input message="tns:InsertFileScanResultForCharonQueryOnlySoapIn"/>
+            <wsdl:output message="tns:InsertFileScanResultForCharonQueryOnlySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileActivityLog">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get File Activity Log</wsdl:documentation>
+            <wsdl:input message="tns:GetFileActivityLogSoapIn"/>
+            <wsdl:output message="tns:GetFileActivityLogSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAMSS_TaskId">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update AMSS Task ID</wsdl:documentation>
+            <wsdl:input message="tns:UpdateAMSS_TaskIdSoapIn"/>
+            <wsdl:output message="tns:UpdateAMSS_TaskIdSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SubmitFileToAtlas">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit File to Atlas</wsdl:documentation>
+            <wsdl:input message="tns:SubmitFileToAtlasSoapIn"/>
+            <wsdl:output message="tns:SubmitFileToAtlasSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SubmitFileToFRS">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit File to FRS</wsdl:documentation>
+            <wsdl:input message="tns:SubmitFileToFRSSoapIn"/>
+            <wsdl:output message="tns:SubmitFileToFRSSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SubmitFileToCharonNP">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Submit File to Charon NP</wsdl:documentation>
+            <wsdl:input message="tns:SubmitFileToCharonNPSoapIn"/>
+            <wsdl:output message="tns:SubmitFileToCharonNPSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UploadFileToAM">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Upload File to AM Storage</wsdl:documentation>
+            <wsdl:input message="tns:UploadFileToAMSoapIn"/>
+            <wsdl:output message="tns:UploadFileToAMSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePSC_SRNumber">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update PSC SR Number</wsdl:documentation>
+            <wsdl:input message="tns:UpdatePSC_SRNumberSoapIn"/>
+            <wsdl:output message="tns:UpdatePSC_SRNumberSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="ATTK_CheckSessionByNeuronID">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check ATTK Session</wsdl:documentation>
+            <wsdl:input message="tns:ATTK_CheckSessionByNeuronIDSoapIn"/>
+            <wsdl:output message="tns:ATTK_CheckSessionByNeuronIDSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_ThreatServiceCaseQuery">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">PSC Threat Service Case Query</wsdl:documentation>
+            <wsdl:input message="tns:PSC_ThreatServiceCaseQuerySoapIn"/>
+            <wsdl:output message="tns:PSC_ThreatServiceCaseQuerySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_AnalysisResultQuery">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">PSC Analysis Result Query</wsdl:documentation>
+            <wsdl:input message="tns:PSC_AnalysisResultQuerySoapIn"/>
+            <wsdl:output message="tns:PSC_AnalysisResultQuerySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_IsATTKorOSCEPackage">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">PSC Is ATTK or OSCE Package</wsdl:documentation>
+            <wsdl:input message="tns:PSC_IsATTKorOSCEPackageSoapIn"/>
+            <wsdl:output message="tns:PSC_IsATTKorOSCEPackageSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_ProvidePwd4UnknownPwdInnerArchive">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">[PSC] For customer to provide password for the unknown password inner archive</wsdl:documentation>
+            <wsdl:input message="tns:PSC_ProvidePwd4UnknownPwdInnerArchiveSoapIn"/>
+            <wsdl:output message="tns:PSC_ProvidePwd4UnknownPwdInnerArchiveSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="ForceToRestore">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Force Neuron to do quarantined file restore by giveing specific decrypt source</wsdl:documentation>
+            <wsdl:input message="tns:ForceToRestoreSoapIn"/>
+            <wsdl:output message="tns:ForceToRestoreSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="RenewPSC_Status">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Renew PSC Status</wsdl:documentation>
+            <wsdl:input message="tns:RenewPSC_StatusSoapIn"/>
+            <wsdl:output message="tns:RenewPSC_StatusSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateATTKLogAnalysisTask">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update ATTK Log Analysis Task</wsdl:documentation>
+            <wsdl:input message="tns:UpdateATTKLogAnalysisTaskSoapIn"/>
+            <wsdl:output message="tns:UpdateATTKLogAnalysisTaskSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="RequestCreateAMSSTask">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Request TIBCO to Create AMSS Task</wsdl:documentation>
+            <wsdl:input message="tns:RequestCreateAMSSTaskSoapIn"/>
+            <wsdl:output message="tns:RequestCreateAMSSTaskSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertATTKCheckComplete">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">To notify that the ATTK has been loaded into CTIS ATTK Log Viewer</wsdl:documentation>
+            <wsdl:input message="tns:InsertATTKCheckCompleteSoapIn"/>
+            <wsdl:output message="tns:InsertATTKCheckCompleteSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="NotifyAMSSTaskClosed">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">To notify that the AMSS task has been closed</wsdl:documentation>
+            <wsdl:input message="tns:NotifyAMSSTaskClosedSoapIn"/>
+            <wsdl:output message="tns:NotifyAMSSTaskClosedSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="NotifyAmssTaskCreated">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">TIBCO Notify Neuron AMSS Task Has been Created</wsdl:documentation>
+            <wsdl:input message="tns:NotifyAmssTaskCreatedSoapIn"/>
+            <wsdl:output message="tns:NotifyAmssTaskCreatedSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_DoesSubmissionArrived">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check if submission arrived or not</wsdl:documentation>
+            <wsdl:input message="tns:PSC_DoesSubmissionArrivedSoapIn"/>
+            <wsdl:output message="tns:PSC_DoesSubmissionArrivedSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="DoesSubmissionArrived">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check if submission arrived or not</wsdl:documentation>
+            <wsdl:input message="tns:DoesSubmissionArrivedSoapIn"/>
+            <wsdl:output message="tns:DoesSubmissionArrivedSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="NotifySREscalated">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">TIBCO notice Neuron when SR creation had completed</wsdl:documentation>
+            <wsdl:input message="tns:NotifySREscalatedSoapIn"/>
+            <wsdl:output message="tns:NotifySREscalatedSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_CheckCaseCompleteStatus">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">TIBCO notice Neuron when SR creation had completed</wsdl:documentation>
+            <wsdl:input message="tns:PSC_CheckCaseCompleteStatusSoapIn"/>
+            <wsdl:output message="tns:PSC_CheckCaseCompleteStatusSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="RequestCreateLogAnalysisSR">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">TIBCO notice Neuron to create Log Analysis SR, and create related AMSS "SIC Log Analysis" task</wsdl:documentation>
+            <wsdl:input message="tns:RequestCreateLogAnalysisSRSoapIn"/>
+            <wsdl:output message="tns:RequestCreateLogAnalysisSRSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateAMSSTask">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">TIBCO trgger Neuron to create AMSS task</wsdl:documentation>
+            <wsdl:input message="tns:CreateAMSSTaskSoapIn"/>
+            <wsdl:output message="tns:CreateAMSSTaskSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SendMailToAVQuery">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Send Mail To AV Query</wsdl:documentation>
+            <wsdl:input message="tns:SendMailToAVQuerySoapIn"/>
+            <wsdl:output message="tns:SendMailToAVQuerySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateSR">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">TIBCO trgger Neuron to create SR</wsdl:documentation>
+            <wsdl:input message="tns:CreateSRSoapIn"/>
+            <wsdl:output message="tns:CreateSRSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="TIBCO_UpdateSHA1Result">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">TIBCO trgger Neuron to update SHA1 detemination</wsdl:documentation>
+            <wsdl:input message="tns:TIBCO_UpdateSHA1ResultSoapIn"/>
+            <wsdl:output message="tns:TIBCO_UpdateSHA1ResultSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="TIBCO_UpdateSRType">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">TIBCO trgger Neuron to update SR type</wsdl:documentation>
+            <wsdl:input message="tns:TIBCO_UpdateSRTypeSoapIn"/>
+            <wsdl:output message="tns:TIBCO_UpdateSRTypeSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileScanResult">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get file latest scan result</wsdl:documentation>
+            <wsdl:input message="tns:GetFileScanResultSoapIn"/>
+            <wsdl:output message="tns:GetFileScanResultSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="IsCreateAMSSTask">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Determine if to create AMSS task</wsdl:documentation>
+            <wsdl:input message="tns:IsCreateAMSSTaskSoapIn"/>
+            <wsdl:output message="tns:IsCreateAMSSTaskSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="IsAlive">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Heartbeat Check</wsdl:documentation>
+            <wsdl:input message="tns:IsAliveSoapIn"/>
+            <wsdl:output message="tns:IsAliveSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="TestTimeOut">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">for test</wsdl:documentation>
+            <wsdl:input message="tns:TestTimeOutSoapIn"/>
+            <wsdl:output message="tns:TestTimeOutSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GuidToBase64">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Guid to Base64</wsdl:documentation>
+            <wsdl:input message="tns:GuidToBase64SoapIn"/>
+            <wsdl:output message="tns:GuidToBase64SoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="Base64ToGuid">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Base64 to Guid</wsdl:documentation>
+            <wsdl:input message="tns:Base64ToGuidSoapIn"/>
+            <wsdl:output message="tns:Base64ToGuidSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="RSVP_AnalysisSummary">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get RSVP Analysis Summary</wsdl:documentation>
+            <wsdl:input message="tns:RSVP_AnalysisSummarySoapIn"/>
+            <wsdl:output message="tns:RSVP_AnalysisSummarySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAttkSessionAndForensicResult">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update Attk SessionID And Forensic Result</wsdl:documentation>
+            <wsdl:input message="tns:UpdateAttkSessionAndForensicResultSoapIn"/>
+            <wsdl:output message="tns:UpdateAttkSessionAndForensicResultSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="ExtractSample">
+            <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Extract Sample</wsdl:documentation>
+            <wsdl:input message="tns:ExtractSampleSoapIn"/>
+            <wsdl:output message="tns:ExtractSampleSoapOut"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ACSServicesSoap" type="tns:ACSServicesSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="SampleSubmission">
+            <soap:operation soapAction="http://tempuri.org/SampleSubmission" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SampleSubmissionWithFile">
+            <soap:operation soapAction="http://tempuri.org/SampleSubmissionWithFile" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RerunSampleSubmission">
+            <soap:operation soapAction="http://tempuri.org/RerunSampleSubmission" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RerunSampleSubmission_GetSample">
+            <soap:operation soapAction="http://tempuri.org/RerunSampleSubmission_GetSample" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RescanSampleSubmissionOnlyByServiceId">
+            <soap:operation soapAction="http://tempuri.org/RescanSampleSubmissionOnlyByServiceId" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RescanSampleSubmission">
+            <soap:operation soapAction="http://tempuri.org/RescanSampleSubmission" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RescanSampleSubmissionWithoutChangeServiceStatus">
+            <soap:operation soapAction="http://tempuri.org/RescanSampleSubmissionWithoutChangeServiceStatus" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SampleSubmissionWithLargeFile">
+            <soap:operation soapAction="http://tempuri.org/SampleSubmissionWithLargeFile" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCurrentSampleSize">
+            <soap:operation soapAction="http://tempuri.org/GetCurrentSampleSize" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileListByServiceID">
+            <soap:operation soapAction="http://tempuri.org/GetFileListByServiceID" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileHashByServiceID">
+            <soap:operation soapAction="http://tempuri.org/GetFileHashByServiceID" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSampleFileByServiceIDSHA1">
+            <soap:operation soapAction="http://tempuri.org/GetSampleFileByServiceIDSHA1" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTaskLog">
+            <soap:operation soapAction="http://tempuri.org/InsertTaskLog" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTaskLogByServiceID">
+            <soap:operation soapAction="http://tempuri.org/GetTaskLogByServiceID" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileActivityLog">
+            <soap:operation soapAction="http://tempuri.org/InsertFileActivityLog" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileActivityLogWithKey">
+            <soap:operation soapAction="http://tempuri.org/InsertFileActivityLogWithKey" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileActivityLogWithRequestType">
+            <soap:operation soapAction="http://tempuri.org/InsertFileActivityLogWithRequestType" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileScanResult">
+            <soap:operation soapAction="http://tempuri.org/InsertFileScanResult" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileScanResultWithRequestType">
+            <soap:operation soapAction="http://tempuri.org/InsertFileScanResultWithRequestType" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileScanResultForCharonQueryOnly">
+            <soap:operation soapAction="http://tempuri.org/InsertFileScanResultForCharonQueryOnly" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileActivityLog">
+            <soap:operation soapAction="http://tempuri.org/GetFileActivityLog" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAMSS_TaskId">
+            <soap:operation soapAction="http://tempuri.org/UpdateAMSS_TaskId" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SubmitFileToAtlas">
+            <soap:operation soapAction="http://tempuri.org/SubmitFileToAtlas" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SubmitFileToFRS">
+            <soap:operation soapAction="http://tempuri.org/SubmitFileToFRS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SubmitFileToCharonNP">
+            <soap:operation soapAction="http://tempuri.org/SubmitFileToCharonNP" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UploadFileToAM">
+            <soap:operation soapAction="http://tempuri.org/UploadFileToAM" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePSC_SRNumber">
+            <soap:operation soapAction="http://tempuri.org/UpdatePSC_SRNumber" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ATTK_CheckSessionByNeuronID">
+            <soap:operation soapAction="http://tempuri.org/ATTK_CheckSessionByNeuronID" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_ThreatServiceCaseQuery">
+            <soap:operation soapAction="http://tempuri.org/PSC_ThreatServiceCaseQuery" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_AnalysisResultQuery">
+            <soap:operation soapAction="http://tempuri.org/PSC_AnalysisResultQuery" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_IsATTKorOSCEPackage">
+            <soap:operation soapAction="http://tempuri.org/PSC_IsATTKorOSCEPackage" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_ProvidePwd4UnknownPwdInnerArchive">
+            <soap:operation soapAction="http://tempuri.org/PSC_ProvidePwd4UnknownPwdInnerArchive" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ForceToRestore">
+            <soap:operation soapAction="http://tempuri.org/ForceToRestore" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RenewPSC_Status">
+            <soap:operation soapAction="http://tempuri.org/RenewPSC_Status" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateATTKLogAnalysisTask">
+            <soap:operation soapAction="http://tempuri.org/UpdateATTKLogAnalysisTask" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RequestCreateAMSSTask">
+            <soap:operation soapAction="http://tempuri.org/RequestCreateAMSSTask" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertATTKCheckComplete">
+            <soap:operation soapAction="http://tempuri.org/InsertATTKCheckComplete" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="NotifyAMSSTaskClosed">
+            <soap:operation soapAction="http://tempuri.org/NotifyAMSSTaskClosed" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="NotifyAmssTaskCreated">
+            <soap:operation soapAction="http://tempuri.org/NotifyAmssTaskCreated" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_DoesSubmissionArrived">
+            <soap:operation soapAction="http://tempuri.org/PSC_DoesSubmissionArrived" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DoesSubmissionArrived">
+            <soap:operation soapAction="http://tempuri.org/DoesSubmissionArrived" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="NotifySREscalated">
+            <soap:operation soapAction="http://tempuri.org/NotifySREscalated" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_CheckCaseCompleteStatus">
+            <soap:operation soapAction="http://tempuri.org/PSC_CheckCaseCompleteStatus" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RequestCreateLogAnalysisSR">
+            <soap:operation soapAction="http://tempuri.org/RequestCreateLogAnalysisSR" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateAMSSTask">
+            <soap:operation soapAction="http://tempuri.org/CreateAMSSTask" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SendMailToAVQuery">
+            <soap:operation soapAction="http://tempuri.org/SendMailToAVQuery" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateSR">
+            <soap:operation soapAction="http://tempuri.org/CreateSR" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TIBCO_UpdateSHA1Result">
+            <soap:operation soapAction="http://tempuri.org/TIBCO_UpdateSHA1Result" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TIBCO_UpdateSRType">
+            <soap:operation soapAction="http://tempuri.org/TIBCO_UpdateSRType" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileScanResult">
+            <soap:operation soapAction="http://tempuri.org/GetFileScanResult" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="IsCreateAMSSTask">
+            <soap:operation soapAction="http://tempuri.org/IsCreateAMSSTask" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="IsAlive">
+            <soap:operation soapAction="http://tempuri.org/IsAlive" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TestTimeOut">
+            <soap:operation soapAction="http://tempuri.org/TestTimeOut" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GuidToBase64">
+            <soap:operation soapAction="http://tempuri.org/GuidToBase64" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Base64ToGuid">
+            <soap:operation soapAction="http://tempuri.org/Base64ToGuid" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RSVP_AnalysisSummary">
+            <soap:operation soapAction="http://tempuri.org/RSVP_AnalysisSummary" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAttkSessionAndForensicResult">
+            <soap:operation soapAction="http://tempuri.org/UpdateAttkSessionAndForensicResult" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ExtractSample">
+            <soap:operation soapAction="http://tempuri.org/ExtractSample" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="ACSServicesSoap12" type="tns:ACSServicesSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="SampleSubmission">
+            <soap12:operation soapAction="http://tempuri.org/SampleSubmission" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SampleSubmissionWithFile">
+            <soap12:operation soapAction="http://tempuri.org/SampleSubmissionWithFile" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RerunSampleSubmission">
+            <soap12:operation soapAction="http://tempuri.org/RerunSampleSubmission" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RerunSampleSubmission_GetSample">
+            <soap12:operation soapAction="http://tempuri.org/RerunSampleSubmission_GetSample" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RescanSampleSubmissionOnlyByServiceId">
+            <soap12:operation soapAction="http://tempuri.org/RescanSampleSubmissionOnlyByServiceId" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RescanSampleSubmission">
+            <soap12:operation soapAction="http://tempuri.org/RescanSampleSubmission" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RescanSampleSubmissionWithoutChangeServiceStatus">
+            <soap12:operation soapAction="http://tempuri.org/RescanSampleSubmissionWithoutChangeServiceStatus" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SampleSubmissionWithLargeFile">
+            <soap12:operation soapAction="http://tempuri.org/SampleSubmissionWithLargeFile" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCurrentSampleSize">
+            <soap12:operation soapAction="http://tempuri.org/GetCurrentSampleSize" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileListByServiceID">
+            <soap12:operation soapAction="http://tempuri.org/GetFileListByServiceID" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileHashByServiceID">
+            <soap12:operation soapAction="http://tempuri.org/GetFileHashByServiceID" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSampleFileByServiceIDSHA1">
+            <soap12:operation soapAction="http://tempuri.org/GetSampleFileByServiceIDSHA1" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTaskLog">
+            <soap12:operation soapAction="http://tempuri.org/InsertTaskLog" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTaskLogByServiceID">
+            <soap12:operation soapAction="http://tempuri.org/GetTaskLogByServiceID" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileActivityLog">
+            <soap12:operation soapAction="http://tempuri.org/InsertFileActivityLog" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileActivityLogWithKey">
+            <soap12:operation soapAction="http://tempuri.org/InsertFileActivityLogWithKey" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileActivityLogWithRequestType">
+            <soap12:operation soapAction="http://tempuri.org/InsertFileActivityLogWithRequestType" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileScanResult">
+            <soap12:operation soapAction="http://tempuri.org/InsertFileScanResult" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileScanResultWithRequestType">
+            <soap12:operation soapAction="http://tempuri.org/InsertFileScanResultWithRequestType" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertFileScanResultForCharonQueryOnly">
+            <soap12:operation soapAction="http://tempuri.org/InsertFileScanResultForCharonQueryOnly" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileActivityLog">
+            <soap12:operation soapAction="http://tempuri.org/GetFileActivityLog" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAMSS_TaskId">
+            <soap12:operation soapAction="http://tempuri.org/UpdateAMSS_TaskId" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SubmitFileToAtlas">
+            <soap12:operation soapAction="http://tempuri.org/SubmitFileToAtlas" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SubmitFileToFRS">
+            <soap12:operation soapAction="http://tempuri.org/SubmitFileToFRS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SubmitFileToCharonNP">
+            <soap12:operation soapAction="http://tempuri.org/SubmitFileToCharonNP" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UploadFileToAM">
+            <soap12:operation soapAction="http://tempuri.org/UploadFileToAM" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePSC_SRNumber">
+            <soap12:operation soapAction="http://tempuri.org/UpdatePSC_SRNumber" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ATTK_CheckSessionByNeuronID">
+            <soap12:operation soapAction="http://tempuri.org/ATTK_CheckSessionByNeuronID" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_ThreatServiceCaseQuery">
+            <soap12:operation soapAction="http://tempuri.org/PSC_ThreatServiceCaseQuery" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_AnalysisResultQuery">
+            <soap12:operation soapAction="http://tempuri.org/PSC_AnalysisResultQuery" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_IsATTKorOSCEPackage">
+            <soap12:operation soapAction="http://tempuri.org/PSC_IsATTKorOSCEPackage" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_ProvidePwd4UnknownPwdInnerArchive">
+            <soap12:operation soapAction="http://tempuri.org/PSC_ProvidePwd4UnknownPwdInnerArchive" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ForceToRestore">
+            <soap12:operation soapAction="http://tempuri.org/ForceToRestore" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RenewPSC_Status">
+            <soap12:operation soapAction="http://tempuri.org/RenewPSC_Status" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateATTKLogAnalysisTask">
+            <soap12:operation soapAction="http://tempuri.org/UpdateATTKLogAnalysisTask" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RequestCreateAMSSTask">
+            <soap12:operation soapAction="http://tempuri.org/RequestCreateAMSSTask" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertATTKCheckComplete">
+            <soap12:operation soapAction="http://tempuri.org/InsertATTKCheckComplete" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="NotifyAMSSTaskClosed">
+            <soap12:operation soapAction="http://tempuri.org/NotifyAMSSTaskClosed" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="NotifyAmssTaskCreated">
+            <soap12:operation soapAction="http://tempuri.org/NotifyAmssTaskCreated" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_DoesSubmissionArrived">
+            <soap12:operation soapAction="http://tempuri.org/PSC_DoesSubmissionArrived" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DoesSubmissionArrived">
+            <soap12:operation soapAction="http://tempuri.org/DoesSubmissionArrived" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="NotifySREscalated">
+            <soap12:operation soapAction="http://tempuri.org/NotifySREscalated" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PSC_CheckCaseCompleteStatus">
+            <soap12:operation soapAction="http://tempuri.org/PSC_CheckCaseCompleteStatus" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RequestCreateLogAnalysisSR">
+            <soap12:operation soapAction="http://tempuri.org/RequestCreateLogAnalysisSR" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateAMSSTask">
+            <soap12:operation soapAction="http://tempuri.org/CreateAMSSTask" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SendMailToAVQuery">
+            <soap12:operation soapAction="http://tempuri.org/SendMailToAVQuery" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateSR">
+            <soap12:operation soapAction="http://tempuri.org/CreateSR" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TIBCO_UpdateSHA1Result">
+            <soap12:operation soapAction="http://tempuri.org/TIBCO_UpdateSHA1Result" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TIBCO_UpdateSRType">
+            <soap12:operation soapAction="http://tempuri.org/TIBCO_UpdateSRType" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetFileScanResult">
+            <soap12:operation soapAction="http://tempuri.org/GetFileScanResult" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="IsCreateAMSSTask">
+            <soap12:operation soapAction="http://tempuri.org/IsCreateAMSSTask" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="IsAlive">
+            <soap12:operation soapAction="http://tempuri.org/IsAlive" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="TestTimeOut">
+            <soap12:operation soapAction="http://tempuri.org/TestTimeOut" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GuidToBase64">
+            <soap12:operation soapAction="http://tempuri.org/GuidToBase64" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Base64ToGuid">
+            <soap12:operation soapAction="http://tempuri.org/Base64ToGuid" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RSVP_AnalysisSummary">
+            <soap12:operation soapAction="http://tempuri.org/RSVP_AnalysisSummary" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAttkSessionAndForensicResult">
+            <soap12:operation soapAction="http://tempuri.org/UpdateAttkSessionAndForensicResult" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ExtractSample">
+            <soap12:operation soapAction="http://tempuri.org/ExtractSample" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ACSServices">
+        <wsdl:port name="ACSServicesSoap" binding="tns:ACSServicesSoap">
+            <soap:address location="http://sjdc-rsvpbot01s.us.trendnet.org:88/ACSServices.asmx"/>
+        </wsdl:port>
+        <wsdl:port name="ACSServicesSoap12" binding="tns:ACSServicesSoap12">
+            <soap12:address location="http://sjdc-rsvpbot01s.us.trendnet.org:88/ACSServices.asmx"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

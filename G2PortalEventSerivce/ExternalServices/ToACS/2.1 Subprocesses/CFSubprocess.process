@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/GetDetectionTypeResponseResponse" xmlns:TM3="java://TMBWUtilitiesRobinson" xmlns:ns12="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns13="http://tempuri.org/" xmlns:pfx="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/SubprocessesRQ.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/ToACS/2.1 Subprocesses/CFSubprocess.process</pd:name>
+    <pd:description>5.0 CF Subprocess (Clean Failed)</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx2:SubprocessesRQ"/>
+    <pd:startX>74</pd:startX>
+    <pd:startY>307</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>801</pd:endX>
+    <pd:endY>309</pd:endY>
+    <pd:errorSchemas>
+        <Schema0 ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1363334809806</pd:targetNamespace>
+    <pd:activity name="CreateAMSSTasks">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>368</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/CreateAMSSTasks.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ServiceID>
+                    <xsl:value-of select="$Start/pfx2:SubprocessesRQ/pfx2:NeuronID"/>
+                </ServiceID>
+                <xsl:if test="$Start/pfx2:SubprocessesRQ/pfx2:FileSHA1">
+                    <FileSHA1>
+                        <xsl:value-of select="$Start/pfx2:SubprocessesRQ/pfx2:FileSHA1"/>
+                    </FileSHA1>
+                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="$Start/pfx2:SubprocessesRQ/pfx2:CharonResult = 'Malicious'">
+                        <TaskType>
+                            <xsl:value-of select="if(TM3:isMatchRegEx($GetDetectionType/ns:Resultsets/ns:ResultSet1/ns:Record1[1]/ns:DetectionType, $_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/CFSubprocess/GenericDetectionRule) = 'true' or&#xA;TM3:isMatchRegEx($GetDetectionType/ns:Resultsets/ns:ResultSet1/ns:Record1[1]/ns:DetectionType, $_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/CFSubprocess/HeuristicDetectionRule) = 'true'&#xA;) then&#xA;&#x9;$_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/GTS&#xA; else if (starts-with($GetDetectionType/ns:Resultsets/ns:ResultSet1/ns:Record1[1]/ns:DetectionType, &quot;PE_&quot;)) then&#xA;&#x9;$_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/VSAPI&#xA;else&#xA;&#x9;$_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/DCT"/>
+                        </TaskType>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <TaskType>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/FTV"/>
+                        </TaskType>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InsertAMSSToBeCreated">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>366</pd:x>
+        <pd:y>431</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/InsertAMSSToBeCreated.process</processName>
+        </config>
+        <pd:inputBindings>
+            <InsertAMSSToBeCreated_Input>
+                <ServiceId>
+                    <xsl:value-of select="$Start/pfx2:SubprocessesRQ/pfx2:NeuronID"/>
+                </ServiceId>
+                <FileSha1>
+                    <xsl:value-of select="$Start/pfx2:SubprocessesRQ/pfx2:FileSHA1"/>
+                </FileSha1>
+                <xsl:choose>
+                    <xsl:when test="$Start/pfx2:SubprocessesRQ/pfx2:CharonResult = 'Malicious'">
+                        <TaskType>
+                            <xsl:value-of select="if($GetDetectionType/ns:Resultsets/ns:ResultSet1/ns:Record1[1]/ns:DetectionType = 'Generic Detection') then&#xA;&#x9;$_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/GTS&#xA;else if($GetDetectionType/ns:Resultsets/ns:ResultSet1/ns:Record1[1]/ns:DetectionType = 'PE') then&#xA;&#x9;$_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/VSAPI&#xA;else&#xA;&#x9;$_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/DCT"/>
+                        </TaskType>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <TaskType>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/FTV"/>
+                        </TaskType>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </InsertAMSSToBeCreated_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SR Created">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>206</pd:x>
+        <pd:y>432</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GetDetectionType">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>206</pd:x>
+        <pd:y>309</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetDetectionType.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GetDetectionType_Input>
+                <FileSha1>
+                    <xsl:value-of select="$Start/pfx2:SubprocessesRQ/pfx2:FileSHA1"/>
+                </FileSha1>
+                <ServiceId>
+                    <xsl:value-of select="$Start/pfx2:SubprocessesRQ/pfx2:NeuronID"/>
+                </ServiceId>
+            </GetDetectionType_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CheckComplete">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>73</pd:x>
+        <pd:y>97</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>931</pd:x>
+        <pd:y>557</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>926</pd:x>
+        <pd:y>443</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="if(exists($_error_GetDetectionType/pfx4:Error)) then&#xA;&#x9;$_error_GetDetectionType/pfx4:Error/pfx4:stack_trace&#xA;else if(exists($_error_CreateAMSSTasks/pfx4:Error)) then&#xA;&#x9;$_error_CreateAMSSTasks/pfx4:Error/pfx4:stack_trace&#xA;else if(exists($_error_InsertAMSSToBeCreated/pfx4:Error)) then&#xA;&#x9;$_error_InsertAMSSToBeCreated/pfx4:Error/pfx4:stack_trace&#xA;else&#xA;&#x9;'Create AMSS Task return false'"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="'CFSubprocess'"/>
+                </msgCode>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>928</pd:x>
+        <pd:y>312</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ns12:SMF>
+                    <ns12:SMFHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="''"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="'ATTK_TaskCreation'"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Version"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="''"/>
+                        </ns12:SourceID>
+                    </ns12:SMFHeader>
+                    <ns12:SMFBody>
+                        <ns12:Error>
+                            <ns12:src>
+                                <xsl:value-of select="'CFSubprocess'"/>
+                            </ns12:src>
+                            <ns12:error_code>
+                                <xsl:value-of select="''"/>
+                            </ns12:error_code>
+                            <ns12:error_message>
+                                <xsl:value-of select="''"/>
+                            </ns12:error_message>
+                        </ns12:Error>
+                    </ns12:SMFBody>
+                </ns12:SMF>
+                <ns13:InsertFileActivityLog>
+                    <ns13:serviceID>
+                        <xsl:value-of select="$Start/pfx2:SubprocessesRQ/pfx2:NeuronID"/>
+                    </ns13:serviceID>
+                    <xsl:if test="$Start/pfx2:SubprocessesRQ/pfx2:FileSHA1">
+                        <ns13:fileSHA1>
+                            <xsl:value-of select="$Start/pfx2:SubprocessesRQ/pfx2:FileSHA1"/>
+                        </ns13:fileSHA1>
+                    </xsl:if>
+                    <ns13:stepTypeID>
+                        <xsl:value-of select="9251"/>
+                    </ns13:stepTypeID>
+                </ns13:InsertFileActivityLog>
+                <isESBLog>
+                    <xsl:value-of select="&quot;true&quot;"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>488</pd:x>
+        <pd:y>218</pd:y>
+        <config>
+            <faultName>Schema0</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <data>
+                    <pfx4:Error>
+                        <pfx4:src>
+                            <xsl:value-of select="''"/>
+                        </pfx4:src>
+                        <pfx4:error_code>
+                            <xsl:value-of select="''"/>
+                        </pfx4:error_code>
+                        <pfx4:error_message>
+                            <xsl:value-of select="''"/>
+                        </pfx4:error_message>
+                        <pfx4:stack_trace>
+                            <xsl:value-of select="''"/>
+                        </pfx4:stack_trace>
+                    </pfx4:Error>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log-1">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>275</pd:x>
+        <pd:y>217</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat($Start/pfx2:SubprocessesRQ/pfx2:NeuronID, ':', $GetDetectionType/ns:Resultsets/ns:ResultSet1/ns:Record1[1]/ns:DetectionType)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="&quot;DetectionR&quot;"/>
+                </msgCode>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateSLAStatus">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>577</pd:x>
+        <pd:y>305</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpdateSLAStatus.process</processName>
+        </config>
+        <pd:inputBindings>
+            <UpdateSLAStatus_Input>
+                <ServiceId>
+                    <xsl:value-of select="$Start/pfx2:SubprocessesRQ/pfx2:NeuronID"/>
+                </ServiceId>
+                <SLAStatus>
+                    <xsl:value-of select="'SLAComplete'"/>
+                </SLAStatus>
+            </UpdateSLAStatus_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetDetectionType</pd:to>
+        <pd:xpathDescription>Malicious</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/pfx2:SubprocessesRQ/pfx2:CharonResult = 'Malicious'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SR Created</pd:to>
+        <pd:xpathDescription>NoDecision or SolProviding_Manual or SolProviding_Auto</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/pfx2:SubprocessesRQ/pfx2:CharonResult = 'NoDecision' or
+$Start/pfx2:SubprocessesRQ/pfx2:CharonResult = 'SolProviding_Manual' or
+$Start/pfx2:SubprocessesRQ/pfx2:CharonResult = 'SolProviding_Auto'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>CheckComplete</pd:to>
+        <pd:xpathDescription>Normal</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateAMSSTasks</pd:from>
+        <pd:to>UpdateSLAStatus</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SR Created</pd:from>
+        <pd:to>InsertAMSSToBeCreated</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SR Created</pd:from>
+        <pd:to>CreateAMSSTasks</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/pfx2:SubprocessesRQ/pfx2:SRNumber)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertAMSSToBeCreated</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetDetectionType</pd:from>
+        <pd:to>CreateAMSSTasks</pd:to>
+        <pd:xpathDescription>SR Created Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/pfx2:SubprocessesRQ/pfx2:SRNumber)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetDetectionType</pd:from>
+        <pd:to>InsertAMSSToBeCreated</pd:to>
+        <pd:xpathDescription>SR Created N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CheckComplete</pd:from>
+        <pd:to>UpdateSLAStatus</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:xpathDescription>Create AMSS Task return false</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($_error_Generate-Error/pfx4:Error)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateAMSSTasks</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>result = 'false'</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateAMSSTasks/result = 'false'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetDetectionType</pd:from>
+        <pd:to>Log-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-1</pd:from>
+        <pd:to>CreateAMSSTasks</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateSLAStatus</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

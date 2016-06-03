@@ -1,0 +1,773 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/">
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+            <s:element name="ValidPGUID">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="pguid" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ValidPGUIDResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ValidPGUIDResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertOSCEThreatCase">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sL_InputXML" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="InsertOSCEThreatCaseResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="InsertOSCEThreatCaseResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateMalwareTask">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="PortalSourceID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="SRNumber" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="ActivityRowID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="TaskResult" type="tns:ArrayOfMalwareTaskResult"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ArrayOfMalwareTaskResult">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="unbounded" name="MalwareTaskResult" nillable="true" type="tns:MalwareTaskResult"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="MalwareTaskResult">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="ID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="TaskID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="EscActivityRowID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="UpdateMalwareTaskResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="UpdateMalwareTaskResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="AddAttachment">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="oP_Attachment" type="tns:Attachment"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_SRNumber" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Attachment">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentName" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentFileName" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentContentType" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentURL" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="AttachmentSize" type="s:long"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentType" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AccountID" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="CreatedDate" type="s:dateTime"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="DisplayCreatedDate" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="CreatedBy" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="ModifiedDate" type="s:dateTime"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="DisplayModifiedDate" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="ModifiedBy" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="Category" type="tns:AttachmentCategory"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="ExistInWhere" type="tns:AttachmentExistInWhere"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="MachineName" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="GccRowID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="NeuronID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="IntegrationID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentSha1" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="MappingID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Language" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="NeuronRetryCurrentTime" type="s:int"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="NeuronRetryMaxTime" type="s:int"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="NeuronModifiedDate" nillable="true" type="s:dateTime"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="IsAttk" type="s:boolean"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="RequestType" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="EntitlementID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Region" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="ServiceLevel" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="ParentNeuronID" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:simpleType name="AttachmentCategory">
+                <s:restriction base="s:string">
+                    <s:enumeration value="Account"/>
+                    <s:enumeration value="ProductCase"/>
+                    <s:enumeration value="FeatureRequestCase"/>
+                    <s:enumeration value="MalwareCase"/>
+                    <s:enumeration value="SPAMCase"/>
+                    <s:enumeration value="ThreatService"/>
+                    <s:enumeration value="Virus"/>
+                    <s:enumeration value="Log"/>
+                    <s:enumeration value="Temp"/>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="AttachmentExistInWhere">
+                <s:list>
+                    <s:simpleType>
+                        <s:restriction base="s:string">
+                            <s:enumeration value="NotExisted"/>
+                            <s:enumeration value="URL"/>
+                            <s:enumeration value="PSCWebServer"/>
+                            <s:enumeration value="PSCSharedFolder"/>
+                            <s:enumeration value="ThrendMicroGlobalFTP"/>
+                            <s:enumeration value="NeuronSampleBank"/>
+                            <s:enumeration value="PanelWebServer"/>
+                        </s:restriction>
+                    </s:simpleType>
+                </s:list>
+            </s:simpleType>
+            <s:element name="AddAttachmentResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="AddAttachmentResult" type="tns:ReturnObject"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ReturnObject">
+                <s:sequence>
+                    <s:element minOccurs="1" maxOccurs="1" name="Result" type="s:boolean"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="ResultMessage" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="SRNumber" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="GccRowID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="EI_InputXML" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="EI_OutputXML" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetMalwareTaskFileBySRNumber">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_SRNumber" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetMalwareTaskFileBySRNumberResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetMalwareTaskFileBySRNumberResult" type="tns:ArrayOfMalwareTaskFile"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ArrayOfMalwareTaskFile">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="unbounded" name="MalwareTaskFile" nillable="true" type="tns:MalwareTaskFile"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="MalwareTaskFile">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="TaskType" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="FileID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="NeuronFileID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="FileSize" type="s:long"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="FTPLocation" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="SHA1" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="GccRowID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="EscActivityRowID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="Created" type="s:dateTime"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="DetectionName" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetCleanFailedFileBySRNumber">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_SRNumber" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCleanFailedFileBySRNumberResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetCleanFailedFileBySRNumberResult" type="tns:ArrayOfMalwareTaskFile"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ComanyGAutoSR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_FileList" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ComanyGAutoSRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ComanyGAutoSRResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SendNotificationWhenAutoScanned">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sL_Output" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sL_OutputDetail" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="SR_Number" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="SessionID" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SendNotificationWhenAutoScannedResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="SendNotificationWhenAutoScannedResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SendNotification">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sL_OutputXML" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SendNotificationResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="SendNotificationResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CreateSR">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_DataXML" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CreateSRResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="CreateSRResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateAMSSCloseDate">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_AMSS_TaskID" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateAMSSCloseDateResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="UpdateAMSSCloseDateResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetThreatServiceAdditionalInfo">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_DataXML" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetThreatServiceAdditionalInfoResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetThreatServiceAdditionalInfoResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetUrlBySRNumber">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="SRNumber" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetUrlBySRNumberResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetUrlBySRNumberResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetSpamBySRNumber">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="SRNumber" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetSpamBySRNumberResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetSpamBySRNumberResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetSRCaseProductInfo">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_SRNumber" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetSRCaseProductInfoResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetSRCaseProductInfoResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="ValidPGUIDSoapIn">
+        <wsdl:part name="parameters" element="tns:ValidPGUID"/>
+    </wsdl:message>
+    <wsdl:message name="ValidPGUIDSoapOut">
+        <wsdl:part name="parameters" element="tns:ValidPGUIDResponse"/>
+    </wsdl:message>
+    <wsdl:message name="InsertOSCEThreatCaseSoapIn">
+        <wsdl:part name="parameters" element="tns:InsertOSCEThreatCase"/>
+    </wsdl:message>
+    <wsdl:message name="InsertOSCEThreatCaseSoapOut">
+        <wsdl:part name="parameters" element="tns:InsertOSCEThreatCaseResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateMalwareTaskSoapIn">
+        <wsdl:part name="parameters" element="tns:UpdateMalwareTask"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateMalwareTaskSoapOut">
+        <wsdl:part name="parameters" element="tns:UpdateMalwareTaskResponse"/>
+    </wsdl:message>
+    <wsdl:message name="AddAttachmentSoapIn">
+        <wsdl:part name="parameters" element="tns:AddAttachment"/>
+    </wsdl:message>
+    <wsdl:message name="AddAttachmentSoapOut">
+        <wsdl:part name="parameters" element="tns:AddAttachmentResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetMalwareTaskFileBySRNumberSoapIn">
+        <wsdl:part name="parameters" element="tns:GetMalwareTaskFileBySRNumber"/>
+    </wsdl:message>
+    <wsdl:message name="GetMalwareTaskFileBySRNumberSoapOut">
+        <wsdl:part name="parameters" element="tns:GetMalwareTaskFileBySRNumberResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetCleanFailedFileBySRNumberSoapIn">
+        <wsdl:part name="parameters" element="tns:GetCleanFailedFileBySRNumber"/>
+    </wsdl:message>
+    <wsdl:message name="GetCleanFailedFileBySRNumberSoapOut">
+        <wsdl:part name="parameters" element="tns:GetCleanFailedFileBySRNumberResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ComanyGAutoSRSoapIn">
+        <wsdl:part name="parameters" element="tns:ComanyGAutoSR"/>
+    </wsdl:message>
+    <wsdl:message name="ComanyGAutoSRSoapOut">
+        <wsdl:part name="parameters" element="tns:ComanyGAutoSRResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SendNotificationWhenAutoScannedSoapIn">
+        <wsdl:part name="parameters" element="tns:SendNotificationWhenAutoScanned"/>
+    </wsdl:message>
+    <wsdl:message name="SendNotificationWhenAutoScannedSoapOut">
+        <wsdl:part name="parameters" element="tns:SendNotificationWhenAutoScannedResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SendNotificationSoapIn">
+        <wsdl:part name="parameters" element="tns:SendNotification"/>
+    </wsdl:message>
+    <wsdl:message name="SendNotificationSoapOut">
+        <wsdl:part name="parameters" element="tns:SendNotificationResponse"/>
+    </wsdl:message>
+    <wsdl:message name="CreateSRSoapIn">
+        <wsdl:part name="parameters" element="tns:CreateSR"/>
+    </wsdl:message>
+    <wsdl:message name="CreateSRSoapOut">
+        <wsdl:part name="parameters" element="tns:CreateSRResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateAMSSCloseDateSoapIn">
+        <wsdl:part name="parameters" element="tns:UpdateAMSSCloseDate"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateAMSSCloseDateSoapOut">
+        <wsdl:part name="parameters" element="tns:UpdateAMSSCloseDateResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetThreatServiceAdditionalInfoSoapIn">
+        <wsdl:part name="parameters" element="tns:GetThreatServiceAdditionalInfo"/>
+    </wsdl:message>
+    <wsdl:message name="GetThreatServiceAdditionalInfoSoapOut">
+        <wsdl:part name="parameters" element="tns:GetThreatServiceAdditionalInfoResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetUrlBySRNumberSoapIn">
+        <wsdl:part name="parameters" element="tns:GetUrlBySRNumber"/>
+    </wsdl:message>
+    <wsdl:message name="GetUrlBySRNumberSoapOut">
+        <wsdl:part name="parameters" element="tns:GetUrlBySRNumberResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetSpamBySRNumberSoapIn">
+        <wsdl:part name="parameters" element="tns:GetSpamBySRNumber"/>
+    </wsdl:message>
+    <wsdl:message name="GetSpamBySRNumberSoapOut">
+        <wsdl:part name="parameters" element="tns:GetSpamBySRNumberResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetSRCaseProductInfoSoapIn">
+        <wsdl:part name="parameters" element="tns:GetSRCaseProductInfo"/>
+    </wsdl:message>
+    <wsdl:message name="GetSRCaseProductInfoSoapOut">
+        <wsdl:part name="parameters" element="tns:GetSRCaseProductInfoResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="PSCThreatWSSoap">
+        <wsdl:operation name="ValidPGUID">
+            <wsdl:input message="tns:ValidPGUIDSoapIn"/>
+            <wsdl:output message="tns:ValidPGUIDSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertOSCEThreatCase">
+            <wsdl:input message="tns:InsertOSCEThreatCaseSoapIn"/>
+            <wsdl:output message="tns:InsertOSCEThreatCaseSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateMalwareTask">
+            <wsdl:input message="tns:UpdateMalwareTaskSoapIn"/>
+            <wsdl:output message="tns:UpdateMalwareTaskSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="AddAttachment">
+            <wsdl:input message="tns:AddAttachmentSoapIn"/>
+            <wsdl:output message="tns:AddAttachmentSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetMalwareTaskFileBySRNumber">
+            <wsdl:input message="tns:GetMalwareTaskFileBySRNumberSoapIn"/>
+            <wsdl:output message="tns:GetMalwareTaskFileBySRNumberSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetCleanFailedFileBySRNumber">
+            <wsdl:input message="tns:GetCleanFailedFileBySRNumberSoapIn"/>
+            <wsdl:output message="tns:GetCleanFailedFileBySRNumberSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="ComanyGAutoSR">
+            <wsdl:input message="tns:ComanyGAutoSRSoapIn"/>
+            <wsdl:output message="tns:ComanyGAutoSRSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SendNotificationWhenAutoScanned">
+            <wsdl:input message="tns:SendNotificationWhenAutoScannedSoapIn"/>
+            <wsdl:output message="tns:SendNotificationWhenAutoScannedSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SendNotification">
+            <wsdl:input message="tns:SendNotificationSoapIn"/>
+            <wsdl:output message="tns:SendNotificationSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateSR">
+            <wsdl:input message="tns:CreateSRSoapIn"/>
+            <wsdl:output message="tns:CreateSRSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAMSSCloseDate">
+            <wsdl:input message="tns:UpdateAMSSCloseDateSoapIn"/>
+            <wsdl:output message="tns:UpdateAMSSCloseDateSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetThreatServiceAdditionalInfo">
+            <wsdl:input message="tns:GetThreatServiceAdditionalInfoSoapIn"/>
+            <wsdl:output message="tns:GetThreatServiceAdditionalInfoSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetUrlBySRNumber">
+            <wsdl:input message="tns:GetUrlBySRNumberSoapIn"/>
+            <wsdl:output message="tns:GetUrlBySRNumberSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetSpamBySRNumber">
+            <wsdl:input message="tns:GetSpamBySRNumberSoapIn"/>
+            <wsdl:output message="tns:GetSpamBySRNumberSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetSRCaseProductInfo">
+            <wsdl:input message="tns:GetSRCaseProductInfoSoapIn"/>
+            <wsdl:output message="tns:GetSRCaseProductInfoSoapOut"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="PSCThreatWSSoap" type="tns:PSCThreatWSSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ValidPGUID">
+            <soap:operation soapAction="http://tempuri.org/ValidPGUID" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertOSCEThreatCase">
+            <soap:operation soapAction="http://tempuri.org/InsertOSCEThreatCase" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateMalwareTask">
+            <soap:operation soapAction="http://tempuri.org/UpdateMalwareTask" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddAttachment">
+            <soap:operation soapAction="http://tempuri.org/AddAttachment" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMalwareTaskFileBySRNumber">
+            <soap:operation soapAction="http://tempuri.org/GetMalwareTaskFileBySRNumber" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCleanFailedFileBySRNumber">
+            <soap:operation soapAction="http://tempuri.org/GetCleanFailedFileBySRNumber" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ComanyGAutoSR">
+            <soap:operation soapAction="http://tempuri.org/ComanyGAutoSR" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SendNotificationWhenAutoScanned">
+            <soap:operation soapAction="http://tempuri.org/SendNotificationWhenAutoScanned" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SendNotification">
+            <soap:operation soapAction="http://tempuri.org/SendNotification" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateSR">
+            <soap:operation soapAction="http://tempuri.org/CreateSR" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAMSSCloseDate">
+            <soap:operation soapAction="http://tempuri.org/UpdateAMSSCloseDate" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetThreatServiceAdditionalInfo">
+            <soap:operation soapAction="http://tempuri.org/GetThreatServiceAdditionalInfo" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetUrlBySRNumber">
+            <soap:operation soapAction="http://tempuri.org/GetUrlBySRNumber" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSpamBySRNumber">
+            <soap:operation soapAction="http://tempuri.org/GetSpamBySRNumber" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSRCaseProductInfo">
+            <soap:operation soapAction="http://tempuri.org/GetSRCaseProductInfo" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="PSCThreatWSSoap12" type="tns:PSCThreatWSSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ValidPGUID">
+            <soap12:operation soapAction="http://tempuri.org/ValidPGUID" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertOSCEThreatCase">
+            <soap12:operation soapAction="http://tempuri.org/InsertOSCEThreatCase" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateMalwareTask">
+            <soap12:operation soapAction="http://tempuri.org/UpdateMalwareTask" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddAttachment">
+            <soap12:operation soapAction="http://tempuri.org/AddAttachment" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMalwareTaskFileBySRNumber">
+            <soap12:operation soapAction="http://tempuri.org/GetMalwareTaskFileBySRNumber" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCleanFailedFileBySRNumber">
+            <soap12:operation soapAction="http://tempuri.org/GetCleanFailedFileBySRNumber" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ComanyGAutoSR">
+            <soap12:operation soapAction="http://tempuri.org/ComanyGAutoSR" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SendNotificationWhenAutoScanned">
+            <soap12:operation soapAction="http://tempuri.org/SendNotificationWhenAutoScanned" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SendNotification">
+            <soap12:operation soapAction="http://tempuri.org/SendNotification" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateSR">
+            <soap12:operation soapAction="http://tempuri.org/CreateSR" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAMSSCloseDate">
+            <soap12:operation soapAction="http://tempuri.org/UpdateAMSSCloseDate" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetThreatServiceAdditionalInfo">
+            <soap12:operation soapAction="http://tempuri.org/GetThreatServiceAdditionalInfo" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetUrlBySRNumber">
+            <soap12:operation soapAction="http://tempuri.org/GetUrlBySRNumber" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSpamBySRNumber">
+            <soap12:operation soapAction="http://tempuri.org/GetSpamBySRNumber" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetSRCaseProductInfo">
+            <soap12:operation soapAction="http://tempuri.org/GetSRCaseProductInfo" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="PSCThreatWS">
+        <wsdl:port name="PSCThreatWSSoap" binding="tns:PSCThreatWSSoap">
+            <soap:address location="http://sjdc-qasptweb11.us.trendnet.org:8080/PSCThreatWS.asmx"/>
+        </wsdl:port>
+        <wsdl:port name="PSCThreatWSSoap12" binding="tns:PSCThreatWSSoap12">
+            <soap12:address location="http://sjdc-qasptweb11.us.trendnet.org:8080/PSCThreatWS.asmx"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

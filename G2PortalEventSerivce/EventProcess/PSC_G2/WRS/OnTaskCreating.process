@@ -1,0 +1,1130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx14="http://www.trendmicro.com/ESB/schemas/Common" xmlns:pfx13="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd" xmlns:pfx12="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx1="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx11="http://xmlns.example.com/1427797566597" xmlns:pfx10="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/WCSWhiteList.xsd" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx5="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://coretech.trendmicro.com/frs/charon/" xmlns:pfx3="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/UpdateHashStatusResponseResponse" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx9="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/QueryURLRatingRQ.xsd" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" xmlns:pfx7="ATSS_WRS_Case_Common_WS" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetURLReputationResult.xsd" xmlns:ns16="http://www.trendmicro.com/PSC/PSC_CreateEscalationActRq" xmlns:ns17="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/EscalationActivity.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.tibco.com/schemas/ACSService2.1/XSD/Client/Schema.xsd" xmlns:ns15="http://www.siebel.com/xml/ATSS%20Case%20URL%20IO" xmlns:ns18="http://www.tibco.com/schemas/CreateTask/XSD/Service/Schema.xsd" xmlns:ns9="www.tibco.com/plugin/Sleep" xmlns:ns5="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd6" xmlns:ns12="AMSS Task Common WS" xmlns:ns13="http://tempuri.org/" xmlns:ns6="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/XSD/Schema.xsd9" xmlns:ns10="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns7="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/XSD/Schema.xsd11" xmlns:ns11="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetNeuronServiceMainByServiceID.xsd" xmlns:ns8="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToRSVP/XSD/Schema.xsd2" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://coretech.trendmicro.com/frs/charon/" schemaLocation="/WSDL/Client/Charon.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetURLReputationResult.xsd" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetURLReputationResult.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" schemaLocation="/XSD/Common/EvnetMsg/SubmittingInput.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/QueryURLRatingRQ.xsd" schemaLocation="/XSD/Neuron/QueryURLRatingRQ.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/Schema.xsd" schemaLocation="/EventProcess/SubProcess/WRSFTPFormat.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/WCSWhiteList.xsd" schemaLocation="/XSD/Neuron/WCSWhiteList.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd" schemaLocation="/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd"/>
+    <xsd:import namespace="AMSS Task Common WS"/>
+    <wsdl:import namespace="AMSS Task Common WS" location="/WSDL/Client/AMSS Task Common WS_AMSS Task Common WS.wsdl"/>
+    <pd:name>EventProcess/PSC_G2/WRS/OnTaskCreating.process</pd:name>
+    <pd:description>In Progress</pd:description>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>66</pd:x>
+        <pd:y>132</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%EventProcess/OnTaskCreatingQueue%%%%EventProcess/version%%</destination>
+                <selector>JMSXGroupID='%%EventProcess/PSC_G2/WRS/Consumer%%'</selector>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx:SMF"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>755</pd:endX>
+    <pd:endY>396</pd:endY>
+    <pd:errorSchemas>
+        <error ref="ns3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1386040479825</pd:targetNamespace>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>755</pd:x>
+        <pd:y>522</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="ns3:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <pfx:SMF>
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFHeader"/>
+                    <pfx:SMFBody>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody/pfx:Message"/>
+                        <xsl:if test="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:XMLPayload">
+                            <pfx:XMLPayload>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:XMLPayload"/>
+                            </pfx:XMLPayload>
+                        </xsl:if>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody/pfx:MessagePayload"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error_Open-ATSS-WRS-Response-Fail/ns3:Error/ns3:error_code) !=&quot;&quot;">
+                                <pfx:Error>
+                                    <pfx:src>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                    </pfx:src>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="$_error_Open-ATSS-WRS-Response-Fail/ns3:Error/ns3:error_code"/>
+                                    </pfx:error_code>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error_Open-ATSS-WRS-Response-Fail/ns3:Error/ns3:error_message"/>
+                                    </pfx:error_message>
+                                    <xsl:if test="$_error/ns1:ErrorReport/StackTrace">
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                        </pfx:error_detail>
+                                    </xsl:if>
+                                </pfx:Error>
+                            </xsl:when>
+                            <xsl:when test="exists($_error/ns1:ErrorReport/Data/ns3:Error)">
+                                <pfx:Error>
+                                    <pfx:src>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/Data/ns3:Error/ns3:src"/>
+                                    </pfx:src>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/Data/ns3:Error/ns3:error_code"/>
+                                    </pfx:error_code>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/Data/ns3:Error/ns3:error_message"/>
+                                    </pfx:error_message>
+                                    <xsl:if test="$_error/ns1:ErrorReport/Data/ns3:Error/ns3:stack_trace">
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="$_error/ns1:ErrorReport/Data/ns3:Error/ns3:stack_trace"/>
+                                        </pfx:error_detail>
+                                    </xsl:if>
+                                </pfx:Error>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx:Error>
+                                    <pfx:src>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                    </pfx:src>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                    </pfx:error_code>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                    </pfx:error_message>
+                                    <xsl:if test="$_error/ns1:ErrorReport/StackTrace">
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                        </pfx:error_detail>
+                                    </xsl:if>
+                                </pfx:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:if test="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:SessionID">
+                            <pfx:SessionID>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:SessionID"/>
+                            </pfx:SessionID>
+                        </xsl:if>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody/pfx:EventMsg"/>
+                    </pfx:SMFBody>
+                </pfx:SMF>
+                <ns10:InsertNeuronEventLog>
+                    <ns10:ServiceId>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:ServiceID"/>
+                    </ns10:ServiceId>
+                    <ns10:Consumer>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:Consumer"/>
+                    </ns10:Consumer>
+                    <ns10:FILESHA1>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:FileSha1"/>
+                    </ns10:FILESHA1>
+                    <ns10:EventId>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventStepTypeId"/>
+                    </ns10:EventId>
+                    <ns10:TypeId>
+                        <xsl:value-of select="&quot;4&quot;"/>
+                    </ns10:TypeId>
+                    <ns10:Log>
+                        <xsl:value-of select="tib:render-xml($Catch/exceptiondata, true())"/>
+                    </ns10:Log>
+                    <ns10:EventKey>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventKey"/>
+                    </ns10:EventKey>
+                </ns10:InsertNeuronEventLog>
+                <isESBLog>
+                    <xsl:value-of select="false()"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>620</pd:x>
+        <pd:y>507</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="CallEventLogProcessEnd">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>907</pd:x>
+        <pd:y>393</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns10:InsertNeuronEventLog>
+                <ns10:ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:ServiceID"/>
+                </ns10:ServiceId>
+                <ns10:Consumer>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:Consumer"/>
+                </ns10:Consumer>
+                <ns10:FILESHA1>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:FileSha1"/>
+                </ns10:FILESHA1>
+                <ns10:EventId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventStepTypeId"/>
+                </ns10:EventId>
+                <ns10:TypeId>
+                    <xsl:value-of select="&quot;9&quot;"/>
+                </ns10:TypeId>
+                <ns10:Log>
+                    <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF, true())"/>
+                </ns10:Log>
+                <ns10:EventKey>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventKey"/>
+                </ns10:EventKey>
+            </ns10:InsertNeuronEventLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CallEventLogProcessStart">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>67</pd:x>
+        <pd:y>262</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns10:InsertNeuronEventLog>
+                <ns10:ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:ServiceID"/>
+                </ns10:ServiceId>
+                <ns10:Consumer>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:Consumer"/>
+                </ns10:Consumer>
+                <ns10:FILESHA1>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </ns10:FILESHA1>
+                <ns10:EventId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventStepTypeId"/>
+                </ns10:EventId>
+                <ns10:TypeId>
+                    <xsl:value-of select="&quot;1&quot;"/>
+                </ns10:TypeId>
+                <ns10:Log>
+                    <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF, true())"/>
+                </ns10:Log>
+                <ns10:EventKey>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventKey"/>
+                </ns10:EventKey>
+            </ns10:InsertNeuronEventLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="WRS Submission XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>198</pd:x>
+        <pd:y>280</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="NEURON" type="pfx13:NEURONWRSType"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$GetNeuronServiceMainByServiceID/ns11:Resultsets/ns11:ResultSet1/ns11:Record1[1]/ns11:InputData"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetNeuronServiceMainByServiceID">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>198</pd:x>
+        <pd:y>141</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetNeuronServiceMainByServiceID.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GetNeuronServiceMainByServiceID_Input>
+                <ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:serviceId"/>
+                </ServiceId>
+            </GetNeuronServiceMainByServiceID_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateATSSWRSTaskCase">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1003</pd:x>
+        <pd:y>204</pd:y>
+        <config>
+            <processName>/ExternalServices/ToATSS/CreateATSSWRSCase.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <pfx7:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Input>
+                    <ns15:ListOfAtssCaseUrlIo>
+                        <ns15:AtssWrsCase>
+                            <ns15:Country>
+                                <xsl:value-of select="$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/Country"/>
+                            </ns15:Country>
+                            <ns15:Email>
+                                <xsl:value-of select="$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/CSMEmail"/>
+                            </ns15:Email>
+                            <ns15:FirstName>
+                                <xsl:value-of select="$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/FirstName"/>
+                            </ns15:FirstName>
+                            <ns15:LastName>
+                                <xsl:value-of select="$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/LastName"/>
+                            </ns15:LastName>
+                            <ns15:Notes>
+                                <xsl:value-of select="substring(concat($WRS-Submission-XML/NEURON/ADDITIONAL_INFO/TargetCRMSystem,&quot; case's title: &quot;,&#xA;$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/Title,&quot;&#xA;&quot;,&#xA;$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/TargetCRMSystem,&quot; case's description: &quot;,&quot;&#xA;&quot;,&#xA;$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/Description,&#xA;&quot;&#xA;&quot;,&quot;&#xA;&quot;),1, 2000)"/>
+                            </ns15:Notes>
+                            <ns15:PreProcessed>
+                                <xsl:value-of select="&quot;Y&quot;"/>
+                            </ns15:PreProcessed>
+                            <ns15:Priority>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:Priority"/>
+                            </ns15:Priority>
+                            <ns15:Region>
+                                <xsl:value-of select="$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/Region"/>
+                            </ns15:Region>
+                            <ns15:Source>
+                                <xsl:value-of select="$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/TargetCRMSystem"/>
+                            </ns15:Source>
+                            <ns15:SourceId>
+                                <xsl:value-of select="concat($JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:serviceId, &quot;_&quot;,$GenATSSTaskMessagekey/root/TaskMessagekey)"/>
+                            </ns15:SourceId>
+                            <ns15:SubmissionType>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:WRSInfo/pfx:SubmissionType"/>
+                            </ns15:SubmissionType>
+                            <ns15:SubmitDate>
+                                <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                            </ns15:SubmitDate>
+                            <xsl:if test="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:Title">
+                                <ns15:Title>
+                                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:Title"/>
+                                </ns15:Title>
+                            </xsl:if>
+                            <ns15:SRType>
+                                <xsl:value-of select="&quot;URL&quot;"/>
+                            </ns15:SRType>
+                            <ns15:CustomerAccountName>
+                                <xsl:value-of select="$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/AccountName"/>
+                            </ns15:CustomerAccountName>
+                            <ns15:CustomerCountry>
+                                <xsl:value-of select="$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/Country"/>
+                            </ns15:CustomerCountry>
+                            <ns15:CustomerEmail>
+                                <xsl:value-of select="$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/EmailAddress"/>
+                            </ns15:CustomerEmail>
+                            <ns15:CustomerFullName>
+                                <xsl:value-of select="concat($WRS-Submission-XML/NEURON/ADDITIONAL_INFO/FirstName, &quot; &quot;,$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/LastName)"/>
+                            </ns15:CustomerFullName>
+                            <xsl:if test="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:SRNumber">
+                                <ns15:AutomationSourceId>
+                                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:SRNumber"/>
+                                </ns15:AutomationSourceId>
+                            </xsl:if>
+                            <ns15:ListOfAtssUrl>
+                                <xsl:for-each select="$TotalURLInfoForTask/AccumulatedOutput/URL">
+                                    <ns15:AtssUrl>
+                                        <ns15:Action>
+                                            <xsl:value-of select="&quot;Add&quot;"/>
+                                        </ns15:Action>
+                                        <ns15:CascadeID>
+                                            <xsl:value-of select="&quot;&quot;"/>
+                                        </ns15:CascadeID>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(response/categories/category[1]/@rating)">
+                                                <xsl:if test="response/categories/category[1]/@rating">
+                                                    <ns15:CategoryAssigned1>
+                                                        <xsl:value-of select="response/categories/category[1]/@rating"/>
+                                                    </ns15:CategoryAssigned1>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(response/categories/category[2]/@rating)">
+                                                <xsl:if test="response/categories/category[2]/@rating">
+                                                    <ns15:CategoryAssigned2>
+                                                        <xsl:value-of select="response/categories/category[2]/@rating"/>
+                                                    </ns15:CategoryAssigned2>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(response/categories/category[3]/@rating)">
+                                                <xsl:if test="response/categories/category[3]/@rating">
+                                                    <ns15:CategoryAssigned3>
+                                                        <xsl:value-of select="response/categories/category[3]/@rating"/>
+                                                    </ns15:CategoryAssigned3>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(response/categories/category[4]/@rating)">
+                                                <xsl:if test="response/categories/category[4]/@rating">
+                                                    <ns15:CategoryAssigned4>
+                                                        <xsl:value-of select="response/categories/category[4]/@rating"/>
+                                                    </ns15:CategoryAssigned4>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <xsl:choose>
+                                            <xsl:when test="exists(response/categories/category[5]/@rating)">
+                                                <xsl:if test="response/categories/category[5]/@rating">
+                                                    <ns15:CategoryAssigned5>
+                                                        <xsl:value-of select="response/categories/category[5]/@rating"/>
+                                                    </ns15:CategoryAssigned5>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
+                                        </xsl:choose>
+                                        <ns15:DestinationURL>
+                                            <xsl:value-of select="URL"/>
+                                        </ns15:DestinationURL>
+                                        <ns15:Host>
+                                            <xsl:value-of select="response/domain"/>
+                                        </ns15:Host>
+                                        <ns15:Path>
+                                            <xsl:value-of select="concat(response/path, response/file)"/>
+                                        </ns15:Path>
+                                        <ns15:Port>
+                                            <xsl:value-of select="response/port"/>
+                                        </ns15:Port>
+                                        <xsl:choose>
+                                            <xsl:when test="response/cascaded/directory_level=&quot;true&quot; or response/cascaded/domain_level=&quot;true&quot;">
+                                                <ns15:PreviousCascadeFlag>
+                                                    <xsl:value-of select="&quot;Y&quot;"/>
+                                                </ns15:PreviousCascadeFlag>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns15:PreviousCascadeFlag>
+                                                    <xsl:value-of select="&quot;N&quot;"/>
+                                                </ns15:PreviousCascadeFlag>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <ns15:Score>
+                                            <xsl:value-of select="response/safetyrating"/>
+                                        </ns15:Score>
+                                        <ns15:SuggestedCategory>
+                                            <xsl:value-of select="SUGGESTED_CATEGORY"/>
+                                        </ns15:SuggestedCategory>
+                                        <ns15:TestingURL>
+                                            <xsl:value-of select="URL"/>
+                                        </ns15:TestingURL>
+                                        <ns15:URL>
+                                            <xsl:value-of select="URL"/>
+                                        </ns15:URL>
+                                        <ns15:URLStatus>
+                                            <xsl:value-of select="URLStatus"/>
+                                        </ns15:URLStatus>
+                                        <ns15:WCSCategory>
+                                            <xsl:value-of select="tib:concat-sequence-format(response/categories/category/@rating,&quot;,&quot;,0)"/>
+                                        </ns15:WCSCategory>
+                                        <ns15:WhitelistHit>
+                                            <xsl:value-of select="if (query_result/hit=&quot;true&quot;) then &quot;Y&quot; else &quot;N&quot;"/>
+                                        </ns15:WhitelistHit>
+                                        <xsl:if test="query_result/flag">
+                                            <ns15:WhitelistFlag>
+                                                <xsl:value-of select="query_result/flag"/>
+                                            </ns15:WhitelistFlag>
+                                        </xsl:if>
+                                        <ns15:WhitelistParentFlag>
+                                            <xsl:value-of select="if (query_result/parent_url=&quot;true&quot;) then &quot;Y&quot; else &quot;N&quot;"/>
+                                        </ns15:WhitelistParentFlag>
+                                        <xsl:if test="query_result/type">
+                                            <ns15:WhitelistType>
+                                                <xsl:value-of select="query_result/type"/>
+                                            </ns15:WhitelistType>
+                                        </xsl:if>
+                                    </ns15:AtssUrl>
+                                </xsl:for-each>
+                            </ns15:ListOfAtssUrl>
+                        </ns15:AtssWrsCase>
+                    </ns15:ListOfAtssCaseUrlIo>
+                </pfx7:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Input>
+                <Messagekey>
+                    <xsl:value-of select="$GenATSSTaskMessagekey/root/TaskMessagekey"/>
+                </Messagekey>
+                <ServiceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:serviceId"/>
+                </ServiceID>
+                <Source>
+                    <xsl:value-of select="substring-before($JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:Consumer, &quot;-&quot;)"/>
+                </Source>
+                <SRNumber>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:SRNumber"/>
+                </SRNumber>
+                <TaskType>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:WRSInfo/pfx:SubmissionType"/>
+                </TaskType>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GenATSSTaskMessagekey">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>859</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="TaskMessagekey" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <TaskMessagekey>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </TaskMessagekey>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>297</pd:x>
+        <pd:y>58</pd:y>
+        <pd:width>468</pd:width>
+        <pd:height>279</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:WRSInfo/pfx:URLs</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>TotalURLInfoForTask</pd:outSlot>
+            <pd:activityOutputName>Map Data</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetURLInfo</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetURLInfo</pd:from>
+            <pd:to>FTP-RQ</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetURLInfo</pd:from>
+            <pd:to>WCS_RS</pd:to>
+            <pd:xpathDescription>WCSRs Exists</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>tib:trim($GetURLInfo/Resultsets/ResultSet1/Record1[1]/WRS_WCS_BEGIN_RS) !=""</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>WCS_RS</pd:from>
+            <pd:to>FTP-RQ</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>InsertTaskStatus=99</pd:from>
+            <pd:to>GetWCSWhiteListResult</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetWCSWhiteListResult</pd:from>
+            <pd:to>Map Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP RS</pd:from>
+            <pd:to>InsertTaskStatus=99</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP-RQ</pd:from>
+            <pd:to>FTP RS</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="InsertTaskStatus=99">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:description>temp in process</pd:description>
+            <pd:x>590</pd:x>
+            <pd:y>132</pd:y>
+            <config>
+                <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpsertURLReputaion.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <ServiceID>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:serviceId"/>
+                    </ServiceID>
+                    <URLID>
+                        <xsl:value-of select="$cu/pfx:URLs/pfx:URLID"/>
+                    </URLID>
+                    <TaskStatus>
+                        <xsl:value-of select="99"/>
+                    </TaskStatus>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GetURLInfo">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>367</pd:x>
+            <pd:y>252</pd:y>
+            <config>
+                <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetURLReputationInfoByDiffCondition.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <Status>
+                        <xsl:value-of select="3"/>
+                    </Status>
+                    <xsl:if test="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:serviceId">
+                        <ServiceID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:serviceId"/>
+                        </ServiceID>
+                    </xsl:if>
+                    <URLID>
+                        <xsl:value-of select="$cu/pfx:URLs/pfx:URLID"/>
+                    </URLID>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="WCS_RS">
+            <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+            <pd:x>472</pd:x>
+            <pd:y>251</pd:y>
+            <config>
+                <inputStyle>text</inputStyle>
+                <xsdVersion>default</xsdVersion>
+                <validateOutput>true</validateOutput>
+                <term ref="pfx9:response"/>
+            </config>
+            <pd:inputBindings>
+                <xmlString>
+                    <xsl:value-of select="$GetURLInfo/Resultsets/ResultSet1/Record1[1]/WRS_WCS_BEGIN_RS"/>
+                </xmlString>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>696</pd:x>
+            <pd:y>250</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="URL">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="URLID" type="xsd:string"/>
+                                <xsd:element name="URLStatus" type="xsd:string"/>
+                                <xsd:element name="URL" type="xsd:string"/>
+                                <xsd:element name="SUGGESTED_CATEGORY" type="xsd:string"/>
+                                <xsd:element ref="pfx9:response" minOccurs="0"/>
+                                <xsd:element name="FTP_RS" type="pfx5:WRSFTPProcessedFormatType" minOccurs="0" maxOccurs="unbounded"/>
+                                <xsd:element ref="pfx10:query_result" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <URL>
+                    <URLID>
+                        <xsl:value-of select="$cu/pfx:URLs/pfx:URLID"/>
+                    </URLID>
+                    <URLStatus>
+                        <xsl:value-of select="$cu/pfx:URLs/pfx:URLStatus"/>
+                    </URLStatus>
+                    <URL>
+                        <xsl:value-of select="$GetURLInfo/Resultsets/ResultSet1/Record1[1]/URL"/>
+                    </URL>
+                    <SUGGESTED_CATEGORY>
+                        <xsl:value-of select="$FTP-RQ/Output/Rows/WRSFTPFormat[2]/SUGGESTED_CATEGORY"/>
+                    </SUGGESTED_CATEGORY>
+                    <xsl:copy-of select="$WCS_RS/response"/>
+                    <xsl:for-each select="$FTP-RS/Output/Rows/WRSFTPFormat">
+                        <FTP_RS>
+                            <pfx5:CASE_ID>
+                                <xsl:value-of select="CASE_ID"/>
+                            </pfx5:CASE_ID>
+                            <pfx5:URL>
+                                <xsl:value-of select="URL"/>
+                            </pfx5:URL>
+                            <pfx5:CATEGORY>
+                                <xsl:value-of select="CATEGORY"/>
+                            </pfx5:CATEGORY>
+                            <pfx5:SUGGESTED_CATEGORY>
+                                <xsl:value-of select="SUGGESTED_CATEGORY"/>
+                            </pfx5:SUGGESTED_CATEGORY>
+                            <pfx5:FINAL_CATEGORY>
+                                <xsl:value-of select="FINAL_CATEGORY"/>
+                            </pfx5:FINAL_CATEGORY>
+                            <pfx5:RATED_REASON>
+                                <xsl:value-of select="RATED_REASON"/>
+                            </pfx5:RATED_REASON>
+                            <pfx5:CASE_CLOSE_FLAG>
+                                <xsl:value-of select="CASE_CLOSE_FLAG"/>
+                            </pfx5:CASE_CLOSE_FLAG>
+                        </FTP_RS>
+                    </xsl:for-each>
+                    <xsl:copy-of select="$GetWCSWhiteListResult/query_result"/>
+                </URL>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GetWCSWhiteListResult">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>588</pd:x>
+            <pd:y>257</pd:y>
+            <config>
+                <processName>/EventProcess/SubProcess/GetWCSWhiteListResult.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <URL>
+                        <xsl:value-of select="$GetURLInfo/Resultsets/ResultSet1/Record1[1]/URL"/>
+                    </URL>
+                    <Charset>
+                        <xsl:value-of select="&quot;UTF-8&quot;"/>
+                    </Charset>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="FTP RS">
+            <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+            <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+            <pd:x>465</pd:x>
+            <pd:y>130</pd:y>
+            <config>
+                <InputType>String</InputType>
+                <Encoding>ASCII</Encoding>
+                <ParseSharedConfig>/EventProcess/SubProcess/WRS_Processed_DataFormat.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <text>
+                        <xsl:value-of select="$GetURLInfo/Resultsets/ResultSet1/Record1[1]/WRS_FTP_RS"/>
+                    </text>
+                    <noOfRecords>
+                        <xsl:value-of select="-1"/>
+                    </noOfRecords>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="FTP-RQ">
+            <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+            <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+            <pd:x>368</pd:x>
+            <pd:y>131</pd:y>
+            <config>
+                <InputType>String</InputType>
+                <Encoding>ASCII</Encoding>
+                <ParseSharedConfig>/EventProcess/SubProcess/WRS_Processed_DataFormat.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <text>
+                        <xsl:value-of select="$GetURLInfo/Resultsets/ResultSet1/Record1[1]/WRS_FTP_RQ"/>
+                    </text>
+                    <noOfRecords>
+                        <xsl:value-of select="-1"/>
+                    </noOfRecords>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:group name="UpdateURLReputationGroup">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>1117</pd:x>
+        <pd:y>129</pd:y>
+        <pd:width>181</pd:width>
+        <pd:height>142</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:WRSInfo/pfx:URLs</pd:over>
+            <pd:iterationElementSlot>cu2</pd:iterationElementSlot>
+            <pd:indexSlot>j</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>InsertTaskStaus=2</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>InsertTaskStaus=2</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="InsertTaskStaus=2">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:description>Success</pd:description>
+            <pd:x>1203</pd:x>
+            <pd:y>208</pd:y>
+            <config>
+                <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpsertURLReputaion.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <ServiceID>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:serviceId"/>
+                    </ServiceID>
+                    <URLID>
+                        <xsl:value-of select="$cu2/pfx:URLs/pfx:URLID"/>
+                    </URLID>
+                    <ATSSInfoMessagekey>
+                        <xsl:value-of select="$GenATSSTaskMessagekey/root/TaskMessagekey"/>
+                    </ATSSInfoMessagekey>
+                    <xsl:choose>
+                        <xsl:when test="$CreateATSSWRSTaskCase/pfx7:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output/pfx7:psStatus=-1">
+                            <TaskStatus>
+                                <xsl:value-of select="-1"/>
+                            </TaskStatus>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <TaskStatus>
+                                <xsl:value-of select="2"/>
+                            </TaskStatus>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Open ATSS WRS Response Fail">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>1208</pd:x>
+        <pd:y>516</pd:y>
+        <config>
+            <faultName>error</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns0:ActivityInput>
+                <data>
+                    <ns3:Error>
+                        <ns3:src>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns3:src>
+                        <ns3:error_code>
+                            <xsl:value-of select="&quot;OpenTaskFail&quot;"/>
+                        </ns3:error_code>
+                        <ns3:error_message>
+                            <xsl:value-of select="tib:render-xml($CreateATSSWRSTaskCase/pfx7:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output, -1)"/>
+                        </ns3:error_message>
+                        <ns3:stack_trace>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns3:stack_trace>
+                    </ns3:Error>
+                </data>
+            </ns0:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1209</pd:x>
+        <pd:y>395</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="PSCCreateEscSRCaseAct">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>983</pd:x>
+        <pd:y>504</pd:y>
+        <config>
+            <processName>/ExternalServices/ToPSC/PSCCreateEscSRCaseAct.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx11:PSC_CreateEscalationAct>
+                <Input>
+                    <ns16:PSC_CreateEscalationActRq>
+                        <ns16:RequestHeader>
+                            <pfx12:MessageKey>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:serviceId"/>
+                            </pfx12:MessageKey>
+                            <pfx12:ServiceName>
+                                <xsl:value-of select="&quot;GCCU_CreateEscalationAct&quot;"/>
+                            </pfx12:ServiceName>
+                            <pfx12:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </pfx12:ServiceVersion>
+                            <pfx12:SourceID>
+                                <xsl:value-of select="&quot;WRS&quot;"/>
+                            </pfx12:SourceID>
+                            <pfx12:RqTimestamp>
+                                <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                            </pfx12:RqTimestamp>
+                        </ns16:RequestHeader>
+                        <ns16:RequestBody>
+                            <ns17:RequestSource>
+                                <xsl:value-of select="&quot;WRS&quot;"/>
+                            </ns17:RequestSource>
+                            <ns17:ResendCount>
+                                <xsl:value-of select="0"/>
+                            </ns17:ResendCount>
+                            <ns17:EscalationAct>
+                                <ns17:AMSSEscalation>
+                                    <xsl:if test="$CreateATSSWRSTaskCase/pfx7:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output/pfx7:psCaseId">
+                                        <ns17:AMSSTaskId>
+                                            <xsl:value-of select="$CreateATSSWRSTaskCase/pfx7:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output/pfx7:psCaseId"/>
+                                        </ns17:AMSSTaskId>
+                                    </xsl:if>
+                                    <ns17:AMSSTaskType>
+                                        <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:WRSInfo/pfx:SubmissionType"/>
+                                    </ns17:AMSSTaskType>
+                                    <ns17:Description>
+                                        <xsl:value-of select="concat($WRS-Submission-XML/NEURON/ADDITIONAL_INFO/TargetCRMSystem,&quot; case's title: &quot;,&#xA;$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/Title,&quot;&#xA;&quot;,&#xA;$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/TargetCRMSystem,&quot; case's description: &quot;,&quot;&#xA;&quot;,&#xA;$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/Description,&#xA;&quot;&#xA;&quot;,&quot;&#xA;&quot;)"/>
+                                    </ns17:Description>
+                                    <ns17:FileLocation>
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </ns17:FileLocation>
+                                    <xsl:if test="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:serviceId">
+                                        <ns17:NeuronId>
+                                            <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:serviceId"/>
+                                        </ns17:NeuronId>
+                                    </xsl:if>
+                                    <ns17:OriinalFileName>
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </ns17:OriinalFileName>
+                                    <ns17:SHA1>
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </ns17:SHA1>
+                                    <ns17:Source>
+                                        <xsl:value-of select="&quot;WRS&quot;"/>
+                                    </ns17:Source>
+                                    <ns17:Title>
+                                        <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:Title"/>
+                                    </ns17:Title>
+                                    <ns17:Type>
+                                        <xsl:value-of select="&quot;WRS Case Created&quot;"/>
+                                    </ns17:Type>
+                                    <xsl:if test="$CreateATSSWRSTaskCase/pfx7:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output/pfx7:psCaseId">
+                                        <ns17:AMSSParentTaskId>
+                                            <xsl:value-of select="$CreateATSSWRSTaskCase/pfx7:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output/pfx7:psCaseId"/>
+                                        </ns17:AMSSParentTaskId>
+                                    </xsl:if>
+                                </ns17:AMSSEscalation>
+                                <ns17:SRNumber>
+                                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnTaskCreating/pfx:SRNumber"/>
+                                </ns17:SRNumber>
+                                <ns17:IntegrationSource>
+                                    <xsl:value-of select="&quot;Neuron&quot;"/>
+                                </ns17:IntegrationSource>
+                            </ns17:EscalationAct>
+                        </ns16:RequestBody>
+                    </ns16:PSC_CreateEscalationActRq>
+                </Input>
+            </pfx11:PSC_CreateEscalationAct>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null-1">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1049</pd:x>
+        <pd:y>391</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallEventLogProcessEnd</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>CallEventLogProcessStart</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallEventLogProcessStart</pd:from>
+        <pd:to>GetNeuronServiceMainByServiceID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetNeuronServiceMainByServiceID</pd:from>
+        <pd:to>WRS Submission XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>GenATSSTaskMessagekey</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>WRS Submission XML</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateURLReputationGroup</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Open ATSS WRS Response Fail</pd:to>
+        <pd:xpathDescription>status = -1 and CaseID not exists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3407872</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateATSSWRSTaskCase/pfx7:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output/pfx7:psStatus=-1 and 
+tib:trim($CreateATSSWRSTaskCase/pfx7:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output/pfx7:psCaseId) =""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Null-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateATSSWRSTaskCase</pd:from>
+        <pd:to>UpdateURLReputationGroup</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null-1</pd:from>
+        <pd:to>PSCCreateEscSRCaseAct</pd:to>
+        <pd:xpathDescription>GCCU</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$WRS-Submission-XML/NEURON/ADDITIONAL_INFO/TargetCRMSystem="GCCU"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PSCCreateEscSRCaseAct</pd:from>
+        <pd:to>CallEventLogProcessEnd</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null-1</pd:from>
+        <pd:to>CallEventLogProcessEnd</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GenATSSTaskMessagekey</pd:from>
+        <pd:to>CreateATSSWRSTaskCase</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

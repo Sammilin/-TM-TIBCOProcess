@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns2="http://tempuri.org/" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns4="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/ToACS/2.1 Subprocesses/Requery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:SMF"/>
+                    <xsd:element name="serviceID" type="xsd:string"/>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element name="filsSHA1" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="WaitingQueue" type="xsd:string"/>
+                    <xsd:element name="DestinationQueue" type="xsd:string"/>
+                    <xsd:element name="RetryCount" type="xsd:string"/>
+                    <xsd:element name="ErrorRetryCount" type="xsd:string"/>
+                    <xsd:element name="Charon_Result" type="xsd:string"/>
+                    <xsd:element name="isSendFilePath" type="xsd:boolean"/>
+                    <xsd:element name="StepTypeIdForStopRequery" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>79</pd:startX>
+    <pd:startY>296</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>773</pd:endX>
+    <pd:endY>292</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1366362988326</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender(Analyzing)">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>565</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination/>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$Start/group/WaitingQueue"/>
+                </destinationQueue>
+                <JMSExpiration>
+                    <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Requery/AnalyzingRetryInterval_Sec"/>
+                </JMSExpiration>
+                <xsl:if test="exists($Start/group/pfx:SMF/pfx:SMFHeader/pfx:Priority)">
+                    <JMSPriority>
+                        <xsl:value-of select="$Start/group/pfx:SMF/pfx:SMFHeader/pfx:Priority"/>
+                    </JMSPriority>
+                </xsl:if>
+                <JMSCorrelationID>
+                    <xsl:value-of select="$Start/group/serviceID"/>
+                </JMSCorrelationID>
+                <JMSProperties>
+                    <ns:JMSXGroupID>
+                        <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/ESBBW/ProjectName"/>
+                    </ns:JMSXGroupID>
+                </JMSProperties>
+                <OtherProperties>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim(number($Start/group/RetryCount))=&quot;NaN&quot;">
+                            <RetryCount>
+                                <xsl:value-of select="1"/>
+                            </RetryCount>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <RetryCount>
+                                <xsl:value-of select="$Start/group/RetryCount"/>
+                            </RetryCount>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim(number($Start/group/ErrorRetryCount))=&quot;NaN&quot;">
+                            <ErrorRetryCount>
+                                <xsl:value-of select="1"/>
+                            </ErrorRetryCount>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ErrorRetryCount>
+                                <xsl:value-of select="$Start/group/ErrorRetryCount"/>
+                            </ErrorRetryCount>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="true()"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                    <RedeliveredQueue>
+                        <xsl:value-of select="$Start/group/DestinationQueue"/>
+                    </RedeliveredQueue>
+                    <lastCharonResult>
+                        <xsl:value-of select="$Start/group/Charon_Result"/>
+                    </lastCharonResult>
+                </OtherProperties>
+                <Body>
+                    <xsl:copy-of select="$Start/group/pfx:SMF"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Charon_Result">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>376</pd:x>
+        <pd:y>295</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender(Error)">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>566</pd:x>
+        <pd:y>303</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination/>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+            <InDataxsdString ref="pfx:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$Start/group/WaitingQueue"/>
+                </destinationQueue>
+                <xsl:choose>
+                    <xsl:when test="$Start/group/ErrorRetryCount &lt; 3">
+                        <JMSExpiration>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Requery/ErrorRetryInterval_Sec"/>
+                        </JMSExpiration>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <JMSExpiration>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Requery/LongErrorRetryInterval_Sec"/>
+                        </JMSExpiration>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="exists($Start/group/pfx:SMF/pfx:SMFHeader/pfx:Priority)">
+                    <xsl:if test="$Start/group/pfx:SMF/pfx:SMFHeader/pfx:Priority">
+                        <JMSPriority>
+                            <xsl:value-of select="$Start/group/pfx:SMF/pfx:SMFHeader/pfx:Priority"/>
+                        </JMSPriority>
+                    </xsl:if>
+                </xsl:if>
+                <JMSCorrelationID>
+                    <xsl:value-of select="$Start/group/serviceID"/>
+                </JMSCorrelationID>
+                <JMSProperties>
+                    <ns:JMSXGroupID>
+                        <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/ESBBW/ProjectName"/>
+                    </ns:JMSXGroupID>
+                </JMSProperties>
+                <OtherProperties>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim(number($Start/group/RetryCount))=&quot;NaN&quot;">
+                            <RetryCount>
+                                <xsl:value-of select="1"/>
+                            </RetryCount>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <RetryCount>
+                                <xsl:value-of select="$Start/group/RetryCount"/>
+                            </RetryCount>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim(number($Start/group/ErrorRetryCount))=&quot;NaN&quot;">
+                            <ErrorRetryCount>
+                                <xsl:value-of select="1"/>
+                            </ErrorRetryCount>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ErrorRetryCount>
+                                <xsl:value-of select="$Start/group/ErrorRetryCount + 1"/>
+                            </ErrorRetryCount>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="true()"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                    <RedeliveredQueue>
+                        <xsl:value-of select="$Start/group/DestinationQueue"/>
+                    </RedeliveredQueue>
+                    <lastCharonResult>
+                        <xsl:value-of select="$Start/group/Charon_Result"/>
+                    </lastCharonResult>
+                </OtherProperties>
+                <Body>
+                    <xsl:copy-of select="$Start/group/pfx:SMF"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender(Others)">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>573</pd:x>
+        <pd:y>460</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination/>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+            <InDataxsdString ref="pfx:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$Start/group/WaitingQueue"/>
+                </destinationQueue>
+                <xsl:choose>
+                    <xsl:when test="$Start/group/RetryCount &lt; 2">
+                        <JMSExpiration>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Requery/RetryInterval_Sec"/>
+                        </JMSExpiration>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <JMSExpiration>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Requery/LongRetryInterval_Sec"/>
+                        </JMSExpiration>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="exists($Start/group/pfx:SMF/pfx:SMFHeader/pfx:Priority)">
+                    <xsl:if test="$Start/group/pfx:SMF/pfx:SMFHeader/pfx:Priority">
+                        <JMSPriority>
+                            <xsl:value-of select="$Start/group/pfx:SMF/pfx:SMFHeader/pfx:Priority"/>
+                        </JMSPriority>
+                    </xsl:if>
+                </xsl:if>
+                <JMSCorrelationID>
+                    <xsl:value-of select="$Start/group/serviceID"/>
+                </JMSCorrelationID>
+                <JMSProperties>
+                    <ns:JMSXGroupID>
+                        <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/ESBBW/ProjectName"/>
+                    </ns:JMSXGroupID>
+                </JMSProperties>
+                <OtherProperties>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim(number($Start/group/RetryCount))=&quot;NaN&quot;">
+                            <RetryCount>
+                                <xsl:value-of select="1"/>
+                            </RetryCount>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <RetryCount>
+                                <xsl:value-of select="$Start/group/RetryCount + 1"/>
+                            </RetryCount>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim(number($Start/group/ErrorRetryCount))=&quot;NaN&quot;">
+                            <ErrorRetryCount>
+                                <xsl:value-of select="1"/>
+                            </ErrorRetryCount>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ErrorRetryCount>
+                                <xsl:value-of select="$Start/group/ErrorRetryCount"/>
+                            </ErrorRetryCount>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="true()"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                    <RedeliveredQueue>
+                        <xsl:value-of select="$Start/group/DestinationQueue"/>
+                    </RedeliveredQueue>
+                    <lastCharonResult>
+                        <xsl:value-of select="$Start/group/Charon_Result"/>
+                    </lastCharonResult>
+                </OtherProperties>
+                <Body>
+                    <xsl:copy-of select="$Start/group/pfx:SMF"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="RetryCount">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>378</pd:x>
+        <pd:y>451</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="SendMailToAVQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>573</pd:x>
+        <pd:y>605</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SendMailToAVQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:if test="$Start/group/filsSHA1">
+                    <fileSHA1>
+                        <xsl:value-of select="$Start/group/filsSHA1"/>
+                    </fileSHA1>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="insertFileActivityLogWithRequestType">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>775</pd:x>
+        <pd:y>456</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns2:InsertFileActivityLogWithRequestType>
+                <ns2:serviceID>
+                    <xsl:value-of select="$Start/group/serviceID"/>
+                </ns2:serviceID>
+                <xsl:if test="$Start/group/filsSHA1">
+                    <ns2:fileSHA1>
+                        <xsl:value-of select="$Start/group/filsSHA1"/>
+                    </ns2:fileSHA1>
+                </xsl:if>
+                <ns2:stepTypeID>
+                    <xsl:value-of select="$Start/group/StepTypeIdForStopRequery"/>
+                </ns2:stepTypeID>
+                <ns2:message>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </ns2:message>
+                <ns2:MessageKey>
+                    <xsl:value-of select="$Start/group/MessageKey"/>
+                </ns2:MessageKey>
+                <ns2:RequestType>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </ns2:RequestType>
+            </ns2:InsertFileActivityLogWithRequestType>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>380</pd:x>
+        <pd:y>721</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender(Immediately)">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:description>for </pd:description>
+        <pd:x>373</pd:x>
+        <pd:y>118</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination/>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$Start/group/WaitingQueue"/>
+                </destinationQueue>
+                <JMSExpiration>
+                    <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Requery/IsSendFilePathRetryInterval"/>
+                </JMSExpiration>
+                <xsl:if xmlns:xsl="http://www.w3.org/1999/XSL/Transform" test="exists($Start/group/pfx:SMF/pfx:SMFHeader/pfx:Priority)">
+                    <JMSPriority>
+                        <xsl:value-of select="$Start/group/pfx:SMF/pfx:SMFHeader/pfx:Priority"/>
+                    </JMSPriority>
+                </xsl:if>
+                <JMSCorrelationID>
+                    <xsl:value-of select="$Start/group/serviceID"/>
+                </JMSCorrelationID>
+                <JMSProperties>
+                    <ns:JMSXGroupID>
+                        <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/ESBBW/ProjectName"/>
+                    </ns:JMSXGroupID>
+                </JMSProperties>
+                <OtherProperties>
+                    <RetryCount>
+                        <xsl:value-of select="$Start/group/RetryCount"/>
+                    </RetryCount>
+                    <ErrorRetryCount>
+                        <xsl:value-of select="$Start/group/ErrorRetryCount"/>
+                    </ErrorRetryCount>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="true()"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                    <RedeliveredQueue>
+                        <xsl:value-of select="$Start/group/DestinationQueue"/>
+                    </RedeliveredQueue>
+                    <lastCharonResult>
+                        <xsl:value-of select="&quot;Empty&quot;"/>
+                    </lastCharonResult>
+                </OtherProperties>
+                <Body>
+                    <xsl:copy-of select="$Start/group/pfx:SMF"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="isSendFilePath">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>243</pd:x>
+        <pd:y>296</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ESBLogging-Requery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>244</pd:x>
+        <pd:y>182</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:DBLogger>
+                <ns12:MessageHeader>
+                    <ns12:MessageKey>
+                        <xsl:value-of select="$Start/group/MessageKey"/>
+                    </ns12:MessageKey>
+                    <ns12:ServiceName>
+                        <xsl:value-of select="&quot;Requery&quot;"/>
+                    </ns12:ServiceName>
+                    <ns12:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns12:ServiceVersion>
+                    <ns12:SourceID>
+                        <xsl:value-of select="&quot;ACS&quot;"/>
+                    </ns12:SourceID>
+                </ns12:MessageHeader>
+                <ns12:MessageBody>
+                    <xsl:copy-of select="$Start/group"/>
+                </ns12:MessageBody>
+            </ns12:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>isSendFilePath</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Charon_Result</pd:from>
+        <pd:to>JMS Queue Sender(Analyzing)</pd:to>
+        <pd:xpathDescription>Analyzing</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/group/Charon_Result = 'Analyzing'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Charon_Result</pd:from>
+        <pd:to>JMS Queue Sender(Error)</pd:to>
+        <pd:xpathDescription>Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/group/Charon_Result = 'Error'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Charon_Result</pd:from>
+        <pd:to>RetryCount</pd:to>
+        <pd:xpathDescription>Others</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RetryCount</pd:from>
+        <pd:to>JMS Queue Sender(Others)</pd:to>
+        <pd:xpathDescription>Others</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendMailToAVQuery</pd:from>
+        <pd:to>JMS Queue Sender(Others)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RetryCount</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:xpathDescription>Limit</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/group/RetryCount &gt;= 29</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>insertFileActivityLogWithRequestType</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>insertFileActivityLogWithRequestType</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender(Analyzing)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender(Error)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender(Immediately)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>isSendFilePath</pd:from>
+        <pd:to>Charon_Result</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>isSendFilePath</pd:from>
+        <pd:to>ESBLogging-Requery</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/group/isSendFilePath = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender(Others)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RetryCount</pd:from>
+        <pd:to>SendMailToAVQuery</pd:to>
+        <pd:xpathDescription>RequeryCount = 4</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/group/RetryCount = 4</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ESBLogging-Requery</pd:from>
+        <pd:to>JMS Queue Sender(Immediately)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

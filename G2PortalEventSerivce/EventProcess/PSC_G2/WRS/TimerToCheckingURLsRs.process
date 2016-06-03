@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetSRNumber.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>EventProcess/PSC_G2/WRS/TimerToCheckingURLsRs.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>102</pd:x>
+        <pd:y>219</pd:y>
+        <config>
+            <StartTime>1427355251000</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>%%EventProcess/PSC_G2/WRS/TimerToCheckingUrlsms%%</TimeInterval>
+            <FrequencyIndex>Millisecond</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>955</pd:endX>
+    <pd:endY>239</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1427355217438</pd:targetNamespace>
+    <pd:group name="GroupByServiceID">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>373</pd:x>
+        <pd:y>96</pd:y>
+        <pd:width>472</pd:width>
+        <pd:height>255</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$GetURLReputationInfoByServiceGroup/Resultsets/ResultSet1/Record1</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>CheckingTaskGroup</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Invoke Tasks Creating</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CheckingTaskGroup</pd:from>
+            <pd:to>GetSRNumber</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetSRNumber</pd:from>
+            <pd:to>Invoke Tasks Creating</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="CheckingTaskGroup">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>484</pd:x>
+            <pd:y>179</pd:y>
+            <config>
+                <processName>/EventProcess/PSC_G2/WRS/CheckingTaskGroup.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <ServiceID>
+                        <xsl:value-of select="$cu/Record1/ServiceID"/>
+                    </ServiceID>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Invoke Tasks Creating">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>737</pd:x>
+            <pd:y>182</pd:y>
+            <config>
+                <processName>/EventProcess/PSC_G2/WRS/Invoke Tasks Creating.process</processName>
+            </config>
+            <pd:inputBindings>
+                <Tasks>
+                    <ServiceID>
+                        <xsl:value-of select="$cu/Record1/ServiceID"/>
+                    </ServiceID>
+                    <SRNumber>
+                        <xsl:value-of select="$GetSRNumber/ns1:Resultsets/ns1:ResultSet1/ns1:Record1[1]/ns1:SRNumber"/>
+                    </SRNumber>
+                    <xsl:copy-of select="$CheckingTaskGroup/TasksOutput/group"/>
+                </Tasks>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GetSRNumber">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>621</pd:x>
+            <pd:y>268</pd:y>
+            <config>
+                <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetSRNumber.process</processName>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <ServiceId>
+                        <xsl:value-of select="$cu/Record1/ServiceID"/>
+                    </ServiceId>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="GetURLReputationInfoByServiceGroup">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>240</pd:x>
+        <pd:y>223</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetURLReputationInfoByDiffCondition.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Status>
+                    <xsl:value-of select="1"/>
+                </Status>
+                <Consumer>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/Consumer"/>
+                </Consumer>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>467</pd:x>
+        <pd:y>400</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;TimerToCheckingURLsRs Fail&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;WRSTimerErr&quot;"/>
+                </messageCode>
+            </pfx2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>220</pd:x>
+        <pd:y>402</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>336</pd:x>
+        <pd:y>411</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="ns6:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <pfx:SMF>
+                    <pfx:SMFHeader>
+                        <pfx:MessageKey>
+                            <xsl:value-of select="TM:getGUID()"/>
+                        </pfx:MessageKey>
+                        <pfx:ServiceName>
+                            <xsl:value-of select="&quot;TimerToCheckingURLsRs&quot;"/>
+                        </pfx:ServiceName>
+                        <pfx:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </pfx:ServiceVersion>
+                        <pfx:SourceID>
+                            <xsl:value-of select="&quot;WRS&quot;"/>
+                        </pfx:SourceID>
+                        <pfx:RqTimestamp>
+                            <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                        </pfx:RqTimestamp>
+                        <pfx:RsTimestamp>
+                            <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                        </pfx:RsTimestamp>
+                    </pfx:SMFHeader>
+                    <pfx:SMFBody>
+                        <pfx:Message/>
+                        <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                            <xsl:when test="exists($_error/ns3:ErrorReport/Data/ns6:Error)">
+                                <xsl:for-each select="$_error/ns3:ErrorReport/Data/ns6:Error">
+                                    <pfx:Error>
+                                        <pfx:src>
+                                            <xsl:value-of select="ns6:src"/>
+                                        </pfx:src>
+                                        <pfx:error_code>
+                                            <xsl:value-of select="ns6:error_code"/>
+                                        </pfx:error_code>
+                                        <pfx:error_message>
+                                            <xsl:value-of select="ns6:error_message"/>
+                                        </pfx:error_message>
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="ns6:stack_trace"/>
+                                        </pfx:error_detail>
+                                    </pfx:Error>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx:Error>
+                                    <pfx:src>
+                                        <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                                    </pfx:src>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                                    </pfx:error_code>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                                    </pfx:error_message>
+                                    <xsl:if test="$_error/ns3:ErrorReport/StackTrace">
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                                        </pfx:error_detail>
+                                    </xsl:if>
+                                </pfx:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx:SMFBody>
+                </pfx:SMF>
+                <isESBLog>
+                    <xsl:value-of select="true()"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>GetURLReputationInfoByServiceGroup</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetURLReputationInfoByServiceGroup</pd:from>
+        <pd:to>GroupByServiceID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GroupByServiceID</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/DBLogger" schemaLocation="/XSD/Common/logger.xsd"/>
+    <pd:name>Utilities/ESBLogging/ESBLogging.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:DBLogger"/>
+    <pd:startX>114</pd:startX>
+    <pd:startY>106</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>501</pd:endX>
+    <pd:endY>105</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1309254442552</pd:targetNamespace>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>236</pd:x>
+        <pd:y>181</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Src: &quot;,$Start/pfx4:DBLogger/ns1:Error/ns1:src,&#xA;&quot;&lt;br> Error Message: &quot;,$Start/pfx4:DBLogger/ns1:Error/ns1:error_message,&#xA;&quot;&lt;br>&quot;,$Start/pfx4:DBLogger/ns1:Error/ns1:stack_trace)"/>
+                </message>
+                <xsl:if test="$Start/pfx4:DBLogger/ns1:Error/ns1:error_code">
+                    <msgCode>
+                        <xsl:value-of select="$Start/pfx4:DBLogger/ns1:Error/ns1:error_code"/>
+                    </msgCode>
+                </xsl:if>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SendLog">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>368</pd:x>
+        <pd:y>105</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/ESBDBLogger/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx4:DBLogger"/>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <Body>
+                    <xsl:copy-of select="$Start/pfx4:DBLogger"/>
+                </Body>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log-1">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>383</pd:x>
+        <pd:y>283</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat($_error/ns2:ErrorReport/Msg,&quot;&lt;BR>&quot;,$_error/ns2:ErrorReport/StackTrace)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                </msgCode>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>262</pd:x>
+        <pd:y>283</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Call Send Mail Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>498</pd:x>
+        <pd:y>293</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/Subprocesses/SendMailQueue.process</processName>
+        </config>
+        <pd:inputBindings>
+            <mail>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Utilities/MailNotify/to"/>
+                </to>
+                <cc>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Utilities/MailNotify/cc"/>
+                </cc>
+                <subject>
+                    <xsl:value-of select="concat(&#xA;&quot;[&quot;, $_globalVariables/ns3:GlobalVariables/ESBBW/Environment,&quot;-&quot;, $_globalVariables/ns3:GlobalVariables/ESBBW/ProjectName, &quot;] &quot;,&quot;Send ESB Log Queue Error&quot;&#xA;)"/>
+                </subject>
+                <MailBody>
+                    <xsl:value-of select="concat(&#xA;&quot;MessageKey: &quot;,$Start/pfx4:DBLogger/pfx4:MessageHeader/pfx4:MessageKey,  &quot;&lt;BR>&quot;,&#xA;&quot;ServiceName: &quot;, $Start/pfx4:DBLogger/pfx4:MessageHeader/pfx4:ServiceName,  &quot;&lt;BR>&quot;, &#xA;&quot;ServiceVersion: &quot;, $Start/pfx4:DBLogger/pfx4:MessageHeader/pfx4:ServiceVersion,  &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;Error Description:&lt;BR>&quot;,&#xA;&quot;&lt;font color = '#FF0000'> &quot;,$_error/ns2:ErrorReport/Msg,  &quot;&lt;/font>&lt;BR>&quot;, &#xA;&quot;&lt;font color = '#FF0000'> &quot;,$_error/ns2:ErrorReport/StackTrace,  &quot;&lt;/font>&lt;BR>&quot;, &#xA; &quot;&lt;BR>&quot;, &#xA;&quot;Regards,&quot;,  &quot;&lt;BR>&quot;, &#xA;&quot;Trend Micro&quot;, &quot;&lt;BR>&quot;&#xA;)"/>
+                </MailBody>
+            </mail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:xpathDescription>Error Exists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/pfx4:DBLogger/ns1:Error)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>SendLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendLog</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SendLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-1</pd:from>
+        <pd:to>Call Send Mail Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Send Mail Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

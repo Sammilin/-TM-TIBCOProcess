@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <pd:name>EventProcess/PSC_G2/WRS/Invoke Tasks Creating.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Tasks">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceID" type="xsd:string"/>
+                    <xsd:element name="SRNumber" type="xsd:string"/>
+                    <xsd:element name="group" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Task" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="URLs" minOccurs="0" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="URLID" type="xsd:string"/>
+                                                        <xsd:element name="URLStatus" type="xsd:string"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="CaseType" type="xsd:string"/>
+                                            <xsd:element name="SubmissionType" type="xsd:string"/>
+                                            <xsd:element name="Title" type="xsd:string"/>
+                                        </xsd:sequence>
+                                        <xsd:attribute name="TaskType" type="xsd:string" use="required"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>141</pd:startX>
+    <pd:startY>113</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>620</pd:endX>
+    <pd:endY>114</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1427784551414</pd:targetNamespace>
+    <pd:group name="TaskGroupTypes">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>248</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>273</pd:width>
+        <pd:height>213</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/Tasks/group</pd:over>
+            <pd:iterationElementSlot>CuTaskType</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Group</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Group</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="Group">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>285</pd:x>
+            <pd:y>31</pd:y>
+            <pd:width>205</pd:width>
+            <pd:height>157</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$CuTaskType/group/Task</pd:over>
+                <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+                <pd:indexSlot>j</pd:indexSlot>
+                <pd:activityOutputName/>
+                <pd:accumulateOutput>false</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>OnTaskCreating</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>OnTaskCreating</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="OnTaskCreating">
+                <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+                <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+                <pd:x>389</pd:x>
+                <pd:y>120</pd:y>
+                <config>
+                    <PermittedMessageType>XML Text</PermittedMessageType>
+                    <SessionAttributes>
+                        <transacted>false</transacted>
+                        <acknowledgeMode>1</acknowledgeMode>
+                        <maxSessions>1</maxSessions>
+                        <destination>%%EventProcess/EventCenterQueue%%%%EventProcess/version%%</destination>
+                    </SessionAttributes>
+                    <ConfigurableHeaders>
+                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                        <JMSExpiration>0</JMSExpiration>
+                        <JMSPriority>4</JMSPriority>
+                    </ConfigurableHeaders>
+                    <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+                    <InDataxsdString ref="pfx:SMF"/>
+                </config>
+                <pd:inputBindings>
+                    <ns1:ActivityInput>
+                        <destinationQueue>
+                            <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/EventProcess/EventCenterQueue, $_globalVariables/ns:GlobalVariables/EventProcess/version)"/>
+                        </destinationQueue>
+                        <JMSProperties/>
+                        <Body>
+                            <pfx:SMF>
+                                <pfx:SMFHeader>
+                                    <pfx:MessageKey>
+                                        <xsl:value-of select="$Start/Tasks/ServiceID"/>
+                                    </pfx:MessageKey>
+                                    <pfx:ServiceName>
+                                        <xsl:value-of select="&quot;EventCenter&quot;"/>
+                                    </pfx:ServiceName>
+                                    <pfx:ServiceVersion>
+                                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/version"/>
+                                    </pfx:ServiceVersion>
+                                    <pfx:SourceID>
+                                        <xsl:value-of select="&quot;PSC-WRS&quot;"/>
+                                    </pfx:SourceID>
+                                    <pfx:RqTimestamp>
+                                        <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                                    </pfx:RqTimestamp>
+                                </pfx:SMFHeader>
+                                <pfx:SMFBody>
+                                    <pfx:Message>
+                                        <pfx:EventProcessMsg>
+                                            <pfx:OnTaskCreating>
+                                                <pfx:Title>
+                                                    <xsl:value-of select="$cu/Task/Title"/>
+                                                </pfx:Title>
+                                                <pfx:serviceId>
+                                                    <xsl:value-of select="$Start/Tasks/ServiceID"/>
+                                                </pfx:serviceId>
+                                                <pfx:fileSha1>
+                                                    <xsl:value-of select="''"/>
+                                                </pfx:fileSha1>
+                                                <xsl:choose>
+                                                    <xsl:when test="$cu/Task/CaseType=1">
+                                                        <pfx:taskType>
+                                                            <xsl:value-of select="&quot;C&amp;C case&quot;"/>
+                                                        </pfx:taskType>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <pfx:taskType>
+                                                            <xsl:value-of select="&quot;Non-C&amp;C case&quot;"/>
+                                                        </pfx:taskType>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <pfx:Description>
+                                                    <xsl:value-of select="''"/>
+                                                </pfx:Description>
+                                                <pfx:isManual>
+                                                    <xsl:value-of select="0"/>
+                                                </pfx:isManual>
+                                                <pfx:WRSInfo>
+                                                    <pfx:CaseType>
+                                                        <xsl:value-of select="$cu/Task/CaseType"/>
+                                                    </pfx:CaseType>
+                                                    <pfx:SubmissionType>
+                                                        <xsl:value-of select="$cu/Task/SubmissionType"/>
+                                                    </pfx:SubmissionType>
+                                                    <xsl:for-each select="$cu/Task/URLs">
+                                                        <pfx:URLs>
+                                                            <pfx:URLID>
+                                                                <xsl:value-of select="URLID"/>
+                                                            </pfx:URLID>
+                                                            <pfx:URLStatus>
+                                                                <xsl:value-of select="URLStatus"/>
+                                                            </pfx:URLStatus>
+                                                        </pfx:URLs>
+                                                    </xsl:for-each>
+                                                </pfx:WRSInfo>
+                                                <xsl:choose>
+                                                    <xsl:when test="$cu/Task/SubmissionType=&quot;FP Mitigation&quot;">
+                                                        <pfx:Priority>
+                                                            <xsl:value-of select="&quot;P1&quot;"/>
+                                                        </pfx:Priority>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <pfx:Priority>
+                                                            <xsl:value-of select="&quot;P2&quot;"/>
+                                                        </pfx:Priority>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <pfx:SRNumber>
+                                                    <xsl:value-of select="$Start/Tasks/SRNumber"/>
+                                                </pfx:SRNumber>
+                                            </pfx:OnTaskCreating>
+                                        </pfx:EventProcessMsg>
+                                    </pfx:Message>
+                                    <pfx:EventMsg>
+                                        <pfx:ServiceID>
+                                            <xsl:value-of select="$Start/Tasks/ServiceID"/>
+                                        </pfx:ServiceID>
+                                        <pfx:EventKey>
+                                            <xsl:value-of select="TM:getGUID()"/>
+                                        </pfx:EventKey>
+                                        <pfx:EventName>
+                                            <xsl:value-of select="&quot;OnTaskCreating&quot;"/>
+                                        </pfx:EventName>
+                                        <pfx:Consumer>
+                                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/Consumer"/>
+                                        </pfx:Consumer>
+                                        <pfx:EventStepTypeId>
+                                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/EventTypeId/OnTaskCreating"/>
+                                        </pfx:EventStepTypeId>
+                                    </pfx:EventMsg>
+                                </pfx:SMFBody>
+                            </pfx:SMF>
+                        </Body>
+                    </ns1:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>TaskGroupTypes</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>TaskGroupTypes</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

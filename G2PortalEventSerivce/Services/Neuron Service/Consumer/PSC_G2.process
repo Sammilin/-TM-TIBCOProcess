@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://www.tibco.com/schemas/ThreatService/WSDL/Client/ThreatService/SampleSubmission.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/schemas/ThreatService/WSDL/Client/ThreatService/SampleSubmission.xsd" schemaLocation="/XSD/Neuron/SampleSubmissionExtend.xsd"/>
+    <pd:name>Services/Neuron Service/Consumer/PSC_G2.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>161</pd:x>
+        <pd:y>117</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <selector>JMSXGroupID='%%EventProcess/PSC_G2/Consumer%%'</selector>
+                <destination>%%Services/NeuronService/Consumer/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx:SampleSubmissionV2Rq"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>719</pd:endX>
+    <pd:endY>113</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1440412437818</pd:targetNamespace>
+    <pd:activity name="SendToConsumerProcess">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>377</pd:x>
+        <pd:y>118</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%EventProcess/PSC_G2/ConsumerQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx:SampleSubmissionV2Rq"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties>
+                    <ns:JMSXGroupID>
+                        <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/EventProcess/PSC_G2/Consumer, &quot; - &quot;,$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:SampleSubmissionV2Rq/pfx:RequestBody/pfx:reputationSystem)"/>
+                    </ns:JMSXGroupID>
+                </JMSProperties>
+                <Body>
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:SampleSubmissionV2Rq"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>SendToConsumerProcess</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendToConsumerProcess</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

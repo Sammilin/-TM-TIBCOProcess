@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/GetAMSSToBeCreatedResponse" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/GetAMSSToBeCreatedResponse" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetAMSSToBeCreatedResponse.xsd"/>
+    <pd:name>ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetATSSWRSTaskId.process</pd:name>
+    <pd:description/>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>67</pd:startX>
+    <pd:startY>153</pd:startY>
+    <pd:returnBindings>
+        <xsl:for-each select="$JDBC-Query/resultSet">
+            <resultSet>
+                <xsl:for-each select="Record">
+                    <Record>
+                        <ServiceID>
+                            <xsl:value-of select="ServiceID"/>
+                        </ServiceID>
+                        <URLID>
+                            <xsl:value-of select="URLID"/>
+                        </URLID>
+                        <URL>
+                            <xsl:value-of select="URL"/>
+                        </URL>
+                        <Messagekey>
+                            <xsl:value-of select="Messagekey"/>
+                        </Messagekey>
+                        <SourceReferenceNumber>
+                            <xsl:value-of select="SourceReferenceNumber"/>
+                        </SourceReferenceNumber>
+                        <TaskId>
+                            <xsl:value-of select="TaskId"/>
+                        </TaskId>
+                        <TaskType>
+                            <xsl:value-of select="TaskType"/>
+                        </TaskType>
+                    </Record>
+                </xsl:for-each>
+            </resultSet>
+        </xsl:for-each>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="resultSet">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Record" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="ServiceID" type="xsd:string"/>
+                                <xsd:element name="URLID" type="xsd:string"/>
+                                <xsd:element name="URL" type="xsd:string"/>
+                                <xsd:element name="Messagekey" type="xsd:string"/>
+                                <xsd:element name="SourceReferenceNumber" type="xsd:string"/>
+                                <xsd:element name="TaskId" type="xsd:string"/>
+                                <xsd:element name="TaskType" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>636</pd:endX>
+    <pd:endY>167</pd:endY>
+    <pd:errorSchemas>
+        <Schema0 ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <Variable1>
+            <xsd:element name="error" type="xsd:string"/>
+        </Variable1>
+        <Variable0>
+            <xsd:element name="XMLNamingspace" type="xsd:string"/>
+        </Variable0>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1363341555621</pd:targetNamespace>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>580</pd:x>
+        <pd:y>278</pd:y>
+        <config>
+            <faultName>Schema0</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <data>
+                    <xsl:copy-of select="$_error_Generate-Error-1/pfx:Error"/>
+                </data>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>205</pd:x>
+        <pd:y>9</pd:y>
+        <pd:width>294</pd:width>
+        <pd:height>284</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>exists($JDBC-Query/resultSet/Record) or $i &gt; 5</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>JDBC Query</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Query</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign-1</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign-1</pd:from>
+            <pd:to>Generate-Error-1</pd:to>
+            <pd:xpathDescription>i &gt; retry times</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i &gt; 5</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Query</pd:from>
+            <pd:to>Assign-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-3407872</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Assign-1">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>265</pd:x>
+            <pd:y>179</pd:y>
+            <config>
+                <variableName>Variable1</variableName>
+            </config>
+            <pd:inputBindings>
+                <error>
+                    <xsl:value-of select="tib:render-xml($_error_JDBC-Query/ActivityErrors)"/>
+                </error>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>423</pd:x>
+            <pd:y>181</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="300 * 1000"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate-Error-1">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>356</pd:x>
+            <pd:y>236</pd:y>
+            <config>
+                <faultName>Schema0</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInput>
+                    <data>
+                        <pfx:Error>
+                            <pfx:src>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                            </pfx:src>
+                            <pfx:error_code>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </pfx:error_code>
+                            <pfx:error_message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                            </pfx:error_message>
+                            <pfx:stack_trace>
+                                <xsl:value-of select="$Variable1/error"/>
+                            </pfx:stack_trace>
+                        </pfx:Error>
+                    </data>
+                </ns:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="JDBC Query">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>345</pd:x>
+            <pd:y>82</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Resources/Database/JDBC Connection NeuronDB.sharedjdbc</jdbcSharedConfig>
+                <statement>Select a.ServiceID,a.URLID,a.URL,b.Messagekey,b.SourceReferenceNumber,b.TaskId,b.TaskType
+From 
+[ACS].[TBL_URL_REPUTATION] a (nolock) left join [ACS].[TBL_ATSS_INFO]  b (nolock) on a.[WRS_ATSSINFO_MESSAGEKEY] = b.messagekey
+where a.Serviceid=?
+</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>ServiceId</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>ServiceID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>URLID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>URL</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-1</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar(max)</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>Messagekey</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>1</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>uniqueidentifier</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>SourceReferenceNumber</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>TaskId</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>TaskType</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <ServiceId>
+                        <xsl:value-of select="$Start/Input/ServiceId"/>
+                    </ServiceId>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/G2/SFDC_UpsetThreatServiceRq" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns5="http://xmlns.tibco.com/encodings/mime" xmlns:ns6="http://www.trendmicro.com/G2/SFDC_CreateSRActivityRq.xsd" xmlns:ns7="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx="http://xmlns.example.com/1414725429675" xmlns:ns8="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/G2/SFDC_UpsertThreatServiceRs.xsd" xmlns:ns1="http://www.trendmicro.com/G2/SFDC_UpsertThreatServiceRq" xmlns:ns4="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRs.xsd" xmlns:ns3="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRq.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx3="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" xmlns:pfx2="http://tempuri.org/">
+    <wsdl:import namespace="http://xmlns.example.com/1414725429675" location="/WSDL/Provider/G2Service.wsdl"/>
+    <pd:name>ExternalServices/ToSFDC/CreateSRCaseAct.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType wsMsgRef="pfx:SFDC_CreateSRCaseActRq"/>
+    <pd:startX>83</pd:startX>
+    <pd:startY>146</pd:startY>
+    <pd:returnBindings>
+        <pfx:SFDC_CreateSRCaseActRs>
+            <Output>
+                <xsl:copy-of select="$SOAPRequestReply/outputMessage/ns4:SFDC_CreateSRCaseRs"/>
+            </Output>
+        </pfx:SFDC_CreateSRCaseActRs>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType wsMsgRef="pfx:SFDC_CreateSRCaseActRs"/>
+    <pd:endX>439</pd:endX>
+    <pd:endY>145</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1417072822941</pd:targetNamespace>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>267</pd:x>
+        <pd:y>147</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:G2_Service</service>
+            <servicePort>G2_SRServiceEndpoint1</servicePort>
+            <operation>SFDC_CreateSRCaseAct</operation>
+            <soapAction>/WSDL/Client/G2_Service.serviceagent//SFDC_CreateSRCaseAct</soapAction>
+            <endpointURL>%%ExternalServices/ToSFDC/WebService/EndpointURL%%</endpointURL>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <xsl:copy-of select="$Start/pfx:SFDC_CreateSRCaseActRq/Input/ns6:SFDC_CreateSRActivityRq"/>
+                <ns8:_configData>
+                    <endpointURL>
+                        <xsl:value-of select="$_globalVariables/ns7:GlobalVariables/ExternalServices/ToSFDC/WebService/EndpointURL"/>
+                    </endpointURL>
+                </ns8:_configData>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

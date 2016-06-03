@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" xmlns:pfx15="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx14="http://tempuri.org/" xmlns:ns="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx13="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx12="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:pfx11="http://www.tibco.com/schemas/APACB2B/XSD/Common/MailInfoSchema.xsd" xmlns:pfx10="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/Mail Schema1.2.xsd" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/resources/Schema/Mail Schema1.1.xsd" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.1.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.0.xsd" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx9="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.3.xsd" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.2.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.1.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.1.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns5="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns6="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://xmlns.tibco.com/encodings/mime" xmlns:ns7="http://www.tibco.com/schemas/APACB2B/XSD/Common/MailProperties.xsd" xmlns:ns8="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailProperties.xsd" xmlns:ns11="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns3="http://xmlns.tibco.com/body" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/ACS WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" schemaLocation="/XSD/Common/InsertNeuronEventLog.xsd"/>
+    <pd:name>Services/SharedServices/Error Handling Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="ns:SMF" minOccurs="0"/>
+                    <xsd:choice minOccurs="0">
+                        <xsd:element ref="pfx14:InsertTaskLog"/>
+                        <xsd:element ref="pfx14:InsertFileActivityLog"/>
+                        <xsd:element ref="pfx14:InsertFileActivityLogWithRequestType"/>
+                    </xsd:choice>
+                    <xsd:element ref="pfx16:InsertNeuronEventLog" minOccurs="0"/>
+                    <xsd:element name="isESBLog" type="xsd:boolean"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>102</pd:startX>
+    <pd:startY>196</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>585</pd:endX>
+    <pd:endY>189</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1315205158426</pd:targetNamespace>
+    <pd:activity name="Call Send Mail Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>465</pd:x>
+        <pd:y>198</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/Subprocesses/SendMailQueue.process</processName>
+        </config>
+        <pd:inputBindings>
+            <mail>
+                <xsl:choose>
+                    <xsl:when test="tib:trim($Call-Mail-Template-Process/group/to)!=&quot;&quot;">
+                        <to>
+                            <xsl:value-of select="$Call-Mail-Template-Process/group/to"/>
+                        </to>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <to>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Utilities/MailNotify/to"/>
+                        </to>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="tib:trim($Call-Mail-Template-Process/group/cc)!=&quot;&quot;">
+                        <xsl:if test="$Call-Mail-Template-Process/group/cc">
+                            <cc>
+                                <xsl:value-of select="$Call-Mail-Template-Process/group/cc"/>
+                            </cc>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <cc>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Utilities/MailNotify/cc"/>
+                        </cc>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <subject>
+                    <xsl:value-of select="concat(&#xA;&quot;[&quot;, $_globalVariables/ns1:GlobalVariables/ESBBW/Environment,&quot;-&quot;, $_globalVariables/ns1:GlobalVariables/ESBBW/ProjectName, &quot;] &quot;&#xA;,&quot; BW Process Error at :  &quot;&#xA;,(if(contains($Start/group/ns:SMF/ns:SMFBody[1]/ns:Error[1]/ns:src, '>'))  then &#xA;&#x9;tib:substring-after-last($Start/group/ns:SMF/ns:SMFBody[1]/ns:Error[1]/ns:src, &quot;>&quot;)&#xA;else&#xA;&#x9;$Start/group/ns:SMF/ns:SMFBody[1]/ns:Error[1]/ns:src)&#xA;)"/>
+                </subject>
+                <MailBody>
+                    <xsl:value-of select="concat(&#xA;&quot;MessageKey: &quot;, $Start/group/ns:SMF/ns:SMFHeader/ns:MessageKey,  &quot;&lt;BR>&quot;, &#xA;&quot;Service Name: &quot;, $Start/group/ns:SMF/ns:SMFHeader/ns:ServiceName,  &quot;&lt;BR>&quot;, &#xA;&quot;Service Version: &quot;, $Start/group/ns:SMF/ns:SMFHeader/ns:ServiceVersion,  &quot;&lt;BR>&quot;, &#xA;if(exists($Start/group/pfx14:InsertFileActivityLogWithRequestType)) then&#xA;concat(&quot;Trace MessageKey: &quot;, $Start/group/pfx14:InsertFileActivityLogWithRequestType/pfx14:MessageKey,  &quot;&lt;BR>&quot;)&#xA;else&#xA;&quot;&quot;,&#xA;&quot;&lt;BR>&quot;, &#xA;&quot;Error Detail:&lt;BR>&quot;,&#xA;&quot;&lt;font color = '#FF0000'> &quot;, $Start/group/ns:SMF/ns:SMFBody[1]/ns:Error[1]/ns:error_message,  &quot;&lt;/font>&lt;BR>&quot;,&#xA;&quot;&lt;font color = '#FF0000'> &quot;, $Start/group/ns:SMF/ns:SMFBody[1]/ns:Error[1]/ns:error_detail,  &quot;&lt;/font>&lt;BR>&quot;,&#xA;&quot;&lt;BR>&quot;, &#xA;&quot;Regards,&quot;,  &quot;&lt;BR>&quot;, &#xA;&quot;Trend Micro&quot;, &quot;&lt;BR>&quot;&#xA;)"/>
+                </MailBody>
+                <xsl:if test="exists($Start/group/ns:SMF)">
+                    <AttachFile>
+                        <AttachContent>
+                            <content-disposition>
+                                <xsl:value-of select="concat(&#xA;&quot;attachment; filename=&quot;, $Start/group/ns:SMF/ns:SMFHeader/ns:MessageKey, &#xA;&quot;.xml&quot;&#xA;)"/>
+                            </content-disposition>
+                            <content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </content-type>
+                            <content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </content-transfer-encoding>
+                            <textContent>
+                                <xsl:value-of select="tib:render-xml($Start/group/ns:SMF)"/>
+                            </textContent>
+                        </AttachContent>
+                    </AttachFile>
+                </xsl:if>
+            </mail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Mail Template Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>353</pd:x>
+        <pd:y>200</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/Subprocesses/GetMailTemplate.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Start/group/ns:SMF"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call DB Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>105</pd:x>
+        <pd:y>326</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($Start/group/pfx14:InsertTaskLog)">
+                    <xsl:for-each select="$Start/group/pfx14:InsertTaskLog">
+                        <xsl:for-each select=".">
+                            <pfx14:InsertTaskLog>
+                                <pfx14:serviceID>
+                                    <xsl:value-of select="pfx14:serviceID"/>
+                                </pfx14:serviceID>
+                                <pfx14:stepTypeID>
+                                    <xsl:value-of select="pfx14:stepTypeID"/>
+                                </pfx14:stepTypeID>
+                                <xsl:if test="pfx14:message">
+                                    <pfx14:message>
+                                        <xsl:value-of select="pfx14:message"/>
+                                    </pfx14:message>
+                                </xsl:if>
+                            </pfx14:InsertTaskLog>
+                        </xsl:for-each>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="exists($Start/group/pfx14:InsertFileActivityLogWithRequestType)">
+                    <xsl:for-each select="$Start/group/pfx14:InsertFileActivityLogWithRequestType">
+                        <pfx14:InsertFileActivityLogWithRequestType>
+                            <pfx14:serviceID>
+                                <xsl:value-of select="pfx14:serviceID"/>
+                            </pfx14:serviceID>
+                            <xsl:if test="pfx14:fileSHA1">
+                                <pfx14:fileSHA1>
+                                    <xsl:value-of select="pfx14:fileSHA1"/>
+                                </pfx14:fileSHA1>
+                            </xsl:if>
+                            <pfx14:stepTypeID>
+                                <xsl:value-of select="pfx14:stepTypeID"/>
+                            </pfx14:stepTypeID>
+                            <xsl:if test="pfx14:message">
+                                <pfx14:message>
+                                    <xsl:value-of select="pfx14:message"/>
+                                </pfx14:message>
+                            </xsl:if>
+                            <xsl:if test="pfx14:MessageKey">
+                                <pfx14:MessageKey>
+                                    <xsl:value-of select="pfx14:MessageKey"/>
+                                </pfx14:MessageKey>
+                            </xsl:if>
+                            <xsl:if test="pfx14:RequestType">
+                                <pfx14:RequestType>
+                                    <xsl:value-of select="pfx14:RequestType"/>
+                                </pfx14:RequestType>
+                            </xsl:if>
+                        </pfx14:InsertFileActivityLogWithRequestType>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:for-each select="$Start/group/pfx14:InsertFileActivityLog">
+                        <pfx14:InsertFileActivityLog>
+                            <pfx14:serviceID>
+                                <xsl:value-of select="pfx14:serviceID"/>
+                            </pfx14:serviceID>
+                            <xsl:if test="pfx14:fileSHA1">
+                                <pfx14:fileSHA1>
+                                    <xsl:value-of select="pfx14:fileSHA1"/>
+                                </pfx14:fileSHA1>
+                            </xsl:if>
+                            <pfx14:stepTypeID>
+                                <xsl:value-of select="pfx14:stepTypeID"/>
+                            </pfx14:stepTypeID>
+                            <xsl:if test="pfx14:message">
+                                <pfx14:message>
+                                    <xsl:value-of select="pfx14:message"/>
+                                </pfx14:message>
+                            </xsl:if>
+                        </pfx14:InsertFileActivityLog>
+                    </xsl:for-each>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ESBLogging">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>205</pd:x>
+        <pd:y>252</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx15:DBLogger>
+                <pfx15:MessageHeader>
+                    <pfx15:MessageKey>
+                        <xsl:value-of select="$Start/group/ns:SMF/ns:SMFHeader/ns:MessageKey"/>
+                    </pfx15:MessageKey>
+                    <pfx15:ServiceName>
+                        <xsl:value-of select="$Start/group/ns:SMF/ns:SMFHeader/ns:ServiceName"/>
+                    </pfx15:ServiceName>
+                    <pfx15:ServiceVersion>
+                        <xsl:value-of select="$Start/group/ns:SMF/ns:SMFHeader/ns:ServiceVersion"/>
+                    </pfx15:ServiceVersion>
+                    <pfx15:SourceID>
+                        <xsl:value-of select="$Start/group/ns:SMF/ns:SMFHeader/ns:SourceID"/>
+                    </pfx15:SourceID>
+                    <xsl:if test="$Start/group/ns:SMF/ns:SMFHeader/ns:SourceIP">
+                        <pfx15:SourceIP>
+                            <xsl:value-of select="$Start/group/ns:SMF/ns:SMFHeader/ns:SourceIP"/>
+                        </pfx15:SourceIP>
+                    </xsl:if>
+                    <xsl:if test="$Start/group/ns:SMF/ns:SMFHeader/ns:RqTimestamp">
+                        <pfx15:RqTimestamp>
+                            <xsl:value-of select="$Start/group/ns:SMF/ns:SMFHeader/ns:RqTimestamp"/>
+                        </pfx15:RqTimestamp>
+                    </xsl:if>
+                    <xsl:if test="$Start/group/ns:SMF/ns:SMFHeader/ns:RsTimestamp">
+                        <pfx15:RsTimestamp>
+                            <xsl:value-of select="$Start/group/ns:SMF/ns:SMFHeader/ns:RsTimestamp"/>
+                        </pfx15:RsTimestamp>
+                    </xsl:if>
+                </pfx15:MessageHeader>
+                <pfx15:MessageBody>
+                    <xsl:copy-of select="$Start/group/ns:SMF"/>
+                </pfx15:MessageBody>
+                <ns9:Error>
+                    <ns9:src>
+                        <xsl:value-of select="$Start/group/ns:SMF/ns:SMFBody[1]/ns:Error[1]/ns:src"/>
+                    </ns9:src>
+                    <ns9:error_code>
+                        <xsl:value-of select="$Start/group/ns:SMF/ns:SMFBody[1]/ns:Error[1]/ns:error_code"/>
+                    </ns9:error_code>
+                    <ns9:error_message>
+                        <xsl:value-of select="$Start/group/ns:SMF/ns:SMFBody[1]/ns:Error[1]/ns:error_message"/>
+                    </ns9:error_message>
+                    <ns9:stack_trace>
+                        <xsl:value-of select="$Start/group/ns:SMF/ns:SMFBody[1]/ns:Error[1]/ns:error_detail"/>
+                    </ns9:stack_trace>
+                </ns9:Error>
+            </pfx15:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="call Event Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>204</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:for-each select="$Start/group/pfx16:InsertNeuronEventLog">
+                <pfx16:InsertNeuronEventLog>
+                    <pfx16:ServiceId>
+                        <xsl:value-of select="pfx16:ServiceId"/>
+                    </pfx16:ServiceId>
+                    <pfx16:Consumer>
+                        <xsl:value-of select="pfx16:Consumer"/>
+                    </pfx16:Consumer>
+                    <pfx16:FILESHA1>
+                        <xsl:value-of select="pfx16:FILESHA1"/>
+                    </pfx16:FILESHA1>
+                    <pfx16:EventId>
+                        <xsl:value-of select="pfx16:EventId"/>
+                    </pfx16:EventId>
+                    <pfx16:TypeId>
+                        <xsl:value-of select="pfx16:TypeId"/>
+                    </pfx16:TypeId>
+                    <pfx16:Log>
+                        <xsl:value-of select="pfx16:Log"/>
+                    </pfx16:Log>
+                    <pfx16:EventKey>
+                        <xsl:value-of select="pfx16:EventKey"/>
+                    </pfx16:EventKey>
+                </pfx16:InsertNeuronEventLog>
+            </xsl:for-each>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Call Mail Template Process</pd:from>
+        <pd:to>Call Send Mail Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Send Mail Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call DB Log Process</pd:to>
+        <pd:xpathDescription>Write ACS Log</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/group/pfx14:InsertTaskLog)
+or exists($Start/group/pfx14:InsertFileActivityLog)
+or exists($Start/group/pfx14:InsertFileActivityLogWithRequestType)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call Mail Template Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ESBLogging</pd:from>
+        <pd:to>Call Mail Template Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call DB Log Process</pd:from>
+        <pd:to>Call Mail Template Process</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>call Event Log</pd:to>
+        <pd:xpathDescription>Write Event Log</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/group/pfx16:InsertNeuronEventLog)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>call Event Log</pd:from>
+        <pd:to>Call Mail Template Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ESBLogging</pd:to>
+        <pd:xpathDescription>LogToESBLog</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/group/isESBLog = "true"</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

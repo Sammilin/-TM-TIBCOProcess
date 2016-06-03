@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch"
+	 xmlns:ns0="http://www.trendmicro.com/ESB/ACS/schemas/SMF"
+	 targetNamespace="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="messageheader.xsd"/>
+	<xs:element name="SRFDispatch">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="DispatcherInfo"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DispatcherInfo" type="DispatchRqType"/>
+	<xs:complexType name="DispatcherRsType">
+		<xs:sequence>
+			<xs:element name="Result" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="SRID" type="xs:string" minOccurs="0"/>
+						<xs:element name="ActivityID" type="xs:string" minOccurs="0"/>
+						<xs:element name="ContactID" type="xs:string" minOccurs="0"/>
+						<xs:element name="Attachments" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="Status" type="xs:string" minOccurs="0"/>
+						<xs:element name="Message" type="xs:string" minOccurs="0"/>
+						<xs:element name="ActIDBusImpactUpdate" type="xs:string" minOccurs="0"/>
+						<xs:element name="ActIDExtRefNumUpdate" type="xs:string" minOccurs="0"/>
+						<xs:element name="RoutingResult" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="RoutingServer" type="xs:string"/>
+									<xs:element name="ProductID" type="xs:string"/>
+									<xs:element name="Global_3C_Group" type="xs:string" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Error" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Status" type="xs:string" minOccurs="0"/>
+						<xs:element name="Message" type="xs:string" minOccurs="0"/>
+						<xs:element name="ID" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SMF">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SMFHeader" type="ns0:TrendESBCommonHeader"/>
+				<xs:element name="SMFBody" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Message">
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="SRFDispatchRq">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="DispatcherInfo"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="SRFDispatchRs" type="DispatcherRsType"/>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="DispatchRqType">
+		<xs:sequence>
+			<xs:element name="ServiceID" type="xs:string"/>
+			<xs:element name="mail" type="xs:string"/>
+			<xs:element name="ac" type="xs:string" minOccurs="0"/>
+			<xs:element name="ServiceName" type="xs:string"/>
+			<xs:element name="SRFInputXML" type="xs:string"/>
+			<xs:element name="MalwareTaskType" type="xs:string" minOccurs="0"/>
+			<xs:element name="Remark" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DispatchServiceInfoRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Message" type="xs:string"/>
+				<xs:element name="ServiceID" type="xs:string"/>
+				<xs:element name="RoutingServer" type="xs:string"/>
+				<xs:element name="SRFInputXML" type="xs:string"/>
+				<xs:element name="MalwareTaskType" type="xs:string" minOccurs="0"/>
+				<xs:element name="Remark" type="xs:string" minOccurs="0"/>
+				<xs:element name="SFDCProdID" type="xs:string" minOccurs="0"/>
+				<xs:element name="Global_3C_Group" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CreateActivityOtherFieldType">
+		<xs:sequence>
+			<xs:element name="From" type="xs:string"/>
+			<xs:element name="EndDate" type="xs:string"/>
+			<xs:element name="Status" type="xs:string"/>
+			<xs:element name="Type" type="xs:string"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="ActID" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

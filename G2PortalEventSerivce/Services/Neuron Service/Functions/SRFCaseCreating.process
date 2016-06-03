@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx15="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch" xmlns:pfx14="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx13="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" xmlns:pfx12="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCase.xsd" xmlns:pfx11="http://trend.com.tw/PSCWSDL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx10="http://www.tibco.com/schemas/GCCPortal/XSD/Neuron/EvnetMsg/Schema.xsd" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns20="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRq" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/InsertSRNumberResponse" xmlns:pfx3="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/IsNeuonCaseATTKResponse" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" xmlns:pfx9="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pfx8="http://xmlns.example.com/1316598840510" xmlns:pfx7="http://www.tibco.com/pe/CheckpointSchema" xmlns:pfx6="http://xmlns.tibco.com/body" xmlns:ns16="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRs" xmlns:ns17="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetSRInfoResult.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRq" xmlns:ns15="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:ns18="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRs" xmlns:ns19="http://xmlns.example.com/1414725429675" xmlns:ns9="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns5="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:ns13="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns6="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns7="http://www.trendmicro.com/ESB/NIS/schemas/SMF" xmlns:ns10="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:pfx="http://tempuri.org/" xmlns:ns11="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns8="http://www.trendmicro.com/EventMsg" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/GetAMSSToBeCreatedResponse" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" schemaLocation="/XSD/Common/SRCreatedCallbackRQ.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" schemaLocation="/XSD/Common/EvnetMsg/SubmittingInput.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch" schemaLocation="/XSD/Common/SRFDispatch.xsd"/>
+    <wsdl:import namespace="http://xmlns.example.com/1316598840510" location="/WSDL/Provider/EI_GCC_Service.wsdl"/>
+    <wsdl:import namespace="http://trend.com.tw/PSCWSDL" location="/WSDL/Client/PSCWebService_v215.wsdl"/>
+    <pd:name>Services/Neuron Service/Functions/SRFCaseCreating.process</pd:name>
+    <pd:description/>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Service_id" type="xsd:string"/>
+                    <xsd:element name="EscDescription" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="NEURON" type="pfx13:NEURONSRFType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>97</pd:startX>
+    <pd:startY>118</pd:startY>
+    <pd:returnBindings>
+        <pfx15:SMF>
+            <xsl:copy-of select="$Call-Dispatch-CreateSRCase/ns1:ActivityOutput/Body/pfx15:SMF/pfx15:SMFHeader"/>
+            <pfx15:SMFBody>
+                <pfx15:Message>
+                    <pfx15:SRFDispatchRs>
+                        <xsl:copy-of select="$Call-Dispatch-CreateSRCase/ns1:ActivityOutput/Body/pfx15:SMF/pfx15:SMFBody/pfx15:Message/pfx15:SRFDispatchRs/pfx15:Result"/>
+                        <xsl:copy-of select="$Call-Dispatch-CreateSRCase/ns1:ActivityOutput/Body/pfx15:SMF/pfx15:SMFBody/pfx15:Message/pfx15:SRFDispatchRs/pfx15:Error"/>
+                    </pfx15:SRFDispatchRs>
+                </pfx15:Message>
+            </pfx15:SMFBody>
+        </pfx15:SMF>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx15:SMF"/>
+    <pd:endX>1051</pd:endX>
+    <pd:endY>124</pd:endY>
+    <pd:errorSchemas>
+        <Error ref="ns3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <GlobalVar>
+            <xsd:element name="CallBack">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="SRNumber" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </GlobalVar>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1363317854865</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>763</pd:x>
+        <pd:y>275</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="CallACSTaskLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>251</pd:x>
+        <pd:y>121</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx:InsertTaskLog>
+                <pfx:serviceID>
+                    <xsl:value-of select="$Start/group/Service_id"/>
+                </pfx:serviceID>
+                <pfx:stepTypeID>
+                    <xsl:value-of select="37"/>
+                </pfx:stepTypeID>
+                <pfx:message>
+                    <xsl:value-of select="tib:render-xml($Start/group/NEURON, 1)"/>
+                </pfx:message>
+            </pfx:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateSRNumber">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>731</pd:x>
+        <pd:y>122</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpdateSRNumber.process</processName>
+        </config>
+        <pd:inputBindings>
+            <UpdateSRNumber>
+                <ServiceId>
+                    <xsl:value-of select="$Start/group/Service_id"/>
+                </ServiceId>
+                <SourceCaseId>
+                    <xsl:value-of select="$GlobalVar/CallBack/SRNumber"/>
+                </SourceCaseId>
+            </UpdateSRNumber>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CallACSTaskLogEnd">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>895</pd:x>
+        <pd:y>122</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx:InsertTaskLog>
+                <pfx:serviceID>
+                    <xsl:value-of select="$Start/group/Service_id"/>
+                </pfx:serviceID>
+                <pfx:stepTypeID>
+                    <xsl:value-of select="38"/>
+                </pfx:stepTypeID>
+                <pfx:message>
+                    <xsl:value-of select="$GlobalVar/CallBack/SRNumber"/>
+                </pfx:message>
+            </pfx:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>406</pd:x>
+        <pd:y>242</pd:y>
+        <config>
+            <faultName>Error</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <data>
+                    <ns3:Error>
+                        <ns3:src>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns3:src>
+                        <ns3:error_code>
+                            <xsl:value-of select="9034"/>
+                        </ns3:error_code>
+                        <ns3:error_message>
+                            <xsl:value-of select="tib:render-xml($Call-Dispatch-CreateSRCase/ns1:ActivityOutput/Body/pfx15:SMF/pfx15:SMFBody[1]/pfx15:Message/pfx15:SRFDispatchRs/pfx15:Result,1)"/>
+                        </ns3:error_message>
+                        <ns3:stack_trace>
+                            <xsl:value-of select="$_processContext/ns4:ProcessContext/TrackingInfo[1]"/>
+                        </ns3:stack_trace>
+                        <ns3:traceMessageKey>
+                            <xsl:value-of select="$Start/group/Service_id"/>
+                        </ns3:traceMessageKey>
+                    </ns3:Error>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>914</pd:x>
+        <pd:y>274</pd:y>
+        <config>
+            <faultName>Error</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Generate-Error/ns3:Error)">
+                            <xsl:copy-of select="$_error_Generate-Error/ns3:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns3:Error>
+                                <ns3:src>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                                </ns3:src>
+                                <ns3:error_code>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                                </ns3:error_code>
+                                <ns3:error_message>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                                </ns3:error_message>
+                                <ns3:stack_trace>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                                </ns3:stack_trace>
+                                <ns3:traceMessageKey>
+                                    <xsl:value-of select="$Start/group/Service_id"/>
+                                </ns3:traceMessageKey>
+                            </ns3:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Dispatch CreateSRCase">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>400</pd:x>
+        <pd:y>131</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Dispatcher/FromSRF/DispatcherRoutingServer/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx15:SMF"/>
+            <OutDataxsdString ref="pfx15:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <Body>
+                    <pfx15:SMF>
+                        <pfx15:SMFHeader>
+                            <ns13:MessageKey>
+                                <xsl:value-of select="$Start/group/Service_id"/>
+                            </ns13:MessageKey>
+                            <ns13:ServiceName>
+                                <xsl:value-of select="&quot;DispatcherRoutingServer&quot;"/>
+                            </ns13:ServiceName>
+                            <ns13:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.1&quot;"/>
+                            </ns13:ServiceVersion>
+                            <ns13:SourceID>
+                                <xsl:value-of select="&quot;Neuron&quot;"/>
+                            </ns13:SourceID>
+                            <ns13:RqTimestamp>
+                                <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                            </ns13:RqTimestamp>
+                        </pfx15:SMFHeader>
+                        <pfx15:SMFBody>
+                            <pfx15:Message>
+                                <pfx15:SRFDispatchRq>
+                                    <pfx15:DispatcherInfo>
+                                        <pfx15:ServiceID>
+                                            <xsl:value-of select="$Start/group/Service_id"/>
+                                        </pfx15:ServiceID>
+                                        <pfx15:mail>
+                                            <xsl:value-of select="$Start/group/NEURON/ADDITIONAL_INFO/SRF_FORM_VALUES/EmailAddress"/>
+                                        </pfx15:mail>
+                                        <xsl:if test="$Start/group/NEURON/ADDITIONAL_INFO/SRF_FORM_VALUES/ActivationCode">
+                                            <pfx15:ac>
+                                                <xsl:value-of select="$Start/group/NEURON/ADDITIONAL_INFO/SRF_FORM_VALUES/ActivationCode"/>
+                                            </pfx15:ac>
+                                        </xsl:if>
+                                        <pfx15:ServiceName>
+                                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Dispatcher/FromSRF/CreateSRCaseKey"/>
+                                        </pfx15:ServiceName>
+                                        <pfx15:SRFInputXML>
+                                            <xsl:value-of select="tib:render-xml($Start/group/NEURON, 1)"/>
+                                        </pfx15:SRFInputXML>
+                                        <pfx15:Remark>
+                                            <xsl:value-of select="&quot;EventService&quot;"/>
+                                        </pfx15:Remark>
+                                    </pfx15:DispatcherInfo>
+                                </pfx15:SRFDispatchRq>
+                            </pfx15:Message>
+                        </pfx15:SMFBody>
+                    </pfx15:SMF>
+                </Body>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetSRInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>506</pd:x>
+        <pd:y>126</pd:y>
+        <config>
+            <processName>/ExternalServices/ToSFDC/GetSRInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns19:SFDC_GetSRInfoRq>
+                <SFDC_GetSRInfoRqMsg>
+                    <ns20:SFDC_GetSRInfoRq>
+                        <ns20:RequestHeader>
+                            <pfx9:MessageKey>
+                                <xsl:value-of select="$Start/group/NEURON/ADDITIONAL_INFO/SRF_FORM_VALUES/PortalSourceID"/>
+                            </pfx9:MessageKey>
+                            <pfx9:ServiceName>
+                                <xsl:value-of select="&quot;SFDC_GetSRInfo&quot;"/>
+                            </pfx9:ServiceName>
+                            <pfx9:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </pfx9:ServiceVersion>
+                            <pfx9:SourceID>
+                                <xsl:value-of select="&quot;ACSService&quot;"/>
+                            </pfx9:SourceID>
+                            <pfx9:RqTimestamp>
+                                <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                            </pfx9:RqTimestamp>
+                        </ns20:RequestHeader>
+                        <ns20:RequestBody>
+                            <xsl:if test="$Call-Dispatch-CreateSRCase/ns1:ActivityOutput/Body/pfx15:SMF/pfx15:SMFBody[1]/pfx15:Message/pfx15:SRFDispatchRs/pfx15:Result/pfx15:SRID">
+                                <ns20:CaseID>
+                                    <xsl:value-of select="$Call-Dispatch-CreateSRCase/ns1:ActivityOutput/Body/pfx15:SMF/pfx15:SMFBody[1]/pfx15:Message/pfx15:SRFDispatchRs/pfx15:Result/pfx15:SRID"/>
+                                </ns20:CaseID>
+                            </xsl:if>
+                        </ns20:RequestBody>
+                    </ns20:SFDC_GetSRInfoRq>
+                </SFDC_GetSRInfoRqMsg>
+            </ns19:SFDC_GetSRInfoRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>610</pd:x>
+        <pd:y>121</pd:y>
+        <config>
+            <variableName>GlobalVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <CallBack>
+                <xsl:choose>
+                    <xsl:when test="$Call-Dispatch-CreateSRCase/ns1:ActivityOutput/Body/pfx15:SMF/pfx15:SMFBody[1]/pfx15:Message/pfx15:SRFDispatchRs/pfx15:Result/pfx15:RoutingResult/pfx15:RoutingServer !=&quot;SFDC&quot;">
+                        <SRNumber>
+                            <xsl:value-of select="$Call-Dispatch-CreateSRCase/ns1:ActivityOutput/Body/pfx15:SMF/pfx15:SMFBody[1]/pfx15:Message/pfx15:SRFDispatchRs/pfx15:Result/pfx15:SRID"/>
+                        </SRNumber>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <SRNumber>
+                            <xsl:value-of select="$GetSRInfo/ns19:SFDC_GetSRInfoRs/SFDC_GetSRInfoRsMsg/ns18:SFDC_GetSRInfoRs/ns18:ResponseBody/ns18:Result/ns17:ResultSet1/ns17:Record1/ns17:SRNumber"/>
+                        </SRNumber>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </CallBack>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallACSTaskLog</pd:from>
+        <pd:to>Call Dispatch CreateSRCase</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateSRNumber</pd:from>
+        <pd:to>CallACSTaskLogEnd</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallACSTaskLogEnd</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>CallACSTaskLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Dispatch CreateSRCase</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>Status != Success</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>upper-case($Call-Dispatch-CreateSRCase/ns1:ActivityOutput/Body/pfx15:SMF/pfx15:SMFBody[1]/pfx15:Message/pfx15:SRFDispatchRs/pfx15:Result/pfx15:Status) !='SUCCESS'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Dispatch CreateSRCase</pd:from>
+        <pd:to>GetSRInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSRInfo</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>UpdateSRNumber</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

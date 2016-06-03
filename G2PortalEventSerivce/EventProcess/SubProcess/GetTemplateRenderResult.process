@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>EventProcess/SubProcess/GetTemplateRenderResult.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="JSONData" type="xsd:string"/>
+                    <xsd:element name="TypeId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>76</pd:startX>
+    <pd:startY>98</pd:startY>
+    <pd:returnBindings>
+        <xsl:for-each select="$Parse-XML/BiFrostResponse">
+            <BiFrostResponse>
+                <Code>
+                    <xsl:value-of select="Code"/>
+                </Code>
+                <Msg>
+                    <xsl:value-of select="Msg"/>
+                </Msg>
+                <Result>
+                    <xsl:value-of select="Result"/>
+                </Result>
+            </BiFrostResponse>
+        </xsl:for-each>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="BiFrostResponse">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Code" type="xsd:string"/>
+                    <xsd:element name="Msg" type="xsd:string"/>
+                    <xsd:element name="Result" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>584</pd:endX>
+    <pd:endY>99</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1427885758433</pd:targetNamespace>
+    <pd:activity name="Call Bifrost Get Template Render Result">
+        <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+        <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+        <pd:x>201</pd:x>
+        <pd:y>119</pd:y>
+        <config>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <customField>
+                <row>
+                    <attribute>TypeID</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>required</attributeCard>
+                </row>
+                <row>
+                    <attribute>JSONData</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>required</attributeCard>
+                </row>
+            </customField>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+            <OutputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </OutputHeaders>
+        </config>
+        <pd:inputBindings>
+            <RequestActivityInput>
+                <Host>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/SRF/MailTQA/HOST"/>
+                </Host>
+                <Port>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/SRF/MailTQA/PORT"/>
+                </Port>
+                <Method>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/SRF/MailTQA/GetTemplateRenderResult/Method"/>
+                </Method>
+                <RequestURI>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/SRF/MailTQA/GetTemplateRenderResult/requestURI"/>
+                </RequestURI>
+                <Timeout>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/SRF/MailTQA/GetTemplateRenderResult/TimeoutMillSec"/>
+                </Timeout>
+                <parameters>
+                    <TypeID>
+                        <xsl:value-of select="$Start/Input/TypeId"/>
+                    </TypeID>
+                    <JSONData>
+                        <xsl:value-of select="TM:URLEncode($Start/Input/JSONData)"/>
+                    </JSONData>
+                </parameters>
+            </RequestActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>448</pd:x>
+        <pd:y>100</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="BiFrostResponse">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:all>
+                                <xsd:element name="Code" type="xsd:string"/>
+                                <xsd:element name="Msg" type="xsd:string"/>
+                                <xsd:element name="Result" type="xsd:string"/>
+                            </xsd:all>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="TM:parseJSONtoXML(TM:stringReplace($Map-Data-1/root/remapping, &quot;'&quot;,&quot;\'&quot;), 1)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map-Data-1">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>328</pd:x>
+        <pd:y>100</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="remapping" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <remapping>
+                    <xsl:value-of select="concat('{&quot;BiFrostResponse&quot;:',$Call-Bifrost-Get-Template-Render-Result/RequestActivityOutput/asciiContent, '}')"/>
+                </remapping>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetTempErr">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>454</pd:x>
+        <pd:y>212</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <xsl:if test="$Call-Bifrost-Get-Template-Render-Result/RequestActivityOutput/asciiContent">
+                    <message>
+                        <xsl:value-of select="$Call-Bifrost-Get-Template-Render-Result/RequestActivityOutput/asciiContent"/>
+                    </message>
+                </xsl:if>
+                <messageCode>
+                    <xsl:value-of select="&quot;GetTempErr&quot;"/>
+                </messageCode>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="&quot;GetTempErr&quot;"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="$Call-Bifrost-Get-Template-Render-Result/RequestActivityOutput/asciiContent"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>251</pd:x>
+        <pd:y>292</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>402</pd:x>
+        <pd:y>293</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_GetTempErr/pfx:Error)">
+                            <pfx:Error>
+                                <pfx:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx:src>
+                                <pfx:error_code>
+                                    <xsl:value-of select="$_error_GetTempErr/pfx:Error/pfx:error_code"/>
+                                </pfx:error_code>
+                                <pfx:error_message>
+                                    <xsl:value-of select="$_error_GetTempErr/pfx:Error/pfx:error_message"/>
+                                </pfx:error_message>
+                                <pfx:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx:stack_trace>
+                            </pfx:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx:Error>
+                                <pfx:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx:src>
+                                <pfx:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx:error_code>
+                                <pfx:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx:error_message>
+                                <pfx:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx:stack_trace>
+                            </pfx:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call Bifrost Get Template Render Result</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Bifrost Get Template Render Result</pd:from>
+        <pd:to>Map-Data-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map-Data-1</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>GetTempErr</pd:to>
+        <pd:xpathDescription>Code!=100</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3407872</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-XML/BiFrostResponse/Code!=100</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

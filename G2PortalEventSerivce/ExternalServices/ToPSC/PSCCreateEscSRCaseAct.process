@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://xmlns.example.com/1427797566597" xmlns:pfx15="http://www.trendmicro.com/PSC/PSC_CreateEscalationActRq" xmlns:pfx14="http://xmlns.example.com/1414725429675" xmlns:ns="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:pfx13="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:pfx12="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRs" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx11="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx41="http://coretech.trendmicro.com/frs/charon/" xmlns:pfx10="http://www.trendmicro.com/PSC/PSC_CommonResultRs" xmlns:ns21="http://xmlns.tibco.com/encodings/mime" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/PeopleSoft/schemas/DBLogger" xmlns:pfx2="http://tempuri.org/" xmlns:pfx9="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Result.xsd" xmlns:pfx8="http://trend.com.tw/PSCWSDL" xmlns:pfx7="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx6="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.trendmicro.com/PSC/PSC_CreateSRActivityRq" xmlns:ns12="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/EscalationActivity.xsd" xmlns:ns5="http://www.trendmicro.com/PSC/AMSS_CreateInboundTaskRq" xmlns:ns6="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRs" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns7="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRq" xmlns:ns10="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns8="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRq" xmlns:ns11="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns3="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx21="http://Anti.Malware.Tracker-Service.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/PSC WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateEscalationActRq" schemaLocation="/WSDL/Provider/JMS_PSCService.wsdl"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Client/PSC WSDL.wsdl"/>
+    <wsdl:import namespace="http://trend.com.tw/PSCWSDL" location="/WSDL/Client/PSCWebService_v215.wsdl"/>
+    <wsdl:import namespace="http://trend.com.tw/PSCWSDL" location="/WSDL/Client/PSCWebService_v219.wsdl"/>
+    <wsdl:import namespace="http://xmlns.example.com/1427797566597" location="/WSDL/Provider/JMS_PSCService.wsdl"/>
+    <pd:name>ExternalServices/ToPSC/PSCCreateEscSRCaseAct.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType wsMsgRef="pfx16:PSC_CreateEscalationAct"/>
+    <pd:startX>66</pd:startX>
+    <pd:startY>210</pd:startY>
+    <pd:returnBindings>
+        <pfx8:PSC_CreateSRCaseRs>
+            <PSC_CreateSRCaseRsMsg>
+                <pfx12:PSC_CreateSRCaseRs>
+                    <xsl:for-each select="$Start/pfx16:PSC_CreateEscalationAct/Input/pfx15:PSC_CreateEscalationActRq/pfx15:RequestHeader">
+                        <pfx12:ResponseHeader>
+                            <ns10:MessageKey>
+                                <xsl:value-of select="ns10:MessageKey"/>
+                            </ns10:MessageKey>
+                            <ns10:ServiceName>
+                                <xsl:value-of select="ns10:ServiceName"/>
+                            </ns10:ServiceName>
+                            <ns10:ServiceVersion>
+                                <xsl:value-of select="ns10:ServiceVersion"/>
+                            </ns10:ServiceVersion>
+                            <ns10:SourceID>
+                                <xsl:value-of select="ns10:SourceID"/>
+                            </ns10:SourceID>
+                            <xsl:if test="ns10:StatusCode">
+                                <ns10:StatusCode>
+                                    <xsl:value-of select="ns10:StatusCode"/>
+                                </ns10:StatusCode>
+                            </xsl:if>
+                            <xsl:if test="ns10:RqTimestamp">
+                                <ns10:RqTimestamp>
+                                    <xsl:value-of select="ns10:RqTimestamp"/>
+                                </ns10:RqTimestamp>
+                            </xsl:if>
+                            <ns10:RsTimestamp>
+                                <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                            </ns10:RsTimestamp>
+                        </pfx12:ResponseHeader>
+                    </xsl:for-each>
+                    <pfx12:ResponseBody>
+                        <pfx13:Result>
+                            <pfx13:Status>
+                                <xsl:value-of select="&quot;SUCCESS&quot;"/>
+                            </pfx13:Status>
+                            <pfx13:Message>
+                                <xsl:value-of select="$PSCCreateEscSRCaseAct/ns11:aEmptyOutputClass/ns11:MessageID"/>
+                            </pfx13:Message>
+                        </pfx13:Result>
+                    </pfx12:ResponseBody>
+                </pfx12:PSC_CreateSRCaseRs>
+            </PSC_CreateSRCaseRsMsg>
+        </pfx8:PSC_CreateSRCaseRs>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType wsMsgRef="pfx8:PSC_CreateSRCaseRs"/>
+    <pd:endX>515</pd:endX>
+    <pd:endY>211</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx7:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1314244713029</pd:targetNamespace>
+    <pd:activity name="CallACSTaskLog(40)">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>217</pd:x>
+        <pd:y>209</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx2:InsertTaskLog>
+                <pfx2:serviceID>
+                    <xsl:value-of select="$Start/pfx16:PSC_CreateEscalationAct/Input/pfx15:PSC_CreateEscalationActRq/pfx15:RequestHeader/ns10:MessageKey"/>
+                </pfx2:serviceID>
+                <pfx2:stepTypeID>
+                    <xsl:value-of select="40"/>
+                </pfx2:stepTypeID>
+                <pfx2:message>
+                    <xsl:value-of select="tib:render-xml($Start/pfx16:PSC_CreateEscalationAct, 1)"/>
+                </pfx2:message>
+            </pfx2:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PSCCreateEscSRCaseAct">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>380</pd:x>
+        <pd:y>211</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%ExternalServices/ToPSC/PSCService/CreateEscalationAct/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMSConnection7222.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx15:PSC_CreateEscalationActRq"/>
+        </config>
+        <pd:inputBindings>
+            <ns11:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/ToPSC/PSCService/CreateEscalationAct/DestinationQueue"/>
+                </destinationQueue>
+                <Body>
+                    <xsl:copy-of select="$Start/pfx16:PSC_CreateEscalationAct/Input/pfx15:PSC_CreateEscalationActRq"/>
+                </Body>
+            </ns11:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>CallACSTaskLog(40)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallACSTaskLog(40)</pd:from>
+        <pd:to>PSCCreateEscSRCaseAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PSCCreateEscSRCaseAct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.trendmicro.com/ESB/ACS/schemas/SMF"
+	 xmlns:ns1="http://www.tibco.com/schemas/ACSService/XSD/Common/Schema.xsd2"
+	 targetNamespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xsd:include schemaLocation="GCCDBRMessage.xsd"/>
+	<xsd:include schemaLocation="AtlasMessage.xsd"/>
+	<xsd:element name="ACSMessage">
+		<xsd:complexType>
+			<xsd:choice>
+				<xsd:element name="CASE" type="CASEType"/>
+				<xsd:element name="AMSS" type="AMSSType"/>
+				<xsd:element name="GCC" type="GCCType"/>
+				<xsd:element name="NEURON" type="NotifyType"/>
+				<xsd:element name="GCCQuery">
+					<xsd:complexType>
+						<xsd:choice>
+							<xsd:element ref="GCC_UQuery"/>
+							<xsd:element ref="GCC_JPQuery"/>
+							<xsd:element ref="GCC_AMSSQuery"/>
+							<xsd:element ref="GCC_SNQuery"/>
+						</xsd:choice>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="GCCType">
+		<xsd:choice>
+			<xsd:element name="JP_UpdateRTL" type="JP_UpdateRTLType"/>
+			<xsd:element name="JP_QuerySR" type="JP_QuerySRType"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="JP_UpdateRTLType">
+		<xsd:sequence>
+			<xsd:element name="psSourceId" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="psServiceId" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="psFileName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="psMessage" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="psFileNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="psSendMode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="psSRType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="psProcessStatus" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AMSSType">
+		<xsd:choice>
+			<xsd:element name="InboundTask" type="InboundTaskType"/>
+			<xsd:element name="TaskClose" type="TaskCloseType"/>
+			<xsd:element name="AMSSInboundTaskCreationCallback" type="AMSSInboundTaskCreationCallbackType"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="TaskCloseType">
+		<xsd:sequence>
+			<xsd:element name="SHA1" type="xsd:string"/>
+			<xsd:element name="TaskType" type="xsd:string"/>
+			<xsd:element name="determination" type="xsd:string"/>
+			<xsd:element name="AMSS_ID" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InboundTaskType">
+		<xsd:all>
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Priority" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SourceReferenceNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Source" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SubmitDate" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Title" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="FirstName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="LastName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Email" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SHA1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Region" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Country" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="FileName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="FileSize" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="FTPLocation" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SRNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Segment" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ParentTaskId" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="JPOwner" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SourceId" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SRType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PatternVersion" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PatternBranch" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="JPPanel" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="OS" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Entitlement" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Product" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="MD5" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="NeuronMappingID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="IsAMEX" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="OriginalType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PanelType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TAMEmail" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ParentThreatServiceId" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="HeadsUp" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TaskLabel" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="NotifyType">
+		<xsd:all>
+			<xsd:element name="NEURON_SERVICEID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="NEURON_SAMPLEPATH" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="NEURON_STATUS" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="NEURON_MESSAGE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PSC_ID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="GCC_REFER_ID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SR_NUMBER" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CONTACT_ID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="LOGVIEWER_URL" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ARCHIVE_SHA1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ARCHIVE_FILE_NAME" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ARCHIVE_SIZE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ARCHIVE_EXT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ARCHIVE_FILE_COUNT" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="CASEType">
+		<xsd:all>
+			<xsd:element name="SERVICE_ID" type="xsd:string"/>
+			<xsd:element name="REQUEST_TYPE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="REQUERY_COUNT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DEFAULT_INFO" type="DEFAULT_INFOType" minOccurs="0"/>
+			<xsd:element name="GCC_AUTO_SUBMIT" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="CUSTOMER_INFO" type="CUSTOMER_INFOType" minOccurs="0"/>
+					</xsd:sequence>
+					<xsd:attribute name="value" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="FILELIST" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="FILE" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+										<xsd:attribute name="AM_FILEPATH" type="xsd:string"/>
+										<xsd:attribute name="SHA1" type="xsd:string"/>
+										<xsd:attribute name="MD5" type="xsd:string"/>
+										<xsd:attribute name="SHA256" type="xsd:string"/>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SYSTEMS" minOccurs="0">
+				<xsd:complexType>
+					<xsd:all>
+						<xsd:element name="Charon" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="Request" type="xsd:string" minOccurs="0"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="Atlas" type="AtlasType" minOccurs="0"/>
+					</xsd:all>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="EVENT_ID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="FILEFULLPATH" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CharonXmlString" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CUST_BRANCH" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SR_TYPE" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="DEFAULT_INFOType">
+		<xsd:all>
+			<xsd:element name="SERVICE_CONSUMER" type="xsd:string"/>
+			<xsd:element name="UPLOAD_METHOD" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="INF" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+					<xsd:attribute name="type" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="AM_CASE_AUTO_SUBMIT" minOccurs="0">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:string">
+							<xsd:attribute name="value" type="xsd:string"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="CUSTOMER_INFOType">
+		<xsd:all>
+			<xsd:element name="ACCOUNT" minOccurs="0">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:string">
+							<xsd:attribute name="id" type="xsd:string"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="GCC_REFER_ID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CUSTOMER_LEVEL" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="UPLOAD_UTC_TIME_TO_PSC" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CONTACT" minOccurs="0">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:string">
+							<xsd:attribute name="id" type="xsd:string"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="FIRST_NAME" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="LAST_NAME" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="EMAIL" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="REGION" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COUNTRY" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ACCOUNT_STATUS" type="xsd:string" minOccurs="0"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="CriteriaType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string"/>
+			<xsd:choice>
+				<xsd:element name="Value" type="xsd:string"/>
+				<xsd:element name="Values">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="Value" type="xsd:string" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ItemType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string"/>
+			<xsd:element name="Pair" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Name" type="xsd:string"/>
+						<xsd:element name="Value" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Response">
+		<xsd:sequence>
+			<xsd:element name="SERVICE_ID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SHA1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="MESSAGE" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="SAMPLE">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:complexType name="JP_QuerySRType">
+		<xsd:sequence>
+			<xsd:element name="psSRType" type="xsd:string"/>
+			<xsd:element name="psSendMode" type="xsd:string"/>
+			<xsd:element name="psKeyId" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AMSSInboundTaskCreationCallbackType">
+		<xsd:sequence>
+			<xsd:element name="messageKey" type="xsd:string"/>
+			<xsd:element name="filesha1" type="xsd:string"/>
+			<xsd:element name="taskId" type="xsd:string"/>
+			<xsd:element name="status" type="xsd:string"/>
+			<xsd:element name="createtime" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

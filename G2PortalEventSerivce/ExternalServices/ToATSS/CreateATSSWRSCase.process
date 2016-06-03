@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="ATSS_ERS_Case_Common_WS" xmlns:ns02="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns2="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx3="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:pfx2="ATSS_WRS_Case_Common_WS" xmlns:pfx7="http://tempuri.org/" xmlns:pfx6="http://Anti.Malware.Tracker-Service.org/">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="ATSS_WRS_Case_Common_WS" schemaLocation="/WSDL/Provider/ATSS_WRS_Case_Common_WS_ATSS_WRS_Case_Common_WS.WSDL.wsdl"/>
+    <wsdl:import namespace="ATSS_ERS_Case_Common_WS" location="/WSDL/Provider/ATSS_ERS_Case_Common_WS_ATSS_ERS_Case_Common_WS.WSDL.wsdl"/>
+    <wsdl:import namespace="ATSS_WRS_Case_Common_WS" location="/WSDL/Provider/ATSS_WRS_Case_Common_WS_ATSS_WRS_Case_Common_WS.WSDL.wsdl"/>
+    <pd:name>ExternalServices/ToATSS/CreateATSSWRSCase.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx2:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Input"/>
+                    <xsd:element name="Messagekey" type="xsd:string"/>
+                    <xsd:element name="ServiceID" type="xsd:string"/>
+                    <xsd:element name="Source" type="xsd:string"/>
+                    <xsd:element name="SRNumber" type="xsd:string"/>
+                    <xsd:element name="TaskType" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>93</pd:startX>
+    <pd:startY>205</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$SOAPRequestReply/outputMessage/pfx2:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output"/>
+    <pd:endX>904</pd:endX>
+    <pd:endY>207</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1426647237189</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>280</pd:x>
+        <pd:y>18</pd:y>
+        <pd:width>382</pd:width>
+        <pd:height>354</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>exists($SOAPRequestReply/outputMessage/pfx2:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output/pfx2:psCaseId) or $i&gt;5</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SOAPRequestReply</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-3407821</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i &lt; 5 and exists($_error_SOAPRequestReply/ActivityErrors/pfx3:ActivityTimedOutException)</pd:xpath>
+        </pd:transition>
+        <pd:activity name="SOAPRequestReply">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>456</pd:x>
+            <pd:y>96</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx2:ATSS_WRS_Case_Common_WS</service>
+                <servicePort>ATSS_WRS_Case_Common_WS</servicePort>
+                <operation>CreateWRSCase2</operation>
+                <soapAction>document/ATSS_WRS_Case_Common_WS:CreateWRSCase2</soapAction>
+                <endpointURL>http://sjdc-atsswsweb/eai_enu/start.swe?SWEExtSource=WebService&amp;SWEExtCmd=Execute</endpointURL>
+                <requireBasicAuth>false</requireBasicAuth>
+                <useProxy>true</useProxy>
+                <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <ns2:_configData>
+                        <endpointURL>
+                            <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/ExternalServices/ToATSS/WRS/Host,&#xA;$_globalVariables/ns:GlobalVariables/ExternalServices/ToATSS/WRS/RequestURI,&#xA;&quot;&amp;UserName=&quot;, TM:URLEncode($_globalVariables/ns:GlobalVariables/ExternalServices/ToATSS/WRS/UserName),&#xA;'&amp;Password=', TM:URLEncode($_globalVariables/ns:GlobalVariables/ExternalServices/ToATSS/WRS/Password))"/>
+                        </endpointURL>
+                        <timeout>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/ToATSS/TimeoutSec"/>
+                        </timeout>
+                    </ns2:_configData>
+                    <xsl:copy-of select="$Start/group/pfx2:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Input"/>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>540</pd:x>
+            <pd:y>230</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="300000"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>366</pd:x>
+            <pd:y>226</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>462</pd:x>
+            <pd:y>293</pd:y>
+            <config>
+                <faultName>ErrorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns02:ActivityInput>
+                    <data>
+                        <pfx4:Error>
+                            <pfx4:src>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                            </pfx4:src>
+                            <pfx4:error_code>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </pfx4:error_code>
+                            <pfx4:error_message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                            </pfx4:error_message>
+                            <pfx4:stack_trace>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                            </pfx4:stack_trace>
+                        </pfx4:Error>
+                    </data>
+                </ns02:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="InsertATSSInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>193</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/InsertATSSInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <InsertATSSInfo_Input>
+                <Messagekey>
+                    <xsl:value-of select="$Start/group/Messagekey"/>
+                </Messagekey>
+                <ServiceId>
+                    <xsl:value-of select="$Start/group/ServiceID"/>
+                </ServiceId>
+                <System>
+                    <xsl:value-of select="&quot;Neuron&quot;"/>
+                </System>
+                <Source>
+                    <xsl:value-of select="$Start/group/Source"/>
+                </Source>
+                <Target>
+                    <xsl:value-of select="&quot;WRS&quot;"/>
+                </Target>
+                <SourceReferenceNumber>
+                    <xsl:value-of select="$Start/group/SRNumber"/>
+                </SourceReferenceNumber>
+                <TaskType>
+                    <xsl:value-of select="$Start/group/TaskType"/>
+                </TaskType>
+                <Status>
+                    <xsl:value-of select="'creating'"/>
+                </Status>
+                <EI_InputXML>
+                    <xsl:value-of select="tib:render-xml($Start/group/pfx2:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Input,1)"/>
+                </EI_InputXML>
+            </InsertATSSInfo_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateATSSInfoTaskId">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>770</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpdateATSSInfoTaskId.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <MessageKey>
+                    <xsl:value-of select="$Start/group/Messagekey"/>
+                </MessageKey>
+                <TaskId>
+                    <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output/pfx2:psCaseId"/>
+                </TaskId>
+                <Status>
+                    <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output/pfx2:psStatus"/>
+                </Status>
+                <EI_OutputXML>
+                    <xsl:value-of select="tib:render-xml($SOAPRequestReply/outputMessage/pfx2:ATSS_WRS_Case_Common_WS_CreateWRSCase2_Output, 1)"/>
+                </EI_OutputXML>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>InsertATSSInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>UpdateATSSInfoTaskId</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertATSSInfo</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateATSSInfoTaskId</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:pfx15="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_PROB_LIST_RQ.V1.xsd" xmlns:pfx14="http://xmlns.oracle.com/Enterprise/HCM/services/TM_PROBATION_LIST.1" xmlns:ns="http://xmlns.oracle.com/Enterprise/Tools/schemas/TM_EMPL_LIST_RQ.V1" xmlns:pfx13="http://www.trendmicro.com/ESB/PeopleSoft/services/getManagerInfo" xmlns:pfx12="http://www.trendmicro.com/esb/4/peoplesoft" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx10="http://xmlns.oracle.com/Enterprise/Tools/schemas/M117365.V1" xmlns:pfx19="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx18="http://Anti.Malware.Tracker-Service.org/" xmlns:pfx17="http://xmlns.example.com/1274434789173/PatternCreatorImpl/Simulations/ServiceProvider/PatternCreator" xmlns:pfx5="http://xmlns.oracle.com/Enterprise/HCM/services/CI_TM_WS_GET_SUB_INFO.1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://xmlns.oracle.com/Enterprise/Tools/schemas/M483800.V1" xmlns:pfx3="http://xmlns.oracle.com/Enterprise/HCM/services/CI_TM_WS_GET_MGR_INFO.1" xmlns:pfx2="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" xmlns:pfx9="http://xmlns.oracle.com/Enterprise/HCM/services/CI_TM_CI_PERSON_DATA.1" xmlns:pfx8="http://www.trendmicro.com/ESB/PeopleSoft/services/getSubInfo" xmlns:pfx7="http://www.trendmicro.com/ESB/PeopleSoft/services/getEmpListHRInitiateSurveys" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RS.V1.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns5="http://xmlns.tibco.com/encodings/mime" xmlns:ns12="http://tempuri.org/" xmlns:ns6="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RS.V2.xsd" xmlns:ns13="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RQ.V1.xsd" xmlns:ns7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns10="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns11="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" xmlns:ns8="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://xmlns.oracle.com/Enterprise/Tools/schemas/TM_EMPL_LIST_RS.V1" xmlns:ns4="http://xmlns.oracle.com/Enterprise/Tools/schemas/TM_EMPL_LIST_RS.V2" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx22="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/AtlasMessage.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx23="http://coretech.trendmicro.com/frs/charon/" xmlns:pfx20="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx21="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/AtlasSampe.xsd" xmlns:pfx24="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/UpdateHashStatusResponseResponse" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx25="http://microsoft.com/wsdl/types/">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RQ.V1.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RS.V1.xsd" schemaLocation="/WSDL/Provider/TM_EMPL_LIST_RS.V1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RQ.V1.xsd" schemaLocation="/WSDL/Provider/TM_EMPL_LIST_RQ.V1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RS.V2.xsd" schemaLocation="/WSDL/Provider/TM_EMPL_LIST_RS.V2.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/FRS/schemas/SMF" schemaLocation="/XSD/Common/FRS.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/AtlasSampe.xsd" schemaLocation="/XSD/Common/AtlasSampe.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/AtlasMessage.xsd" schemaLocation="/XSD/Common/AtlasMessage.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/ACS WSDL.wsdl"/>
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/Charon_Submit_New.wsdl"/>
+    <xsd:import namespace="http://coretech.trendmicro.com/frs/charon/" schemaLocation="/WSDL/Client/Charon.xsd"/>
+    <wsdl:import namespace="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" location="/WSDL/Provider/TM_EMPLOYEE_LIST.1.wsdl"/>
+    <wsdl:import namespace="http://xmlns.example.com/1274434789173/PatternCreatorImpl/Simulations/ServiceProvider/PatternCreator" location="/WSDL/Client/PatternCreatorWSDLClient.wsdl"/>
+    <wsdl:import namespace="http://Anti.Malware.Tracker-Service.org/" location="/WSDL/Client/Atlas WSDL.wsdl"/>
+    <pd:name>EventProcess/SubProcess/GetFileReputation.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="RetryCount" type="xsd:string"/>
+                    <xsd:element name="ErrorRetryCount" type="xsd:int"/>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element ref="pfx19:SMF"/>
+                    <xsd:element name="lastCharonResult" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>53</pd:startX>
+    <pd:startY>76</pd:startY>
+    <pd:returnBindings>
+        <group>
+            <xsl:copy-of select="$getReputation/group/return"/>
+            <MessageKey>
+                <xsl:value-of select="$getReputation/group/MessageKey"/>
+            </MessageKey>
+            <Contintue>
+                <xsl:value-of select="$processVar/root/continue"/>
+            </Contintue>
+        </group>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="return" type="pfx23:reputationResult"/>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element name="Contintue" type="xsd:boolean" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>597</pd:endX>
+    <pd:endY>316</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="ns9:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <processVar>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="continue" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </processVar>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1261710921990</pd:targetNamespace>
+    <pd:activity name="Call ACS File Log for Check File End Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>294</pd:x>
+        <pd:y>187</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="$getReputation/group/return/status=&quot;Normal&quot; or $getReputation/group/return/status=&quot;Malicious&quot;">
+                    <ns12:InsertFileActivityLogWithRequestType>
+                        <ns12:serviceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                        </ns12:serviceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                            <ns12:fileSHA1>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                            </ns12:fileSHA1>
+                        </xsl:if>
+                        <xsl:choose>
+                            <xsl:when test="$Start/group/lastCharonResult = &quot;Malicious&quot; or $Start/group/lastCharonResult = &quot;SolProviding_Auto&quot; or $Start/group/lastCharonResult = &quot;Malicious_Migration&quot;">
+                                <ns12:stepTypeID>
+                                    <xsl:value-of select="216"/>
+                                </ns12:stepTypeID>
+                            </xsl:when>
+                            <xsl:when test="$Start/group/lastCharonResult = &quot;Analyzing&quot;">
+                                <ns12:stepTypeID>
+                                    <xsl:value-of select="226"/>
+                                </ns12:stepTypeID>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <ns12:stepTypeID>
+                                    <xsl:value-of select="206"/>
+                                </ns12:stepTypeID>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <ns12:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:message>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$getReputation/group/MessageKey"/>
+                        </ns12:MessageKey>
+                        <ns12:RequestType>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                        </ns12:RequestType>
+                    </ns12:InsertFileActivityLogWithRequestType>
+                </xsl:when>
+                <xsl:when test="$getReputation/group/return/status=&quot;NoDecision&quot;">
+                    <ns12:InsertFileActivityLogWithRequestType>
+                        <ns12:serviceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                        </ns12:serviceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                            <ns12:fileSHA1>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                            </ns12:fileSHA1>
+                        </xsl:if>
+                        <ns12:stepTypeID>
+                            <xsl:value-of select="211"/>
+                        </ns12:stepTypeID>
+                        <ns12:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:message>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$getReputation/group/MessageKey"/>
+                        </ns12:MessageKey>
+                        <ns12:RequestType>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                        </ns12:RequestType>
+                    </ns12:InsertFileActivityLogWithRequestType>
+                </xsl:when>
+                <xsl:when test="$getReputation/group/return/status=&quot;SolProviding_Manual&quot;">
+                    <ns12:InsertFileActivityLogWithRequestType>
+                        <ns12:serviceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                        </ns12:serviceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                            <ns12:fileSHA1>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                            </ns12:fileSHA1>
+                        </xsl:if>
+                        <ns12:stepTypeID>
+                            <xsl:value-of select="210"/>
+                        </ns12:stepTypeID>
+                        <ns12:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:message>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$getReputation/group/MessageKey"/>
+                        </ns12:MessageKey>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType">
+                            <ns12:RequestType>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                            </ns12:RequestType>
+                        </xsl:if>
+                    </ns12:InsertFileActivityLogWithRequestType>
+                </xsl:when>
+                <xsl:when test="$getReputation/group/return/status=&quot;SolProviding_Auto&quot;">
+                    <ns12:InsertFileActivityLogWithRequestType>
+                        <ns12:serviceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                        </ns12:serviceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                            <ns12:fileSHA1>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                            </ns12:fileSHA1>
+                        </xsl:if>
+                        <ns12:stepTypeID>
+                            <xsl:value-of select="209"/>
+                        </ns12:stepTypeID>
+                        <ns12:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:message>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$getReputation/group/MessageKey"/>
+                        </ns12:MessageKey>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType">
+                            <ns12:RequestType>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                            </ns12:RequestType>
+                        </xsl:if>
+                    </ns12:InsertFileActivityLogWithRequestType>
+                </xsl:when>
+                <xsl:when test="$getReputation/group/return/status=&quot;Indeterminable&quot;">
+                    <ns12:InsertFileActivityLogWithRequestType>
+                        <ns12:serviceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                        </ns12:serviceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                            <ns12:fileSHA1>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                            </ns12:fileSHA1>
+                        </xsl:if>
+                        <ns12:stepTypeID>
+                            <xsl:value-of select="201"/>
+                        </ns12:stepTypeID>
+                        <ns12:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:message>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$getReputation/group/MessageKey"/>
+                        </ns12:MessageKey>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType">
+                            <ns12:RequestType>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                            </ns12:RequestType>
+                        </xsl:if>
+                    </ns12:InsertFileActivityLogWithRequestType>
+                </xsl:when>
+                <xsl:when test="$getReputation/group/return/status=&quot;Analyzing&quot;">
+                    <ns12:InsertFileActivityLogWithRequestType>
+                        <ns12:serviceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                        </ns12:serviceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                            <ns12:fileSHA1>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                            </ns12:fileSHA1>
+                        </xsl:if>
+                        <ns12:stepTypeID>
+                            <xsl:value-of select="205"/>
+                        </ns12:stepTypeID>
+                        <ns12:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:message>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$getReputation/group/MessageKey"/>
+                        </ns12:MessageKey>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType">
+                            <ns12:RequestType>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                            </ns12:RequestType>
+                        </xsl:if>
+                    </ns12:InsertFileActivityLogWithRequestType>
+                </xsl:when>
+                <xsl:when test="$getReputation/group/return/status=&quot;Malicious_Migration&quot;">
+                    <ns12:InsertFileActivityLogWithRequestType>
+                        <ns12:serviceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                        </ns12:serviceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                            <ns12:fileSHA1>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                            </ns12:fileSHA1>
+                        </xsl:if>
+                        <ns12:stepTypeID>
+                            <xsl:value-of select="212"/>
+                        </ns12:stepTypeID>
+                        <ns12:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:message>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$getReputation/group/MessageKey"/>
+                        </ns12:MessageKey>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType">
+                            <ns12:RequestType>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                            </ns12:RequestType>
+                        </xsl:if>
+                    </ns12:InsertFileActivityLogWithRequestType>
+                </xsl:when>
+                <xsl:when test="$getReputation/group/return/status=&quot;Manual_Migration&quot;">
+                    <ns12:InsertFileActivityLogWithRequestType>
+                        <ns12:serviceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                        </ns12:serviceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                            <ns12:fileSHA1>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                            </ns12:fileSHA1>
+                        </xsl:if>
+                        <ns12:stepTypeID>
+                            <xsl:value-of select="213"/>
+                        </ns12:stepTypeID>
+                        <ns12:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:message>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$getReputation/group/MessageKey"/>
+                        </ns12:MessageKey>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType">
+                            <ns12:RequestType>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                            </ns12:RequestType>
+                        </xsl:if>
+                    </ns12:InsertFileActivityLogWithRequestType>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ns12:InsertFileActivityLogWithRequestType>
+                        <ns12:serviceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                        </ns12:serviceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                            <ns12:fileSHA1>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                            </ns12:fileSHA1>
+                        </xsl:if>
+                        <ns12:stepTypeID>
+                            <xsl:value-of select="291"/>
+                        </ns12:stepTypeID>
+                        <ns12:message>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:message>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$getReputation/group/MessageKey"/>
+                        </ns12:MessageKey>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType">
+                            <ns12:RequestType>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                            </ns12:RequestType>
+                        </xsl:if>
+                    </ns12:InsertFileActivityLogWithRequestType>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>247</pd:x>
+        <pd:y>523</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ErrorCode Handler">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>158</pd:x>
+        <pd:y>312</pd:y>
+        <config>
+            <processName>/ExternalServices/ToFRS/ErrorCode Handler.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ErrorCode>
+                    <xsl:value-of select="$getReputation/group/return/errorCode"/>
+                </ErrorCode>
+                <ReturnStatus>
+                    <xsl:value-of select="$getReputation/group/return/status"/>
+                </ReturnStatus>
+                <src>
+                    <xsl:value-of select="&quot;FRS SendGetFileReputationRequest\getReputation&quot;"/>
+                </src>
+                <isGetReputation>
+                    <xsl:value-of select="true()"/>
+                </isGetReputation>
+                <MessageKey>
+                    <xsl:value-of select="$getReputation/group/MessageKey"/>
+                </MessageKey>
+                <xsl:copy-of select="$Start/group/pfx19:SMF"/>
+                <ErrorRetryCount>
+                    <xsl:value-of select="$Start/group/ErrorRetryCount"/>
+                </ErrorRetryCount>
+                <IsCharonNP>
+                    <xsl:value-of select="'false'"/>
+                </IsCharonNP>
+                <ServiceId>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                </ServiceId>
+                <fileSha1>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                </fileSha1>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="getReputation">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>158</pd:x>
+        <pd:y>171</pd:y>
+        <config>
+            <processName>/ExternalServices/ToFRS/getReputation.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ServiceId>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFHeader/pfx19:MessageKey"/>
+                </ServiceId>
+                <SHA1>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                </SHA1>
+                <MessageKey>
+                    <xsl:value-of select="$Start/group/MessageKey"/>
+                </MessageKey>
+                <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:withCompetitorResult">
+                    <withCompetitorResult>
+                        <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:withCompetitorResult"/>
+                    </withCompetitorResult>
+                </xsl:if>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>389</pd:x>
+        <pd:y>520</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns7:ActivityInput>
+                <data>
+                    <ns9:Error>
+                        <ns9:src>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                        </ns9:src>
+                        <ns9:error_code>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                        </ns9:error_code>
+                        <ns9:error_message>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                        </ns9:error_message>
+                        <ns9:stack_trace>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                        </ns9:stack_trace>
+                    </ns9:Error>
+                </data>
+            </ns7:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>158</pd:x>
+        <pd:y>77</pd:y>
+        <config>
+            <variableName>processVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <continue>
+                    <xsl:value-of select="&quot;false&quot;"/>
+                </continue>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Continue True">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>460</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <variableName>processVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <continue>
+                    <xsl:value-of select="&quot;true&quot;"/>
+                </continue>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Continue False">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>457</pd:x>
+        <pd:y>313</pd:y>
+        <config>
+            <variableName>processVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <continue>
+                    <xsl:value-of select="&quot;false&quot;"/>
+                </continue>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Requery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>294</pd:x>
+        <pd:y>311</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Requery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <pfx19:SMF>
+                    <xsl:for-each select="$Start/group/pfx19:SMF/pfx19:SMFHeader">
+                        <pfx19:SMFHeader>
+                            <pfx19:MessageKey>
+                                <xsl:value-of select="pfx19:MessageKey"/>
+                            </pfx19:MessageKey>
+                            <pfx19:ServiceName>
+                                <xsl:value-of select="&quot;EventCenter&quot;"/>
+                            </pfx19:ServiceName>
+                            <pfx19:ServiceVersion>
+                                <xsl:value-of select="pfx19:ServiceVersion"/>
+                            </pfx19:ServiceVersion>
+                            <pfx19:SourceID>
+                                <xsl:value-of select="pfx19:SourceID"/>
+                            </pfx19:SourceID>
+                            <xsl:if test="pfx19:SourceIP">
+                                <pfx19:SourceIP>
+                                    <xsl:value-of select="pfx19:SourceIP"/>
+                                </pfx19:SourceIP>
+                            </xsl:if>
+                            <pfx19:RqTimestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </pfx19:RqTimestamp>
+                            <xsl:if test="pfx19:Priority">
+                                <pfx19:Priority>
+                                    <xsl:value-of select="pfx19:Priority"/>
+                                </pfx19:Priority>
+                            </xsl:if>
+                        </pfx19:SMFHeader>
+                    </xsl:for-each>
+                    <pfx19:SMFBody>
+                        <pfx19:Message>
+                            <pfx19:EventProcessMsg>
+                                <xsl:for-each select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying">
+                                    <pfx19:OnFileQuerying>
+                                        <pfx19:serviceId>
+                                            <xsl:value-of select="pfx19:serviceId"/>
+                                        </pfx19:serviceId>
+                                        <pfx19:fileSha1>
+                                            <xsl:value-of select="pfx19:fileSha1"/>
+                                        </pfx19:fileSha1>
+                                        <pfx19:filePath>
+                                            <xsl:value-of select="pfx19:filePath"/>
+                                        </pfx19:filePath>
+                                        <pfx19:fileMd5>
+                                            <xsl:value-of select="pfx19:fileMd5"/>
+                                        </pfx19:fileMd5>
+                                        <xsl:if test="pfx19:fileSha256">
+                                            <pfx19:fileSha256>
+                                                <xsl:value-of select="pfx19:fileSha256"/>
+                                            </pfx19:fileSha256>
+                                        </xsl:if>
+                                        <pfx19:requestType>
+                                            <xsl:value-of select="pfx19:requestType"/>
+                                        </pfx19:requestType>
+                                        <xsl:if test="pfx19:CUST_BRANCH">
+                                            <pfx19:CUST_BRANCH>
+                                                <xsl:value-of select="pfx19:CUST_BRANCH"/>
+                                            </pfx19:CUST_BRANCH>
+                                        </xsl:if>
+                                        <xsl:if test="pfx19:fileType">
+                                            <pfx19:fileType>
+                                                <xsl:value-of select="pfx19:fileType"/>
+                                            </pfx19:fileType>
+                                        </xsl:if>
+                                        <xsl:if test="pfx19:withCompetitorResult">
+                                            <pfx19:withCompetitorResult>
+                                                <xsl:value-of select="pfx19:withCompetitorResult"/>
+                                            </pfx19:withCompetitorResult>
+                                        </xsl:if>
+                                    </pfx19:OnFileQuerying>
+                                </xsl:for-each>
+                            </pfx19:EventProcessMsg>
+                        </pfx19:Message>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:XMLPayload">
+                            <pfx19:XMLPayload>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:XMLPayload"/>
+                            </pfx19:XMLPayload>
+                        </xsl:if>
+                        <xsl:copy-of select="$Start/group/pfx19:SMF/pfx19:SMFBody/pfx19:MessagePayload"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($ErrorCode-Handler)">
+                                <pfx19:Error>
+                                    <pfx19:src>
+                                        <xsl:value-of select="&quot;FRS SendGetFileReputationRequest\getReputation&quot;"/>
+                                    </pfx19:src>
+                                    <pfx19:error_code>
+                                        <xsl:value-of select="$getReputation/group/return/errorCode"/>
+                                    </pfx19:error_code>
+                                    <pfx19:error_message>
+                                        <xsl:value-of select="$ErrorCode-Handler/group/error_message"/>
+                                    </pfx19:error_message>
+                                </pfx19:Error>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx19:Error>
+                                    <pfx19:src>
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </pfx19:src>
+                                    <pfx19:error_code>
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </pfx19:error_code>
+                                    <pfx19:error_message>
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </pfx19:error_message>
+                                </pfx19:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:SessionID">
+                            <pfx19:SessionID>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:SessionID"/>
+                            </pfx19:SessionID>
+                        </xsl:if>
+                        <xsl:copy-of select="$Start/group/pfx19:SMF/pfx19:SMFBody/pfx19:EventMsg"/>
+                    </pfx19:SMFBody>
+                </pfx19:SMF>
+                <serviceID>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                </serviceID>
+                <MessageKey>
+                    <xsl:value-of select="$getReputation/group/MessageKey"/>
+                </MessageKey>
+                <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                    <filsSHA1>
+                        <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                    </filsSHA1>
+                </xsl:if>
+                <WaitingQueue>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/EventProcess/EventCenterWaitingQueue"/>
+                </WaitingQueue>
+                <DestinationQueue>
+                    <xsl:value-of select="concat($_globalVariables/ns3:GlobalVariables/EventProcess/EventCenterQueue, $_globalVariables/ns3:GlobalVariables/EventProcess/version)"/>
+                </DestinationQueue>
+                <RetryCount>
+                    <xsl:value-of select="$Start/group/RetryCount"/>
+                </RetryCount>
+                <ErrorRetryCount>
+                    <xsl:value-of select="$Start/group/ErrorRetryCount"/>
+                </ErrorRetryCount>
+                <xsl:choose>
+                    <xsl:when test="exists($ErrorCode-Handler)">
+                        <Charon_Result>
+                            <xsl:value-of select="&quot;Error&quot;"/>
+                        </Charon_Result>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <Charon_Result>
+                            <xsl:value-of select="$getReputation/group/return/status"/>
+                        </Charon_Result>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="not(exists($ErrorCode-Handler))">
+                        <isSendFilePath>
+                            <xsl:value-of select="&quot;true&quot;"/>
+                        </isSendFilePath>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <isSendFilePath>
+                            <xsl:value-of select="&quot;false&quot;"/>
+                        </isSendFilePath>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <StepTypeIdForStopRequery>
+                    <xsl:value-of select="273"/>
+                </StepTypeIdForStopRequery>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SubmitFileToCharon">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>458</pd:x>
+        <pd:y>422</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%ExternalServices/ToACS/SubmitFileToCharon/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application ForSubmitFileToCharon.sharedjmsapp</ApplicationProperties>
+            <InDataxsdString ref="ns12:SubmitFileToFRS"/>
+        </config>
+        <pd:inputBindings>
+            <ns10:ActivityInput>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$Start/group/MessageKey"/>
+                    </MessageKey>
+                </OtherProperties>
+                <Body>
+                    <ns12:SubmitFileToFRS>
+                        <ns12:serviceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                        </ns12:serviceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                            <ns12:FileSHA1>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                            </ns12:FileSHA1>
+                        </xsl:if>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileMd5">
+                            <ns12:FileMD5>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileMd5"/>
+                            </ns12:FileMD5>
+                        </xsl:if>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType">
+                            <ns12:RequestType>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                            </ns12:RequestType>
+                        </xsl:if>
+                    </ns12:SubmitFileToFRS>
+                </Body>
+            </ns10:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrorCodeIsCEG010">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>157</pd:x>
+        <pd:y>420</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="SendDBLog for CER010">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>318</pd:x>
+        <pd:y>428</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:InsertFileActivityLog>
+                <ns12:serviceID>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                </ns12:serviceID>
+                <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                    <ns12:fileSHA1>
+                        <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                    </ns12:fileSHA1>
+                </xsl:if>
+                <ns12:stepTypeID>
+                    <xsl:value-of select="93"/>
+                </ns12:stepTypeID>
+                <ns12:message>
+                    <xsl:value-of select="tib:render-xml($Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying, 1)"/>
+                </ns12:message>
+            </ns12:InsertFileActivityLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>getReputation</pd:from>
+        <pd:to>ErrorCode Handler</pd:to>
+        <pd:xpathDescription>Return Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$getReputation/group/return/status="Error"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorCode Handler</pd:from>
+        <pd:to>Requery</pd:to>
+        <pd:xpathDescription>Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3407821</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>getReputation</pd:from>
+        <pd:to>Call ACS File Log for Check File End Process</pd:to>
+        <pd:xpathDescription>Success</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call ACS File Log for Check File End Process</pd:from>
+        <pd:to>Continue True</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorCode Handler</pd:from>
+        <pd:to>ErrorCodeIsCEG010</pd:to>
+        <pd:xpathDescription>File Miss</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3407668</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$getReputation/group/return/errorCode='CER010'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>getReputation</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Continue True</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Continue False</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Requery</pd:from>
+        <pd:to>Continue False</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SubmitFileToCharon</pd:from>
+        <pd:to>Continue False</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorCodeIsCEG010</pd:from>
+        <pd:to>SendDBLog for CER010</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendDBLog for CER010</pd:from>
+        <pd:to>SubmitFileToCharon</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call ACS File Log for Check File End Process</pd:from>
+        <pd:to>Requery</pd:to>
+        <pd:xpathDescription>Analyzing</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$getReputation/group/return/status="Analyzing"</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

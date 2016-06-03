@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx10="AMSS Task Common WS" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx5="http://tempuri.org/" xmlns:pfx4="http://coretech.trendmicro.com/frs/charon/" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx2="http://Anti.Malware.Tracker-Service.org/" xmlns:pfx9="http://www.trendmicro.com/ESB/FRS/schemas/error" xmlns:pfx8="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx7="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:pfx6="http://www.trendmicro.com/ESB/schemas/error" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns6="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://xmlns.tibco.com/encodings/mime" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://coretech.trendmicro.com/frs/charon/" schemaLocation="/WSDL/Client/Charon.xsd"/>
+    <wsdl:import namespace="http://Anti.Malware.Tracker-Service.org/" location="/WSDL/Client/Atlas WSDL.wsdl"/>
+    <wsdl:import namespace="http://coretech.trendmicro.com/frs/charon/"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Client/Charon_Submit_New.wsdl"/>
+    <pd:name>ExternalServices/ToFRS/getReputation.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceId" type="xsd:string"/>
+                    <xsd:element name="SHA1" type="xsd:string"/>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element name="withCompetitorResult" type="xsd:boolean" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>63</pd:startX>
+    <pd:startY>223</pd:startY>
+    <pd:returnBindings>
+        <group>
+            <xsl:choose>
+                <xsl:when test="exists($_error_getReputation/ActivityErrors/pfx7:ActivityTimedOutException)">
+                    <return>
+                        <errorCode>
+                            <xsl:value-of select="&quot;timeout&quot;"/>
+                        </errorCode>
+                        <status>
+                            <xsl:value-of select="&quot;Error&quot;"/>
+                        </status>
+                    </return>
+                </xsl:when>
+                <xsl:otherwise>
+                    <return>
+                        <xsl:for-each select="$getReputation/outputMessage/pfx5:getReputationTrackable_allResponse/pfx5:getReputationTrackable_allResult/pfx5:branchInfo/pfx5:BranchInfo">
+                            <branchInfo>
+                                <xsl:if test="pfx5:branchName">
+                                    <branchName>
+                                        <xsl:value-of select="pfx5:branchName"/>
+                                    </branchName>
+                                </xsl:if>
+                                <xsl:if test="pfx5:detection">
+                                    <detection>
+                                        <xsl:value-of select="pfx5:detection"/>
+                                    </detection>
+                                </xsl:if>
+                                <xsl:if test="pfx5:version">
+                                    <version>
+                                        <xsl:value-of select="pfx5:version"/>
+                                    </version>
+                                </xsl:if>
+                            </branchInfo>
+                        </xsl:for-each>
+                        <xsl:if test="$getReputation/outputMessage/pfx5:getReputationTrackable_allResponse/pfx5:getReputationTrackable_allResult/pfx5:errorCode">
+                            <errorCode>
+                                <xsl:value-of select="$getReputation/outputMessage/pfx5:getReputationTrackable_allResponse/pfx5:getReputationTrackable_allResult/pfx5:errorCode"/>
+                            </errorCode>
+                        </xsl:if>
+                        <xsl:if test="$getReputation/outputMessage/pfx5:getReputationTrackable_allResponse/pfx5:getReputationTrackable_allResult/pfx5:status">
+                            <status>
+                                <xsl:value-of select="$getReputation/outputMessage/pfx5:getReputationTrackable_allResponse/pfx5:getReputationTrackable_allResult/pfx5:status"/>
+                            </status>
+                        </xsl:if>
+                        <xsl:if test="$getReputation/outputMessage/pfx5:getReputationTrackable_allResponse/pfx5:getReputationTrackable_allResult/pfx5:Branchstatus">
+                            <branchStatus>
+                                <xsl:value-of select="$getReputation/outputMessage/pfx5:getReputationTrackable_allResponse/pfx5:getReputationTrackable_allResult/pfx5:Branchstatus"/>
+                            </branchStatus>
+                        </xsl:if>
+                        <xsl:if test="$getReputation/outputMessage/pfx5:getReputationTrackable_allResponse/pfx5:getReputationTrackable_allResult/pfx5:scanTime">
+                            <scanTime>
+                                <xsl:value-of select="$getReputation/outputMessage/pfx5:getReputationTrackable_allResponse/pfx5:getReputationTrackable_allResult/pfx5:scanTime"/>
+                            </scanTime>
+                        </xsl:if>
+                    </return>
+                </xsl:otherwise>
+            </xsl:choose>
+            <MessageKey>
+                <xsl:value-of select="$Generate-MessageKey/RetryMessageKey"/>
+            </MessageKey>
+        </group>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="return" type="pfx4:reputationResult"/>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>612</pd:endX>
+    <pd:endY>221</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx6:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1319170120166</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>144</pd:x>
+        <pd:y>45</pd:y>
+        <pd:width>371</pd:width>
+        <pd:height>333</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>false() or exists($getReputation/outputMessage/pfx5:getReputationTrackable_allResponse/pfx5:getReputationTrackable_allResult)</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Generate MessageKey</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SendDBLog</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>getReputation</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate-Error-1</pd:to>
+            <pd:xpathDescription>Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i&gt;5 or ($i&lt;5 and $_error/ns1:ErrorReport/MsgCode!="BW-HTTP-100300" and $_error/ns1:ErrorReport/MsgCode !="SOAPPLUGIN-100002" )</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>SendDBLog</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Generate MessageKey</pd:from>
+            <pd:to>getReputation</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Generate MessageKey</pd:from>
+            <pd:to>Write File</pd:to>
+            <pd:xpathDescription>Log On</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$_globalVariables/ns3:GlobalVariables/ExternalServices/ToFRS/WebService/LogBeforeRQ = 'true'</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>getReputation</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Write File</pd:from>
+            <pd:to>getReputation</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Generate-Error-1">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>221</pd:x>
+            <pd:y>317</pd:y>
+            <config>
+                <faultName>errorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <xsl:choose>
+                    <xsl:when test="exists($_error_getReputation/ActivityErrors/defaultFaultElement/faultstring)">
+                        <ns:ActivityInput>
+                            <message>
+                                <xsl:value-of select="$_error_getReputation/ActivityErrors/defaultFaultElement/faultstring"/>
+                            </message>
+                            <messageCode>
+                                <xsl:value-of select="$_error_getReputation/ActivityErrors/defaultFaultElement/faultcode"/>
+                            </messageCode>
+                            <data>
+                                <pfx6:Error>
+                                    <pfx6:src>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                    </pfx6:src>
+                                    <pfx6:error_code>
+                                        <xsl:value-of select="$_error_getReputation/ActivityErrors/defaultFaultElement/faultcode"/>
+                                    </pfx6:error_code>
+                                    <pfx6:error_message>
+                                        <xsl:value-of select="concat(&quot;Charon response error: &quot;,$_error_getReputation/ActivityErrors/defaultFaultElement/faultstring)"/>
+                                    </pfx6:error_message>
+                                    <pfx6:stack_trace>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                    </pfx6:stack_trace>
+                                    <pfx6:traceMessageKey>
+                                        <xsl:value-of select="$Generate-MessageKey/RetryMessageKey"/>
+                                    </pfx6:traceMessageKey>
+                                </pfx6:Error>
+                            </data>
+                        </ns:ActivityInput>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns:ActivityInput>
+                            <message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                            </message>
+                            <messageCode>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </messageCode>
+                            <data>
+                                <pfx6:Error>
+                                    <pfx6:src>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                    </pfx6:src>
+                                    <pfx6:error_code>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                    </pfx6:error_code>
+                                    <pfx6:error_message>
+                                        <xsl:value-of select="concat(&quot;BW response error: &quot;,$_error/ns1:ErrorReport/Msg)"/>
+                                    </pfx6:error_message>
+                                    <pfx6:stack_trace>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                    </pfx6:stack_trace>
+                                    <pfx6:traceMessageKey>
+                                        <xsl:value-of select="$Generate-MessageKey/RetryMessageKey"/>
+                                    </pfx6:traceMessageKey>
+                                </pfx6:Error>
+                            </data>
+                        </ns:ActivityInput>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>309</pd:x>
+            <pd:y>222</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>354</pd:x>
+            <pd:y>315</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/ExternalServices/ToFRS/WebService/RetryInterval_secs * 1000"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="SendDBLog">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>454</pd:x>
+            <pd:y>319</pd:y>
+            <config>
+                <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx5:InsertFileActivityLogWithRequestType>
+                    <pfx5:serviceID>
+                        <xsl:value-of select="$Start/group/ServiceId"/>
+                    </pfx5:serviceID>
+                    <pfx5:fileSHA1>
+                        <xsl:value-of select="$Start/group/SHA1"/>
+                    </pfx5:fileSHA1>
+                    <pfx5:stepTypeID>
+                        <xsl:value-of select="281"/>
+                    </pfx5:stepTypeID>
+                    <pfx5:message>
+                        <xsl:value-of select="concat(&quot;BW Retry. Error Message=&quot;,$_error/ns1:ErrorReport/Msg)"/>
+                    </pfx5:message>
+                    <pfx5:MessageKey>
+                        <xsl:value-of select="$Generate-MessageKey/RetryMessageKey"/>
+                    </pfx5:MessageKey>
+                    <pfx5:RequestType>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </pfx5:RequestType>
+                </pfx5:InsertFileActivityLogWithRequestType>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate MessageKey">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>252</pd:x>
+            <pd:y>126</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="RetryMessageKey" type="xsd:string"/>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:when test="$i=1">
+                        <RetryMessageKey>
+                            <xsl:value-of select="$Start/group/MessageKey"/>
+                        </RetryMessageKey>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <RetryMessageKey>
+                            <xsl:value-of select="TM:getGUID()"/>
+                        </RetryMessageKey>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Write File">
+            <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+            <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+            <pd:x>421</pd:x>
+            <pd:y>221</pd:y>
+            <config>
+                <encoding>text</encoding>
+                <compressFile>None</compressFile>
+                <append>true</append>
+                <createMissingDirectories>true</createMissingDirectories>
+            </config>
+            <pd:inputBindings>
+                <ns6:WriteActivityInputTextClass>
+                    <fileName>
+                        <xsl:value-of select="concat($_globalVariables/ns3:GlobalVariables/ExternalServices/ToFRS/WebService/LogFilePath_GetReputaion, 'getReputation_', tib:format-date('yyyyMMdd', current-date()),  '.txt')"/>
+                    </fileName>
+                    <textContent>
+                        <xsl:value-of select="concat('TimeStamp: ', current-dateTime(), ', ServiceId: ', $Start/group/ServiceId, ', SHA1: ', $Start/group/SHA1, ', MessageKey: ', $Generate-MessageKey/RetryMessageKey)"/>
+                    </textContent>
+                    <addLineSeparator>
+                        <xsl:value-of select="1"/>
+                    </addLineSeparator>
+                </ns6:WriteActivityInputTextClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="getReputation">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>440</pd:x>
+            <pd:y>118</pd:y>
+            <config>
+                <timeout>60</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx5:CharonWebService</service>
+                <servicePort>CharonWebServiceSoap</servicePort>
+                <operation>getReputationTrackable_all</operation>
+                <soapAction>http://tempuri.org/getReputationTrackable_all</soapAction>
+                <endpointURL>%%ExternalServices/ToFRS/WebService/EndpointURL_get%%</endpointURL>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <ns4:_configData>
+                        <endpointURL>
+                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/ExternalServices/ToFRS/WebService/EndpointURL_get"/>
+                        </endpointURL>
+                        <timeout>
+                            <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/ExternalServices/ToFRS/WebService/Timeout"/>
+                        </timeout>
+                    </ns4:_configData>
+                    <pfx5:getReputationTrackable_all>
+                        <pfx5:ServiceID>
+                            <xsl:value-of select="$Start/group/ServiceId"/>
+                        </pfx5:ServiceID>
+                        <pfx5:sha1>
+                            <xsl:value-of select="$Start/group/SHA1"/>
+                        </pfx5:sha1>
+                        <pfx5:messageKey>
+                            <xsl:value-of select="$Generate-MessageKey/RetryMessageKey"/>
+                        </pfx5:messageKey>
+                        <pfx5:withCompetitorResult>
+                            <xsl:value-of select="tib:if-absent($Start/group/withCompetitorResult, false())"/>
+                        </pfx5:withCompetitorResult>
+                    </pfx5:getReputationTrackable_all>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>758</pd:x>
+        <pd:y>337</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx6:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Data/pfx6:Error/pfx6:error_message"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Data/pfx6:Error/pfx6:error_code"/>
+                </messageCode>
+                <data>
+                    <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx6:Error"/>
+                </data>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Check Timeout">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>611</pd:x>
+        <pd:y>338</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Check Timeout</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Timeout</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Timeout</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>Timeout</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($_error_getReputation/ActivityErrors/pfx7:ActivityTimedOutException)</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

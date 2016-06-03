@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx2="JP Common WS" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns02="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="JP Common WS" schemaLocation="/WSDL/Client/JP Common WS_WS.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/ToGCC/UPDATE_GCCJP_CUSTOMER.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:SMF"/>
+    <pd:startX>88</pd:startX>
+    <pd:startY>205</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Parse-XML/pfx2:JP-TS_spcComm_spcWS_JP_QuerySR_Output"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endX>375</pd:endX>
+    <pd:endY>210</pd:endY>
+    <pd:errorSchemas>
+        <error ref="pfx3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1385364389570</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>241</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/NeuronService/GCC/JPCustomer/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="tib:render-xml($Start/pfx:SMF, true())"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>233</pd:x>
+        <pd:y>333</pd:y>
+        <config>
+            <faultName>error</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns02:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <pfx3:Error>
+                        <pfx3:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx3:src>
+                        <pfx3:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx3:error_code>
+                        <pfx3:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx3:error_message>
+                        <pfx3:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx3:stack_trace>
+                    </pfx3:Error>
+                </data>
+            </ns02:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-6737152</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns9="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" xmlns:ns5="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns6="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns13="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns7="http://www.trendmicro.com/ESB/NIS/schemas/SMF" xmlns:pfx="http://tempuri.org/" xmlns:ns8="http://www.trendmicro.com/EventMsg" xmlns:ns2="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/GetAMSSToBeCreatedResponse" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/InsertSRNumberResponse" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/IsNeuonCaseATTKResponse" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" xmlns:pfx7="http://www.tibco.com/pe/CheckpointSchema" xmlns:pfx6="http://xmlns.tibco.com/body">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" schemaLocation="/XSD/Common/SRCreatedCallbackRQ.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <pd:name>EventProcess/PSC_G2/FRS/OnCaseCreated.process</pd:name>
+    <pd:description>2.0 SR Created Callback</pd:description>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>66</pd:x>
+        <pd:y>36</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%EventProcess/OnCaseCreatedQueue%%%%EventProcess/version%%</destination>
+                <selector>JMSXGroupID='%%EventProcess/PSC_G2/FRS/Consumer%%'</selector>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="ns13:SMF"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>683</pd:endX>
+    <pd:endY>306</pd:endY>
+    <pd:errorSchemas>
+        <Error ref="ns3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <Variable0>
+            <xsd:element name="mailSwitch" type="xsd:boolean"/>
+        </Variable0>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1363317854865</pd:targetNamespace>
+    <pd:group name="Group (1)">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>806</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>226</pd:width>
+        <pd:height>147</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$GetAMSSToBeCreated/ns2:Resultsets/ns2:ResultSet1/ns2:Record1</pd:over>
+            <pd:iterationElementSlot>currentRecord</pd:iterationElementSlot>
+            <pd:indexSlot>j</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>CreateAMSSTasks</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CreateAMSSTasks</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="CreateAMSSTasks">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>924</pd:x>
+            <pd:y>82</pd:y>
+            <config>
+                <processName>/ExternalServices/ToACS/CreateAMSSTasks.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <ServiceID>
+                        <xsl:value-of select="$currentRecord/ns2:Record1/ns2:ServiceId"/>
+                    </ServiceID>
+                    <FileSHA1>
+                        <xsl:value-of select="$currentRecord/ns2:Record1/ns2:FileSHA1"/>
+                    </FileSHA1>
+                    <TaskType>
+                        <xsl:value-of select="$currentRecord/ns2:Record1/ns2:TaskType"/>
+                    </TaskType>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Call ACS Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>300</pd:x>
+        <pd:y>163</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx:InsertTaskLog>
+                <pfx:serviceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:serviceId"/>
+                </pfx:serviceID>
+                <pfx:stepTypeID>
+                    <xsl:value-of select="if($InsertSRNumber/pfx4:Resultsets/pfx4:ResultSet1/pfx4:Record1[1]/pfx4:IsSuccess = 'false') then&#xA;&#x9;235&#xA;else&#xA;&#x9;35"/>
+                </pfx:stepTypeID>
+                <xsl:if test="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:SRNumber">
+                    <pfx:message>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:SRNumber"/>
+                    </pfx:message>
+                </xsl:if>
+            </pfx:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetAMSSToBeCreated">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>522</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetAMSSToBeCreated.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GetAMSSToBeCreated_Input>
+                <ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:serviceId"/>
+                </ServiceId>
+            </GetAMSSToBeCreated_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InsertSRNumber">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>196</pd:x>
+        <pd:y>155</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/InsertSRNumber.process</processName>
+        </config>
+        <pd:inputBindings>
+            <InsertSRNumber_Input>
+                <ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:serviceId"/>
+                </ServiceId>
+                <SRNumber>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:SRNumber"/>
+                </SRNumber>
+            </InsertSRNumber_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>238</pd:x>
+        <pd:y>301</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>346</pd:x>
+        <pd:y>301</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;SRNumber:&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:SRNumber,&quot;,ServiceId&quot;,$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:serviceId,&quot;,StackTrace:&quot;,$_error/ns4:ErrorReport/StackTrace)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="'SRCreatedCallbackError'"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateSLAStatus">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>919</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpdateSLAStatus.process</processName>
+        </config>
+        <pd:inputBindings>
+            <UpdateSLAStatus_Input>
+                <ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:serviceId"/>
+                </ServiceId>
+                <SLAStatus>
+                    <xsl:value-of select="'SLAComplete'"/>
+                </SLAStatus>
+            </UpdateSLAStatus_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Have_GetAMSSToBeCreated_Result">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>670</pd:x>
+        <pd:y>83</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="UpdateSRType">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>401</pd:x>
+        <pd:y>155</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/UpdateSRType.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SRNumber>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:SRNumber"/>
+                </SRNumber>
+                <ServiceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:serviceId"/>
+                </ServiceID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Checkpoint">
+        <pd:type>com.tibco.pe.core.CheckpointActivity</pd:type>
+        <pd:resourceType>ae.process.checkpoint</pd:resourceType>
+        <pd:x>66</pd:x>
+        <pd:y>155</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <pfx7:input/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CallEventLogProcessEnd">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>678</pd:x>
+        <pd:y>212</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns9:InsertNeuronEventLog>
+                <ns9:ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:EventMsg/ns13:ServiceID"/>
+                </ns9:ServiceId>
+                <ns9:Consumer>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:EventMsg/ns13:Consumer"/>
+                </ns9:Consumer>
+                <ns9:FILESHA1>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </ns9:FILESHA1>
+                <ns9:EventId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:EventMsg/ns13:EventStepTypeId"/>
+                </ns9:EventId>
+                <ns9:TypeId>
+                    <xsl:value-of select="&quot;9&quot;"/>
+                </ns9:TypeId>
+                <ns9:EventKey>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:EventMsg/ns13:EventKey"/>
+                </ns9:EventKey>
+                <ns9:Log>
+                    <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF, true())"/>
+                </ns9:Log>
+            </ns9:InsertNeuronEventLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CallEventLogProcessFail">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>464</pd:x>
+        <pd:y>305</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns9:InsertNeuronEventLog>
+                <ns9:ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:EventMsg/ns13:ServiceID"/>
+                </ns9:ServiceId>
+                <ns9:Consumer>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:EventMsg/ns13:Consumer"/>
+                </ns9:Consumer>
+                <ns9:FILESHA1>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </ns9:FILESHA1>
+                <ns9:EventId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:EventMsg/ns13:EventStepTypeId"/>
+                </ns9:EventId>
+                <ns9:TypeId>
+                    <xsl:value-of select="&quot;4&quot;"/>
+                </ns9:TypeId>
+                <ns9:EventKey>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:EventMsg/ns13:EventKey"/>
+                </ns9:EventKey>
+                <ns9:Log>
+                    <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF, true())"/>
+                </ns9:Log>
+            </ns9:InsertNeuronEventLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Error Mail">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>581</pd:x>
+        <pd:y>306</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/Subprocesses/SendMailQueue.process</processName>
+        </config>
+        <pd:inputBindings>
+            <mail>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/to"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="concat(&quot;[&quot;,$_globalVariables/ns:GlobalVariables/ESBBW/Environment,&quot;-&quot;,$_globalVariables/ns:GlobalVariables/ESBBW/ProjectName,&quot;]&quot;, &quot;BW Process Error at :&quot;, $_error/ns4:ErrorReport/ProcessStack)"/>
+                </subject>
+                <xsl:choose>
+                    <xsl:when test="exists($_error/ns4:ErrorReport/Data)">
+                        <MailBody>
+                            <xsl:value-of select="concat(&#xA;&quot;Process Name:  SRCreatedCallback&quot;,  &quot;&#xD;&quot;, &#xA;&quot;Process locate:&quot;, $_error/ns4:ErrorReport/Data/ns3:Error/ns3:src, &quot;&#xD;&quot;,&#xA;&quot;SERVICE_ID:  &quot;, $JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:serviceId, &quot;&#xD;&quot;, &#xA;&quot;SRNumber:  &quot;, $JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:SRNumber, &quot;&#xD;&quot;, &#xA;&quot;&#xD;&quot;, &#xA;&quot;Error Detail:&#xD;&quot;,&#xA;$_error/ns4:ErrorReport/Data/ns3:Error/ns3:error_message,  &quot;&#xD;&quot;,&#xA;$_error/ns4:ErrorReport/Data/ns3:Error/ns3:stack_trace,  &quot;&#xD;&quot;,&#xA;&quot;&#xD;&quot;, &#xA;&quot;Regards,&quot;,  &quot;&#xD;&quot;, &#xA;&quot;Trend Micro&quot;, &quot;&#xD;&quot;&#xA;)"/>
+                        </MailBody>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <MailBody>
+                            <xsl:value-of select="concat(&#xA;&quot;Process Name:  SRCreatedCallback&quot;,  &quot;&#xD;&quot;, &#xA;&quot;Process locate:&quot;, $_error/ns4:ErrorReport/ProcessStack, &quot;&#xD;&quot;,&#xA;&quot;SERVICE_ID:  &quot;, $JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:serviceId, &quot;&#xD;&quot;, &#xA;&quot;SRNumber:  &quot;, $JMS-Queue-Receiver/ns1:ActivityOutput/Body/ns13:SMF/ns13:SMFBody[1]/ns13:Message/ns13:EventProcessMsg/ns13:OnCaseCreated/ns13:SRNumber, &quot;&#xD;&quot;, &#xA;&quot;&#xD;&quot;, &#xA;&quot;Error Detail:&#xD;&quot;,&#xA;$_error/ns4:ErrorReport/Data/ns3:Error/ns3:error_message,  &quot;&#xD;&quot;,&#xA;$_error/ns4:ErrorReport/Data/ns3:Error/ns3:stack_trace,  &quot;&#xD;&quot;,&#xA;&quot;&#xD;&quot;, &#xA;&quot;Regards,&quot;,  &quot;&#xD;&quot;, &#xA;&quot;Trend Micro&quot;, &quot;&#xD;&quot;&#xA;)"/>
+                        </MailBody>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </mail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Call ACS Log Process</pd:from>
+        <pd:to>UpdateSRType</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertSRNumber</pd:from>
+        <pd:to>Call ACS Log Process</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetAMSSToBeCreated</pd:from>
+        <pd:to>Have_GetAMSSToBeCreated_Result</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group (1)</pd:from>
+        <pd:to>UpdateSLAStatus</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateSLAStatus</pd:from>
+        <pd:to>CallEventLogProcessEnd</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Have_GetAMSSToBeCreated_Result</pd:from>
+        <pd:to>Group (1)</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($GetAMSSToBeCreated/ns2:Resultsets/ns2:ResultSet1/ns2:Record1)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Have_GetAMSSToBeCreated_Result</pd:from>
+        <pd:to>CallEventLogProcessEnd</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateSRType</pd:from>
+        <pd:to>GetAMSSToBeCreated</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>CallEventLogProcessFail</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Checkpoint</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checkpoint</pd:from>
+        <pd:to>InsertSRNumber</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallEventLogProcessEnd</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallEventLogProcessFail</pd:from>
+        <pd:to>Send Error Mail</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Error Mail</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

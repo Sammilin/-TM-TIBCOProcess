@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://tempuri.org/" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/schemas/JP_ACSService2.1/EventProcess/SubProcess/GCCJPGetConsumerDetail.xsd" xmlns:ns="http://www.tibco.com/schemas/JP_ACSService2.1/XSD/Common/EvnetMsg/Schema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>EventProcess/SubProcess/GetUpdateAccountActyInfo.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="AccountActivityId" type="xsd:string"/>
+                    <xsd:element name="SRNumber" type="xsd:string"/>
+                    <xsd:element name="SRType" type="xsd:string"/>
+                    <xsd:element name="ServiceID" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>100</pd:startX>
+    <pd:startY>84</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Result/root"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="SRROWID" type="xsd:string"/>
+                    <xsd:element name="ACCOUNT_INTEGRATION_ID" type="xsd:string"/>
+                    <xsd:element name="SUB_STATUS" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>814</pd:endX>
+    <pd:endY>108</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Result>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="SRROWID" type="xsd:string"/>
+                        <xsd:element name="ACCOUNT_INTEGRATION_ID" type="xsd:string"/>
+                        <xsd:element name="SUB_STATUS" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Result>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1433321615150</pd:targetNamespace>
+    <pd:activity name="GCCJP_GetAccountIntegrationID">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>84</pd:y>
+        <config>
+            <processName>/EventProcess/SubProcess/GCCJP_GetAccountIntegrationID.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <account_activity_ID>
+                    <xsl:value-of select="$Start/root/AccountActivityId"/>
+                </account_activity_ID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GCCJPGetConsumerSRDetails">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>449</pd:x>
+        <pd:y>178</pd:y>
+        <config>
+            <processName>/EventProcess/SubProcess/GCCJPGetConsumerSRDetails.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SRNumber>
+                    <xsl:value-of select="$Start/root/SRNumber"/>
+                </SRNumber>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GCCJPGetCorpSRDetails">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>453</pd:x>
+        <pd:y>53</pd:y>
+        <config>
+            <processName>/EventProcess/SubProcess/GCCJPGetCorpSRDetails.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SRNumber>
+                    <xsl:value-of select="$Start/root/SRNumber"/>
+                </SRNumber>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call DB Log Process_38">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>705</pd:x>
+        <pd:y>118</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns2:InsertTaskLog>
+                <ns2:serviceID>
+                    <xsl:value-of select="$Start/root/ServiceID"/>
+                </ns2:serviceID>
+                <ns2:stepTypeID>
+                    <xsl:value-of select="38"/>
+                </ns2:stepTypeID>
+                <ns2:message>
+                    <xsl:value-of select="tib:render-xml($Result/root, 1)"/>
+                </ns2:message>
+            </ns2:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>583</pd:x>
+        <pd:y>115</pd:y>
+        <config>
+            <variableName>Result</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:choose>
+                    <xsl:when test="upper-case($Start/root/SRType)=&quot;CORPORATE&quot;">
+                        <SRROWID>
+                            <xsl:value-of select="$GCCJPGetCorpSRDetails/Result/ns:GCCJPGetCorpSRDetails[1]/ns:SRRowId"/>
+                        </SRROWID>
+                        <ACCOUNT_INTEGRATION_ID>
+                            <xsl:value-of select="$GCCJP_GetAccountIntegrationID/root/ACCOUNT_INTEGRATION_ID"/>
+                        </ACCOUNT_INTEGRATION_ID>
+                        <SUB_STATUS>
+                            <xsl:value-of select="$GCCJPGetCorpSRDetails/Result/ns:GCCJPGetCorpSRDetails[1]/ns:Sub-Status"/>
+                        </SUB_STATUS>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <SRROWID>
+                            <xsl:value-of select="$GCCJPGetConsumerSRDetails/Result/ns1:GCCJPGetConsumerDetails[1]/ns1:SRID"/>
+                        </SRROWID>
+                        <ACCOUNT_INTEGRATION_ID>
+                            <xsl:value-of select="$GCCJP_GetAccountIntegrationID/root/ACCOUNT_INTEGRATION_ID"/>
+                        </ACCOUNT_INTEGRATION_ID>
+                        <SUB_STATUS>
+                            <xsl:value-of select="$GCCJPGetConsumerSRDetails/Result/ns1:GCCJPGetConsumerDetails[1]/ns1:SUB-STATUS"/>
+                        </SUB_STATUS>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call-DB-Log-Process_38-start">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>160</pd:x>
+        <pd:y>173</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns2:InsertTaskLog>
+                <ns2:serviceID>
+                    <xsl:value-of select="$Start/root/ServiceID"/>
+                </ns2:serviceID>
+                <ns2:stepTypeID>
+                    <xsl:value-of select="38"/>
+                </ns2:stepTypeID>
+                <ns2:message>
+                    <xsl:value-of select="tib:render-xml($Start/root, 1)"/>
+                </ns2:message>
+            </ns2:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call-DB-Log-Process_38-start</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GCCJP_GetAccountIntegrationID</pd:from>
+        <pd:to>GCCJPGetCorpSRDetails</pd:to>
+        <pd:xpathDescription>CORPORATE</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>upper-case($Start/root/SRType)="CORPORATE"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GCCJP_GetAccountIntegrationID</pd:from>
+        <pd:to>GCCJPGetConsumerSRDetails</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GCCJPGetConsumerSRDetails</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GCCJPGetCorpSRDetails</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call DB Log Process_38</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Call DB Log Process_38</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call-DB-Log-Process_38-start</pd:from>
+        <pd:to>GCCJP_GetAccountIntegrationID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

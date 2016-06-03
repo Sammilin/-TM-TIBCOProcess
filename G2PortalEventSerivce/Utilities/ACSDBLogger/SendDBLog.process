@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://tempuri.org/" xmlns:pfx2="http://www.trendmicro.com/ESB/FRS/schemas/DBLogger" xmlns:pfx6="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/FRS/schemas/SMF" schemaLocation="/XSD/Common/SMFV1.1.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/FRS/schemas/DBLogger" schemaLocation="/XSD/Common/logger.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://tempuri.org/"/>
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/ACS WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" schemaLocation="/XSD/Common/InsertNeuronEventLog.xsd"/>
+    <pd:name>Utilities/ACSDBLogger/SendDBLog.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:choice>
+            <xsd:element ref="pfx3:InsertFileActivityLog"/>
+            <xsd:element ref="pfx3:InsertTaskLog"/>
+            <xsd:element ref="pfx3:InsertFileActivityLogWithRequestType"/>
+            <xsd:element ref="pfx6:InsertNeuronEventLog"/>
+        </xsd:choice>
+    </pd:startType>
+    <pd:startX>153</pd:startX>
+    <pd:startY>65</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>448</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas>
+        <errReport ref="pfx5:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1279791983608</pd:targetNamespace>
+    <pd:activity name="SendtoACSDBLogger">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>292</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/ACSDBLogger/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString>
+                <xsd:element name="group">
+                    <xsd:complexType>
+                        <xsd:choice>
+                            <xsd:element ref="pfx3:InsertFileActivityLog"/>
+                            <xsd:element ref="pfx3:InsertTaskLog"/>
+                            <xsd:element ref="pfx3:InsertFileActivityLogWithRequestType"/>
+                            <xsd:element ref="pfx6:InsertNeuronEventLog"/>
+                        </xsd:choice>
+                    </xsd:complexType>
+                </xsd:element>
+            </InDataxsdString>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <group>
+                        <xsl:copy-of select="$Start/*"/>
+                    </group>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>333</pd:x>
+        <pd:y>190</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat($_error/ns1:ErrorReport/Msg,&quot;&lt;BR>&quot;,$_error/ns1:ErrorReport/StackTrace)"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>215</pd:x>
+        <pd:y>189</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Call Send Mail Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>446</pd:x>
+        <pd:y>198</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/Subprocesses/SendMailQueue.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:variable name="serviceID" select="if(exists($Start/pfx3:InsertFileActivityLog)) then&#xA;$Start/pfx3:InsertFileActivityLog/pfx3:serviceID&#xA;else if(exists($Start/pfx3:InsertTaskLog)) then&#xA;$Start/pfx3:InsertTaskLog/pfx3:serviceID&#xA;else if(exists($Start/pfx6:InsertNeuronEventLog)) then&#xA;$Start/pfx6:InsertNeuronEventLog/pfx6:ServiceId&#xA;else&#xA;$Start/pfx3:InsertFileActivityLogWithRequestType/pfx3:serviceID"/>
+            <xsl:variable name="stepTypeID" select="if(exists($Start/pfx3:InsertFileActivityLog)) then&#xA;$Start/pfx3:InsertFileActivityLog/pfx3:stepTypeID&#xA;else if(exists($Start/pfx3:InsertTaskLog)) then&#xA;$Start/pfx3:InsertTaskLog/pfx3:stepTypeID&#xA;else if(exists($Start/pfx6:InsertNeuronEventLog)) then&#xA;concat($Start/pfx6:InsertNeuronEventLog/pfx6:EventId,$Start/pfx6:InsertNeuronEventLog/pfx6:TypeId)&#xA;else&#xA;$Start/pfx3:InsertFileActivityLogWithRequestType/pfx3:stepTypeID"/>
+            <xsl:variable name="message" select="if(exists($Start/pfx3:InsertFileActivityLog)) then&#xA;$Start/pfx3:InsertFileActivityLog/pfx3:message&#xA;else if(exists($Start/pfx3:InsertTaskLog)) then&#xA;$Start/pfx3:InsertTaskLog/pfx3:message&#xA;else if(exists($Start/pfx6:InsertNeuronEventLog)) then&#xA;$Start/pfx6:InsertNeuronEventLog/pfx6:EventKey&#xA;else&#xA;$Start/pfx3:InsertFileActivityLogWithRequestType/pfx3:message"/>
+            <mail>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/Utilities/MailNotify/to"/>
+                </to>
+                <cc>
+                    <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/Utilities/MailNotify/cc"/>
+                </cc>
+                <subject>
+                    <xsl:value-of select="concat(&#xA;&quot;[&quot;, $_globalVariables/ns2:GlobalVariables/ESBBW/Environment,&quot;-&quot;, $_globalVariables/ns2:GlobalVariables/ESBBW/ProjectName, &quot;] &quot;,&quot;Send Log Queue Error&quot;&#xA;)"/>
+                </subject>
+                <MailBody>
+                    <xsl:value-of select="concat(&#xA;&quot;ServiceID: &quot;,$serviceID,  &quot;&lt;BR>&quot;, &#xA;(if(exists($Start/pfx3:InsertFileActivityLog) or exists($Start/pfx3:InsertFileActivityLogWithRequestType)) then&#xA;&#x9;concat(&quot;fileSHA1: &quot;, tib:if-absent($Start/pfx3:InsertFileActivityLog/pfx3:fileSHA1,$Start/pfx3:InsertFileActivityLogWithRequestType/pfx3:fileSHA1),  &quot;&lt;BR>&quot;)&#xA;else &quot;&quot;&#xA;), &#xA;&quot;stepTypeID: &quot;,  $stepTypeID,  &quot;&lt;BR>&quot;, &#xA;&quot;message: &quot;, $message,  &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;Error Description:&lt;BR>&quot;,&#xA;&quot;&lt;font color = '#FF0000'> &quot;,$_error/ns1:ErrorReport/Msg,  &quot;&lt;/font>&lt;BR>&quot;, &#xA;&quot;&lt;font color = '#FF0000'> &quot;,$_error/ns1:ErrorReport/StackTrace,  &quot;&lt;/font>&lt;BR>&quot;, &#xA; &quot;&lt;BR>&quot;, &#xA;&quot;Regards,&quot;,  &quot;&lt;BR>&quot;, &#xA;&quot;Trend Micro&quot;, &quot;&lt;BR>&quot;&#xA;)"/>
+                </MailBody>
+            </mail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SendtoACSDBLogger</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendtoACSDBLogger</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Call Send Mail Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Send Mail Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

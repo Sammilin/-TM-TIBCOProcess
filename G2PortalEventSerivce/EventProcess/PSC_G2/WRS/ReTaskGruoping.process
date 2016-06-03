@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/Schema.xsd" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetURLReputationResult.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetURLReputationResult.xsd" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetURLReputationResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/Schema.xsd" schemaLocation="/EventProcess/SubProcess/WRSFTPFormat.xsd"/>
+    <pd:name>EventProcess/PSC_G2/WRS/ReTaskGruoping.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="URL" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="URLID" type="xsd:string"/>
+                                <xsd:element name="CaseType" type="xsd:string"/>
+                                <xsd:element name="Title" type="xsd:string"/>
+                                <xsd:element name="SubmissionType" type="xsd:string"/>
+                                <xsd:element name="URLStatus" type="xsd:string"/>
+                                <xsd:element name="TaskType" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>114</pd:startX>
+    <pd:startY>165</pd:startY>
+    <pd:returnBindings>
+        <AccumulatedOutput>
+            <xsl:copy-of select="$TotalTasks/AccumulatedOutput/group"/>
+        </AccumulatedOutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="AccumulatedOutput">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="group" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Task" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="URLs" minOccurs="0" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="URLID" type="xsd:string"/>
+                                                        <xsd:element name="URLStatus" type="xsd:string"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="CaseType" type="xsd:string"/>
+                                            <xsd:element name="SubmissionType" type="xsd:string"/>
+                                            <xsd:element name="Title" type="xsd:string"/>
+                                        </xsd:sequence>
+                                        <xsd:attribute name="TaskType" type="xsd:string" use="required"/>
+                                        <xsd:attribute name="count" type="xsd:string" use="required"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1133</pd:endX>
+    <pd:endY>186</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <taskInfo>
+            <xsd:element name="URL">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="URLID" type="xsd:string"/>
+                        <xsd:element name="CaseType" type="xsd:string"/>
+                        <xsd:element name="Title" type="xsd:string"/>
+                        <xsd:element name="SubmissionType" type="xsd:string"/>
+                        <xsd:element name="URLStatus" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </taskInfo>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1427366909886</pd:targetNamespace>
+    <pd:activity name="TaskGrouping">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>235</pd:x>
+        <pd:y>165</pd:y>
+        <config>
+            <element>
+                <xsd:element name="group">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Task" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="URLs" minOccurs="0" maxOccurs="unbounded">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="URLID" type="xsd:string"/>
+                                                    <xsd:element name="URLStatus" type="xsd:string"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="CaseType" type="xsd:string"/>
+                                        <xsd:element name="SubmissionType" type="xsd:string"/>
+                                        <xsd:element name="Title" type="xsd:string"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="TaskType" type="xsd:string" use="required"/>
+                                    <xsd:attribute name="count" type="xsd:string" use="required"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <xsl:for-each-group select="$Start/group/URL" group-by="TaskType">
+                    <xsl:choose>
+                        <xsl:when test="count(current-group()) >$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/TaskUrlCount">
+                            <Task>
+                                <xsl:attribute name="TaskType">
+                                    <xsl:value-of select="current-group()[1]/TaskType"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="count">
+                                    <xsl:value-of select="ceiling(count(current-group()) div $_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/TaskUrlCount)"/>
+                                </xsl:attribute>
+                                <xsl:for-each select="current-group()">
+                                    <URLs>
+                                        <URLID>
+                                            <xsl:value-of select="URLID"/>
+                                        </URLID>
+                                        <URLStatus>
+                                            <xsl:value-of select="URLStatus"/>
+                                        </URLStatus>
+                                    </URLs>
+                                </xsl:for-each>
+                                <CaseType>
+                                    <xsl:value-of select="current-group()[1]/CaseType"/>
+                                </CaseType>
+                                <SubmissionType>
+                                    <xsl:value-of select="current-group()[1]/SubmissionType"/>
+                                </SubmissionType>
+                                <Title>
+                                    <xsl:value-of select="current-group()[1]/Title"/>
+                                </Title>
+                            </Task>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <Task>
+                                <xsl:attribute name="TaskType">
+                                    <xsl:value-of select="current-group()[1]/TaskType"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="count">
+                                    <xsl:value-of select="1"/>
+                                </xsl:attribute>
+                                <xsl:for-each select="current-group()">
+                                    <URLs>
+                                        <URLID>
+                                            <xsl:value-of select="URLID"/>
+                                        </URLID>
+                                        <URLStatus>
+                                            <xsl:value-of select="URLStatus"/>
+                                        </URLStatus>
+                                    </URLs>
+                                </xsl:for-each>
+                                <CaseType>
+                                    <xsl:value-of select="current-group()[1]/CaseType"/>
+                                </CaseType>
+                                <SubmissionType>
+                                    <xsl:value-of select="current-group()[1]/SubmissionType"/>
+                                </SubmissionType>
+                                <Title>
+                                    <xsl:value-of select="current-group()[1]/Title"/>
+                                </Title>
+                            </Task>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each-group>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="ReGroupTask">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>323</pd:x>
+        <pd:y>69</pd:y>
+        <pd:width>650</pd:width>
+        <pd:height>213</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$TaskGrouping/group/Task</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>TotalTasks</pd:outSlot>
+            <pd:activityOutputName>ReGruopTask</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Assign Task Group</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ReGruopTask</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign Task Group</pd:from>
+            <pd:to>ReGruopTask</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="Assign Task Group">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>411</pd:x>
+            <pd:y>101</pd:y>
+            <pd:width>366</pd:width>
+            <pd:height>142</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>repeat</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:indexSlot>k</pd:indexSlot>
+                <pd:outSlot>tt</pd:outSlot>
+                <pd:activityOutputName>ReMapDataByEachTask</pd:activityOutputName>
+                <pd:repeatCondition>$k &gt;= $cu/Task/@count</pd:repeatCondition>
+                <pd:accumulateOutput>true</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>ReMapURLData</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>ReMapDataByEachTask</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>ReMapURLData</pd:from>
+                <pd:to>ReMapDataByEachTask</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="ReMapURLData">
+                <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+                <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+                <pd:x>518</pd:x>
+                <pd:y>179</pd:y>
+                <config>
+                    <element>
+                        <xsd:element name="group">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="URLs" minOccurs="0" maxOccurs="unbounded">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="URLID" type="xsd:string"/>
+                                                <xsd:element name="URLStatus" type="xsd:string"/>
+                                            </xsd:sequence>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </element>
+                </config>
+                <pd:inputBindings>
+                    <xsl:variable name="Start" select="if ($k = 1) then 0 else ($k - 1) * $_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/TaskUrlCount"/>
+                    <xsl:variable name="End" select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/TaskUrlCount * $k"/>
+                    <group>
+                        <xsl:for-each select="$cu/Task/URLs">
+                            <xsl:variable name="Position" select="position()"/>
+                            <xsl:choose>
+                                <xsl:when test="$Start &lt; $Position and $Position &lt;= $End">
+                                    <URLs>
+                                        <URLID>
+                                            <xsl:value-of select="URLID"/>
+                                        </URLID>
+                                        <URLStatus>
+                                            <xsl:value-of select="URLStatus"/>
+                                        </URLStatus>
+                                    </URLs>
+                                </xsl:when>
+                                <xsl:otherwise/>
+                            </xsl:choose>
+                        </xsl:for-each>
+                    </group>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="ReMapDataByEachTask">
+                <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+                <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+                <pd:x>662</pd:x>
+                <pd:y>179</pd:y>
+                <config>
+                    <element>
+                        <xsd:element name="group">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="Task">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="URLs" minOccurs="0" maxOccurs="unbounded">
+                                                    <xsd:complexType>
+                                                        <xsd:sequence>
+                                                            <xsd:element name="URLID" type="xsd:string"/>
+                                                            <xsd:element name="URLStatus" type="xsd:string"/>
+                                                        </xsd:sequence>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                                <xsd:element name="CaseType" type="xsd:string"/>
+                                                <xsd:element name="SubmissionType" type="xsd:string"/>
+                                                <xsd:element name="Title" type="xsd:string"/>
+                                            </xsd:sequence>
+                                            <xsd:attribute name="TaskType" type="xsd:string" use="required"/>
+                                            <xsd:attribute name="count" type="xsd:string" use="required"/>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </element>
+                </config>
+                <pd:inputBindings>
+                    <group>
+                        <Task>
+                            <xsl:attribute name="TaskType">
+                                <xsl:value-of select="$cu/Task/@TaskType"/>
+                            </xsl:attribute>
+                            <xsl:attribute name="count">
+                                <xsl:value-of select="$cu/Task/@count"/>
+                            </xsl:attribute>
+                            <xsl:copy-of select="$ReMapURLData/group/URLs"/>
+                            <CaseType>
+                                <xsl:value-of select="$cu/Task/CaseType"/>
+                            </CaseType>
+                            <SubmissionType>
+                                <xsl:value-of select="$cu/Task/SubmissionType"/>
+                            </SubmissionType>
+                            <Title>
+                                <xsl:value-of select="$cu/Task/Title"/>
+                            </Title>
+                        </Task>
+                    </group>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+        <pd:activity name="ReGruopTask">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>858</pd:x>
+            <pd:y>182</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="group">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Task" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="URLs" minOccurs="0" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="URLID" type="xsd:string"/>
+                                                        <xsd:element name="URLStatus" type="xsd:string"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="CaseType" type="xsd:string"/>
+                                            <xsd:element name="SubmissionType" type="xsd:string"/>
+                                            <xsd:element name="Title" type="xsd:string"/>
+                                        </xsd:sequence>
+                                        <xsd:attribute name="TaskType" type="xsd:string" use="required"/>
+                                        <xsd:attribute name="count" type="xsd:string" use="required"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <group>
+                    <xsl:for-each select="$tt/AccumulatedOutput/group">
+                        <xsl:copy-of select="Task"/>
+                    </xsl:for-each>
+                </group>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>TaskGrouping</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>TaskGrouping</pd:from>
+        <pd:to>ReGroupTask</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ReGroupTask</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

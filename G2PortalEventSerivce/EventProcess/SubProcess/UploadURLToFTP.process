@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/Schema.xsd" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pfx2="http://www.tibco.com/schemas/ESBService/XSD/Client/Schema.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/EvnetMsg/OnURLQueried.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/EvnetMsg/OnURLQuerying.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/Schema.xsd" schemaLocation="/EventProcess/SubProcess/WRSFTPFormat.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ESBService/XSD/Client/Schema.xsd" schemaLocation="/WSDL/Provider/FTPService.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>EventProcess/SubProcess/UploadURLToFTP.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="WRSFTPFormat" type="ns:WRSFTPFormatType"/>
+    </pd:startType>
+    <pd:startX>136</pd:startX>
+    <pd:startY>80</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>915</pd:endX>
+    <pd:endY>80</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <InsertDBInfo>
+            <xsd:element name="Input">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="filename" type="xsd:string"/>
+                        <xsd:element name="filecontent" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </InsertDBInfo>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1426650503218</pd:targetNamespace>
+    <pd:activity name="InsertURLInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>636</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpsertURLReputaion.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ServiceID>
+                    <xsl:value-of select="$Start/WRSFTPFormat/ns:CASE_ID"/>
+                </ServiceID>
+                <URLID>
+                    <xsl:value-of select="$Start/WRSFTPFormat/ns:SNO"/>
+                </URLID>
+                <URL>
+                    <xsl:value-of select="$Start/WRSFTPFormat/ns:URL"/>
+                </URL>
+                <CUST_RS>
+                    <xsl:value-of select="$Start/WRSFTPFormat/ns:SUGGESTED_CATEGORY"/>
+                </CUST_RS>
+                <FTP_RQ>
+                    <xsl:value-of select="$InsertDBInfo/Input/filecontent"/>
+                </FTP_RQ>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Data">
+        <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+        <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+        <pd:x>416</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <ParseSharedConfig>/EventProcess/SubProcess/WRS_UnProcess_DataFormat.sharedparse</ParseSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <Rows>
+                <xsl:copy-of select="$AccuData/AccumulatedOutput/WRSFTPFormat"/>
+            </Rows>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>217</pd:x>
+        <pd:y>2</pd:y>
+        <pd:width>126</pd:width>
+        <pd:height>142</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>while</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>AccuData</pd:outSlot>
+            <pd:activityOutputName>Map Data</pd:activityOutputName>
+            <pd:whileCondition>$i &lt; 3</pd:whileCondition>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Map Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Map Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>283</pd:x>
+            <pd:y>76</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="WRSFTPFormat">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="CASE_ID" type="xsd:string"/>
+                                <xsd:element name="URL" type="xsd:string"/>
+                                <xsd:element name="CATEGORY" type="xsd:string"/>
+                                <xsd:element name="SUGGESTED_CATEGORY" type="xsd:string"/>
+                                <xsd:element name="PRODUCT" type="xsd:string"/>
+                                <xsd:element name="PRODUCT_VER" type="xsd:string"/>
+                                <xsd:element name="PRODUCT_LANG" type="xsd:string"/>
+                                <xsd:element name="OS" type="xsd:string"/>
+                                <xsd:element name="COUNTRY" type="xsd:string"/>
+                                <xsd:element name="REGION" type="xsd:string"/>
+                                <xsd:element name="CSM_EMAIL_ADDR" type="xsd:string"/>
+                                <xsd:element name="CUSTOMER_EMAIL_ADDR" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <xsl:choose>
+                    <xsl:when test="$i=1">
+                        <WRSFTPFormat>
+                            <CASE_ID>
+                                <xsl:value-of select="&quot;CASE_ID&quot;"/>
+                            </CASE_ID>
+                            <URL>
+                                <xsl:value-of select="&quot;URL&quot;"/>
+                            </URL>
+                            <CATEGORY>
+                                <xsl:value-of select="&quot;CATEGORY&quot;"/>
+                            </CATEGORY>
+                            <SUGGESTED_CATEGORY>
+                                <xsl:value-of select="&quot;SUGGESTED_CATEGORY&quot;"/>
+                            </SUGGESTED_CATEGORY>
+                            <PRODUCT>
+                                <xsl:value-of select="&quot;PRODUCT&quot;"/>
+                            </PRODUCT>
+                            <PRODUCT_VER>
+                                <xsl:value-of select="&quot;PRODUCT_VER&quot;"/>
+                            </PRODUCT_VER>
+                            <PRODUCT_LANG>
+                                <xsl:value-of select="&quot;PRODUCT_LANG&quot;"/>
+                            </PRODUCT_LANG>
+                            <OS>
+                                <xsl:value-of select="&quot;OS&quot;"/>
+                            </OS>
+                            <COUNTRY>
+                                <xsl:value-of select="&quot;COUNTRY&quot;"/>
+                            </COUNTRY>
+                            <REGION>
+                                <xsl:value-of select="&quot;REGION&quot;"/>
+                            </REGION>
+                            <CSM_EMAIL_ADDR>
+                                <xsl:value-of select="&quot;CSM_EMAIL_ADDR&quot;"/>
+                            </CSM_EMAIL_ADDR>
+                            <CUSTOMER_EMAIL_ADDR>
+                                <xsl:value-of select="&quot;CUSTOMER_EMAIL_ADDR&quot;"/>
+                            </CUSTOMER_EMAIL_ADDR>
+                        </WRSFTPFormat>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:for-each select="$Start/WRSFTPFormat">
+                            <WRSFTPFormat>
+                                <CASE_ID>
+                                    <xsl:value-of select="ns:CASE_ID"/>
+                                </CASE_ID>
+                                <URL>
+                                    <xsl:value-of select="ns:URL"/>
+                                </URL>
+                                <CATEGORY>
+                                    <xsl:value-of select="ns:CATEGORY"/>
+                                </CATEGORY>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim(ns:SUGGESTED_CATEGORY) !=&quot;&quot;">
+                                        <SUGGESTED_CATEGORY>
+                                            <xsl:value-of select="ns:SUGGESTED_CATEGORY"/>
+                                        </SUGGESTED_CATEGORY>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <SUGGESTED_CATEGORY>
+                                            <xsl:value-of select="&quot; &quot;"/>
+                                        </SUGGESTED_CATEGORY>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim(ns:PRODUCT) !=&quot;&quot;">
+                                        <PRODUCT>
+                                            <xsl:value-of select="ns:PRODUCT"/>
+                                        </PRODUCT>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <PRODUCT>
+                                            <xsl:value-of select="&quot; &quot;"/>
+                                        </PRODUCT>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim(ns:PRODUCT_VER) !=&quot;&quot;">
+                                        <PRODUCT_VER>
+                                            <xsl:value-of select="ns:PRODUCT_VER"/>
+                                        </PRODUCT_VER>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <PRODUCT_VER>
+                                            <xsl:value-of select="&quot; &quot;"/>
+                                        </PRODUCT_VER>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim(ns:PRODUCT_LANG) !=&quot;&quot;">
+                                        <PRODUCT_LANG>
+                                            <xsl:value-of select="ns:PRODUCT_LANG"/>
+                                        </PRODUCT_LANG>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <PRODUCT_LANG>
+                                            <xsl:value-of select="&quot; &quot;"/>
+                                        </PRODUCT_LANG>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim(current()/ns:OS) !=&quot;&quot;">
+                                        <OS>
+                                            <xsl:value-of select="ns:OS"/>
+                                        </OS>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <OS>
+                                            <xsl:value-of select="&quot; &quot;"/>
+                                        </OS>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim(current()/ns:COUNTRY) !=&quot;&quot;">
+                                        <COUNTRY>
+                                            <xsl:value-of select="ns:COUNTRY"/>
+                                        </COUNTRY>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <COUNTRY>
+                                            <xsl:value-of select="&quot; &quot;"/>
+                                        </COUNTRY>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim(ns:REGION) !=&quot;&quot;">
+                                        <REGION>
+                                            <xsl:value-of select="ns:REGION"/>
+                                        </REGION>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <REGION>
+                                            <xsl:value-of select="&quot; &quot;"/>
+                                        </REGION>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim(ns:CSM_EMAIL_ADDR) !=&quot;&quot;">
+                                        <CSM_EMAIL_ADDR>
+                                            <xsl:value-of select="ns:CSM_EMAIL_ADDR"/>
+                                        </CSM_EMAIL_ADDR>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <CSM_EMAIL_ADDR>
+                                            <xsl:value-of select="&quot; &quot;"/>
+                                        </CSM_EMAIL_ADDR>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim(ns:CUSTOMER_EMAIL_ADDR)!=&quot;&quot;">
+                                        <CUSTOMER_EMAIL_ADDR>
+                                            <xsl:value-of select="ns:CUSTOMER_EMAIL_ADDR"/>
+                                        </CUSTOMER_EMAIL_ADDR>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <CUSTOMER_EMAIL_ADDR>
+                                            <xsl:value-of select="&quot; &quot;"/>
+                                        </CUSTOMER_EMAIL_ADDR>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </WRSFTPFormat>
+                        </xsl:for-each>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>524</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <variableName>InsertDBInfo</variableName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <filename>
+                    <xsl:value-of select="concat($Start/WRSFTPFormat/ns:CASE_ID,&quot;_&quot;,$Start/WRSFTPFormat/ns:SNO,&quot;.txt&quot;)"/>
+                </filename>
+                <filecontent>
+                    <xsl:value-of select="$Render-Data/Text"/>
+                </filecontent>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="FTP JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>769</pd:x>
+        <pd:y>85</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%EventProcess/PSC_G2/WRS/FTPTransferQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx2:Message"/>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <Body>
+                    <pfx2:Message>
+                        <pfx2:RequestHeader>
+                            <pfx3:MessageKey>
+                                <xsl:value-of select="$Start/WRSFTPFormat/ns:CASE_ID"/>
+                            </pfx3:MessageKey>
+                            <pfx3:ServiceName>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/ServiceName"/>
+                            </pfx3:ServiceName>
+                            <pfx3:ServiceVersion>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/ServiceVersion"/>
+                            </pfx3:ServiceVersion>
+                            <pfx3:SourceID>
+                                <xsl:value-of select="&quot;WRS&quot;"/>
+                            </pfx3:SourceID>
+                            <pfx3:RqTimestamp>
+                                <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                            </pfx3:RqTimestamp>
+                        </pfx2:RequestHeader>
+                        <pfx2:MessageBody>
+                            <pfx2:transfertype>
+                                <pfx2:datatofile>
+                                    <pfx2:data>
+                                        <xsl:value-of select="$InsertDBInfo/Input/filecontent"/>
+                                    </pfx2:data>
+                                </pfx2:datatofile>
+                            </pfx2:transfertype>
+                            <pfx2:readydir>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/readydir"/>
+                            </pfx2:readydir>
+                            <pfx2:savefilename>
+                                <xsl:value-of select="$InsertDBInfo/Input/filename"/>
+                            </pfx2:savefilename>
+                            <pfx2:host>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/host"/>
+                            </pfx2:host>
+                            <pfx2:username>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/username"/>
+                            </pfx2:username>
+                            <pfx2:password>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/password"/>
+                            </pfx2:password>
+                        </pfx2:MessageBody>
+                    </pfx2:Message>
+                </Body>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>403</pd:x>
+        <pd:y>202</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>555</pd:x>
+        <pd:y>200</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns5:ErrorReport/Data/*" element="pfx4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($_error/ns5:ErrorReport/Data/pfx4:Error/pfx4:error_code) !=&quot;&quot;">
+                            <xsl:copy-of select="$_error/ns5:ErrorReport/Data/pfx4:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx4:Error>
+                                <pfx4:src>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/ProcessStack"/>
+                                </pfx4:src>
+                                <pfx4:error_code>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/MsgCode"/>
+                                </pfx4:error_code>
+                                <pfx4:error_message>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/Msg"/>
+                                </pfx4:error_message>
+                                <pfx4:stack_trace>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/StackTrace"/>
+                                </pfx4:stack_trace>
+                            </pfx4:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>InsertURLInfo</pd:from>
+        <pd:to>FTP JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Data</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Render Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>InsertURLInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FTP JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

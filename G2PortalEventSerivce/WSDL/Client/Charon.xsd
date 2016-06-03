@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.5-b01 . -->
+<xs:schema xmlns:tns="http://coretech.trendmicro.com/frs/charon/"
+	 xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 targetNamespace="http://coretech.trendmicro.com/frs/charon/"
+	 version="1.0"
+	 elementFormDefault="unqualified"
+	 attributeFormDefault="unqualified">
+	<xs:complexType name="reputationResult">
+		<xs:sequence>
+			<xs:element name="branchInfo" type="tns:branchInfo" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="errorCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="status" type="tns:reputationStatus" minOccurs="0"/>
+			<xs:element name="branchStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="scanTime" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="branchInfo">
+		<xs:sequence>
+			<xs:element name="branchName" type="xs:string" minOccurs="0"/>
+			<xs:element name="detection" type="xs:string" minOccurs="0"/>
+			<xs:element name="version" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="reputationStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Malicious"/>
+			<xs:enumeration value="Normal"/>
+			<xs:enumeration value="Analyzing"/>
+			<xs:enumeration value="Indeterminable"/>
+			<xs:enumeration value="Error"/>
+			<xs:enumeration value="NoDecision"/>
+			<xs:enumeration value="SolProviding_Auto"/>
+			<xs:enumeration value="SolProviding_Manual"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

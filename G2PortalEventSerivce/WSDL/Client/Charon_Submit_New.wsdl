@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Welcome to Charon web service.</wsdl:documentation>
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+            <s:element name="reputaeFile">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ServiceID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sha1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="filePath" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="DirectSubmission" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="reputaeFileResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="reputaeFileResult" type="tns:ReputationResult"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ReputationResult">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="scanTime" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="status" type="tns:ReputationStatus"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="errorCode" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="branchInfo" type="tns:ArrayOfBranchInfo"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Branchstatus" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:simpleType name="ReputationStatus">
+                <s:restriction base="s:string">
+                    <s:enumeration value="Malicious"/>
+                    <s:enumeration value="Normal"/>
+                    <s:enumeration value="Analyzing"/>
+                    <s:enumeration value="Indeterminable"/>
+                    <s:enumeration value="Error"/>
+                    <s:enumeration value="NoDecision"/>
+                    <s:enumeration value="SolProviding_Auto"/>
+                    <s:enumeration value="SolProviding_Manual"/>
+                </s:restriction>
+            </s:simpleType>
+            <s:complexType name="ArrayOfBranchInfo">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="unbounded" name="BranchInfo" nillable="true" type="tns:BranchInfo"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="BranchInfo">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="detection" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="branchName" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="version" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="reputateFileTrackable">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ServiceID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sha1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="filePath" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="messageKey" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="DirectSubmission" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="reputateFileTrackableResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="reputateFileTrackableResult" type="tns:ReputationResult"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="getReputation">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ServiceID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sha1" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="getReputationResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="getReputationResult" type="tns:ReputationResult"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="getReputation_all">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ServiceID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sha1" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="withCompetitorResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="getReputation_allResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="getReputation_allResult" type="tns:ReputationResult"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="getReputationTrackable">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ServiceID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sha1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="messageKey" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="getReputationTrackableResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="getReputationTrackableResult" type="tns:ReputationResult"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="getReputationTrackable_all">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ServiceID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sha1" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="messageKey" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="withCompetitorResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="getReputationTrackable_allResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="getReputationTrackable_allResult" type="tns:ReputationResult"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="reputaeFileSoapIn">
+        <wsdl:part name="parameters" element="tns:reputaeFile"/>
+    </wsdl:message>
+    <wsdl:message name="reputaeFileSoapOut">
+        <wsdl:part name="parameters" element="tns:reputaeFileResponse"/>
+    </wsdl:message>
+    <wsdl:message name="reputateFileTrackableSoapIn">
+        <wsdl:part name="parameters" element="tns:reputateFileTrackable"/>
+    </wsdl:message>
+    <wsdl:message name="reputateFileTrackableSoapOut">
+        <wsdl:part name="parameters" element="tns:reputateFileTrackableResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getReputationSoapIn">
+        <wsdl:part name="parameters" element="tns:getReputation"/>
+    </wsdl:message>
+    <wsdl:message name="getReputationSoapOut">
+        <wsdl:part name="parameters" element="tns:getReputationResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getReputation_allSoapIn">
+        <wsdl:part name="parameters" element="tns:getReputation_all"/>
+    </wsdl:message>
+    <wsdl:message name="getReputation_allSoapOut">
+        <wsdl:part name="parameters" element="tns:getReputation_allResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getReputationTrackableSoapIn">
+        <wsdl:part name="parameters" element="tns:getReputationTrackable"/>
+    </wsdl:message>
+    <wsdl:message name="getReputationTrackableSoapOut">
+        <wsdl:part name="parameters" element="tns:getReputationTrackableResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getReputationTrackable_allSoapIn">
+        <wsdl:part name="parameters" element="tns:getReputationTrackable_all"/>
+    </wsdl:message>
+    <wsdl:message name="getReputationTrackable_allSoapOut">
+        <wsdl:part name="parameters" element="tns:getReputationTrackable_allResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="CharonWebServiceSoap">
+        <wsdl:operation name="reputaeFile">
+            <wsdl:input message="tns:reputaeFileSoapIn"/>
+            <wsdl:output message="tns:reputaeFileSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="reputateFileTrackable">
+            <wsdl:input message="tns:reputateFileTrackableSoapIn"/>
+            <wsdl:output message="tns:reputateFileTrackableSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getReputation">
+            <wsdl:input message="tns:getReputationSoapIn"/>
+            <wsdl:output message="tns:getReputationSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getReputation_all">
+            <wsdl:input message="tns:getReputation_allSoapIn"/>
+            <wsdl:output message="tns:getReputation_allSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getReputationTrackable">
+            <wsdl:input message="tns:getReputationTrackableSoapIn"/>
+            <wsdl:output message="tns:getReputationTrackableSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getReputationTrackable_all">
+            <wsdl:input message="tns:getReputationTrackable_allSoapIn"/>
+            <wsdl:output message="tns:getReputationTrackable_allSoapOut"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CharonWebServiceSoap" type="tns:CharonWebServiceSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="reputaeFile">
+            <soap:operation soapAction="http://tempuri.org/reputaeFile" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="reputateFileTrackable">
+            <soap:operation soapAction="http://tempuri.org/reputateFileTrackable" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReputation">
+            <soap:operation soapAction="http://tempuri.org/getReputation" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReputation_all">
+            <soap:operation soapAction="http://tempuri.org/getReputation_all" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReputationTrackable">
+            <soap:operation soapAction="http://tempuri.org/getReputationTrackable" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReputationTrackable_all">
+            <soap:operation soapAction="http://tempuri.org/getReputationTrackable_all" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="CharonWebServiceSoap12" type="tns:CharonWebServiceSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="reputaeFile">
+            <soap12:operation soapAction="http://tempuri.org/reputaeFile" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="reputateFileTrackable">
+            <soap12:operation soapAction="http://tempuri.org/reputateFileTrackable" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReputation">
+            <soap12:operation soapAction="http://tempuri.org/getReputation" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReputation_all">
+            <soap12:operation soapAction="http://tempuri.org/getReputation_all" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReputationTrackable">
+            <soap12:operation soapAction="http://tempuri.org/getReputationTrackable" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReputationTrackable_all">
+            <soap12:operation soapAction="http://tempuri.org/getReputationTrackable_all" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="CharonWebService">
+        <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Welcome to Charon web service.</wsdl:documentation>
+        <wsdl:port name="CharonWebServiceSoap" binding="tns:CharonWebServiceSoap">
+            <soap:address location="http://yy-charon-s.frsnet.org:8080/WebService/Service1.asmx"/>
+        </wsdl:port>
+        <wsdl:port name="CharonWebServiceSoap12" binding="tns:CharonWebServiceSoap12">
+            <soap12:address location="http://yy-charon-s.frsnet.org:8080/WebService/Service1.asmx"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

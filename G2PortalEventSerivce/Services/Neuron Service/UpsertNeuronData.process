@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://tempuri.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Services/Neuron Service/UpsertNeuronData.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="service_id" type="xsd:string"/>
+                    <xsd:element name="submission_input" type="xsd:string"/>
+                    <xsd:element name="service_consumer_id" type="xsd:string"/>
+                    <xsd:element name="archive_name" type="xsd:string"/>
+                    <xsd:element name="service_tag" type="xsd:string"/>
+                    <xsd:element name="data_action" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>50</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>761</pd:endX>
+    <pd:endY>50</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Result>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ServiceId" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Result>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1440413015943</pd:targetNamespace>
+    <pd:activity name="InsertNeuronMainTable">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>369</pd:x>
+        <pd:y>191</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/InsertNeuronMainTable.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ServiceID>
+                    <xsl:value-of select="$Start/root/service_id"/>
+                </ServiceID>
+                <ServiceConsumerID>
+                    <xsl:value-of select="$Start/root/service_consumer_id"/>
+                </ServiceConsumerID>
+                <InputData>
+                    <xsl:value-of select="$Start/root/submission_input"/>
+                </InputData>
+                <ArchiveName>
+                    <xsl:value-of select="$Start/root/archive_name"/>
+                </ArchiveName>
+                <ServiceTag>
+                    <xsl:value-of select="$Start/root/service_tag"/>
+                </ServiceTag>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SendDBLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>545</pd:x>
+        <pd:y>50</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:InsertTaskLog>
+                <ns:serviceID>
+                    <xsl:value-of select="$Start/root/service_id"/>
+                </ns:serviceID>
+                <ns:stepTypeID>
+                    <xsl:value-of select="0"/>
+                </ns:stepTypeID>
+            </ns:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateNeuronServiceMainXMLBYServiceID">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>363</pd:x>
+        <pd:y>50</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpdateNeuronServiceMainXMLBYServiceID.process</processName>
+        </config>
+        <pd:inputBindings>
+            <UpdateServiceMainTable>
+                <ServiceID>
+                    <xsl:value-of select="$Start/root/service_id"/>
+                </ServiceID>
+                <submissionInput>
+                    <xsl:value-of select="$Start/root/submission_input"/>
+                </submissionInput>
+            </UpdateServiceMainTable>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>UpdateNeuronServiceMainXMLBYServiceID</pd:to>
+        <pd:xpathDescription>update</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/data_action="update"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>InsertNeuronMainTable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateNeuronServiceMainXMLBYServiceID</pd:from>
+        <pd:to>SendDBLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertNeuronMainTable</pd:from>
+        <pd:to>SendDBLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendDBLog</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

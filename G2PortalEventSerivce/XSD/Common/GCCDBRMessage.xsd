@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.trendmicro.com/ESB/ACS/schemas/SMF"
+	 targetNamespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="GCC_UQuery">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Request" type="GCC_URQType"/>
+				<xs:element name="Response" type="GCC_URSType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="GCC_URSType">
+		<xs:sequence>
+			<xs:element name="SR_NUM" type="xs:string"/>
+			<xs:element name="SERVICE_ID" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GCC_JPRSType">
+		<xs:sequence>
+			<xs:element name="SR_NUM" type="xs:string"/>
+			<xs:element name="SERVICE_ID" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GCC_AMSSRSType">
+		<xs:sequence>
+			<xs:element name="TASK_ID" type="xs:string"/>
+			<xs:element name="SHA1" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GCC_URQType">
+		<xs:sequence>
+			<xs:element name="SRNumber" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GCC_JPRQType">
+		<xs:sequence>
+			<xs:element name="SNumber" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GCC_AMSSRQType">
+		<xs:sequence>
+			<xs:element name="TaskID" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GCC_JPQuery">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Request" type="GCC_JPRQType"/>
+				<xs:element name="Response" type="GCC_JPRSType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GCC_AMSSQuery">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Request" type="GCC_AMSSRQType"/>
+				<xs:element name="Response" type="GCC_AMSSRSType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GCC_SNQuery">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Request" type="GCC_URQType"/>
+				<xs:element name="Response" type="GCC_URSType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GCCQuery">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="GCC_UQuery"/>
+				<xs:element ref="GCC_JPQuery"/>
+				<xs:element ref="GCC_AMSSQuery"/>
+				<xs:element ref="GCC_SNQuery"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

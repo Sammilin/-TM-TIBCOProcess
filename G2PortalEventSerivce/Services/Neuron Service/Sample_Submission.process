@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/schemas/ThreatService/WSDL/Client/ThreatService/SampleSubmission.xsd" xmlns:ns4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns3="http://tempuri.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetNeuronServiceMainByServiceID.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/SampleSubmissionRsXml.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/SampleSubmissionRsXml.xsd" schemaLocation="/XSD/Neuron/SampleSubmissionRsXml.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ThreatService/WSDL/Client/ThreatService/SampleSubmission.xsd" schemaLocation="/XSD/Neuron/SampleSubmissionExtend.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ThreatService/WSDL/Client/ThreatService/SampleSubmission.xsd" schemaLocation="/XSD/Neuron/SampleSubmission.xsd"/>
+    <pd:name>Services/Neuron Service/Sample_Submission.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>65</pd:x>
+        <pd:y>199</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/NeuronService/SampleSubmission/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1444</pd:endX>
+    <pd:endY>468</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Upsert>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="DBAction" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Upsert>
+        <Response ref="pfx2:NEURON"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1440398930280</pd:targetNamespace>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>751</pd:x>
+        <pd:y>183</pd:y>
+        <config>
+            <variableName>Response</variableName>
+        </config>
+        <pd:inputBindings>
+            <NEURON>
+                <SERVICEID>
+                    <xsl:value-of select="$GenNeuronServiceID/SERVICEID"/>
+                </SERVICEID>
+            </NEURON>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign DB Action Insert">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>946</pd:x>
+        <pd:y>221</pd:y>
+        <config>
+            <variableName>Upsert</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <DBAction>
+                    <xsl:value-of select="&quot;insert&quot;"/>
+                </DBAction>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign DB Action Update">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>913</pd:x>
+        <pd:y>477</pd:y>
+        <config>
+            <variableName>Upsert</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <DBAction>
+                    <xsl:value-of select="&quot;update&quot;"/>
+                </DBAction>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign exists serviceID">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>762</pd:x>
+        <pd:y>475</pd:y>
+        <config>
+            <variableName>Response</variableName>
+        </config>
+        <pd:inputBindings>
+            <NEURON>
+                <xsl:if test="$GetConsumerServiceIDBySourceID/Resultsets/ResultSet1/Record1/ServiceID">
+                    <SERVICEID>
+                        <xsl:value-of select="$GetConsumerServiceIDBySourceID/Resultsets/ResultSet1/Record1/ServiceID"/>
+                    </SERVICEID>
+                </xsl:if>
+            </NEURON>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>881</pd:x>
+        <pd:y>611</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Check CONSUMER">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>354</pd:x>
+        <pd:y>195</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="Resultsets">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="ResultSet1">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Record1" minOccurs="0" maxOccurs="unbounded">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="ConsumerName" type="xsd:string"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Get-Consuner-by-Consumer-Id/resultSet/UnresolvedResultsets"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1052</pd:x>
+        <pd:y>620</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/*" element="ns1:SampleSubmissionRq"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <pfx:SMF>
+                    <pfx:SMFHeader>
+                        <pfx:MessageKey>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestHeader/pfx:MessageKey"/>
+                        </pfx:MessageKey>
+                        <pfx:ServiceName>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestHeader/pfx:ServiceName"/>
+                        </pfx:ServiceName>
+                        <pfx:ServiceVersion>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestHeader/pfx:ServiceVersion"/>
+                        </pfx:ServiceVersion>
+                        <pfx:SourceID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestHeader/pfx:SourceID"/>
+                        </pfx:SourceID>
+                        <pfx:RsTimestamp>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestHeader/pfx:RsTimestamp"/>
+                        </pfx:RsTimestamp>
+                    </pfx:SMFHeader>
+                    <pfx:SMFBody>
+                        <pfx:Message>
+                            <pfx:SOAPMessage>
+                                <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope, 1)"/>
+                            </pfx:SOAPMessage>
+                        </pfx:Message>
+                    </pfx:SMFBody>
+                </pfx:SMF>
+                <isESBLog>
+                    <xsl:value-of select="1"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Reply to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>1333</pd:x>
+        <pd:y>620</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+            <InDataxsdString ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <Body>
+                    <pfx3:Envelope>
+                        <pfx3:Body>
+                            <ns1:SamplesubmissionRs>
+                                <ns1:ResponseHeader>
+                                    <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq/ns1:RequestHeader/ancestor-or-self::*/namespace::node()"/>
+                                    <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq/ns1:RequestHeader/@*"/>
+                                    <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq/ns1:RequestHeader/node()"/>
+                                </ns1:ResponseHeader>
+                                <ns1:ResponseBody>
+                                    <ns1:SampleSubmissionResult>
+                                        <xsl:value-of select="$Render-XML/xmlString"/>
+                                    </ns1:SampleSubmissionResult>
+                                </ns1:ResponseBody>
+                            </ns1:SamplesubmissionRs>
+                        </pfx3:Body>
+                    </pfx3:Envelope>
+                </Body>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GenNeuronServiceID">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>541</pd:x>
+        <pd:y>233</pd:y>
+        <config>
+            <element>
+                <xsd:element name="SERVICEID" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <SERVICEID>
+                <xsl:value-of select="TM:getGUID()"/>
+            </SERVICEID>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Consuner by Consumer Id">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>209</pd:x>
+        <pd:y>208</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Database/JDBC Connection NeuronDB.sharedjdbc</jdbcSharedConfig>
+            <schema>ACS</schema>
+            <catalog>SPN_NEURON</catalog>
+            <ProcedureName>PRC_SEL_CONSUMER_BY_CONSUMER_ID;1</ProcedureName>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ConsumerId</colName>
+                    <colType>1</colType>
+                    <dataType>1</dataType>
+                    <typeName>uniqueidentifier</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/*" element="ns1:SampleSubmissionRq"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <ConsumerId>
+                        <xsl:choose>
+                            <xsl:when test="exists($JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestBody/ns1:consumerId)">
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestBody/ns1:consumerId"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ConsumerId>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetConsumerServiceIDBySourceID">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>593</pd:x>
+        <pd:y>466</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetConsumerServiceIDBySourceID.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/*" element="ns1:SampleSubmissionRq"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <GetServiceIDBySourceID_Input>
+                <SourceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestBody/ns1:sourceId"/>
+                </SourceId>
+            </GetServiceIDBySourceID_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>335</pd:x>
+        <pd:y>366</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>1190</pd:x>
+        <pd:y>610</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx2:NEURON"/>
+        </config>
+        <pd:inputBindings>
+            <NEURON>
+                <SERVICEID>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </SERVICEID>
+                <Error>
+                    <ErrorCode>
+                        <xsl:value-of select="&quot;InternalServerError&quot;"/>
+                    </ErrorCode>
+                    <ErrorStatus>
+                        <xsl:value-of select="&quot;Generate Neuron Service ID Fail&quot;"/>
+                    </ErrorStatus>
+                </Error>
+            </NEURON>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>1255</pd:x>
+        <pd:y>477</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+            <InDataxsdString ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <Body>
+                    <pfx3:Envelope>
+                        <pfx3:Body>
+                            <ns1:SamplesubmissionRs>
+                                <ns1:ResponseHeader>
+                                    <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq/ns1:RequestHeader/ancestor-or-self::*/namespace::node()"/>
+                                    <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq/ns1:RequestHeader/@*"/>
+                                    <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq/ns1:RequestHeader/node()"/>
+                                </ns1:ResponseHeader>
+                                <ns1:ResponseBody>
+                                    <ns1:SampleSubmissionResult>
+                                        <xsl:value-of select="tib:render-xml($Response/NEURON,1)"/>
+                                    </ns1:SampleSubmissionResult>
+                                </ns1:ResponseBody>
+                            </ns1:SamplesubmissionRs>
+                        </pfx3:Body>
+                    </pfx3:Envelope>
+                </Body>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SendACSLogBegin">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1171</pd:x>
+        <pd:y>201</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:InsertTaskLog>
+                <ns3:serviceID>
+                    <xsl:value-of select="$Response/NEURON/SERVICEID[1]"/>
+                </ns3:serviceID>
+                <ns3:stepTypeID>
+                    <xsl:value-of select="0"/>
+                </ns3:stepTypeID>
+                <ns3:message>
+                    <xsl:value-of select="tib:render-xml($Response/NEURON, 1)"/>
+                </ns3:message>
+            </ns3:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SendToConsumerProcess">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>1091</pd:x>
+        <pd:y>468</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/NeuronService/Consumer/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="ns1:SampleSubmissionV2Rq"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <JMSProperties>
+                    <xsl:if test="$Check-CONSUMER/Resultsets/ResultSet1/Record1[1]/ConsumerName">
+                        <ns2:JMSXGroupID>
+                            <xsl:value-of select="$Check-CONSUMER/Resultsets/ResultSet1/Record1[1]/ConsumerName"/>
+                        </ns2:JMSXGroupID>
+                    </xsl:if>
+                </JMSProperties>
+                <Body>
+                    <ns1:SampleSubmissionV2Rq>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq/ns1:RequestHeader"/>
+                        <ns1:RequestBody>
+                            <ns1:sourceSystem>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestBody/ns1:sourceSystem"/>
+                            </ns1:sourceSystem>
+                            <ns1:sourceId>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestBody/ns1:sourceId"/>
+                            </ns1:sourceId>
+                            <ns1:consumerId>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestBody/ns1:consumerId"/>
+                            </ns1:consumerId>
+                            <ns1:reputationSystem>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestBody/ns1:reputationSystem"/>
+                            </ns1:reputationSystem>
+                            <ns1:submissionInput>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestBody/ns1:submissionInput"/>
+                            </ns1:submissionInput>
+                            <ns1:serviceId>
+                                <xsl:value-of select="$Response/NEURON/SERVICEID[1]"/>
+                            </ns1:serviceId>
+                            <ns1:dbAction>
+                                <xsl:value-of select="$Upsert/root/DBAction"/>
+                            </ns1:dbAction>
+                            <ns1:consumerName>
+                                <xsl:value-of select="$Check-CONSUMER/Resultsets/ResultSet1/Record1[1]/ConsumerName"/>
+                            </ns1:consumerName>
+                        </ns1:RequestBody>
+                    </ns1:SampleSubmissionV2Rq>
+                </Body>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate-Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>357</pd:x>
+        <pd:y>59</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Invalid Service Consumer&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;9010&quot;"/>
+                </messageCode>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Get Consuner by Consumer Id</pd:from>
+        <pd:to>Check CONSUMER</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Get Consuner by Consumer Id</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Assign DB Action Insert</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendACSLogBegin</pd:from>
+        <pd:to>Reply to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GenNeuronServiceID</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetConsumerServiceIDBySourceID</pd:from>
+        <pd:to>Assign exists serviceID</pd:to>
+        <pd:xpathDescription>Service ID Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($GetConsumerServiceIDBySourceID/Resultsets/ResultSet1/Record1/ServiceID) !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign exists serviceID</pd:from>
+        <pd:to>Assign DB Action Update</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetConsumerServiceIDBySourceID</pd:from>
+        <pd:to>GenNeuronServiceID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendToConsumerProcess</pd:from>
+        <pd:to>SendACSLogBegin</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign DB Action Update</pd:from>
+        <pd:to>SendToConsumerProcess</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign DB Action Insert</pd:from>
+        <pd:to>SendToConsumerProcess</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>GenNeuronServiceID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>GetConsumerServiceIDBySourceID</pd:to>
+        <pd:xpathDescription>Has Source ID</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length(tib:trim($JMS-Queue-Receiver/ns2:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns1:SampleSubmissionRq[1]/ns1:RequestBody/ns1:sourceId))&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Error Reply to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Reply to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check CONSUMER</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:xpathDescription>Has Consumer</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length(tib:trim($Check-CONSUMER/Resultsets/ResultSet1/Record1[1]/ConsumerName))&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check CONSUMER</pd:from>
+        <pd:to>Generate-Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

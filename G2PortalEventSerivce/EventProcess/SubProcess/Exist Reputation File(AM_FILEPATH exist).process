@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:pfx15="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_PROB_LIST_RQ.V1.xsd" xmlns:pfx14="http://xmlns.oracle.com/Enterprise/HCM/services/TM_PROBATION_LIST.1" xmlns:ns="http://xmlns.oracle.com/Enterprise/Tools/schemas/TM_EMPL_LIST_RQ.V1" xmlns:pfx13="http://www.trendmicro.com/ESB/PeopleSoft/services/getManagerInfo" xmlns:pfx12="http://www.trendmicro.com/esb/4/peoplesoft" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx10="http://xmlns.oracle.com/Enterprise/Tools/schemas/M117365.V1" xmlns:pfx19="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx18="http://Anti.Malware.Tracker-Service.org/" xmlns:pfx17="http://xmlns.example.com/1274434789173/PatternCreatorImpl/Simulations/ServiceProvider/PatternCreator" xmlns:pfx5="http://xmlns.oracle.com/Enterprise/HCM/services/CI_TM_WS_GET_SUB_INFO.1" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://xmlns.oracle.com/Enterprise/Tools/schemas/M483800.V1" xmlns:pfx3="http://xmlns.oracle.com/Enterprise/HCM/services/CI_TM_WS_GET_MGR_INFO.1" xmlns:pfx2="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" xmlns:pfx9="http://xmlns.oracle.com/Enterprise/HCM/services/CI_TM_CI_PERSON_DATA.1" xmlns:pfx8="http://www.trendmicro.com/ESB/PeopleSoft/services/getSubInfo" xmlns:pfx7="http://www.trendmicro.com/ESB/PeopleSoft/services/getEmpListHRInitiateSurveys" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RS.V1.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns5="http://xmlns.tibco.com/encodings/mime" xmlns:ns12="http://tempuri.org/" xmlns:ns6="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RS.V2.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RQ.V1.xsd" xmlns:ns7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns10="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns11="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" xmlns:ns8="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://xmlns.oracle.com/Enterprise/Tools/schemas/TM_EMPL_LIST_RS.V1" xmlns:ns4="http://xmlns.oracle.com/Enterprise/Tools/schemas/TM_EMPL_LIST_RS.V2" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx22="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/AtlasMessage.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx23="http://coretech.trendmicro.com/frs/charon/" xmlns:pfx20="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx21="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/AtlasSampe.xsd" xmlns:pfx24="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/UpdateHashStatusResponseResponse" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx25="http://microsoft.com/wsdl/types/">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RQ.V1.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RS.V1.xsd" schemaLocation="/WSDL/Provider/TM_EMPL_LIST_RS.V1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RQ.V1.xsd" schemaLocation="/WSDL/Provider/TM_EMPL_LIST_RQ.V1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/WSDL/Provider/TM_EMPL_LIST_RS.V2.xsd" schemaLocation="/WSDL/Provider/TM_EMPL_LIST_RS.V2.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/FRS/schemas/SMF" schemaLocation="/XSD/Common/FRS.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/AtlasSampe.xsd" schemaLocation="/XSD/Common/AtlasSampe.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/AtlasMessage.xsd" schemaLocation="/XSD/Common/AtlasMessage.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Client/ACS WSDL.wsdl"/>
+    <wsdl:import namespace="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" location="/WSDL/Provider/TM_EMPLOYEE_LIST.1.wsdl"/>
+    <wsdl:import namespace="http://xmlns.example.com/1274434789173/PatternCreatorImpl/Simulations/ServiceProvider/PatternCreator" location="/WSDL/Client/PatternCreatorWSDLClient.wsdl"/>
+    <wsdl:import namespace="http://Anti.Malware.Tracker-Service.org/" location="/WSDL/Client/Atlas WSDL.wsdl"/>
+    <pd:name>EventProcess/SubProcess/Exist Reputation File(AM_FILEPATH exist).process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="RetryCount" type="xsd:int" minOccurs="0"/>
+                    <xsd:element name="ErrorRetryCount" type="xsd:int" minOccurs="0"/>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element ref="pfx19:SMF"/>
+                    <xsd:element name="lastCharonResult" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>108</pd:startX>
+    <pd:startY>106</pd:startY>
+    <pd:returnBindings>
+        <PAT>
+            <xsl:copy-of select="$Check-File-Exists/outputMessage/parameter/pfx16:PAT_Header"/>
+            <xsl:copy-of select="$Check-File-Exists/outputMessage/parameter/pfx16:PAT_Body"/>
+        </PAT>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endX>708</pd:endX>
+    <pd:endY>271</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="ns9:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1261710921990</pd:targetNamespace>
+    <pd:activity name="Call ACS File Log for Check File End Process 1">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>489</pd:x>
+        <pd:y>126</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns12:InsertFileActivityLogWithRequestType>
+                <ns12:serviceID>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                </ns12:serviceID>
+                <ns12:fileSHA1>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                </ns12:fileSHA1>
+                <ns12:stepTypeID>
+                    <xsl:value-of select="204"/>
+                </ns12:stepTypeID>
+                <ns12:message>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </ns12:message>
+                <ns12:MessageKey>
+                    <xsl:value-of select="$reputaeFile/root/MessageKey"/>
+                </ns12:MessageKey>
+                <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType">
+                    <ns12:RequestType>
+                        <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                    </ns12:RequestType>
+                </xsl:if>
+            </ns12:InsertFileActivityLogWithRequestType>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>375</pd:x>
+        <pd:y>364</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ErrorCode Handler">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>251</pd:x>
+        <pd:y>264</pd:y>
+        <config>
+            <processName>/ExternalServices/ToFRS/ErrorCode Handler.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ErrorCode>
+                    <xsl:value-of select="$reputaeFile/root/return"/>
+                </ErrorCode>
+                <ReturnStatus>
+                    <xsl:value-of select="&quot;Error&quot;"/>
+                </ReturnStatus>
+                <src>
+                    <xsl:value-of select="concat($Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:EventMsg/pfx19:Consumer,&quot; &quot;,&quot;SendGetFileReputationRequest\reputaeFile&quot;)"/>
+                </src>
+                <isGetReputation>
+                    <xsl:value-of select="false()"/>
+                </isGetReputation>
+                <MessageKey>
+                    <xsl:value-of select="$reputaeFile/root/MessageKey"/>
+                </MessageKey>
+                <xsl:copy-of select="$Start/group/pfx19:SMF"/>
+                <ErrorRetryCount>
+                    <xsl:value-of select="$Start/group/ErrorRetryCount"/>
+                </ErrorRetryCount>
+                <IsCharonNP>
+                    <xsl:value-of select="'false'"/>
+                </IsCharonNP>
+                <ServiceId>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                </ServiceId>
+                <fileSha1>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                </fileSha1>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="reputaeFile">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>251</pd:x>
+        <pd:y>106</pd:y>
+        <config>
+            <processName>/ExternalServices/ToFRS/reputaeFile.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ServiceId>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFHeader/pfx19:MessageKey"/>
+                </ServiceId>
+                <SHA1>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                </SHA1>
+                <FilePath>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:filePath"/>
+                </FilePath>
+                <MessageKey>
+                    <xsl:value-of select="$Start/group/MessageKey"/>
+                </MessageKey>
+                <REQUEST_TYPE>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:requestType"/>
+                </REQUEST_TYPE>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ReQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:description>Need to Clear filepath</pd:description>
+        <pd:x>493</pd:x>
+        <pd:y>269</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Requery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <pfx19:SMF>
+                    <pfx19:SMFHeader>
+                        <pfx19:MessageKey>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFHeader/pfx19:MessageKey"/>
+                        </pfx19:MessageKey>
+                        <pfx19:ServiceName>
+                            <xsl:value-of select="&quot;EventCenter&quot;"/>
+                        </pfx19:ServiceName>
+                        <pfx19:ServiceVersion>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFHeader/pfx19:ServiceVersion"/>
+                        </pfx19:ServiceVersion>
+                        <pfx19:SourceID>
+                            <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFHeader/pfx19:SourceID"/>
+                        </pfx19:SourceID>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFHeader/pfx19:SourceIP">
+                            <pfx19:SourceIP>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFHeader/pfx19:SourceIP"/>
+                            </pfx19:SourceIP>
+                        </xsl:if>
+                        <pfx19:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </pfx19:RqTimestamp>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFHeader/pfx19:Priority">
+                            <pfx19:Priority>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFHeader/pfx19:Priority"/>
+                            </pfx19:Priority>
+                        </xsl:if>
+                    </pfx19:SMFHeader>
+                    <pfx19:SMFBody>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/group/pfx19:SMF/pfx19:SMFBody/pfx19:Message/pfx19:ACSMessage/pfx19:CASE)">
+                                <pfx19:Message>
+                                    <pfx19:ACSMessage>
+                                        <xsl:for-each select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:ACSMessage/pfx19:CASE">
+                                            <pfx19:CASE>
+                                                <pfx19:SERVICE_ID>
+                                                    <xsl:value-of select="pfx19:SERVICE_ID"/>
+                                                </pfx19:SERVICE_ID>
+                                                <xsl:if test="pfx19:REQUEST_TYPE">
+                                                    <pfx19:REQUEST_TYPE>
+                                                        <xsl:value-of select="pfx19:REQUEST_TYPE"/>
+                                                    </pfx19:REQUEST_TYPE>
+                                                </xsl:if>
+                                                <xsl:if test="pfx19:REQUERY_COUNT">
+                                                    <pfx19:REQUERY_COUNT>
+                                                        <xsl:value-of select="pfx19:REQUERY_COUNT"/>
+                                                    </pfx19:REQUERY_COUNT>
+                                                </xsl:if>
+                                                <xsl:for-each select="pfx19:DEFAULT_INFO">
+                                                    <pfx19:DEFAULT_INFO>
+                                                        <pfx19:SERVICE_CONSUMER>
+                                                            <xsl:value-of select="pfx19:SERVICE_CONSUMER"/>
+                                                        </pfx19:SERVICE_CONSUMER>
+                                                        <xsl:for-each select="pfx19:UPLOAD_METHOD">
+                                                            <pfx19:UPLOAD_METHOD>
+                                                                <xsl:if test="@type">
+                                                                    <xsl:attribute name="type">
+                                                                        <xsl:value-of select="@type"/>
+                                                                    </xsl:attribute>
+                                                                </xsl:if>
+                                                                <xsl:for-each select="pfx19:INF">
+                                                                    <pfx19:INF>
+                                                                        <xsl:if test="@name">
+                                                                            <xsl:attribute name="name">
+                                                                                <xsl:value-of select="@name"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:if test="@s">
+                                                                            <xsl:attribute name="s">
+                                                                                <xsl:value-of select="@s"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                    </pfx19:INF>
+                                                                </xsl:for-each>
+                                                            </pfx19:UPLOAD_METHOD>
+                                                        </xsl:for-each>
+                                                        <xsl:if test="pfx19:AM_CASE_AUTO_SUBMIT">
+                                                            <pfx19:AM_CASE_AUTO_SUBMIT>
+                                                                <xsl:if test="pfx19:AM_CASE_AUTO_SUBMIT/@value">
+                                                                    <xsl:attribute name="value">
+                                                                        <xsl:value-of select="pfx19:AM_CASE_AUTO_SUBMIT/@value"/>
+                                                                    </xsl:attribute>
+                                                                </xsl:if>
+                                                                <xsl:value-of select="pfx19:AM_CASE_AUTO_SUBMIT"/>
+                                                            </pfx19:AM_CASE_AUTO_SUBMIT>
+                                                        </xsl:if>
+                                                    </pfx19:DEFAULT_INFO>
+                                                </xsl:for-each>
+                                                <xsl:for-each select="pfx19:GCC_AUTO_SUBMIT">
+                                                    <pfx19:GCC_AUTO_SUBMIT>
+                                                        <xsl:if test="@value">
+                                                            <xsl:attribute name="value">
+                                                                <xsl:value-of select="@value"/>
+                                                            </xsl:attribute>
+                                                        </xsl:if>
+                                                        <xsl:for-each select="pfx19:CUSTOMER_INFO">
+                                                            <pfx19:CUSTOMER_INFO>
+                                                                <xsl:if test="pfx19:ACCOUNT">
+                                                                    <pfx19:ACCOUNT>
+                                                                        <xsl:if test="pfx19:ACCOUNT/@id">
+                                                                            <xsl:attribute name="id">
+                                                                                <xsl:value-of select="pfx19:ACCOUNT/@id"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:value-of select="pfx19:ACCOUNT"/>
+                                                                    </pfx19:ACCOUNT>
+                                                                </xsl:if>
+                                                                <xsl:if test="pfx19:GCC_REFER_ID">
+                                                                    <pfx19:GCC_REFER_ID>
+                                                                        <xsl:value-of select="pfx19:GCC_REFER_ID"/>
+                                                                    </pfx19:GCC_REFER_ID>
+                                                                </xsl:if>
+                                                                <xsl:if test="pfx19:CUSTOMER_LEVEL">
+                                                                    <pfx19:CUSTOMER_LEVEL>
+                                                                        <xsl:value-of select="pfx19:CUSTOMER_LEVEL"/>
+                                                                    </pfx19:CUSTOMER_LEVEL>
+                                                                </xsl:if>
+                                                                <xsl:if test="pfx19:UPLOAD_UTC_TIME_TO_PSC">
+                                                                    <pfx19:UPLOAD_UTC_TIME_TO_PSC>
+                                                                        <xsl:value-of select="pfx19:UPLOAD_UTC_TIME_TO_PSC"/>
+                                                                    </pfx19:UPLOAD_UTC_TIME_TO_PSC>
+                                                                </xsl:if>
+                                                                <xsl:if test="pfx19:CONTACT">
+                                                                    <pfx19:CONTACT>
+                                                                        <xsl:if test="pfx19:CONTACT/@id">
+                                                                            <xsl:attribute name="id">
+                                                                                <xsl:value-of select="pfx19:CONTACT/@id"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:value-of select="pfx19:CONTACT"/>
+                                                                    </pfx19:CONTACT>
+                                                                </xsl:if>
+                                                                <xsl:if test="pfx19:FIRST_NAME">
+                                                                    <pfx19:FIRST_NAME>
+                                                                        <xsl:value-of select="pfx19:FIRST_NAME"/>
+                                                                    </pfx19:FIRST_NAME>
+                                                                </xsl:if>
+                                                                <xsl:if test="pfx19:LAST_NAME">
+                                                                    <pfx19:LAST_NAME>
+                                                                        <xsl:value-of select="pfx19:LAST_NAME"/>
+                                                                    </pfx19:LAST_NAME>
+                                                                </xsl:if>
+                                                                <xsl:if test="pfx19:EMAIL">
+                                                                    <pfx19:EMAIL>
+                                                                        <xsl:value-of select="pfx19:EMAIL"/>
+                                                                    </pfx19:EMAIL>
+                                                                </xsl:if>
+                                                                <xsl:if test="pfx19:REGION">
+                                                                    <pfx19:REGION>
+                                                                        <xsl:value-of select="pfx19:REGION"/>
+                                                                    </pfx19:REGION>
+                                                                </xsl:if>
+                                                                <xsl:if test="pfx19:COUNTRY">
+                                                                    <pfx19:COUNTRY>
+                                                                        <xsl:value-of select="pfx19:COUNTRY"/>
+                                                                    </pfx19:COUNTRY>
+                                                                </xsl:if>
+                                                                <xsl:if test="pfx19:ACCOUNT_STATUS">
+                                                                    <pfx19:ACCOUNT_STATUS>
+                                                                        <xsl:value-of select="pfx19:ACCOUNT_STATUS"/>
+                                                                    </pfx19:ACCOUNT_STATUS>
+                                                                </xsl:if>
+                                                            </pfx19:CUSTOMER_INFO>
+                                                        </xsl:for-each>
+                                                    </pfx19:GCC_AUTO_SUBMIT>
+                                                </xsl:for-each>
+                                                <xsl:for-each select="pfx19:FILELIST">
+                                                    <pfx19:FILELIST>
+                                                        <xsl:for-each select="pfx19:FILE">
+                                                            <pfx19:FILE>
+                                                                <xsl:attribute name="AM_FILEPATH">
+                                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                                </xsl:attribute>
+                                                                <xsl:if test="@SHA1">
+                                                                    <xsl:attribute name="SHA1">
+                                                                        <xsl:value-of select="@SHA1"/>
+                                                                    </xsl:attribute>
+                                                                </xsl:if>
+                                                                <xsl:if test="@MD5">
+                                                                    <xsl:attribute name="MD5">
+                                                                        <xsl:value-of select="@MD5"/>
+                                                                    </xsl:attribute>
+                                                                </xsl:if>
+                                                                <xsl:if test="@SHA256">
+                                                                    <xsl:attribute name="SHA256">
+                                                                        <xsl:value-of select="@SHA256"/>
+                                                                    </xsl:attribute>
+                                                                </xsl:if>
+                                                                <xsl:value-of select="."/>
+                                                            </pfx19:FILE>
+                                                        </xsl:for-each>
+                                                    </pfx19:FILELIST>
+                                                </xsl:for-each>
+                                                <xsl:for-each select="pfx19:SYSTEMS">
+                                                    <pfx19:SYSTEMS>
+                                                        <xsl:for-each select="pfx19:Charon">
+                                                            <pfx19:Charon>
+                                                                <xsl:if test="pfx19:Request">
+                                                                    <pfx19:Request>
+                                                                        <xsl:value-of select="pfx19:Request"/>
+                                                                    </pfx19:Request>
+                                                                </xsl:if>
+                                                            </pfx19:Charon>
+                                                        </xsl:for-each>
+                                                        <xsl:for-each select="pfx19:Atlas">
+                                                            <pfx19:Atlas>
+                                                                <xsl:for-each select="pfx19:SAMPLE">
+                                                                    <pfx19:SAMPLE>
+                                                                        <xsl:if test="@parent_id">
+                                                                            <xsl:attribute name="parent_id">
+                                                                                <xsl:value-of select="@parent_id"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:if test="@status">
+                                                                            <xsl:attribute name="status">
+                                                                                <xsl:value-of select="@status"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:if test="@id">
+                                                                            <xsl:attribute name="id">
+                                                                                <xsl:value-of select="@id"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:if test="@type">
+                                                                            <xsl:attribute name="type">
+                                                                                <xsl:value-of select="@type"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:if test="@level">
+                                                                            <xsl:attribute name="level">
+                                                                                <xsl:value-of select="@level"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:if test="@rev_ctr">
+                                                                            <xsl:attribute name="rev_ctr">
+                                                                                <xsl:value-of select="@rev_ctr"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:if test="@decision">
+                                                                            <xsl:attribute name="decision">
+                                                                                <xsl:value-of select="@decision"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:if test="@src">
+                                                                            <xsl:attribute name="src">
+                                                                                <xsl:value-of select="@src"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:if test="@time_stamp">
+                                                                            <xsl:attribute name="time_stamp">
+                                                                                <xsl:value-of select="@time_stamp"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                        <xsl:for-each select="pfx19:INF">
+                                                                            <pfx19:INF>
+                                                                                <xsl:if test="@name">
+                                                                                    <xsl:attribute name="name">
+                                                                                        <xsl:value-of select="@name"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:if test="@s">
+                                                                                    <xsl:attribute name="s">
+                                                                                        <xsl:value-of select="@s"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                            </pfx19:INF>
+                                                                        </xsl:for-each>
+                                                                        <xsl:for-each select="pfx19:TOOL">
+                                                                            <pfx19:TOOL>
+                                                                                <xsl:if test="@start_time_stamp">
+                                                                                    <xsl:attribute name="start_time_stamp">
+                                                                                        <xsl:value-of select="@start_time_stamp"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:if test="@end_time_stamp">
+                                                                                    <xsl:attribute name="end_time_stamp">
+                                                                                        <xsl:value-of select="@end_time_stamp"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:if test="@elapsed_time">
+                                                                                    <xsl:attribute name="elapsed_time">
+                                                                                        <xsl:value-of select="@elapsed_time"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:if test="@id">
+                                                                                    <xsl:attribute name="id">
+                                                                                        <xsl:value-of select="@id"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:if test="@status">
+                                                                                    <xsl:attribute name="status">
+                                                                                        <xsl:value-of select="@status"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:if test="@local_hostname">
+                                                                                    <xsl:attribute name="local_hostname">
+                                                                                        <xsl:value-of select="@local_hostname"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:if test="@local_ip">
+                                                                                    <xsl:attribute name="local_ip">
+                                                                                        <xsl:value-of select="@local_ip"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:if test="@order">
+                                                                                    <xsl:attribute name="order">
+                                                                                        <xsl:value-of select="@order"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:for-each select="pfx19:INF">
+                                                                                    <pfx19:INF>
+                                                                                        <xsl:if test="@name">
+                                                                                            <xsl:attribute name="name">
+                                                                                                <xsl:value-of select="@name"/>
+                                                                                            </xsl:attribute>
+                                                                                        </xsl:if>
+                                                                                        <xsl:if test="@s">
+                                                                                            <xsl:attribute name="s">
+                                                                                                <xsl:value-of select="@s"/>
+                                                                                            </xsl:attribute>
+                                                                                        </xsl:if>
+                                                                                    </pfx19:INF>
+                                                                                </xsl:for-each>
+                                                                            </pfx19:TOOL>
+                                                                        </xsl:for-each>
+                                                                    </pfx19:SAMPLE>
+                                                                </xsl:for-each>
+                                                            </pfx19:Atlas>
+                                                        </xsl:for-each>
+                                                    </pfx19:SYSTEMS>
+                                                </xsl:for-each>
+                                                <xsl:if test="pfx19:EVENT_ID">
+                                                    <pfx19:EVENT_ID>
+                                                        <xsl:value-of select="pfx19:EVENT_ID"/>
+                                                    </pfx19:EVENT_ID>
+                                                </xsl:if>
+                                                <xsl:if test="pfx19:FILEFULLPATH">
+                                                    <pfx19:FILEFULLPATH>
+                                                        <xsl:value-of select="pfx19:FILEFULLPATH"/>
+                                                    </pfx19:FILEFULLPATH>
+                                                </xsl:if>
+                                                <xsl:if test="pfx19:CharonXmlString">
+                                                    <pfx19:CharonXmlString>
+                                                        <xsl:value-of select="pfx19:CharonXmlString"/>
+                                                    </pfx19:CharonXmlString>
+                                                </xsl:if>
+                                            </pfx19:CASE>
+                                        </xsl:for-each>
+                                    </pfx19:ACSMessage>
+                                </pfx19:Message>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx19:Message>
+                                    <pfx19:EventProcessMsg>
+                                        <xsl:for-each select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying">
+                                            <pfx19:OnFileQuerying>
+                                                <pfx19:serviceId>
+                                                    <xsl:value-of select="pfx19:serviceId"/>
+                                                </pfx19:serviceId>
+                                                <pfx19:fileSha1>
+                                                    <xsl:value-of select="pfx19:fileSha1"/>
+                                                </pfx19:fileSha1>
+                                                <pfx19:fileMd5>
+                                                    <xsl:value-of select="pfx19:fileMd5"/>
+                                                </pfx19:fileMd5>
+                                                <xsl:if test="pfx19:fileSha256">
+                                                    <pfx19:fileSha256>
+                                                        <xsl:value-of select="pfx19:fileSha256"/>
+                                                    </pfx19:fileSha256>
+                                                </xsl:if>
+                                                <pfx19:requestType>
+                                                    <xsl:value-of select="pfx19:requestType"/>
+                                                </pfx19:requestType>
+                                                <xsl:if test="pfx19:CUST_BRANCH">
+                                                    <pfx19:CUST_BRANCH>
+                                                        <xsl:value-of select="pfx19:CUST_BRANCH"/>
+                                                    </pfx19:CUST_BRANCH>
+                                                </xsl:if>
+                                                <xsl:if test="pfx19:fileType">
+                                                    <pfx19:fileType>
+                                                        <xsl:value-of select="pfx19:fileType"/>
+                                                    </pfx19:fileType>
+                                                </xsl:if>
+                                                <xsl:if test="pfx19:withCompetitorResult">
+                                                    <pfx19:withCompetitorResult>
+                                                        <xsl:value-of select="pfx19:withCompetitorResult"/>
+                                                    </pfx19:withCompetitorResult>
+                                                </xsl:if>
+                                                <pfx19:filePath>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </pfx19:filePath>
+                                            </pfx19:OnFileQuerying>
+                                        </xsl:for-each>
+                                    </pfx19:EventProcessMsg>
+                                </pfx19:Message>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:XMLPayload">
+                            <pfx19:XMLPayload>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:XMLPayload"/>
+                            </pfx19:XMLPayload>
+                        </xsl:if>
+                        <xsl:copy-of select="$Start/group/pfx19:SMF/pfx19:SMFBody/pfx19:MessagePayload"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($ErrorCode-Handler)">
+                                <pfx19:Error>
+                                    <pfx19:src>
+                                        <xsl:value-of select="&quot;FRS SendGetFileReputationRequest\reputaeFile&quot;"/>
+                                    </pfx19:src>
+                                    <pfx19:error_code>
+                                        <xsl:value-of select="$reputaeFile/root/return"/>
+                                    </pfx19:error_code>
+                                    <pfx19:error_message>
+                                        <xsl:value-of select="$ErrorCode-Handler/group/error_message"/>
+                                    </pfx19:error_message>
+                                </pfx19:Error>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:SessionID">
+                            <pfx19:SessionID>
+                                <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:SessionID"/>
+                            </pfx19:SessionID>
+                        </xsl:if>
+                        <xsl:copy-of select="$Start/group/pfx19:SMF/pfx19:SMFBody/pfx19:EventMsg"/>
+                    </pfx19:SMFBody>
+                </pfx19:SMF>
+                <serviceID>
+                    <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:serviceId"/>
+                </serviceID>
+                <MessageKey>
+                    <xsl:value-of select="$reputaeFile/root/MessageKey"/>
+                </MessageKey>
+                <xsl:if test="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1">
+                    <filsSHA1>
+                        <xsl:value-of select="$Start/group/pfx19:SMF/pfx19:SMFBody[1]/pfx19:Message/pfx19:EventProcessMsg/pfx19:OnFileQuerying/pfx19:fileSha1"/>
+                    </filsSHA1>
+                </xsl:if>
+                <WaitingQueue>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/EventProcess/EventCenterWaitingQueue"/>
+                </WaitingQueue>
+                <DestinationQueue>
+                    <xsl:value-of select="concat($_globalVariables/ns3:GlobalVariables/EventProcess/EventCenterQueue, $_globalVariables/ns3:GlobalVariables/EventProcess/version)"/>
+                </DestinationQueue>
+                <RetryCount>
+                    <xsl:value-of select="$Start/group/RetryCount"/>
+                </RetryCount>
+                <ErrorRetryCount>
+                    <xsl:value-of select="$Start/group/ErrorRetryCount"/>
+                </ErrorRetryCount>
+                <xsl:choose>
+                    <xsl:when test="exists($ErrorCode-Handler)">
+                        <Charon_Result>
+                            <xsl:value-of select="&quot;Error&quot;"/>
+                        </Charon_Result>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <Charon_Result>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </Charon_Result>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="not(exists($ErrorCode-Handler))">
+                        <isSendFilePath>
+                            <xsl:value-of select="&quot;true&quot;"/>
+                        </isSendFilePath>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <isSendFilePath>
+                            <xsl:value-of select="&quot;false&quot;"/>
+                        </isSendFilePath>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <StepTypeIdForStopRequery>
+                    <xsl:value-of select="273"/>
+                </StepTypeIdForStopRequery>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>561</pd:x>
+        <pd:y>363</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns7:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns2:ErrorReport/Data/ns9:Error)">
+                            <xsl:copy-of select="$_error/ns2:ErrorReport/Data/ns9:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns9:Error>
+                                <ns9:src>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </ns9:src>
+                                <ns9:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                </ns9:error_code>
+                                <ns9:error_message>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                </ns9:error_message>
+                                <ns9:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </ns9:stack_trace>
+                                <ns9:traceMessageKey>
+                                    <xsl:value-of select="$Start/group/MessageKey"/>
+                                </ns9:traceMessageKey>
+                            </ns9:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns7:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>reputaeFile</pd:from>
+        <pd:to>Call ACS File Log for Check File End Process 1</pd:to>
+        <pd:xpathDescription>Success</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>reputaeFile</pd:from>
+        <pd:to>ErrorCode Handler</pd:to>
+        <pd:xpathDescription>Return Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($reputaeFile/root/return)!=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call ACS File Log for Check File End Process 1</pd:from>
+        <pd:to>ReQuery</pd:to>
+        <pd:xpathDescription>isSendFilePath</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorCode Handler</pd:from>
+        <pd:to>ReQuery</pd:to>
+        <pd:xpathDescription>Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ReQuery</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>reputaeFile</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

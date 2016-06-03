@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns6="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns7="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://tempuri.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" schemaLocation="/XSD/Common/InsertNeuronEventLog.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" schemaLocation="/XSD/Common/EvnetMsg/SubmittingInput.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd" schemaLocation="/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd"/>
+    <pd:name>EventProcess/PSC_G2/ERS/OnSubmitting.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>81</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%EventProcess/OnSubmitting%%%%EventProcess/version%%</destination>
+                <selector>JMSXGroupID='%%EventProcess/PSC_G2/ERS/Consumer%%'</selector>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx:SMF"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1007</pd:endX>
+    <pd:endY>87</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1426156671786</pd:targetNamespace>
+    <pd:activity name="InsertNeuronProcessStatus[1]">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>223</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:InsertTaskLog>
+                <ns3:serviceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:serviceId"/>
+                </ns3:serviceID>
+                <ns3:stepTypeID>
+                    <xsl:value-of select="&quot;1&quot;"/>
+                </ns3:stepTypeID>
+                <ns3:message>
+                    <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns1:ActivityOutput/Body[1]/pfx:SMF, 1)"/>
+                </ns3:message>
+            </ns3:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1010</pd:x>
+        <pd:y>483</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1009</pd:x>
+        <pd:y>230</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns4:ErrorReport/Data/*" element="ns7:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <pfx:SMF>
+                    <xsl:for-each select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFHeader">
+                        <pfx:SMFHeader>
+                            <pfx:MessageKey>
+                                <xsl:value-of select="pfx:MessageKey"/>
+                            </pfx:MessageKey>
+                            <pfx:ServiceName>
+                                <xsl:value-of select="pfx:ServiceName"/>
+                            </pfx:ServiceName>
+                            <pfx:ServiceVersion>
+                                <xsl:value-of select="pfx:ServiceVersion"/>
+                            </pfx:ServiceVersion>
+                            <pfx:SourceID>
+                                <xsl:value-of select="pfx:SourceID"/>
+                            </pfx:SourceID>
+                            <xsl:if test="pfx:SourceIP">
+                                <pfx:SourceIP>
+                                    <xsl:value-of select="pfx:SourceIP"/>
+                                </pfx:SourceIP>
+                            </xsl:if>
+                            <xsl:if test="pfx:RqTimestamp">
+                                <pfx:RqTimestamp>
+                                    <xsl:value-of select="pfx:RqTimestamp"/>
+                                </pfx:RqTimestamp>
+                            </xsl:if>
+                            <xsl:if test="pfx:RsTimestamp">
+                                <pfx:RsTimestamp>
+                                    <xsl:value-of select="pfx:RsTimestamp"/>
+                                </pfx:RsTimestamp>
+                            </xsl:if>
+                            <xsl:if test="pfx:Priority">
+                                <pfx:Priority>
+                                    <xsl:value-of select="pfx:Priority"/>
+                                </pfx:Priority>
+                            </xsl:if>
+                        </pfx:SMFHeader>
+                    </xsl:for-each>
+                    <pfx:SMFBody>
+                        <pfx:Message>
+                            <xsl:for-each select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message">
+                                <pfx:EventProcessMsg>
+                                    <xsl:for-each select="pfx:EventProcessMsg">
+                                        <pfx:OnSubmitting>
+                                            <pfx:submissionInput>
+                                                <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:submissionInput"/>
+                                            </pfx:submissionInput>
+                                            <pfx:serviceId>
+                                                <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:serviceId"/>
+                                            </pfx:serviceId>
+                                        </pfx:OnSubmitting>
+                                    </xsl:for-each>
+                                </pfx:EventProcessMsg>
+                            </xsl:for-each>
+                        </pfx:Message>
+                        <pfx:XMLPayload>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:XMLPayload"/>
+                        </pfx:XMLPayload>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody/pfx:MessagePayload"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns4:ErrorReport/Data/ns7:Error)">
+                                <pfx:Error>
+                                    <pfx:src>
+                                        <xsl:value-of select="$_error/ns4:ErrorReport/Data/ns7:Error/ns7:src"/>
+                                    </pfx:src>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="$_error/ns4:ErrorReport/Data/ns7:Error/ns7:error_code"/>
+                                    </pfx:error_code>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error/ns4:ErrorReport/Data/ns7:Error/ns7:error_message"/>
+                                    </pfx:error_message>
+                                    <xsl:if test="$_error/ns4:ErrorReport/Data/ns7:Error/ns7:stack_trace">
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="$_error/ns4:ErrorReport/Data/ns7:Error/ns7:stack_trace"/>
+                                        </pfx:error_detail>
+                                    </xsl:if>
+                                </pfx:Error>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx:Error>
+                                    <pfx:src>
+                                        <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                                    </pfx:src>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                                    </pfx:error_code>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                                    </pfx:error_message>
+                                    <xsl:if test="$_error/ns4:ErrorReport/StackTrace">
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                                        </pfx:error_detail>
+                                    </xsl:if>
+                                </pfx:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx:SessionID>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:SessionID"/>
+                        </pfx:SessionID>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody/pfx:EventMsg"/>
+                    </pfx:SMFBody>
+                </pfx:SMF>
+                <ns:InsertNeuronEventLog>
+                    <ns:ServiceId>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:ServiceID"/>
+                    </ns:ServiceId>
+                    <ns:Consumer>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:Consumer"/>
+                    </ns:Consumer>
+                    <ns:FILESHA1>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:FileSha1"/>
+                    </ns:FILESHA1>
+                    <ns:EventId>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventStepTypeId"/>
+                    </ns:EventId>
+                    <ns:TypeId>
+                        <xsl:value-of select="&quot;4&quot;"/>
+                    </ns:TypeId>
+                    <ns:EventKey>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventKey"/>
+                    </ns:EventKey>
+                    <ns:Log>
+                        <xsl:value-of select="tib:render-xml($Catch/exceptiondata,true())"/>
+                    </ns:Log>
+                </ns:InsertNeuronEventLog>
+                <isESBLog>
+                    <xsl:value-of select="false()"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ERS_OnSubmitted">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>720</pd:x>
+        <pd:y>206</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%EventProcess/EventCenterQueue%%%%EventProcess/version%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <Body>
+                    <pfx:SMF>
+                        <xsl:for-each select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFHeader">
+                            <pfx:SMFHeader>
+                                <pfx:MessageKey>
+                                    <xsl:value-of select="pfx:MessageKey"/>
+                                </pfx:MessageKey>
+                                <pfx:ServiceName>
+                                    <xsl:value-of select="pfx:ServiceName"/>
+                                </pfx:ServiceName>
+                                <pfx:ServiceVersion>
+                                    <xsl:value-of select="pfx:ServiceVersion"/>
+                                </pfx:ServiceVersion>
+                                <pfx:SourceID>
+                                    <xsl:value-of select="pfx:SourceID"/>
+                                </pfx:SourceID>
+                                <xsl:if test="pfx:SourceIP">
+                                    <pfx:SourceIP>
+                                        <xsl:value-of select="pfx:SourceIP"/>
+                                    </pfx:SourceIP>
+                                </xsl:if>
+                                <xsl:if test="pfx:RqTimestamp">
+                                    <pfx:RqTimestamp>
+                                        <xsl:value-of select="pfx:RqTimestamp"/>
+                                    </pfx:RqTimestamp>
+                                </xsl:if>
+                                <xsl:if test="pfx:RsTimestamp">
+                                    <pfx:RsTimestamp>
+                                        <xsl:value-of select="pfx:RsTimestamp"/>
+                                    </pfx:RsTimestamp>
+                                </xsl:if>
+                                <xsl:if test="pfx:Priority">
+                                    <pfx:Priority>
+                                        <xsl:value-of select="pfx:Priority"/>
+                                    </pfx:Priority>
+                                </xsl:if>
+                            </pfx:SMFHeader>
+                        </xsl:for-each>
+                        <pfx:SMFBody>
+                            <pfx:Message>
+                                <pfx:EventProcessMsg>
+                                    <pfx:OnSubmitted>
+                                        <pfx:serviceId>
+                                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:serviceId"/>
+                                        </pfx:serviceId>
+                                        <pfx:submissionInput>
+                                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:submissionInput"/>
+                                        </pfx:submissionInput>
+                                        <pfx:statusCode>
+                                            <xsl:value-of select="0"/>
+                                        </pfx:statusCode>
+                                        <pfx:sourceId>
+                                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:sourceId"/>
+                                        </pfx:sourceId>
+                                        <pfx:reputationSystem>
+                                            <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:reputationSystem"/>
+                                        </pfx:reputationSystem>
+                                        <xsl:if test="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:sourceSystem">
+                                            <pfx:sourceSystem>
+                                                <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:sourceSystem"/>
+                                            </pfx:sourceSystem>
+                                        </xsl:if>
+                                    </pfx:OnSubmitted>
+                                </pfx:EventProcessMsg>
+                            </pfx:Message>
+                            <pfx:EventMsg>
+                                <pfx:ServiceID>
+                                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:ServiceID"/>
+                                </pfx:ServiceID>
+                                <pfx:EventKey>
+                                    <xsl:value-of select="TM:getGUID()"/>
+                                </pfx:EventKey>
+                                <pfx:EventName>
+                                    <xsl:value-of select="&quot;OnSubmitted&quot;"/>
+                                </pfx:EventName>
+                                <pfx:Consumer>
+                                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:Consumer"/>
+                                </pfx:Consumer>
+                                <pfx:EventStepTypeId>
+                                    <xsl:value-of select="$_globalVariables/ns6:GlobalVariables/EventProcess/EventTypeId/OnSubmitted"/>
+                                </pfx:EventStepTypeId>
+                            </pfx:EventMsg>
+                        </pfx:SMFBody>
+                    </pfx:SMF>
+                </Body>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InsertConsumerMainTable">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>655</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/InsertConsumerMainTable.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:ServiceID"/>
+                </ServiceId>
+                <Account>
+                    <xsl:value-of select="$Parse-XML/NEURON/ADDITIONAL_INFO/AccountName"/>
+                </Account>
+                <Uploader>
+                    <xsl:value-of select="$Parse-XML/NEURON/ADDITIONAL_INFO/EmailAddress"/>
+                </Uploader>
+                <Communication_Id>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:sourceId"/>
+                </Communication_Id>
+                <Communication_Type>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:Consumer"/>
+                </Communication_Type>
+                <isAMSS_AutoSubmitCase>
+                    <xsl:value-of select="$Parse-XML/NEURON/DEFAULT_INFO/AM_CASE_AUTO_SUBMIT/@value"/>
+                </isAMSS_AutoSubmitCase>
+                <Consumer_SRNO>
+                    <xsl:value-of select="$Parse-XML/NEURON/ADDITIONAL_INFO/SupportCaseNumber"/>
+                </Consumer_SRNO>
+                <SUPPORT_TOKEN>
+                    <xsl:value-of select="$Parse-XML/NEURON/ADDITIONAL_INFO/ThreatServiceID"/>
+                </SUPPORT_TOKEN>
+                <SourceCaseId>
+                    <xsl:value-of select="$Parse-XML/NEURON/ADDITIONAL_INFO/SupportCaseNumber"/>
+                </SourceCaseId>
+                <ReferenceId>
+                    <xsl:value-of select="$Parse-XML/NEURON/ADDITIONAL_INFO/ThreatServiceID"/>
+                </ReferenceId>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InsertEvenLog[1]">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>240</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:InsertNeuronEventLog>
+                <ns:ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:ServiceID"/>
+                </ns:ServiceId>
+                <ns:Consumer>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:Consumer"/>
+                </ns:Consumer>
+                <ns:FILESHA1>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:FileSha1"/>
+                </ns:FILESHA1>
+                <ns:EventId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventStepTypeId"/>
+                </ns:EventId>
+                <ns:TypeId>
+                    <xsl:value-of select="&quot;1&quot;"/>
+                </ns:TypeId>
+                <ns:EventKey>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventKey"/>
+                </ns:EventKey>
+                <ns:Log>
+                    <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF,true())"/>
+                </ns:Log>
+            </ns:InsertNeuronEventLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InsertEvenLog[9]">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>803</pd:x>
+        <pd:y>90</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns:InsertNeuronEventLog>
+                <ns:ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:ServiceID"/>
+                </ns:ServiceId>
+                <ns:Consumer>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:Consumer"/>
+                </ns:Consumer>
+                <ns:FILESHA1>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:FileSha1"/>
+                </ns:FILESHA1>
+                <ns:EventId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventStepTypeId"/>
+                </ns:EventId>
+                <ns:TypeId>
+                    <xsl:value-of select="&quot;9&quot;"/>
+                </ns:TypeId>
+                <ns:Log>
+                    <xsl:value-of select="&quot;Complete&quot;"/>
+                </ns:Log>
+                <ns:EventKey>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:EventMsg/pfx:EventKey"/>
+                </ns:EventKey>
+            </ns:InsertNeuronEventLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>1011</pd:x>
+        <pd:y>363</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns5:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="concat($_error/ns4:ErrorReport/ProcessStack, &quot;.&quot;,$_error/ns4:ErrorReport/MsgCode)"/>
+                </msgCode>
+            </ns5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateSLAStatus">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>522</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpdateSLAStatus.process</processName>
+        </config>
+        <pd:inputBindings>
+            <UpdateSLAStatus_Input>
+                <ServiceId>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:serviceId"/>
+                </ServiceId>
+                <SLAStatus>
+                    <xsl:value-of select="&quot;NonSLA&quot;"/>
+                </SLAStatus>
+            </UpdateSLAStatus_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>382</pd:x>
+        <pd:y>85</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="NEURON" type="pfx3:NEURONERSType"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns1:ActivityOutput/Body/pfx:SMF/pfx:SMFBody[1]/pfx:Message/pfx:EventProcessMsg/pfx:OnSubmitting/pfx:submissionInput"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>InsertEvenLog[1]</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>InsertNeuronProcessStatus[1]</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertConsumerMainTable</pd:from>
+        <pd:to>ERS_OnSubmitted</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateSLAStatus</pd:from>
+        <pd:to>InsertConsumerMainTable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertEvenLog[1]</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertNeuronProcessStatus[1]</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertEvenLog[9]</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>UpdateSLAStatus</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ERS_OnSubmitted</pd:from>
+        <pd:to>InsertEvenLog[9]</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

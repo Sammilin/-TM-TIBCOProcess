@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns12="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns13="http://tempuri.org/" xmlns:pfx="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Schema.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/SubprocessesRQ.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/ToACS/2.1 Subprocesses/QueryAssessmentSubprocess.process</pd:name>
+    <pd:description>7.0 Query Assessment Subprocess</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="ns:SubprocessesRQ"/>
+    <pd:startX>119</pd:startX>
+    <pd:startY>125</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>714</pd:endX>
+    <pd:endY>125</pd:endY>
+    <pd:errorSchemas>
+        <Schema0 ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1363679562306</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>923</pd:x>
+        <pd:y>125</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="CreateAMSSFTV_or_GTS">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>418</pd:x>
+        <pd:y>125</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/CreateAMSSTasks.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Start/ns:SubprocessesRQ" type="ns:"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <root>
+                <ServiceID>
+                    <xsl:value-of select="$Start/ns:SubprocessesRQ/ns:NeuronID"/>
+                </ServiceID>
+                <xsl:if test="$Start/ns:SubprocessesRQ/ns:FileSHA1">
+                    <FileSHA1>
+                        <xsl:value-of select="$Start/ns:SubprocessesRQ/ns:FileSHA1"/>
+                    </FileSHA1>
+                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="$Start/ns:SubprocessesRQ/ns:CharonResult = 'Manual_Migration'">
+                        <TaskType>
+                            <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/GTS"/>
+                        </TaskType>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <TaskType>
+                            <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/FTV"/>
+                        </TaskType>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>845</pd:x>
+        <pd:y>227</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <ns12:SMF>
+                    <ns12:SMFHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="''"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="'ATTK_TaskCreation'"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Version"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="''"/>
+                        </ns12:SourceID>
+                    </ns12:SMFHeader>
+                    <ns12:SMFBody>
+                        <ns12:Error>
+                            <ns12:src>
+                                <xsl:value-of select="'FTVSubprocess'"/>
+                            </ns12:src>
+                            <ns12:error_code>
+                                <xsl:value-of select="''"/>
+                            </ns12:error_code>
+                            <ns12:error_message>
+                                <xsl:value-of select="''"/>
+                            </ns12:error_message>
+                        </ns12:Error>
+                    </ns12:SMFBody>
+                </ns12:SMF>
+                <ns13:InsertFileActivityLog>
+                    <ns13:serviceID>
+                        <xsl:value-of select="$Start/ns:SubprocessesRQ/ns:NeuronID"/>
+                    </ns13:serviceID>
+                    <ns13:fileSHA1>
+                        <xsl:value-of select="$Start/ns:SubprocessesRQ/ns:FileSHA1"/>
+                    </ns13:fileSHA1>
+                    <ns13:stepTypeID>
+                        <xsl:value-of select="9251"/>
+                    </ns13:stepTypeID>
+                </ns13:InsertFileActivityLog>
+                <isESBLog>
+                    <xsl:value-of select="&quot;true&quot;"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>837</pd:x>
+        <pd:y>125</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="if(exists($_error_CreateAMSSFTV_or_GTS/pfx2:Error)) then&#xA;&#x9;$_error_CreateAMSSFTV_or_GTS/pfx2:Error/pfx2:stack_trace&#xA;else&#xA;&#x9;'Create AMSS Task return false'"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="'QueryAssessmentSubprocessError'"/>
+                </msgCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>417</pd:x>
+        <pd:y>251</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>518</pd:x>
+        <pd:y>37</pd:y>
+        <config>
+            <faultName>Schema0</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <data>
+                    <pfx2:Error>
+                        <pfx2:src>
+                            <xsl:value-of select="''"/>
+                        </pfx2:src>
+                        <pfx2:error_code>
+                            <xsl:value-of select="''"/>
+                        </pfx2:error_code>
+                        <pfx2:error_message>
+                            <xsl:value-of select="''"/>
+                        </pfx2:error_message>
+                        <pfx2:stack_trace>
+                            <xsl:value-of select="''"/>
+                        </pfx2:stack_trace>
+                    </pfx2:Error>
+                </data>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>CreateAMSSFTV_or_GTS</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>CreateAMSSFTV_or_GTS</pd:to>
+        <pd:xpathDescription>SolProviding_Manual or Manual_Migration or Detection_Branch</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/ns:SubprocessesRQ/ns:CharonResult = 'SolProviding_Manual' or
+$Start/ns:SubprocessesRQ/ns:CharonResult = 'Manual_Migration' or
+$Start/ns:SubprocessesRQ/ns:CharonResult = "Detection_Branch"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:xpathDescription>Create AMSS Task return false</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($_error_Generate-Error/pfx2:Error)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateAMSSFTV_or_GTS</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>result = 'false'</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateAMSSFTV_or_GTS/result = 'false'</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

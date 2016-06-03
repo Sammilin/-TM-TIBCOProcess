@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx41="http://coretech.trendmicro.com/frs/charon/" xmlns:ns21="http://xmlns.tibco.com/encodings/mime" xmlns:ns5="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns3="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx3="http://www.trendmicro.com/ESB/PeopleSoft/schemas/DBLogger" xmlns:pfx2="http://tempuri.org/" xmlns:pfx21="http://Anti.Malware.Tracker-Service.org/" xmlns:pfx7="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx6="http://xmlns.oracle.com/Enterprise/HCM/services/TM_EMPLOYEE_LIST.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Client/ACS WSDL.wsdl"/>
+    <pd:name>ExternalServices/ToACS/2.1 Subprocesses/Functions/ExtractSample.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>73</pd:startX>
+    <pd:startY>184</pd:startY>
+    <pd:returnBindings>
+        <result>
+            <xsl:value-of select="tib:render-xml($SOAPRequestReply/outputMessage/pfx2:ExtractSampleResponse, 1)"/>
+        </result>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="result" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>546</pd:endX>
+    <pd:endY>184</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx7:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <Variable0>
+            <xsd:element name="error" type="xsd:string"/>
+        </Variable0>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1314244713029</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>147</pd:x>
+        <pd:y>33</pd:y>
+        <pd:width>324</pd:width>
+        <pd:height>288</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>false() or exists($SOAPRequestReply/outputMessage/pfx2:ExtractSampleResponse)</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SOAPRequestReply</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>Assign</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:xpathDescription>IOException</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign</pd:from>
+            <pd:to>Generate-Error-1</pd:to>
+            <pd:xpathDescription>Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65434</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i&gt;$_globalVariables/ns2:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Functions/ExtractSample/retryTimes</pd:xpath>
+        </pd:transition>
+        <pd:activity name="SOAPRequestReply">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>295</pd:x>
+            <pd:y>107</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx2:ACSServices</service>
+                <servicePort>ACSServicesSoap</servicePort>
+                <operation>ExtractSample</operation>
+                <soapAction>http://tempuri.org/ExtractSample</soapAction>
+                <endpointURL>%%ExternalServices/ToACS/WebService/EndPointURL%%</endpointURL>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <pfx2:ExtractSample>
+                        <pfx2:serviceId>
+                            <xsl:value-of select="$Start/root/ServiceID"/>
+                        </pfx2:serviceId>
+                    </pfx2:ExtractSample>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>379</pd:x>
+            <pd:y>202</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/ExternalServices/ToACS/WebService/RetryInterval_secs * 1000"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate-Error-1">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>309</pd:x>
+            <pd:y>266</pd:y>
+            <config>
+                <faultName>errorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <xsl:choose>
+                    <xsl:when test="exists($_error_SOAPRequestReply/ActivityErrors/defaultFaultElement/faultstring)">
+                        <pfx5:ActivityInput>
+                            <xsl:if test="$_error_SOAPRequestReply/ActivityErrors/defaultFaultElement/faultstring">
+                                <message>
+                                    <xsl:value-of select="$_error_SOAPRequestReply/ActivityErrors/defaultFaultElement/faultstring"/>
+                                </message>
+                            </xsl:if>
+                            <xsl:if test="$_error_SOAPRequestReply/ActivityErrors/defaultFaultElement/faultcode">
+                                <messageCode>
+                                    <xsl:value-of select="$_error_SOAPRequestReply/ActivityErrors/defaultFaultElement/faultcode"/>
+                                </messageCode>
+                            </xsl:if>
+                            <data>
+                                <pfx7:Error>
+                                    <pfx7:src>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                    </pfx7:src>
+                                    <pfx7:error_code>
+                                        <xsl:value-of select="$_error_SOAPRequestReply/ActivityErrors/defaultFaultElement/faultcode"/>
+                                    </pfx7:error_code>
+                                    <pfx7:error_message>
+                                        <xsl:value-of select="$_error_SOAPRequestReply/ActivityErrors/defaultFaultElement/faultstring"/>
+                                    </pfx7:error_message>
+                                    <pfx7:stack_trace>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                    </pfx7:stack_trace>
+                                </pfx7:Error>
+                            </data>
+                        </pfx5:ActivityInput>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx5:ActivityInput>
+                            <message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                            </message>
+                            <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                                <messageCode>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </messageCode>
+                            </xsl:if>
+                            <data>
+                                <pfx7:Error>
+                                    <pfx7:src>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                    </pfx7:src>
+                                    <pfx7:error_code>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                    </pfx7:error_code>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($_error_SOAPRequestReply/ActivityErrors/ns4:HttpServerException)">
+                                            <pfx7:error_message>
+                                                <xsl:value-of select="concat(&quot;Neuron response error: &quot;,$_error/ns1:ErrorReport/Msg)"/>
+                                            </pfx7:error_message>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <pfx7:error_message>
+                                                <xsl:value-of select="concat(&quot;BW response error: &quot;,$_error/ns1:ErrorReport/Msg)"/>
+                                            </pfx7:error_message>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <pfx7:stack_trace>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                    </pfx7:stack_trace>
+                                </pfx7:Error>
+                            </data>
+                        </pfx5:ActivityInput>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>210</pd:x>
+            <pd:y>202</pd:y>
+            <config>
+                <variableName>Variable0</variableName>
+            </config>
+            <pd:inputBindings>
+                <error>
+                    <xsl:value-of select="tib:render-xml($_error_SOAPRequestReply)"/>
+                </error>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="ATSS_ERS_Case_Common_WS" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://xmlns.tibco.com/encodings/mime" xmlns:pfx5="http://tempuri.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx6="http://www.trendmicro.com/G2/SFDC_UpsetThreatServiceRq">
+    <xsd:import namespace="ATSS_ERS_Case_Common_WS" schemaLocation="/WSDL/Provider/ATSS_ERS_Case_Common_WS_ATSS_ERS_Case_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="ATSS_ERS_Case_Common_WS" location="/WSDL/Provider/ATSS_ERS_Case_Common_WS_ATSS_ERS_Case_Common_WS.WSDL.wsdl"/>
+    <pd:name>ExternalServices/ToATSS/CreateATSSERSCase.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="CreateATSSEERSCase">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="MailFilename" type="xsd:string"/>
+                    <xsd:element name="MailSampleType" type="xsd:string"/>
+                    <xsd:element name="CC" type="xsd:string"/>
+                    <xsd:element name="FirstName" type="xsd:string"/>
+                    <xsd:element name="Notes" type="xsd:string"/>
+                    <xsd:element name="SRType" type="xsd:string"/>
+                    <xsd:element name="SourceId" type="xsd:string"/>
+                    <xsd:element name="SubmissionType" type="xsd:string"/>
+                    <xsd:element name="Title" type="xsd:string"/>
+                    <xsd:element name="Country" type="xsd:string"/>
+                    <xsd:element name="LocationofSamples" type="xsd:string"/>
+                    <xsd:element name="EscalationSourceId" type="xsd:string"/>
+                    <xsd:element name="EscalationLoginName" type="xsd:string"/>
+                    <xsd:element name="LastName" type="xsd:string"/>
+                    <xsd:element name="OS" type="xsd:string"/>
+                    <xsd:element name="Priority" type="xsd:string"/>
+                    <xsd:element name="Product" type="xsd:string"/>
+                    <xsd:element name="Source" type="xsd:string"/>
+                    <xsd:element name="SubmitDate" type="xsd:string"/>
+                    <xsd:element name="Email" type="xsd:string"/>
+                    <xsd:element name="Region" type="xsd:string"/>
+                    <xsd:element name="ServiceId" type="xsd:string"/>
+                    <xsd:element name="ConsumerSource" type="xsd:string"/>
+                    <xsd:element name="SRNumber" type="xsd:string"/>
+                    <xsd:element name="TaskType" type="xsd:string"/>
+                    <xsd:element name="CustomerAccountName" type="xsd:string"/>
+                    <xsd:element name="CustomerCountry" type="xsd:string"/>
+                    <xsd:element name="CustomerEmail" type="xsd:string"/>
+                    <xsd:element name="CustomerFullName" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>108</pd:startX>
+    <pd:startY>61</pd:startY>
+    <pd:returnBindings>
+        <xsl:for-each select="$SOAPRequestReply/outputMessage/pfx:ATSS_ERS_Case_Common_WS_CreateERSCase1_Output">
+            <CraeteATSSERSCaseOutput>
+                <psCaseId>
+                    <xsl:value-of select="pfx:psCaseId"/>
+                </psCaseId>
+                <psError>
+                    <xsl:value-of select="pfx:psError"/>
+                </psError>
+                <psStatus>
+                    <xsl:value-of select="pfx:psStatus"/>
+                </psStatus>
+                <MessageKey>
+                    <xsl:value-of select="$InsertATSSInfo/Ouput/MessageKey"/>
+                </MessageKey>
+            </CraeteATSSERSCaseOutput>
+        </xsl:for-each>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="CraeteATSSERSCaseOutput">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="psCaseId" type="xsd:string"/>
+                    <xsd:element name="psError" type="xsd:string"/>
+                    <xsd:element name="psStatus" type="xsd:string"/>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>727</pd:endX>
+    <pd:endY>61</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1426647237189</pd:targetNamespace>
+    <pd:activity name="InsertATSSInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>392</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/InsertATSSInfo.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <InsertATSSInfo_Input>
+                <Messagekey>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </Messagekey>
+                <ServiceId>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/ServiceId"/>
+                </ServiceId>
+                <System>
+                    <xsl:value-of select="&quot;Neuron&quot;"/>
+                </System>
+                <Source>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/ConsumerSource"/>
+                </Source>
+                <Target>
+                    <xsl:value-of select="&quot;ERS&quot;"/>
+                </Target>
+                <SourceReferenceNumber>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/SRNumber"/>
+                </SourceReferenceNumber>
+                <TaskType>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/TaskType"/>
+                </TaskType>
+                <Status>
+                    <xsl:value-of select="'creating'"/>
+                </Status>
+                <EI_InputXML>
+                    <xsl:value-of select="tib:render-xml($Map-Data/pfx:ATSS_ERS_Case_Common_WS_CreateERSCase1_Input)"/>
+                </EI_InputXML>
+            </InsertATSSInfo_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>555</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:ATSS_ERS_Case_Common_WS</service>
+            <servicePort>ATSS_ERS_Case_Common_WS</servicePort>
+            <operation>CreateERSCase1</operation>
+            <soapAction>document/ATSS_ERS_Case_Common_WS:CreateERSCase1</soapAction>
+            <endpointURL>http://sjdc-atssesweb/eai_enu/start.swe?SWEExtSource=WebService&amp;SWEExtCmd=Execute</endpointURL>
+            <useProxy>true</useProxy>
+            <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+            <requireBasicAuth>false</requireBasicAuth>
+            <policies>
+                <incomingAttachmentPolicy>
+                    <writeToFile>true</writeToFile>
+                    <createNonExistDir>false</createNonExistDir>
+                    <writeToFileLimit/>
+                    <writeToFileDir>\\psf\Home\Desktop\log.txt</writeToFileDir>
+                </incomingAttachmentPolicy>
+            </policies>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <xsl:copy-of select="$Map-Data/pfx:ATSS_ERS_Case_Common_WS_CreateERSCase1_Input"/>
+                <ns2:_configData>
+                    <endpointURL>
+                        <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/ExternalServices/ToATSS/ERS/Host,&#xA;$_globalVariables/ns:GlobalVariables/ExternalServices/ToATSS/ERS/requestURI,&#xA;&quot;&amp;UserName=&quot;, TM:URLEncode($_globalVariables/ns:GlobalVariables/ExternalServices/ToATSS/ERS/UserName),&#xA;'&amp;Password=', TM:URLEncode($_globalVariables/ns:GlobalVariables/ExternalServices/ToATSS/ERS/Password))"/>
+                    </endpointURL>
+                </ns2:_configData>
+                <ns3:mimeEnvelopeElement/>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>228</pd:x>
+        <pd:y>59</pd:y>
+        <config>
+            <element ref="pfx:ATSS_ERS_Case_Common_WS_CreateERSCase1_Input"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:ATSS_ERS_Case_Common_WS_CreateERSCase1_Input>
+                <pfx:MailFilename>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/MailFilename"/>
+                </pfx:MailFilename>
+                <pfx:MailSampleType>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/MailSampleType"/>
+                </pfx:MailSampleType>
+                <pfx:CC>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/CC"/>
+                </pfx:CC>
+                <pfx:FirstName>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/FirstName"/>
+                </pfx:FirstName>
+                <pfx:Notes>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/Notes"/>
+                </pfx:Notes>
+                <pfx:SRType>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/SRType"/>
+                </pfx:SRType>
+                <pfx:SourceId>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/SourceId"/>
+                </pfx:SourceId>
+                <pfx:SubmissionType>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/SubmissionType"/>
+                </pfx:SubmissionType>
+                <pfx:AutomationSourceId>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/SRNumber"/>
+                </pfx:AutomationSourceId>
+                <pfx:Title>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/Title"/>
+                </pfx:Title>
+                <pfx:CustomerAccountName>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/CustomerAccountName"/>
+                </pfx:CustomerAccountName>
+                <pfx:CustomerEmail>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/CustomerEmail"/>
+                </pfx:CustomerEmail>
+                <pfx:Country>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/Country"/>
+                </pfx:Country>
+                <pfx:LocationofSamples>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/LocationofSamples"/>
+                </pfx:LocationofSamples>
+                <pfx:EscalationSourceId>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/EscalationSourceId"/>
+                </pfx:EscalationSourceId>
+                <pfx:EscalationLoginName>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/EscalationLoginName"/>
+                </pfx:EscalationLoginName>
+                <pfx:LastName>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/LastName"/>
+                </pfx:LastName>
+                <pfx:OS>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/OS"/>
+                </pfx:OS>
+                <pfx:CustomerFullName>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/CustomerFullName"/>
+                </pfx:CustomerFullName>
+                <pfx:Priority>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/Priority"/>
+                </pfx:Priority>
+                <pfx:Product>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/Product"/>
+                </pfx:Product>
+                <pfx:Source>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/Source"/>
+                </pfx:Source>
+                <pfx:SubmitDate>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/SubmitDate"/>
+                </pfx:SubmitDate>
+                <pfx:Email>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/Email"/>
+                </pfx:Email>
+                <pfx:Region>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/Region"/>
+                </pfx:Region>
+                <pfx:CustomerCountry>
+                    <xsl:value-of select="$Start/CreateATSSEERSCase/CustomerCountry"/>
+                </pfx:CustomerCountry>
+            </pfx:ATSS_ERS_Case_Common_WS_CreateERSCase1_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>317</pd:x>
+        <pd:y>193</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>485</pd:x>
+        <pd:y>195</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns5:ActivityInput>
+                <data>
+                    <pfx4:Error>
+                        <pfx4:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx4:src>
+                        <pfx4:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx4:error_code>
+                        <pfx4:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx4:error_message>
+                        <pfx4:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx4:stack_trace>
+                    </pfx4:Error>
+                </data>
+            </ns5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertATSSInfo</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>InsertATSSInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

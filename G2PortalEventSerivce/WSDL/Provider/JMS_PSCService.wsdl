@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:ns2="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns1="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/EscalationActivity.xsd" xmlns:tns="http://xmlns.example.com/1427797566597" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns0="http://www.trendmicro.com/PSC/PSC_CreateEscalationActRq" xmlns:jms="http://www.tibco.com/namespaces/ws/2004/soap/binding/JMS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:jndi="http://www.tibco.com/namespaces/ws/2004/soap/apis/jndi" name="Untitled" targetNamespace="http://xmlns.example.com/1427797566597">
+    <wsdl:types>
+        <xs:schema xmlns="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/EscalationActivity.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/EscalationActivity.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:complexType name="EscalationActivityType">
+                <xs:sequence>
+                    <xs:element name="RequestSource" type="xs:string"/>
+                    <xs:element name="ResendCount" type="xs:string"/>
+                    <xs:element name="EscalationAct">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="AMSSEscalation">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element name="AMSSTaskId" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="AMSSTaskType" type="xs:string"/>
+                                            <xs:element name="Description" type="xs:string"/>
+                                            <xs:element name="FileLocation" type="xs:string"/>
+                                            <xs:element name="IntegrationSourceId" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="NeuronId" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="OriinalFileName" type="xs:string"/>
+                                            <xs:element name="SHA1" type="xs:string"/>
+                                            <xs:element name="Source" type="xs:string"/>
+                                            <xs:element name="Title" type="xs:string"/>
+                                            <xs:element name="Type" type="xs:string"/>
+                                            <xs:element name="AMSSParentTaskId" type="xs:string" minOccurs="0"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                                <xs:element name="SRNumber" type="xs:string"/>
+                                <xs:element name="IntegrationSource" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns="http://www.trendmicro.com/PSC/PSC_CreateEscalationActRq" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.trendmicro.com/PSC/PSC_CreateEscalationActRq" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader"/>
+            <xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/EscalationActivity.xsd"/>
+            <xs:element name="PSC_CreateEscalationActRq">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="RequestHeader" type="ns0:RequestHeader"/>
+                        <xs:element name="RequestBody" type="ns1:EscalationActivityType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xsd:schema xmlns="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.trendmicro.com/ESB/schemas/messageHeader" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xsd:complexType name="RequestHeader">
+                <xsd:sequence>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element name="ServiceName" type="xsd:string"/>
+                    <xsd:element name="ServiceVersion" type="xsd:string"/>
+                    <xsd:element name="SourceID" type="xsd:string"/>
+                    <xsd:element name="StatusCode" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="RqTimestamp" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="RsTimestamp" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="Message">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="RequestHeader" type="ns2:RequestHeader"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:service name="JMSPSCService">
+        <wsdl:port name="PortTypeEndpoint1" binding="tns:PortTypeEndpoint1Binding">
+            <soap:address location=""/>
+            <jms:connectionFactory>QueueConnectionFactory</jms:connectionFactory>
+            <jms:targetAddress destination="queue">queue.sample</jms:targetAddress>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="PortType">
+        <wsdl:operation name="GCCU_CreateEscalationAct">
+            <wsdl:input message="tns:PSC_CreateEscalationAct"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="PortTypeEndpoint1Binding" type="tns:PortType">
+        <soap:binding style="document" transport="http://www.tibco.com/namespaces/ws/2004/soap/binding/JMS"/>
+        <jms:binding messageFormat="bytes"/>
+        <wsdl:operation name="GCCU_CreateEscalationAct">
+            <soap:operation style="document" soapAction="/WSDL/Client/PSCXSD/JMSPSCService/JMSPSCService.serviceagent/PortTypeEndpoint1/GCCU_CreateEscalationAct"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="Input"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:message name="PSC_CreateEscalationAct">
+        <wsdl:part name="Input" element="ns0:PSC_CreateEscalationActRq"/>
+    </wsdl:message>
+</wsdl:definitions>

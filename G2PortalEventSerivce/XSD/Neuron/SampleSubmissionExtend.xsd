@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/ThreatService/WSDL/Client/ThreatService/SampleSubmission.xsd"
+	 xmlns:ns0="http://www.trendmicro.com/ESB/schemas/messageHeader"
+	 xmlns:ns1="http://www.trendmicro.com/ESB/ACS/schemas/SMF"
+	 targetNamespace="http://www.tibco.com/schemas/ThreatService/WSDL/Client/ThreatService/SampleSubmission.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="../Common/messageheader.xsd"/>
+	<xs:element name="SampleSubmissionV2Rq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RequestHeader" type="ns1:TrendESBCommonHeader"/>
+				<xs:element name="RequestBody">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="sourceSystem" type="xs:string" minOccurs="0"/>
+							<xs:element name="sourceId" type="xs:string" minOccurs="0"/>
+							<xs:element name="consumerId" type="xs:string"/>
+							<xs:element name="reputationSystem" type="xs:string" minOccurs="0"/>
+							<xs:element name="submissionInput" type="xs:string"/>
+							<xs:element name="serviceId" type="xs:string"/>
+							<xs:element name="dbAction" type="xs:string"/>
+							<xs:element name="consumerName" type="xs:string"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SamplesubmissionV2Rs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ResponseHeader" type="ns1:TrendESBCommonHeader"/>
+				<xs:element name="ResponseBody">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SampleSubmissionResult" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

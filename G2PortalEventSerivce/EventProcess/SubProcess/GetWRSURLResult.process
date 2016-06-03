@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://tempuri.org/" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/Schema.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/Schema.xsd" schemaLocation="/EventProcess/SubProcess/WRSFTPFormat.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>EventProcess/SubProcess/GetWRSURLResult.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceID" type="xsd:string"/>
+                    <xsd:element name="URLID" type="xsd:string"/>
+                    <xsd:element name="FileName" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>80</pd:startX>
+    <pd:startY>215</pd:startY>
+    <pd:returnBindings>
+        <Output>
+            <xsl:for-each select="$Parse-Data/Output/Rows/WRSFTPFormat">
+                <WRSResult>
+                    <pfx:CASE_ID>
+                        <xsl:value-of select="CASE_ID"/>
+                    </pfx:CASE_ID>
+                    <pfx:URL>
+                        <xsl:value-of select="URL"/>
+                    </pfx:URL>
+                    <pfx:CATEGORY>
+                        <xsl:value-of select="CATEGORY"/>
+                    </pfx:CATEGORY>
+                    <pfx:SUGGESTED_CATEGORY>
+                        <xsl:value-of select="SUGGESTED_CATEGORY"/>
+                    </pfx:SUGGESTED_CATEGORY>
+                    <pfx:FINAL_CATEGORY>
+                        <xsl:value-of select="FINAL_CATEGORY"/>
+                    </pfx:FINAL_CATEGORY>
+                    <pfx:RATED_REASON>
+                        <xsl:value-of select="RATED_REASON"/>
+                    </pfx:RATED_REASON>
+                    <pfx:CASE_CLOSE_FLAG>
+                        <xsl:value-of select="CASE_CLOSE_FLAG"/>
+                    </pfx:CASE_CLOSE_FLAG>
+                </WRSResult>
+            </xsl:for-each>
+        </Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="WRSResult" type="pfx:WRSFTPProcessedFormatType" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>913</pd:endX>
+    <pd:endY>209</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1426754969734</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>185</pd:x>
+        <pd:y>11</pd:y>
+        <pd:width>438</pd:width>
+        <pd:height>376</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$i &gt;  $_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/retrytimes   or $FTP-Get/FTPGetOutputASCII/FileTransferred/NumOfBytes&gt;0</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>FTP Dir</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Parse Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SendACSLog(75)</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP Dir</pd:from>
+            <pd:to>SendACSLog(75)</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP Dir</pd:from>
+            <pd:to>FTP Get</pd:to>
+            <pd:xpathDescription>exist result</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>tib:trim($FTP-Dir/Output/DirectoryItems[.=$Start/root/FileName])!=""</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP Get</pd:from>
+            <pd:to>Parse Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP Dir</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-3407821</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP Get</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:xpathDescription>i&lt;3 and timeout</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i &lt;= $_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/retrytimes and 
+(exists($_error_FTP-Get/ActivityErrors/ConnectionTimeoutException) or exists($_error_FTP-Dir/ActivityErrors/ConnectionErrorException))</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="FTP Get">
+            <pd:type>com.tibco.plugin.ftp.FTPGetActivity</pd:type>
+            <pd:resourceType>ae.activities.FTPGetActivityUI</pd:resourceType>
+            <pd:x>359</pd:x>
+            <pd:y>175</pd:y>
+            <config>
+                <Timeout>120000</Timeout>
+                <isBinary>false</isBinary>
+                <Overwrite>false</Overwrite>
+                <useProcessData>true</useProcessData>
+                <SharedUserData>/Resources/FTP/WRS FTP Connection.sharedftp</SharedUserData>
+            </config>
+            <pd:inputBindings>
+                <FTPGetInputData>
+                    <RemoteFileName>
+                        <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/ServiceName, $_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/processeddir,$Start/root/FileName)"/>
+                    </RemoteFileName>
+                </FTPGetInputData>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="FTP Dir">
+            <pd:type>com.tibco.plugin.ftp.FTPDirActivity</pd:type>
+            <pd:resourceType>ae.activities.FTPDirActivityUI</pd:resourceType>
+            <pd:x>239</pd:x>
+            <pd:y>86</pd:y>
+            <config>
+                <SharedUserData>/Resources/FTP/WRS FTP Connection.sharedftp</SharedUserData>
+                <NLST>true</NLST>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <Directory>
+                        <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/ServiceName, $_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/processeddir)"/>
+                    </Directory>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="SendACSLog(75)">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>470</pd:x>
+            <pd:y>83</pd:y>
+            <config>
+                <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+                <spawn>true</spawn>
+            </config>
+            <pd:inputBindings>
+                <ns2:InsertTaskLog>
+                    <ns2:serviceID>
+                        <xsl:value-of select="$Start/root/ServiceID"/>
+                    </ns2:serviceID>
+                    <ns2:stepTypeID>
+                        <xsl:value-of select="75"/>
+                    </ns2:stepTypeID>
+                    <ns2:message>
+                        <xsl:value-of select="$Start/root/FileName"/>
+                    </ns2:message>
+                </ns2:InsertTaskLog>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Parse Data">
+            <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+            <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+            <pd:x>488</pd:x>
+            <pd:y>172</pd:y>
+            <config>
+                <InputType>String</InputType>
+                <Encoding>ASCII</Encoding>
+                <ParseSharedConfig>/EventProcess/SubProcess/WRS_Processed_DataFormat.sharedparse</ParseSharedConfig>
+                <SpecifyStartRecord>true</SpecifyStartRecord>
+                <StrictValidation>false</StrictValidation>
+                <ContinueonError>false</ContinueonError>
+                <SkipBlankLines>false</SkipBlankLines>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <text>
+                        <xsl:value-of select="$FTP-Get/FTPGetOutputASCII/ASCIIData"/>
+                    </text>
+                    <startRecord>
+                        <xsl:value-of select="2"/>
+                    </startRecord>
+                    <noOfRecords>
+                        <xsl:value-of select="-1"/>
+                    </noOfRecords>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>245</pd:x>
+            <pd:y>271</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>480</pd:x>
+            <pd:y>270</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/EventProcess/PSC_G2/WRS/WRSFTP/retrywaittingms"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>358</pd:x>
+            <pd:y>325</pd:y>
+            <config>
+                <faultName>ErrorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns3:ActivityInput>
+                    <data>
+                        <pfx2:Error>
+                            <pfx2:src>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                            </pfx2:src>
+                            <pfx2:error_code>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </pfx2:error_code>
+                            <pfx2:error_message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                            </pfx2:error_message>
+                            <pfx2:stack_trace>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                            </pfx2:stack_trace>
+                        </pfx2:Error>
+                    </data>
+                </ns3:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="UpsertURLReputaion">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>754</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpsertURLReputaion.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ServiceID>
+                    <xsl:value-of select="$Start/root/ServiceID"/>
+                </ServiceID>
+                <URLID>
+                    <xsl:value-of select="$Start/root/URLID"/>
+                </URLID>
+                <xsl:if test="$Parse-Data/Output/Rows/WRSFTPFormat[1]/URL">
+                    <URL>
+                        <xsl:value-of select="$Parse-Data/Output/Rows/WRSFTPFormat[1]/URL"/>
+                    </URL>
+                </xsl:if>
+                <xsl:if test="$FTP-Get/FTPGetOutputASCII/ASCIIData">
+                    <FTP_RS>
+                        <xsl:value-of select="$FTP-Get/FTPGetOutputASCII/ASCIIData"/>
+                    </FTP_RS>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>487</pd:x>
+        <pd:y>436</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx2:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns1:ErrorReport/Data/pfx2:Error)">
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx2:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>306</pd:x>
+        <pd:y>436</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>UpsertURLReputaion</pd:to>
+        <pd:xpathDescription>FTP Response Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Parse-Data/Output/Rows/WRSFTPFormat) &gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpsertURLReputaion</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

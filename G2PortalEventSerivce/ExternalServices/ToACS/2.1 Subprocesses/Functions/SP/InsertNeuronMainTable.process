@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/UpdateHashStatusResponseResponse" xmlns:pfx3="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/IsNeuonCaseATTKResponse" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/GetAMSSToBeCreatedResponse" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/Schema.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/GetAMSSToBeCreatedResponse" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetAMSSToBeCreatedResponse.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/IsNeuonCaseATTKResponse" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/IsNeuonCaseATTKResponse.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/UpdateHashStatusResponseResponse"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/Schema.xsd" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/UpdateSLAStatusResponse.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/UpdateHashStatusResponseResponse" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/UpdateHashStatusResponse.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/UpdateHashStatusResponseResponse" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/UpdateHashStatusOrUpdateSLAStatusResponse.xsd"/>
+    <pd:name>ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/InsertNeuronMainTable.process</pd:name>
+    <pd:description>PRC_INS_SERVICE_MAIN</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceID" type="xsd:string"/>
+                    <xsd:element name="ServiceConsumerID" type="xsd:string"/>
+                    <xsd:element name="InputData" type="xsd:string"/>
+                    <xsd:element name="ArchiveName" type="xsd:string"/>
+                    <xsd:element name="ServiceTag" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>73</pd:startX>
+    <pd:startY>193</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <ReturnValue>
+                <xsl:value-of select="$JDBC-Call-Procedure/resultSet/outputSet/RETURN_VALUE"/>
+            </ReturnValue>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ReturnValue" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>686</pd:endX>
+    <pd:endY>199</pd:endY>
+    <pd:errorSchemas>
+        <Schema0 ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1363341555621</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>221</pd:x>
+        <pd:y>6</pd:y>
+        <pd:width>338</pd:width>
+        <pd:height>356</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>exists($JDBC-Call-Procedure/resultSet/outputSet) or
+$i &gt; $_globalVariables/pfx5:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Functions/InsertNeuronMainTable/retryTimes</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>JDBC Call Procedure</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Call Procedure</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate-Error-1</pd:to>
+            <pd:xpathDescription>i &gt; retry times</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i &gt; $_globalVariables/pfx5:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Functions/InsertNeuronMainTable/retryTimes</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBC Call Procedure</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-3407821</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Generate-Error-1">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>410</pd:x>
+            <pd:y>291</pd:y>
+            <config>
+                <faultName>Schema0</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInput>
+                    <data>
+                        <pfx:Error>
+                            <pfx:src>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                            </pfx:src>
+                            <pfx:error_code>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </pfx:error_code>
+                            <pfx:error_message>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                            </pfx:error_message>
+                            <pfx:stack_trace>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                            </pfx:stack_trace>
+                        </pfx:Error>
+                    </data>
+                </ns:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>446</pd:x>
+            <pd:y>214</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/pfx5:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/Functions/InsertNeuronMainTable/retryInterval_Sec  * 1000"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>307</pd:x>
+            <pd:y>215</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="JDBC Call Procedure">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>379</pd:x>
+            <pd:y>98</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Resources/Database/JDBC Connection NeuronDB.sharedjdbc</jdbcSharedConfig>
+                <schema>ACS</schema>
+                <catalog>SPN_NEURON</catalog>
+                <ProcedureName>PRC_INS_SERVICE_MAIN;1</ProcedureName>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ServiceId</colName>
+                        <colType>1</colType>
+                        <dataType>1</dataType>
+                        <typeName>uniqueidentifier</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ServiceConsumerID</colName>
+                        <colType>1</colType>
+                        <dataType>1</dataType>
+                        <typeName>uniqueidentifier</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@InputData</colName>
+                        <colType>1</colType>
+                        <dataType>-1</dataType>
+                        <typeName>ntext</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ArchiveName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>nvarchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ServiceTag</colName>
+                        <colType>1</colType>
+                        <dataType>-1</dataType>
+                        <typeName>ntext</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ConsumerName</colName>
+                        <colType>2</colType>
+                        <dataType>-1</dataType>
+                        <typeName>ntext</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <ServiceId>
+                            <xsl:value-of select="$Start/root/ServiceID"/>
+                        </ServiceId>
+                        <ServiceConsumerID>
+                            <xsl:value-of select="$Start/root/ServiceConsumerID"/>
+                        </ServiceConsumerID>
+                        <InputData>
+                            <xsl:value-of select="$Start/root/InputData"/>
+                        </InputData>
+                        <ArchiveName>
+                            <xsl:value-of select="$Start/root/ArchiveName"/>
+                        </ArchiveName>
+                        <ServiceTag>
+                            <xsl:value-of select="$Start/root/ServiceTag"/>
+                        </ServiceTag>
+                        <ConsumerName>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ConsumerName>
+                    </inputSet>
+                </inputs>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

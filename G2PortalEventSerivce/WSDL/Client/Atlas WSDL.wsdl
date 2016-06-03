@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://Anti.Malware.Tracker-Service.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://Anti.Malware.Tracker-Service.org/">
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://Anti.Malware.Tracker-Service.org/">
+            <s:element name="wmSubmitWithFile">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="strMessage" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="arrFileStream" type="s:base64Binary"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="strHash" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmSubmitWithFileResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="wmSubmitWithFileResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmSubmitWithNoFile">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="strMessage" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="strHash" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmSubmitWithNoFileResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="wmSubmitWithNoFileResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmRetrievePerId">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="strId" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="stsStatus" type="tns:Status"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:simpleType name="Status">
+                <s:restriction base="s:string">
+                    <s:enumeration value="Processing"/>
+                    <s:enumeration value="Finished"/>
+                    <s:enumeration value="Any"/>
+                </s:restriction>
+            </s:simpleType>
+            <s:element name="wmRetrievePerIdResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="wmRetrievePerIdResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmRetrievePerSource">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="strSource" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="stsStatus" type="tns:Status"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmRetrievePerSourceResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="wmRetrievePerSourceResult" type="tns:ArrayOfString"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ArrayOfString">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="wmUpdatePerId">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="strID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="strMessage" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="stsStatus" type="tns:Status"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="strDetails" type="s:string"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="dtEnd" type="s:dateTime"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmUpdatePerIdResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="wmUpdatePerIdResult" type="s:int"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmDeletePerId">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="strId" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmDeletePerIdResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="wmDeletePerIdResult" type="s:int"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmCheckFileExists">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="strHash" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmCheckFileExistsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="wmCheckFileExistsResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmUploadFileChunk">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="strId" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="strHash" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="arrFileStream" type="s:base64Binary"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="lngOffset" type="s:long"/>
+                        <s:element minOccurs="1" maxOccurs="1" name="lngSize" type="s:long"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="wmUploadFileChunkResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="wmUploadFileChunkResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="wmSubmitWithFileSoapIn">
+        <wsdl:part name="parameters" element="tns:wmSubmitWithFile"/>
+    </wsdl:message>
+    <wsdl:message name="wmSubmitWithFileSoapOut">
+        <wsdl:part name="parameters" element="tns:wmSubmitWithFileResponse"/>
+    </wsdl:message>
+    <wsdl:message name="wmSubmitWithNoFileSoapIn">
+        <wsdl:part name="parameters" element="tns:wmSubmitWithNoFile"/>
+    </wsdl:message>
+    <wsdl:message name="wmSubmitWithNoFileSoapOut">
+        <wsdl:part name="parameters" element="tns:wmSubmitWithNoFileResponse"/>
+    </wsdl:message>
+    <wsdl:message name="wmRetrievePerIdSoapIn">
+        <wsdl:part name="parameters" element="tns:wmRetrievePerId"/>
+    </wsdl:message>
+    <wsdl:message name="wmRetrievePerIdSoapOut">
+        <wsdl:part name="parameters" element="tns:wmRetrievePerIdResponse"/>
+    </wsdl:message>
+    <wsdl:message name="wmRetrievePerSourceSoapIn">
+        <wsdl:part name="parameters" element="tns:wmRetrievePerSource"/>
+    </wsdl:message>
+    <wsdl:message name="wmRetrievePerSourceSoapOut">
+        <wsdl:part name="parameters" element="tns:wmRetrievePerSourceResponse"/>
+    </wsdl:message>
+    <wsdl:message name="wmUpdatePerIdSoapIn">
+        <wsdl:part name="parameters" element="tns:wmUpdatePerId"/>
+    </wsdl:message>
+    <wsdl:message name="wmUpdatePerIdSoapOut">
+        <wsdl:part name="parameters" element="tns:wmUpdatePerIdResponse"/>
+    </wsdl:message>
+    <wsdl:message name="wmDeletePerIdSoapIn">
+        <wsdl:part name="parameters" element="tns:wmDeletePerId"/>
+    </wsdl:message>
+    <wsdl:message name="wmDeletePerIdSoapOut">
+        <wsdl:part name="parameters" element="tns:wmDeletePerIdResponse"/>
+    </wsdl:message>
+    <wsdl:message name="wmCheckFileExistsSoapIn">
+        <wsdl:part name="parameters" element="tns:wmCheckFileExists"/>
+    </wsdl:message>
+    <wsdl:message name="wmCheckFileExistsSoapOut">
+        <wsdl:part name="parameters" element="tns:wmCheckFileExistsResponse"/>
+    </wsdl:message>
+    <wsdl:message name="wmUploadFileChunkSoapIn">
+        <wsdl:part name="parameters" element="tns:wmUploadFileChunk"/>
+    </wsdl:message>
+    <wsdl:message name="wmUploadFileChunkSoapOut">
+        <wsdl:part name="parameters" element="tns:wmUploadFileChunkResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="ServiceSoap">
+        <wsdl:operation name="wmSubmitWithFile">
+            <wsdl:input message="tns:wmSubmitWithFileSoapIn"/>
+            <wsdl:output message="tns:wmSubmitWithFileSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="wmSubmitWithNoFile">
+            <wsdl:input message="tns:wmSubmitWithNoFileSoapIn"/>
+            <wsdl:output message="tns:wmSubmitWithNoFileSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="wmRetrievePerId">
+            <wsdl:input message="tns:wmRetrievePerIdSoapIn"/>
+            <wsdl:output message="tns:wmRetrievePerIdSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="wmRetrievePerSource">
+            <wsdl:input message="tns:wmRetrievePerSourceSoapIn"/>
+            <wsdl:output message="tns:wmRetrievePerSourceSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="wmUpdatePerId">
+            <wsdl:input message="tns:wmUpdatePerIdSoapIn"/>
+            <wsdl:output message="tns:wmUpdatePerIdSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="wmDeletePerId">
+            <wsdl:input message="tns:wmDeletePerIdSoapIn"/>
+            <wsdl:output message="tns:wmDeletePerIdSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="wmCheckFileExists">
+            <wsdl:input message="tns:wmCheckFileExistsSoapIn"/>
+            <wsdl:output message="tns:wmCheckFileExistsSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="wmUploadFileChunk">
+            <wsdl:input message="tns:wmUploadFileChunkSoapIn"/>
+            <wsdl:output message="tns:wmUploadFileChunkSoapOut"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="wmSubmitWithFile">
+            <soap:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmSubmitWithFile" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmSubmitWithNoFile">
+            <soap:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmSubmitWithNoFile" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmRetrievePerId">
+            <soap:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmRetrievePerId" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmRetrievePerSource">
+            <soap:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmRetrievePerSource" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmUpdatePerId">
+            <soap:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmUpdatePerId" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmDeletePerId">
+            <soap:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmDeletePerId" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmCheckFileExists">
+            <soap:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmCheckFileExists" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmUploadFileChunk">
+            <soap:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmUploadFileChunk" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="wmSubmitWithFile">
+            <soap12:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmSubmitWithFile" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmSubmitWithNoFile">
+            <soap12:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmSubmitWithNoFile" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmRetrievePerId">
+            <soap12:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmRetrievePerId" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmRetrievePerSource">
+            <soap12:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmRetrievePerSource" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmUpdatePerId">
+            <soap12:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmUpdatePerId" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmDeletePerId">
+            <soap12:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmDeletePerId" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmCheckFileExists">
+            <soap12:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmCheckFileExists" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="wmUploadFileChunk">
+            <soap12:operation soapAction="http://Anti.Malware.Tracker-Service.org/wmUploadFileChunk" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="Service">
+        <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+            <soap:address location="http://10.48.62.85/stAnalysisNew/service.asmx"/>
+        </wsdl:port>
+        <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+            <soap12:address location="http://10.48.62.85/stAnalysisNew/service.asmx"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

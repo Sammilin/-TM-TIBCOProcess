@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="request">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="url" type="xs:string"/>
+				<xs:element name="lang" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="response">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="categories">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="category" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="name" type="xs:string"/>
+										<xs:element name="catname" type="xs:string"/>
+										<xs:element name="desc" type="xs:string"/>
+									</xs:sequence>
+									<xs:attribute name="rating" type="xs:string"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="domain" type="xs:string"/>
+				<xs:element name="url" type="xs:string"/>
+				<xs:element name="port" type="xs:string"/>
+				<xs:element name="safetyrating" type="xs:string"/>
+				<xs:element name="reputation" type="xs:string"/>
+				<xs:element name="cascaded" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="directory_level" type="xs:string"/>
+							<xs:element name="domain_level" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ip" type="xs:string" minOccurs="0"/>
+				<xs:element name="file" type="xs:string" minOccurs="0"/>
+				<xs:element name="path" type="xs:string" minOccurs="0"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

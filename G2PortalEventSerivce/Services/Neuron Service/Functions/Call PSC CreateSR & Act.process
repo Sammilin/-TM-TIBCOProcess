@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx14="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx13="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetSRInfoResult.xsd" xmlns:pfx12="http://xmlns.example.com/1414725429675" xmlns:pfx11="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRs.xsd" xmlns:pfx10="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCSRCaseResult.xsd" xmlns:TM1="java://com.trendmicro.DynamicXMLValidator" xmlns:ns22="http://www.trendmicro.com/G2/SFDC_CreateSRActivityRq.xsd" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:TM3="java://TMBWUtilitiesRobinson" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/error" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetSRNumber.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/SRFEscalateMalwareCase.xsd" xmlns:pfx2="http://www.tibco.com/schemas/ACSService2.1/WSDL/Client/ThreatService/SRFEscalateMalwareCase.xsd" xmlns:pfx9="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" xmlns:pfx7="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pfx6="http://trend.com.tw/PSCWSDL" xmlns:ns16="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetArchiveInfo.xsd" xmlns:ns17="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRq" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns15="http://www.tibco.com/schemas/ThreatService/WSDL/Client/ThreatService/SRFEscalateMalwareCase.xsd" xmlns:ns18="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRs" xmlns:ns9="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetNeuronServiceMainByServiceID.xsd" xmlns:ns5="http://www.trendmicro.com/PSC/PSC_CreateSRActivityRq" xmlns:ns12="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetFileMainByFileItemid.xsd" xmlns:ns13="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCase.xsd" xmlns:ns6="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:ns10="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRq" xmlns:ns7="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRs" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns11="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns8="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseActivity.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns3="http://tempuri.org/" xmlns:ns0="AMSS Task Common WS" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" schemaLocation="/XSD/Common/EvnetMsg/SubmittingInput.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/SRFEscalateMalwareCase.xsd" schemaLocation="/XSD/Neuron/SRFEscalateMalwareCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/WSDL/Client/ThreatService/SRFEscalateMalwareCase.xsd" schemaLocation="/WSDL/Client/ThreatService/SRFEscalateMalwareCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetNeuronServiceMainByServiceID.xsd" schemaLocation="/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetNeuronServiceMainByServiceID.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch" schemaLocation="/XSD/Common/SRFDispatch.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd" schemaLocation="/XSD/Common/EvnetMsg/NeronSubmissionInputType.xsd"/>
+    <pd:name>Services/Neuron Service/Functions/Call PSC CreateSR &amp; Act.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="EscalateXml" type="xsd:string"/>
+                    <xsd:element ref="ns9:Resultsets"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>58</pd:startX>
+    <pd:startY>154</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1502</pd:endX>
+    <pd:endY>241</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx5:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <global_var>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="CreateSRAtMessageKey" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </global_var>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1407221370285</pd:targetNamespace>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>165</pd:x>
+        <pd:y>155</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="Neuron" type="pfx3:SRFEscalateMalwareCaseNeuronType"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Start/root/EscalateXml"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>466</pd:x>
+        <pd:y>486</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>588</pd:x>
+        <pd:y>495</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns2:ErrorReport/Data/*" element="pfx5:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <ns1:SMF>
+                    <ns1:SMFHeader>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($Parse-XML/Neuron/ServiceID)!=&quot;&quot;">
+                                <ns1:MessageKey>
+                                    <xsl:value-of select="$Parse-XML/Neuron/ServiceID"/>
+                                </ns1:MessageKey>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <ns1:MessageKey>
+                                    <xsl:value-of select="TM:getGUID()"/>
+                                </ns1:MessageKey>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="&quot;SRFEscalateMalwareCase&quot;"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="&quot;BW&quot;"/>
+                        </ns1:SourceID>
+                    </ns1:SMFHeader>
+                    <ns1:SMFBody>
+                        <ns1:Message>
+                            <ns1:SOAPMessage>
+                                <xsl:value-of select="tib:render-xml($Start/root,1)"/>
+                            </ns1:SOAPMessage>
+                        </ns1:Message>
+                        <xsl:choose>
+                            <xsl:when test="$_error/ns2:ErrorReport/Data/pfx5:Error/pfx5:error_message !=&quot;&quot;">
+                                <ns1:Error>
+                                    <xsl:choose>
+                                        <xsl:when test="$_error/ns2:ErrorReport/Data/pfx5:Error/pfx5:src=&quot;&quot;">
+                                            <ns1:src>
+                                                <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                            </ns1:src>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <ns1:src>
+                                                <xsl:value-of select="$_error/ns2:ErrorReport/Data/pfx5:Error/pfx5:src"/>
+                                            </ns1:src>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <ns1:error_code>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Data/pfx5:Error/pfx5:error_code"/>
+                                    </ns1:error_code>
+                                    <ns1:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Data/pfx5:Error/pfx5:error_message"/>
+                                    </ns1:error_message>
+                                    <xsl:choose>
+                                        <xsl:when test="$_error/ns2:ErrorReport/Data/pfx5:Error/pfx5:stack_trace=&quot;&quot;">
+                                            <xsl:if test="$_error/ns2:ErrorReport/StackTrace">
+                                                <ns1:error_detail>
+                                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                                </ns1:error_detail>
+                                            </xsl:if>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:if test="$_error/ns2:ErrorReport/Data/pfx5:Error/pfx5:stack_trace">
+                                                <ns1:error_detail>
+                                                    <xsl:value-of select="$_error/ns2:ErrorReport/Data/pfx5:Error/pfx5:stack_trace"/>
+                                                </ns1:error_detail>
+                                            </xsl:if>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </ns1:Error>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <ns1:Error>
+                                    <ns1:src>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                    </ns1:src>
+                                    <ns1:error_code>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                    </ns1:error_code>
+                                    <ns1:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                    </ns1:error_message>
+                                    <xsl:if test="$_error/ns2:ErrorReport/StackTrace">
+                                        <ns1:error_detail>
+                                            <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                        </ns1:error_detail>
+                                    </xsl:if>
+                                </ns1:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ns1:SMFBody>
+                </ns1:SMF>
+                <ns3:InsertTaskLog>
+                    <ns3:serviceID>
+                        <xsl:value-of select="$Parse-XML/Neuron/ServiceID"/>
+                    </ns3:serviceID>
+                    <ns3:stepTypeID>
+                        <xsl:value-of select="9999"/>
+                    </ns3:stepTypeID>
+                    <ns3:message>
+                        <xsl:value-of select="tib:render-xml($_error/ns2:ErrorReport,1)"/>
+                    </ns3:message>
+                </ns3:InsertTaskLog>
+                <isESBLog>
+                    <xsl:value-of select="1"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse SRF XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>285</pd:x>
+        <pd:y>159</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="NEURON" type="pfx14:NEURONFRSType"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Start/root/ns9:Resultsets/ns9:ResultSet1/ns9:Record1[1]/ns9:InputData"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>732</pd:x>
+        <pd:y>486</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group (1)">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>530</pd:x>
+        <pd:y>58</pd:y>
+        <pd:width>711</pd:width>
+        <pd:height>351</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-XML/Neuron/MalwareTasks/File</pd:over>
+            <pd:iterationElementSlot>cur</pd:iterationElementSlot>
+            <pd:indexSlot>j</pd:indexSlot>
+            <pd:outSlot>TotalFileItemInfo</pd:outSlot>
+            <pd:activityOutputName>GetFileMainByFileItemid</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetFileMainByFileItemid</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CreateAMSSInboundTask</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetFileMainByFileItemid</pd:from>
+            <pd:to>CallACSTaskLog(40)</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CallACSTaskLog(40)</pd:from>
+            <pd:to>Map Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>CreateAMSSInboundTask</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="CallACSTaskLog(40)">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>784</pd:x>
+            <pd:y>187</pd:y>
+            <config>
+                <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+                <spawn>true</spawn>
+            </config>
+            <pd:inputBindings>
+                <ns3:InsertTaskLog>
+                    <ns3:serviceID>
+                        <xsl:value-of select="$Parse-XML/Neuron/ServiceID"/>
+                    </ns3:serviceID>
+                    <ns3:stepTypeID>
+                        <xsl:value-of select="40"/>
+                    </ns3:stepTypeID>
+                    <ns3:message>
+                        <xsl:value-of select="tib:render-xml($Start, 1)"/>
+                    </ns3:message>
+                </ns3:InsertTaskLog>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GetFileMainByFileItemid">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>634</pd:x>
+            <pd:y>192</pd:y>
+            <config>
+                <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetFileMainByFileItemid.process</processName>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <ServiceId>
+                        <xsl:value-of select="$Parse-XML/Neuron/ServiceID"/>
+                    </ServiceId>
+                    <FileItemid>
+                        <xsl:value-of select="$cur/File/FILEID"/>
+                    </FileItemid>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>944</pd:x>
+            <pd:y>194</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="File">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="FileID" type="xsd:string"/>
+                                <xsd:element name="SHA1" type="xsd:string"/>
+                                <xsd:element name="FileName" type="xsd:string"/>
+                                <xsd:element name="FileSize" type="xsd:string"/>
+                                <xsd:element name="FTPLocation" type="xsd:string"/>
+                                <xsd:element name="AMSSTaskType" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <File>
+                    <FileID>
+                        <xsl:value-of select="$cur/File/FILEID"/>
+                    </FileID>
+                    <SHA1>
+                        <xsl:value-of select="$GetFileMainByFileItemid/ns12:Resultsets/ns12:ResultSet1/ns12:Record1[1]/ns12:FileSHA1"/>
+                    </SHA1>
+                    <FileName>
+                        <xsl:value-of select="$GetFileMainByFileItemid/ns12:Resultsets/ns12:ResultSet1/ns12:Record1[1]/ns12:FileFullPath"/>
+                    </FileName>
+                    <FileSize>
+                        <xsl:value-of select="$GetFileMainByFileItemid/ns12:Resultsets/ns12:ResultSet1/ns12:Record1[1]/ns12:FileSize"/>
+                    </FileSize>
+                    <FTPLocation>
+                        <xsl:value-of select="$GetFileMainByFileItemid/ns12:Resultsets/ns12:ResultSet1/ns12:Record1[1]/ns12:FTPLocation"/>
+                    </FTPLocation>
+                    <xsl:choose>
+                        <xsl:when test="lower-case($cur/File/Type)=lower-case(&quot;Clean Failed&quot;)">
+                            <AMSSTaskType>
+                                <xsl:value-of select="if(TM3:isMatchRegEx($cur/File/DETECTION, $_globalVariables/ns11:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/CFSubprocess/GenericDetectionRule) = 'true' or&#xA;TM3:isMatchRegEx($cur/File/DETECTION, $_globalVariables/ns11:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/CFSubprocess/HeuristicDetectionRule) = 'true'&#xA;) then&#xA;&#x9;$_globalVariables/ns11:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/GTS&#xA; else if (starts-with($cur/File/DETECTION, &quot;PE_&quot;)) then&#xA;&#x9;$_globalVariables/ns11:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/VSAPI&#xA;else&#xA;&#x9;$_globalVariables/ns11:GlobalVariables/ExternalServices/ToACS/V2.1Subprocesses/AMSSTaskTypeMapping/DCT"/>
+                            </AMSSTaskType>
+                        </xsl:when>
+                        <xsl:when test="lower-case($cur/File/Type)=lower-case(&quot;File to Verify&quot;) and&#xA;($cur/File/RESULT='Analyzing'&#xA;or&#xA;$cur/File/RESULT='Undecided'&#xA;or&#xA;$cur/File/RESULT='Unknown Password'&#xA;)">
+                            <AMSSTaskType>
+                                <xsl:value-of select="&quot;File to Verify&quot;"/>
+                            </AMSSTaskType>
+                        </xsl:when>
+                        <xsl:when test="lower-case($cur/File/Type)=lower-case(&quot;File to Verify&quot;) and&#xA;$cur/File/RESULT='Malicious'">
+                            <AMSSTaskType>
+                                <xsl:value-of select="&quot;False Positive&quot;"/>
+                            </AMSSTaskType>
+                        </xsl:when>
+                        <xsl:when test="lower-case($cur/File/Type)=lower-case(&quot;File to Verify&quot;) and&#xA;$cur/File/RESULT='Normal'">
+                            <AMSSTaskType>
+                                <xsl:value-of select="&quot;False Negative&quot;"/>
+                            </AMSSTaskType>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <AMSSTaskType>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </AMSSTaskType>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </File>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="CreateAMSSInboundTask">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>1104</pd:x>
+            <pd:y>213</pd:y>
+            <config>
+                <processName>/Services/SharedOperations/CreateAMSSInboundTask.process</processName>
+            </config>
+            <pd:inputBindings>
+                <CreateAMSSTask>
+                    <ns0:AMSS_spcTask_spcCommon_spcWS_InboundTask_Input>
+                        <ns0:SHA1>
+                            <xsl:value-of select="$Map-Data/File/SHA1"/>
+                        </ns0:SHA1>
+                        <ns0:SRNumber>
+                            <xsl:value-of select="$Parse-XML/Neuron/SupportCaseNumber"/>
+                        </ns0:SRNumber>
+                        <ns0:FirstName>
+                            <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/FirstName"/>
+                        </ns0:FirstName>
+                        <ns0:FTPLocation>
+                            <xsl:value-of select="$Map-Data/File/FTPLocation"/>
+                        </ns0:FTPLocation>
+                        <ns0:SourceReferenceNumber>
+                            <xsl:value-of select="$Parse-XML/Neuron/SupportCaseNumber"/>
+                        </ns0:SourceReferenceNumber>
+                        <xsl:if test="$GetSRInfo/pfx12:SFDC_GetSRInfoRs/SFDC_GetSRInfoRsMsg/ns18:SFDC_GetSRInfoRs/ns18:ResponseBody/ns18:Result/pfx13:ResultSet1/pfx13:Record1/pfx13:SRType">
+                            <ns0:SRType>
+                                <xsl:value-of select="$GetSRInfo/pfx12:SFDC_GetSRInfoRs/SFDC_GetSRInfoRsMsg/ns18:SFDC_GetSRInfoRs/ns18:ResponseBody/ns18:Result/pfx13:ResultSet1/pfx13:Record1/pfx13:SRType"/>
+                            </ns0:SRType>
+                        </xsl:if>
+                        <ns0:PatternVersion>
+                            <xsl:value-of select="$GetSRInfo/pfx12:SFDC_GetSRInfoRs/SFDC_GetSRInfoRsMsg/ns18:SFDC_GetSRInfoRs/ns18:ResponseBody/ns18:Result/pfx13:ResultSet1/pfx13:Record1/pfx13:PatternVersion"/>
+                        </ns0:PatternVersion>
+                        <ns0:Title>
+                            <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/Title"/>
+                        </ns0:Title>
+                        <ns0:PatternBranch>
+                            <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/PatternBranch"/>
+                        </ns0:PatternBranch>
+                        <ns0:Type>
+                            <xsl:value-of select="$Map-Data/File/AMSSTaskType"/>
+                        </ns0:Type>
+                        <ns0:FileName>
+                            <xsl:value-of select="$Map-Data/File/FileName"/>
+                        </ns0:FileName>
+                        <ns0:LastName>
+                            <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/LastName"/>
+                        </ns0:LastName>
+                        <ns0:TAMEmail>
+                            <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/CSMEmail"/>
+                        </ns0:TAMEmail>
+                        <xsl:choose>
+                            <xsl:when test="lower-case($cur/File/Type)=lower-case(&quot;Clean Failed&quot;)">
+                                <ns0:Priority>
+                                    <xsl:value-of select="&quot;P4&quot;"/>
+                                </ns0:Priority>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <ns0:Priority>
+                                    <xsl:value-of select="&quot;P5&quot;"/>
+                                </ns0:Priority>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <ns0:Source>
+                            <xsl:value-of select="&quot;SFDC&quot;"/>
+                        </ns0:Source>
+                        <ns0:SubmitDate>
+                            <xsl:value-of select="tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0))"/>
+                        </ns0:SubmitDate>
+                        <xsl:if test="$GetSRInfo/pfx12:SFDC_GetSRInfoRs/SFDC_GetSRInfoRsMsg/ns18:SFDC_GetSRInfoRs/ns18:ResponseBody/ns18:Result/pfx13:ResultSet1/pfx13:Record1/pfx13:ProductName">
+                            <ns0:Product>
+                                <xsl:value-of select="$GetSRInfo/pfx12:SFDC_GetSRInfoRs/SFDC_GetSRInfoRsMsg/ns18:SFDC_GetSRInfoRs/ns18:ResponseBody/ns18:Result/pfx13:ResultSet1/pfx13:Record1/pfx13:ProductName"/>
+                            </ns0:Product>
+                        </xsl:if>
+                        <ns0:FileSize>
+                            <xsl:value-of select="$Map-Data/File/FileSize"/>
+                        </ns0:FileSize>
+                        <ns0:Email>
+                            <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/EmailAddress"/>
+                        </ns0:Email>
+                        <ns0:Description>
+                            <xsl:value-of select="$Parse-XML/Neuron/Description"/>
+                        </ns0:Description>
+                        <ns0:Region>
+                            <xsl:value-of select="$Parse-SRF-XML/NEURON/ADDITIONAL_INFO/Region"/>
+                        </ns0:Region>
+                    </ns0:AMSS_spcTask_spcCommon_spcWS_InboundTask_Input>
+                    <RequestHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="TM1:getGUID()"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="&quot;CreateAMSSInboundTask&quot;"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="&quot;Neuron&quot;"/>
+                        </ns1:SourceID>
+                        <ns1:RqTimestamp>
+                            <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                        </ns1:RqTimestamp>
+                    </RequestHeader>
+                    <RequestSource>
+                        <xsl:value-of select="&quot;Neuron&quot;"/>
+                    </RequestSource>
+                    <NeuronId>
+                        <xsl:value-of select="$Parse-XML/Neuron/ServiceID"/>
+                    </NeuronId>
+                </CreateAMSSTask>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Total GetFileMainByFileItemid Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>1396</pd:x>
+        <pd:y>326</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns14:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($TotalFileItemInfo/AccumulatedOutput, 1)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="&quot;GetFileMainByFileItemid&quot;"/>
+                </msgCode>
+            </ns14:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetSRInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>428</pd:x>
+        <pd:y>157</pd:y>
+        <config>
+            <processName>/ExternalServices/ToSFDC/GetSRInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx12:SFDC_GetSRInfoRq>
+                <SFDC_GetSRInfoRqMsg>
+                    <ns17:SFDC_GetSRInfoRq>
+                        <ns17:RequestHeader>
+                            <pfx7:MessageKey>
+                                <xsl:value-of select="$Parse-XML/Neuron/ServiceID"/>
+                            </pfx7:MessageKey>
+                            <pfx7:ServiceName>
+                                <xsl:value-of select="$_globalVariables/ns11:GlobalVariables/ExternalServices/ToSFDC/GetSRInfo/Servicename"/>
+                            </pfx7:ServiceName>
+                            <pfx7:ServiceVersion>
+                                <xsl:value-of select="$_globalVariables/ns11:GlobalVariables/ExternalServices/ToSFDC/GetSRInfo/ServiceVersion"/>
+                            </pfx7:ServiceVersion>
+                            <pfx7:SourceID>
+                                <xsl:value-of select="&quot;ACSService&quot;"/>
+                            </pfx7:SourceID>
+                            <pfx7:RqTimestamp>
+                                <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                            </pfx7:RqTimestamp>
+                        </ns17:RequestHeader>
+                        <ns17:RequestBody>
+                            <ns17:SRNumber>
+                                <xsl:value-of select="$Parse-XML/Neuron/SupportCaseNumber"/>
+                            </ns17:SRNumber>
+                        </ns17:RequestBody>
+                    </ns17:SFDC_GetSRInfoRq>
+                </SFDC_GetSRInfoRqMsg>
+            </pfx12:SFDC_GetSRInfoRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateSRNumber">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>333</pd:x>
+        <pd:y>297</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpdateSRNumber.process</processName>
+        </config>
+        <pd:inputBindings>
+            <UpdateSRNumber>
+                <ServiceId>
+                    <xsl:value-of select="$Parse-XML/Neuron/ServiceID"/>
+                </ServiceId>
+                <SourceCaseId>
+                    <xsl:value-of select="$Parse-XML/Neuron/SupportCaseNumber"/>
+                </SourceCaseId>
+            </UpdateSRNumber>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Parse SRF XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group (1)</pd:from>
+        <pd:to>Total GetFileMainByFileItemid Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSRInfo</pd:from>
+        <pd:to>Group (1)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse SRF XML</pd:from>
+        <pd:to>UpdateSRNumber</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateSRNumber</pd:from>
+        <pd:to>GetSRInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Total GetFileMainByFileItemid Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

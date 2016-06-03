@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx="http://coretech.trendmicro.com/frs/charon/" xmlns:ns2="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/error" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/ACS/schemas/2.1Funtions/UpdateHashStatusResponseResponse" xmlns:pfx3="http://www.tibco.com/schemas/ACSService2.1/XSD/Client/Schema.xsd" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://coretech.trendmicro.com/frs/charon/" schemaLocation="/WSDL/Client/Charon.xsd"/>
+    <pd:name>EventProcess/SubProcess/Detection branch.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CharonMessagekey" type="xsd:string"/>
+                    <xsd:element name="reputationResult" type="pfx:reputationResult"/>
+                    <xsd:element ref="pfx2:SMF"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>59</pd:startX>
+    <pd:startY>65</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1198</pd:endX>
+    <pd:endY>86</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <shareVar>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="log" type="xsd:string" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </shareVar>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1396866667528</pd:targetNamespace>
+    <pd:activity name="Checking Detection">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>373</pd:x>
+        <pd:y>85</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ReputationData">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>109</pd:x>
+        <pd:y>189</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Detection">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="TREND_LEGACY" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="TRENDMICRO" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="TMCONSUMER" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="TREND_ICRC" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="TREND_HOUSECALL" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="TMAS" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="INTELLITRAP" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ExistUserBranch" type="xsd:string"/>
+                            <xsd:element name="UserBranchDetection" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Detection>
+                <TREND_LEGACY>
+                    <xsl:value-of select="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TREND_LEGACY&quot;]/../detection"/>
+                </TREND_LEGACY>
+                <xsl:if test="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TRENDMICRO&quot;]/../detection">
+                    <TRENDMICRO>
+                        <xsl:value-of select="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TRENDMICRO&quot;]/../detection"/>
+                    </TRENDMICRO>
+                </xsl:if>
+                <xsl:if test="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TMCONSUMER&quot;]/../detection">
+                    <TMCONSUMER>
+                        <xsl:value-of select="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TMCONSUMER&quot;]/../detection"/>
+                    </TMCONSUMER>
+                </xsl:if>
+                <xsl:if test="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TREND_ICRC&quot;]/../detection">
+                    <TREND_ICRC>
+                        <xsl:value-of select="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TREND_ICRC&quot;]/../detection"/>
+                    </TREND_ICRC>
+                </xsl:if>
+                <xsl:if test="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TREND_HOUSECALL&quot;]/../detection">
+                    <TREND_HOUSECALL>
+                        <xsl:value-of select="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TREND_HOUSECALL&quot;]/../detection"/>
+                    </TREND_HOUSECALL>
+                </xsl:if>
+                <xsl:if test="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TMAS&quot;]/../detection">
+                    <TMAS>
+                        <xsl:value-of select="$Start/group/reputationResult/branchInfo/branchName[.=&quot;TMAS&quot;]/../detection"/>
+                    </TMAS>
+                </xsl:if>
+                <xsl:if test="$Start/group/reputationResult/branchInfo/branchName[.=&quot;INTELLITRAP&quot;]/../detection">
+                    <INTELLITRAP>
+                        <xsl:value-of select="$Start/group/reputationResult/branchInfo/branchName[.=&quot;INTELLITRAP&quot;]/../detection"/>
+                    </INTELLITRAP>
+                </xsl:if>
+                <ExistUserBranch>
+                    <xsl:value-of select="$Start/group/reputationResult/branchInfo/branchName[.=../../../pfx2:SMF/pfx2:SMFBody/pfx2:Message/pfx2:EventProcessMsg/pfx2:OnFileQueried/pfx2:CUST_BRANCH]"/>
+                </ExistUserBranch>
+                <UserBranchDetection>
+                    <xsl:value-of select="$Start/group/reputationResult/branchInfo/branchName[.=../../../pfx2:SMF/pfx2:SMFBody/pfx2:Message/pfx2:EventProcessMsg/pfx2:OnFileQueried/pfx2:CUST_BRANCH]/../detection"/>
+                </UserBranchDetection>
+            </Detection>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="3 Detection only exist TMAS Pattern">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>487</pd:x>
+        <pd:y>207</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Checking Detection in Branches">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>371</pd:x>
+        <pd:y>315</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Checking branching">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>748</pd:x>
+        <pd:y>370</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GetSubmissionType">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>841</pd:x>
+        <pd:y>252</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/GetSubmissionType.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($Start/group/pfx2:SMF/pfx2:SMFBody/pfx2:Message/pfx2:ACSMessage/pfx2:CASE)">
+                    <UpdateHashStatus_Input>
+                        <FileSha1>
+                            <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:ACSMessage/pfx2:CASE/pfx2:FILELIST/pfx2:FILE[1]/@SHA1"/>
+                        </FileSha1>
+                        <RequestType>
+                            <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:ACSMessage/pfx2:CASE/pfx2:REQUEST_TYPE"/>
+                        </RequestType>
+                    </UpdateHashStatus_Input>
+                </xsl:when>
+                <xsl:otherwise>
+                    <UpdateHashStatus_Input>
+                        <FileSha1>
+                            <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:EventProcessMsg/pfx2:OnFileQueried/pfx2:fileSha1"/>
+                        </FileSha1>
+                        <RequestType>
+                            <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:EventProcessMsg/pfx2:OnFileQueried/pfx2:requestType"/>
+                        </RequestType>
+                    </UpdateHashStatus_Input>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>1012</pd:x>
+        <pd:y>143</pd:y>
+        <pd:width>179</pd:width>
+        <pd:height>159</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$GetSubmissionType/pfx4:Resultsets/pfx4:ResultSet1/pfx4:Record1</pd:over>
+            <pd:iterationElementSlot>currentRecord</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Create AMSS Task Decision</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Create AMSS Task Decision</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Create AMSS Task Decision">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>1097</pd:x>
+            <pd:y>230</pd:y>
+            <config>
+                <processName>/ExternalServices/ToAMMS/Create AMSS Task Decision.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx3:AMSS_TASK_Checking>
+                    <pfx3:NeuronID>
+                        <xsl:value-of select="$currentRecord/pfx4:Record1/pfx4:NeuronID"/>
+                    </pfx3:NeuronID>
+                    <pfx3:RequestType>
+                        <xsl:value-of select="$currentRecord/pfx4:Record1/pfx4:RequestType"/>
+                    </pfx3:RequestType>
+                    <xsl:choose>
+                        <xsl:when test="(lower-case($currentRecord/pfx4:Record1/pfx4:RequestType) = lower-case('SemiDirectSubmission') or&#xA;lower-case($currentRecord/pfx4:Record1/pfx4:RequestType) = lower-case('DirectSubmission'))&#xA;and&#xA;lower-case($Start/group/reputationResult/branchStatus)=&quot;done&quot;">
+                            <pfx3:SRType>
+                                <xsl:value-of select="&quot;Add to JP ENT Legacy Pattern&quot;"/>
+                            </pfx3:SRType>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx3:SRType>
+                                <xsl:value-of select="&quot;File to Verify&quot;"/>
+                            </pfx3:SRType>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <pfx3:SRNumber>
+                        <xsl:value-of select="$currentRecord/pfx4:Record1/pfx4:SRNumber"/>
+                    </pfx3:SRNumber>
+                    <pfx3:ParentNeuronID>
+                        <xsl:value-of select="$currentRecord/pfx4:Record1/pfx4:ParentNeuronID"/>
+                    </pfx3:ParentNeuronID>
+                    <pfx3:Region>
+                        <xsl:value-of select="$currentRecord/pfx4:Record1/pfx4:Region"/>
+                    </pfx3:Region>
+                    <pfx3:BPRRequired>
+                        <xsl:value-of select="$currentRecord/pfx4:Record1/pfx4:BPRRequired"/>
+                    </pfx3:BPRRequired>
+                    <pfx3:ThreatServiceID>
+                        <xsl:value-of select="$currentRecord/pfx4:Record1/pfx4:ThreatServiceID"/>
+                    </pfx3:ThreatServiceID>
+                    <pfx3:PatternType>
+                        <xsl:value-of select="$currentRecord/pfx4:Record1/pfx4:PatternType"/>
+                    </pfx3:PatternType>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/group/pfx2:SMF/pfx2:SMFBody/pfx2:Message/pfx2:ACSMessage/pfx2:CASE)">
+                            <xsl:if test="$Start/group/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:ACSMessage/pfx2:CASE/pfx2:FILELIST/pfx2:FILE[1]/@SHA1">
+                                <pfx3:SHA1>
+                                    <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:ACSMessage/pfx2:CASE/pfx2:FILELIST/pfx2:FILE[1]/@SHA1"/>
+                                </pfx3:SHA1>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx3:SHA1>
+                                <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:EventProcessMsg/pfx2:OnFileQueried/pfx2:fileSha1"/>
+                            </pfx3:SHA1>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <pfx3:CharonResult>
+                        <xsl:value-of select="&quot;Detection_Branch&quot;"/>
+                    </pfx3:CharonResult>
+                    <pfx3:PatternTypeDetection>
+                        <xsl:value-of select="exists($Start/group/reputationResult/branchInfo[branchName = $currentRecord/pfx4:Record1/pfx4:PatternType  and detection = &quot;NO_VIRUS&quot;])"/>
+                    </pfx3:PatternTypeDetection>
+                </pfx3:AMSS_TASK_Checking>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1279</pd:x>
+        <pd:y>238</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1278</pd:x>
+        <pd:y>93</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="ns3:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <pfx2:SMF>
+                    <pfx2:SMFHeader>
+                        <pfx2:MessageKey>
+                            <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFHeader/pfx2:MessageKey"/>
+                        </pfx2:MessageKey>
+                        <pfx2:ServiceName>
+                            <xsl:value-of select="&quot;PatternMigration&quot;"/>
+                        </pfx2:ServiceName>
+                        <pfx2:ServiceVersion>
+                            <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFHeader/pfx2:ServiceVersion"/>
+                        </pfx2:ServiceVersion>
+                        <pfx2:SourceID>
+                            <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFHeader/pfx2:SourceID"/>
+                        </pfx2:SourceID>
+                        <xsl:if test="$Start/group/pfx2:SMF/pfx2:SMFHeader/pfx2:SourceIP">
+                            <pfx2:SourceIP>
+                                <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFHeader/pfx2:SourceIP"/>
+                            </pfx2:SourceIP>
+                        </xsl:if>
+                        <xsl:if test="$Start/group/pfx2:SMF/pfx2:SMFHeader/pfx2:RqTimestamp">
+                            <pfx2:RqTimestamp>
+                                <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFHeader/pfx2:RqTimestamp"/>
+                            </pfx2:RqTimestamp>
+                        </xsl:if>
+                        <pfx2:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </pfx2:RsTimestamp>
+                        <xsl:if test="$Start/group/pfx2:SMF/pfx2:SMFHeader/pfx2:Priority">
+                            <pfx2:Priority>
+                                <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFHeader/pfx2:Priority"/>
+                            </pfx2:Priority>
+                        </xsl:if>
+                    </pfx2:SMFHeader>
+                    <pfx2:SMFBody>
+                        <xsl:copy-of select="$Start/group/pfx2:SMF/pfx2:SMFBody/pfx2:Message"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns1:ErrorReport/Data/ns3:Error)">
+                                <xsl:for-each select="$_error/ns1:ErrorReport/Data/ns3:Error">
+                                    <pfx2:Error>
+                                        <pfx2:src>
+                                            <xsl:value-of select="ns3:src"/>
+                                        </pfx2:src>
+                                        <pfx2:error_code>
+                                            <xsl:value-of select="ns3:error_code"/>
+                                        </pfx2:error_code>
+                                        <pfx2:error_message>
+                                            <xsl:value-of select="ns3:error_message"/>
+                                        </pfx2:error_message>
+                                        <pfx2:error_detail>
+                                            <xsl:value-of select="ns3:stack_trace"/>
+                                        </pfx2:error_detail>
+                                    </pfx2:Error>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx2:Error>
+                                    <pfx2:src>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                    </pfx2:src>
+                                    <pfx2:error_code>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                    </pfx2:error_code>
+                                    <pfx2:error_message>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                    </pfx2:error_message>
+                                    <xsl:if test="$_error/ns1:ErrorReport/StackTrace">
+                                        <pfx2:error_detail>
+                                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                        </pfx2:error_detail>
+                                    </xsl:if>
+                                </pfx2:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx2:SMFBody>
+                </pfx2:SMF>
+                <isESBLog>
+                    <xsl:value-of select="true()"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ESBLogging">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>313</pd:x>
+        <pd:y>192</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:DBLogger>
+                <ns12:MessageHeader>
+                    <ns12:MessageKey>
+                        <xsl:value-of select="$Start/group/CharonMessagekey"/>
+                    </ns12:MessageKey>
+                    <ns12:ServiceName>
+                        <xsl:value-of select="&quot;PatternMigration&quot;"/>
+                    </ns12:ServiceName>
+                    <ns12:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns12:ServiceVersion>
+                    <ns12:SourceID>
+                        <xsl:value-of select="&quot;ACS&quot;"/>
+                    </ns12:SourceID>
+                </ns12:MessageHeader>
+                <ns12:MessageBody>
+                    <xsl:copy-of select="$shareVar/root/log"/>
+                </ns12:MessageBody>
+            </ns12:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ESBLogging-1">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>781</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:DBLogger>
+                <ns12:MessageHeader>
+                    <ns12:MessageKey>
+                        <xsl:value-of select="$Start/group/CharonMessagekey"/>
+                    </ns12:MessageKey>
+                    <ns12:ServiceName>
+                        <xsl:value-of select="&quot;PatternMigration&quot;"/>
+                    </ns12:ServiceName>
+                    <ns12:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns12:ServiceVersion>
+                    <ns12:SourceID>
+                        <xsl:value-of select="&quot;ACS&quot;"/>
+                    </ns12:SourceID>
+                </ns12:MessageHeader>
+                <ns12:MessageBody>
+                    <xsl:copy-of select="$shareVar/root/log"/>
+                </ns12:MessageBody>
+            </ns12:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>221</pd:x>
+        <pd:y>190</pd:y>
+        <config>
+            <variableName>shareVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <log>
+                    <xsl:value-of select="concat(&#xA;&quot;CharonMessageKey:&quot;,$Start/group/CharonMessagekey,&quot;&#xA;&quot;,&#xA;&quot;UserBranch:&quot;,$Start/group/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:EventProcessMsg/pfx2:OnFileQueried/pfx2:CUST_BRANCH,&quot;&#xA;&quot;,&#xA;&quot;CompareContent:&quot;,tib:render-xml($ReputationData/Detection, 1))"/>
+                </log>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign-1-1">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>633</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <variableName>shareVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <log>
+                    <xsl:value-of select="concat(&quot;1-1 Detection exists in GSS and user branch&quot;, &quot;&#xA;&quot;,&#xA;&quot;CharonMessageKey:&quot;,$Start/group/CharonMessagekey)"/>
+                </log>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign-1-2">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>638</pd:x>
+        <pd:y>167</pd:y>
+        <config>
+            <variableName>shareVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <log>
+                    <xsl:value-of select="concat(&quot;1-2 Detection dones't exist in GSS and user branch  but in other branch&quot;,&quot;&#xA;&quot;,&#xA;&quot;CharonMessagekey:&quot;,$Start/group/CharonMessagekey,&quot;&#xA;&quot;,&#xA;&quot;Content:&quot;, tib:render-xml($Start/group, 1))"/>
+                </log>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ESBLogging-2">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>745</pd:x>
+        <pd:y>173</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:DBLogger>
+                <ns12:MessageHeader>
+                    <ns12:MessageKey>
+                        <xsl:value-of select="$Start/group/CharonMessagekey"/>
+                    </ns12:MessageKey>
+                    <ns12:ServiceName>
+                        <xsl:value-of select="&quot;PatternMigration&quot;"/>
+                    </ns12:ServiceName>
+                    <ns12:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns12:ServiceVersion>
+                    <ns12:SourceID>
+                        <xsl:value-of select="&quot;ACS&quot;"/>
+                    </ns12:SourceID>
+                </ns12:MessageHeader>
+                <ns12:MessageBody>
+                    <xsl:copy-of select="$shareVar/root/log"/>
+                </ns12:MessageBody>
+            </ns12:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign-3">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>600</pd:x>
+        <pd:y>265</pd:y>
+        <config>
+            <variableName>shareVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <log>
+                    <xsl:value-of select="concat(&quot;3 Detection only exist TMAS Pattern&quot;,&quot;&#xA;&quot;,&#xA;&quot;CharonMessagekey:&quot;,$Start/group/CharonMessagekey,&quot;&#xA;&quot;,&#xA;&quot;Content:&quot;, tib:render-xml($Start/group, 1))"/>
+                </log>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign-2">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>626</pd:x>
+        <pd:y>360</pd:y>
+        <config>
+            <variableName>shareVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <log>
+                    <xsl:value-of select="concat(&quot;2 Detection exists in GSS  but not in user branch&quot;,&quot;&#xA;&quot;,&#xA;&quot;CharonMessagekey:&quot;,$Start/group/CharonMessagekey,&quot;&#xA;&quot;,&#xA;&quot;Content:&quot;, tib:render-xml($Start/group, 1))"/>
+                </log>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign-Others">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>370</pd:x>
+        <pd:y>504</pd:y>
+        <config>
+            <variableName>shareVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <log>
+                    <xsl:value-of select="concat(&quot;2 Not DR&quot;,&quot;&#xA;&quot;,&#xA;&quot;CharonMessagekey:&quot;,$Start/group/CharonMessagekey,&quot;&#xA;&quot;,&#xA;&quot;Content:&quot;, tib:render-xml($Start/group, 1))"/>
+                </log>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ESBLogging-2-1">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>743</pd:x>
+        <pd:y>508</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:DBLogger>
+                <ns12:MessageHeader>
+                    <ns12:MessageKey>
+                        <xsl:value-of select="$Start/group/CharonMessagekey"/>
+                    </ns12:MessageKey>
+                    <ns12:ServiceName>
+                        <xsl:value-of select="&quot;PatternMigration&quot;"/>
+                    </ns12:ServiceName>
+                    <ns12:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns12:ServiceVersion>
+                    <ns12:SourceID>
+                        <xsl:value-of select="&quot;ACS&quot;"/>
+                    </ns12:SourceID>
+                </ns12:MessageHeader>
+                <ns12:MessageBody>
+                    <xsl:copy-of select="$shareVar/root/log"/>
+                </ns12:MessageBody>
+            </ns12:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ESBLogging-initial">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>157</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:DBLogger>
+                <ns12:MessageHeader>
+                    <ns12:MessageKey>
+                        <xsl:value-of select="$Start/group/pfx2:SMF/pfx2:SMFBody[1]/pfx2:Message/pfx2:EventProcessMsg/pfx2:OnFileQueried/pfx2:serviceId"/>
+                    </ns12:MessageKey>
+                    <ns12:ServiceName>
+                        <xsl:value-of select="&quot;PatternMigration&quot;"/>
+                    </ns12:ServiceName>
+                    <ns12:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns12:ServiceVersion>
+                    <ns12:SourceID>
+                        <xsl:value-of select="&quot;PSC_FRS&quot;"/>
+                    </ns12:SourceID>
+                    <ns12:RqTimestamp>
+                        <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                    </ns12:RqTimestamp>
+                </ns12:MessageHeader>
+                <ns12:MessageBody>
+                    <xsl:copy-of select="$Start/group"/>
+                </ns12:MessageBody>
+            </ns12:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign-2-1">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>865</pd:x>
+        <pd:y>445</pd:y>
+        <config>
+            <variableName>shareVar</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <log>
+                    <xsl:value-of select="concat(&quot;2 Detection exists in GSS  but not in user branch but branchstatus !='Done' &quot;,&#xA;&quot;CharonMessagekey:&quot;,$Start/group/CharonMessagekey,&quot;&#xA;&quot;,&#xA;&quot;Content:&quot;, tib:render-xml($Start/group, 1))"/>
+                </log>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ESBLogging Create JPL">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>951</pd:x>
+        <pd:y>349</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:DBLogger>
+                <ns12:MessageHeader>
+                    <ns12:MessageKey>
+                        <xsl:value-of select="$Start/group/CharonMessagekey"/>
+                    </ns12:MessageKey>
+                    <ns12:ServiceName>
+                        <xsl:value-of select="&quot;PatternMigration&quot;"/>
+                    </ns12:ServiceName>
+                    <ns12:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns12:ServiceVersion>
+                    <ns12:SourceID>
+                        <xsl:value-of select="&quot;ACS&quot;"/>
+                    </ns12:SourceID>
+                </ns12:MessageHeader>
+                <ns12:MessageBody>
+                    <xsl:copy-of select="$GetSubmissionType/pfx4:Resultsets/pfx4:ResultSet1"/>
+                </ns12:MessageBody>
+            </ns12:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Checking Detection</pd:from>
+        <pd:to>Assign-1-1</pd:to>
+        <pd:xpathDescription>1-1 Detection exists in GSS and user branch</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$ReputationData/Detection/ExistUserBranch !="" and
+$ReputationData/Detection/UserBranchDetection !=''  and 
+$ReputationData/Detection/UserBranchDetection !='NO_VIRUS' and
+$ReputationData/Detection/TREND_ICRC !=''  and 
+$ReputationData/Detection/TREND_ICRC !='NO_VIRUS'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ESBLogging-initial</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ReputationData</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checking Detection</pd:from>
+        <pd:to>Assign-1-2</pd:to>
+        <pd:xpathDescription>1-2 Detection dones't exist in GSS and user branch  but in other branch</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>($ReputationData/Detection/TREND_ICRC="" or $ReputationData/Detection/TREND_ICRC="NO_VIRUS")  and
+(($ReputationData/Detection/TREND_LEGACY !="NO_VIRUS" and $ReputationData/Detection/TREND_LEGACY !='' ) or 
+($ReputationData/Detection/TRENDMICRO !="NO_VIRUS"  and $ReputationData/Detection/TRENDMICRO   !='' )  or
+($ReputationData/Detection/TMCONSUMER  !="NO_VIRUS" and $ReputationData/Detection/TMCONSUMER   !='' ))</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>3 Detection only exist TMAS Pattern</pd:from>
+        <pd:to>Assign-3</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checking Detection</pd:from>
+        <pd:to>Checking Detection in Branches</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checking Detection in Branches</pd:from>
+        <pd:to>Assign-2</pd:to>
+        <pd:xpathDescription>2 Detection exists in GSS  but not in user branch</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$ReputationData/Detection/TREND_ICRC !="" and  upper-case($ReputationData/Detection/TREND_ICRC) !="NO_VIRUS" and
+(
+$ReputationData/Detection/UserBranchDetection ="" or 
+$ReputationData/Detection/UserBranchDetection ="NO_VIRUS")</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checking Detection in Branches</pd:from>
+        <pd:to>3 Detection only exist TMAS Pattern</pd:to>
+        <pd:xpathDescription>3 Detection only exist TMAS Pattern</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$ReputationData/Detection/TMAS !='' and upper-case($ReputationData/Detection/TMAS) !='NO_VIRUS'  and
+($ReputationData/Detection/TREND_LEGACY = "NO_VIRUS" or $ReputationData/Detection/TREND_LEGACY ='' ) and 
+($ReputationData/Detection/TRENDMICRO  = "NO_VIRUS"  or $ReputationData/Detection/TRENDMICRO   ='' )  and
+($ReputationData/Detection/TMCONSUMER  = "NO_VIRUS" or $ReputationData/Detection/TMCONSUMER   ='' ) and 
+($ReputationData/Detection/TREND_ICRC  = "NO_VIRUS" or $ReputationData/Detection/TREND_ICRC    ='')</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checking branching</pd:from>
+        <pd:to>ESBLogging-2</pd:to>
+        <pd:xpathDescription>Done</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>lower-case($Start/group/reputationResult/branchStatus)=lower-case("Done")</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checking branching</pd:from>
+        <pd:to>Assign-2-1</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSubmissionType</pd:from>
+        <pd:to>ESBLogging Create JPL</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checking Detection in Branches</pd:from>
+        <pd:to>Assign-Others</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ESBLogging</pd:from>
+        <pd:to>Checking Detection</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ESBLogging-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>ESBLogging</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign-1-1</pd:from>
+        <pd:to>ESBLogging-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign-1-2</pd:from>
+        <pd:to>ESBLogging-2</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ESBLogging-2</pd:from>
+        <pd:to>GetSubmissionType</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign-3</pd:from>
+        <pd:to>Checking branching</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign-2</pd:from>
+        <pd:to>Checking branching</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign-Others</pd:from>
+        <pd:to>ESBLogging-2-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ESBLogging-2-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ESBLogging-initial</pd:from>
+        <pd:to>ReputationData</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign-2-1</pd:from>
+        <pd:to>ESBLogging-2-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ESBLogging Create JPL</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns02="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="ATSS_ERS_Case_Common_WS" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx2="http://tempuri.org/">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Provider/ACSServices.wsdl"/>
+    <pd:name>EventProcess/PSC_G2/ERS/NeuronSendArchive.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>107</pd:startX>
+    <pd:startY>169</pd:startY>
+    <pd:returnBindings>
+        <pfx2:SubmitFileToERSSoapOut>
+            <parameters>
+                <xsl:copy-of select="$SOAPRequestReply/outputMessage/pfx2:SubmitFileToERSResponse"/>
+            </parameters>
+        </pfx2:SubmitFileToERSSoapOut>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType wsMsgRef="pfx2:SubmitFileToERSSoapOut"/>
+    <pd:endX>899</pd:endX>
+    <pd:endY>169</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1441872553611</pd:targetNamespace>
+    <pd:activity name="InsertNeuronProcessStatus[61]">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>230</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:InsertTaskLog>
+                <pfx2:serviceID>
+                    <xsl:value-of select="$Start/root/ServiceID"/>
+                </pfx2:serviceID>
+                <pfx2:stepTypeID>
+                    <xsl:value-of select="61"/>
+                </pfx2:stepTypeID>
+                <pfx2:message>
+                    <xsl:value-of select="&quot;SendERSArchive Start&quot;"/>
+                </pfx2:message>
+            </pfx2:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InsertNeuronProcessStatus[62]">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>754</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:InsertTaskLog>
+                <pfx2:serviceID>
+                    <xsl:value-of select="$Start/root/ServiceID"/>
+                </pfx2:serviceID>
+                <pfx2:stepTypeID>
+                    <xsl:value-of select="62"/>
+                </pfx2:stepTypeID>
+                <pfx2:message>
+                    <xsl:value-of select="tib:render-xml($SOAPRequestReply/outputMessage/pfx2:SubmitFileToERSResponse, 1)"/>
+                </pfx2:message>
+            </pfx2:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>315</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>333</pd:width>
+        <pd:height>321</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>exists($SOAPRequestReply/outputMessage/pfx2:SubmitFileToERSResponse/pfx2:SubmitFileToERSResult) or $i &gt;= $_globalVariables/ns1:GlobalVariables/EventProcess/PSC_G2/ERS/ERSStorage/retrytimes</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SOAPRequestReply</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65485</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:xpathDescription>i &lt; 5 and timeout exception</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i &lt;$_globalVariables/ns1:GlobalVariables/EventProcess/PSC_G2/ERS/ERSStorage/retrytimes and exists($_error_SOAPRequestReply/ActivityErrors/pfx4:ActivityTimedOutException)</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-6750157</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="SOAPRequestReply">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>472</pd:x>
+            <pd:y>85</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx2:ACSServices</service>
+                <servicePort>ACSServicesSoap</servicePort>
+                <operation>SubmitFileToERS</operation>
+                <soapAction>http://tempuri.org/SubmitFileToERS</soapAction>
+                <endpointURL>%%ExternalServices/ToACS/WebService/EndPointURL%%</endpointURL>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <pfx2:SubmitFileToERS>
+                        <pfx2:serviceID>
+                            <xsl:value-of select="$Start/root/ServiceID"/>
+                        </pfx2:serviceID>
+                    </pfx2:SubmitFileToERS>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>551</pd:x>
+            <pd:y>188</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/EventProcess/PSC_G2/ERS/ERSStorage/waittingms"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>386</pd:x>
+            <pd:y>189</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>473</pd:x>
+            <pd:y>257</pd:y>
+            <config>
+                <faultName>ErrorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns02:ActivityInput>
+                    <data>
+                        <pfx3:Error>
+                            <pfx3:src>
+                                <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                            </pfx3:src>
+                            <pfx3:error_code>
+                                <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                            </pfx3:error_code>
+                            <pfx3:error_message>
+                                <xsl:value-of select="tib:render-xml($_error_SOAPRequestReply/ActivityErrors,1)"/>
+                            </pfx3:error_message>
+                            <pfx3:stack_trace>
+                                <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                            </pfx3:stack_trace>
+                        </pfx3:Error>
+                    </data>
+                </ns02:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>InsertNeuronProcessStatus[61]</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertNeuronProcessStatus[62]</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertNeuronProcessStatus[61]</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>InsertNeuronProcessStatus[62]</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

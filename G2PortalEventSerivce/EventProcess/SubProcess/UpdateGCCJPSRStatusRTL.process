@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns7="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" xmlns:pfx="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns8="www.tibco.com/plugin/Sleep" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns4="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/XSD/Schema.xsd8" xmlns:ns3="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/XSD/Schema.xsd7" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="JP Common WS" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/SMF">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <pd:name>EventProcess/SubProcess/UpdateGCCJPSRStatusRTL.process</pd:name>
+    <pd:description>For Altas ,but don't need</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceID" type="xsd:string"/>
+                    <xsd:element name="processStatus" type="xsd:string"/>
+                    <xsd:element name="statusCode" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="ORI_SRF_SOURCEID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element ref="pfx2:SMF"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>70</pd:startX>
+    <pd:startY>252</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1030</pd:endX>
+    <pd:endY>89</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1385348215118</pd:targetNamespace>
+    <pd:activity name="SRStatusOpen">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>443</pd:x>
+        <pd:y>257</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="SRType=CORP">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>728</pd:x>
+        <pd:y>257</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="UpdateGCCJPCorporateRTL">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>910</pd:x>
+        <pd:y>176</pd:y>
+        <config>
+            <processName>/ExternalServices/ToGCC/UPDATE_GCCJP_CORPORATE.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:SMF>
+                <xsl:for-each select="$Start/root/pfx2:SMF/pfx2:SMFHeader">
+                    <pfx2:SMFHeader>
+                        <pfx2:MessageKey>
+                            <xsl:value-of select="pfx2:MessageKey"/>
+                        </pfx2:MessageKey>
+                        <pfx2:ServiceName>
+                            <xsl:value-of select="&quot;UpdateGCCJPCorporateRTL&quot;"/>
+                        </pfx2:ServiceName>
+                        <pfx2:ServiceVersion>
+                            <xsl:value-of select="pfx2:ServiceVersion"/>
+                        </pfx2:ServiceVersion>
+                        <pfx2:SourceID>
+                            <xsl:value-of select="pfx2:SourceID"/>
+                        </pfx2:SourceID>
+                        <xsl:if test="pfx2:SourceIP">
+                            <pfx2:SourceIP>
+                                <xsl:value-of select="pfx2:SourceIP"/>
+                            </pfx2:SourceIP>
+                        </xsl:if>
+                        <xsl:if test="pfx2:RqTimestamp">
+                            <pfx2:RqTimestamp>
+                                <xsl:value-of select="pfx2:RqTimestamp"/>
+                            </pfx2:RqTimestamp>
+                        </xsl:if>
+                        <xsl:if test="pfx2:RsTimestamp">
+                            <pfx2:RsTimestamp>
+                                <xsl:value-of select="pfx2:RsTimestamp"/>
+                            </pfx2:RsTimestamp>
+                        </xsl:if>
+                        <xsl:if test="pfx2:Priority">
+                            <pfx2:Priority>
+                                <xsl:value-of select="pfx2:Priority"/>
+                            </pfx2:Priority>
+                        </xsl:if>
+                    </pfx2:SMFHeader>
+                </xsl:for-each>
+                <pfx2:SMFBody>
+                    <pfx2:Message>
+                        <pfx2:ACSMessage>
+                            <pfx2:GCC>
+                                <pfx2:JP_UpdateRTL>
+                                    <xsl:choose>
+                                        <xsl:when test="tib:trim($Start/root/ORI_SRF_SOURCEID) !=&quot;&quot;">
+                                            <xsl:if test="$Start/root/ORI_SRF_SOURCEID">
+                                                <pfx2:psSourceId>
+                                                    <xsl:value-of select="$Start/root/ORI_SRF_SOURCEID"/>
+                                                </pfx2:psSourceId>
+                                            </xsl:if>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:if test="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SourceId">
+                                                <pfx2:psSourceId>
+                                                    <xsl:value-of select="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SourceId"/>
+                                                </pfx2:psSourceId>
+                                            </xsl:if>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <pfx2:psServiceId>
+                                        <xsl:value-of select="$Start/root/ServiceID"/>
+                                    </pfx2:psServiceId>
+                                    <xsl:choose>
+                                        <xsl:when test="tib:trim(tib:substring-after-last($GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:FilePath, &quot;\&quot;)) !=&quot;&quot;">
+                                            <pfx2:psFileName>
+                                                <xsl:value-of select="tib:substring-after-last($GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:FilePath, &quot;\&quot;)"/>
+                                            </pfx2:psFileName>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <pfx2:psFileName>
+                                                <xsl:value-of select="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:FilePath"/>
+                                            </pfx2:psFileName>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <xsl:choose>
+                                        <xsl:when test="$Start/root/statusCode = 0 or tib:trim($Start/root/statusCode) =&quot;&quot;">
+                                            <pfx2:psMessage>
+                                                <xsl:value-of select="&quot;&quot;"/>
+                                            </pfx2:psMessage>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:if test="$GetMessageByStatusCode/ns4:Resultsets/ns4:ResultSet1[1]/ns4:Record1[1]/ns4:Message">
+                                                <pfx2:psMessage>
+                                                    <xsl:value-of select="$GetMessageByStatusCode/ns4:Resultsets/ns4:ResultSet1[1]/ns4:Record1[1]/ns4:Message"/>
+                                                </pfx2:psMessage>
+                                            </xsl:if>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <xsl:if test="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:FileNumber">
+                                        <pfx2:psFileNumber>
+                                            <xsl:value-of select="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:FileNumber"/>
+                                        </pfx2:psFileNumber>
+                                    </xsl:if>
+                                    <xsl:choose>
+                                        <xsl:when test="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1/ns3:Record1/ns3:SRF_CASETYPE = &quot;create&quot;">
+                                            <pfx2:psSendMode>
+                                                <xsl:value-of select="&quot;A&quot;"/>
+                                            </pfx2:psSendMode>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <pfx2:psSendMode>
+                                                <xsl:value-of select="&quot;M&quot;"/>
+                                            </pfx2:psSendMode>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <xsl:if test="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SRType">
+                                        <pfx2:psSRType>
+                                            <xsl:value-of select="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SRType"/>
+                                        </pfx2:psSRType>
+                                    </xsl:if>
+                                    <pfx2:psProcessStatus>
+                                        <xsl:value-of select="$Start/root/processStatus"/>
+                                    </pfx2:psProcessStatus>
+                                </pfx2:JP_UpdateRTL>
+                            </pfx2:GCC>
+                        </pfx2:ACSMessage>
+                    </pfx2:Message>
+                </pfx2:SMFBody>
+            </pfx2:SMF>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateGCCJPCustomerRTL">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>909</pd:x>
+        <pd:y>339</pd:y>
+        <config>
+            <processName>/ExternalServices/ToGCC/UPDATE_GCCJP_CUSTOMER.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:SMF>
+                <xsl:for-each select="$Start/root/pfx2:SMF/pfx2:SMFHeader">
+                    <pfx2:SMFHeader>
+                        <pfx2:MessageKey>
+                            <xsl:value-of select="pfx2:MessageKey"/>
+                        </pfx2:MessageKey>
+                        <pfx2:ServiceName>
+                            <xsl:value-of select="&quot;UpdateGCCJPConsumerRTL&quot;"/>
+                        </pfx2:ServiceName>
+                        <pfx2:ServiceVersion>
+                            <xsl:value-of select="pfx2:ServiceVersion"/>
+                        </pfx2:ServiceVersion>
+                        <pfx2:SourceID>
+                            <xsl:value-of select="pfx2:SourceID"/>
+                        </pfx2:SourceID>
+                        <xsl:if test="pfx2:SourceIP">
+                            <pfx2:SourceIP>
+                                <xsl:value-of select="pfx2:SourceIP"/>
+                            </pfx2:SourceIP>
+                        </xsl:if>
+                        <xsl:if test="pfx2:RqTimestamp">
+                            <pfx2:RqTimestamp>
+                                <xsl:value-of select="pfx2:RqTimestamp"/>
+                            </pfx2:RqTimestamp>
+                        </xsl:if>
+                        <xsl:if test="pfx2:RsTimestamp">
+                            <pfx2:RsTimestamp>
+                                <xsl:value-of select="pfx2:RsTimestamp"/>
+                            </pfx2:RsTimestamp>
+                        </xsl:if>
+                        <xsl:if test="pfx2:Priority">
+                            <pfx2:Priority>
+                                <xsl:value-of select="pfx2:Priority"/>
+                            </pfx2:Priority>
+                        </xsl:if>
+                    </pfx2:SMFHeader>
+                </xsl:for-each>
+                <pfx2:SMFBody>
+                    <pfx2:Message>
+                        <pfx2:ACSMessage>
+                            <pfx2:GCC>
+                                <pfx2:JP_UpdateRTL>
+                                    <xsl:choose>
+                                        <xsl:when test="tib:trim($Start/root/ORI_SRF_SOURCEID) !=&quot;&quot;">
+                                            <xsl:if test="$Start/root/ORI_SRF_SOURCEID">
+                                                <pfx2:psSourceId>
+                                                    <xsl:value-of select="$Start/root/ORI_SRF_SOURCEID"/>
+                                                </pfx2:psSourceId>
+                                            </xsl:if>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:if test="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SourceId">
+                                                <pfx2:psSourceId>
+                                                    <xsl:value-of select="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SourceId"/>
+                                                </pfx2:psSourceId>
+                                            </xsl:if>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <pfx2:psServiceId>
+                                        <xsl:value-of select="$Start/root/ServiceID"/>
+                                    </pfx2:psServiceId>
+                                    <pfx2:psFileName>
+                                        <xsl:value-of select="tib:substring-after-last($GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:FilePath, &quot;\&quot;)"/>
+                                    </pfx2:psFileName>
+                                    <xsl:choose>
+                                        <xsl:when test="$Start/root/statusCode = 0 or tib:trim($Start/root/statusCode) =&quot;&quot;">
+                                            <pfx2:psMessage>
+                                                <xsl:value-of select="&quot;&quot;"/>
+                                            </pfx2:psMessage>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:if test="$GetMessageByStatusCode/ns4:Resultsets/ns4:ResultSet1[1]/ns4:Record1[1]/ns4:Message">
+                                                <pfx2:psMessage>
+                                                    <xsl:value-of select="$GetMessageByStatusCode/ns4:Resultsets/ns4:ResultSet1[1]/ns4:Record1[1]/ns4:Message"/>
+                                                </pfx2:psMessage>
+                                            </xsl:if>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <xsl:if test="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:FileNumber">
+                                        <pfx2:psFileNumber>
+                                            <xsl:value-of select="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:FileNumber"/>
+                                        </pfx2:psFileNumber>
+                                    </xsl:if>
+                                    <xsl:choose>
+                                        <xsl:when test="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1/ns3:Record1/ns3:SRF_CASETYPE = &quot;create&quot;">
+                                            <pfx2:psSendMode>
+                                                <xsl:value-of select="&quot;A&quot;"/>
+                                            </pfx2:psSendMode>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <pfx2:psSendMode>
+                                                <xsl:value-of select="&quot;M&quot;"/>
+                                            </pfx2:psSendMode>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <xsl:if test="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SRType">
+                                        <pfx2:psSRType>
+                                            <xsl:value-of select="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SRType"/>
+                                        </pfx2:psSRType>
+                                    </xsl:if>
+                                    <pfx2:psProcessStatus>
+                                        <xsl:value-of select="$Start/root/processStatus"/>
+                                    </pfx2:psProcessStatus>
+                                </pfx2:JP_UpdateRTL>
+                            </pfx2:GCC>
+                        </pfx2:ACSMessage>
+                    </pfx2:Message>
+                </pfx2:SMFBody>
+            </pfx2:SMF>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1149</pd:x>
+        <pd:y>512</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>1150</pd:x>
+        <pd:y>397</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns5:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns5:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns5:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1148</pd:x>
+        <pd:y>266</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns5:ErrorReport/Data/*" element="ns6:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <pfx2:SMF>
+                    <xsl:copy-of select="$Start/root/pfx2:SMF/pfx2:SMFHeader"/>
+                    <pfx2:SMFBody>
+                        <xsl:copy-of select="$Start/root/pfx2:SMF/pfx2:SMFBody/pfx2:Message"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns5:ErrorReport/Data/ns6:Error)">
+                                <pfx2:Error>
+                                    <pfx2:src>
+                                        <xsl:value-of select="$_error/ns5:ErrorReport/Data/ns6:Error/ns6:src"/>
+                                    </pfx2:src>
+                                    <pfx2:error_code>
+                                        <xsl:value-of select="$_error/ns5:ErrorReport/Data/ns6:Error/ns6:error_code"/>
+                                    </pfx2:error_code>
+                                    <pfx2:error_message>
+                                        <xsl:value-of select="$_error/ns5:ErrorReport/Data/ns6:Error/ns6:error_message"/>
+                                    </pfx2:error_message>
+                                    <xsl:if test="$_error/ns5:ErrorReport/Data/ns6:Error/ns6:stack_trace">
+                                        <pfx2:error_detail>
+                                            <xsl:value-of select="$_error/ns5:ErrorReport/Data/ns6:Error/ns6:stack_trace"/>
+                                        </pfx2:error_detail>
+                                    </xsl:if>
+                                </pfx2:Error>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx2:Error>
+                                    <pfx2:src>
+                                        <xsl:value-of select="$_error/ns5:ErrorReport/ProcessStack"/>
+                                    </pfx2:src>
+                                    <pfx2:error_code>
+                                        <xsl:value-of select="$_error/ns5:ErrorReport/MsgCode"/>
+                                    </pfx2:error_code>
+                                    <pfx2:error_message>
+                                        <xsl:value-of select="$_error/ns5:ErrorReport/Msg"/>
+                                    </pfx2:error_message>
+                                    <xsl:if test="$_error/ns5:ErrorReport/StackTrace">
+                                        <pfx2:error_detail>
+                                            <xsl:value-of select="$_error/ns5:ErrorReport/StackTrace"/>
+                                        </pfx2:error_detail>
+                                    </xsl:if>
+                                </pfx2:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:copy-of select="$Start/root/pfx2:SMF/pfx2:SMFBody/pfx2:EventMsg"/>
+                    </pfx2:SMFBody>
+                </pfx2:SMF>
+                <isESBLog>
+                    <xsl:value-of select="false()"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Query_GCCJP_SR_Status">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>321</pd:x>
+        <pd:y>250</pd:y>
+        <config>
+            <processName>/ExternalServices/ToGCC/Query_GCCJP_SR.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:SMF>
+                <xsl:for-each select="$Start/root/pfx2:SMF/pfx2:SMFHeader">
+                    <pfx2:SMFHeader>
+                        <pfx2:MessageKey>
+                            <xsl:value-of select="pfx2:MessageKey"/>
+                        </pfx2:MessageKey>
+                        <pfx2:ServiceName>
+                            <xsl:value-of select="&quot;QueryGCCJPSR&quot;"/>
+                        </pfx2:ServiceName>
+                        <pfx2:ServiceVersion>
+                            <xsl:value-of select="pfx2:ServiceVersion"/>
+                        </pfx2:ServiceVersion>
+                        <pfx2:SourceID>
+                            <xsl:value-of select="pfx2:SourceID"/>
+                        </pfx2:SourceID>
+                        <xsl:if test="pfx2:SourceIP">
+                            <pfx2:SourceIP>
+                                <xsl:value-of select="pfx2:SourceIP"/>
+                            </pfx2:SourceIP>
+                        </xsl:if>
+                        <xsl:if test="pfx2:RqTimestamp">
+                            <pfx2:RqTimestamp>
+                                <xsl:value-of select="pfx2:RqTimestamp"/>
+                            </pfx2:RqTimestamp>
+                        </xsl:if>
+                        <xsl:if test="pfx2:RsTimestamp">
+                            <pfx2:RsTimestamp>
+                                <xsl:value-of select="pfx2:RsTimestamp"/>
+                            </pfx2:RsTimestamp>
+                        </xsl:if>
+                        <xsl:if test="pfx2:Priority">
+                            <pfx2:Priority>
+                                <xsl:value-of select="pfx2:Priority"/>
+                            </pfx2:Priority>
+                        </xsl:if>
+                    </pfx2:SMFHeader>
+                </xsl:for-each>
+                <pfx2:SMFBody>
+                    <pfx2:Message>
+                        <pfx2:ACSMessage>
+                            <pfx2:GCC>
+                                <pfx2:JP_QuerySR>
+                                    <pfx2:psSRType>
+                                        <xsl:value-of select="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SRType"/>
+                                    </pfx2:psSRType>
+                                    <xsl:choose>
+                                        <xsl:when test="tib:trim($Start/root/ORI_SRF_SOURCEID) !=&quot;&quot;">
+                                            <pfx2:psSendMode>
+                                                <xsl:value-of select="&quot;A&quot;"/>
+                                            </pfx2:psSendMode>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <pfx2:psSendMode>
+                                                <xsl:value-of select="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SendMode"/>
+                                            </pfx2:psSendMode>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <xsl:choose>
+                                        <xsl:when test="tib:trim($Start/root/ORI_SRF_SOURCEID) !=&quot;&quot;">
+                                            <pfx2:psKeyId>
+                                                <xsl:value-of select="$Start/root/ORI_SRF_SOURCEID"/>
+                                            </pfx2:psKeyId>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <pfx2:psKeyId>
+                                                <xsl:value-of select="$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:KeyId"/>
+                                            </pfx2:psKeyId>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx2:JP_QuerySR>
+                            </pfx2:GCC>
+                        </pfx2:ACSMessage>
+                    </pfx2:Message>
+                </pfx2:SMFBody>
+            </pfx2:SMF>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetSRFInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>179</pd:x>
+        <pd:y>96</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/GetSRFInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ServiceId>
+                    <xsl:value-of select="$Start/root/ServiceID"/>
+                </ServiceId>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>446</pd:x>
+        <pd:y>452</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GetMessageByStatusCode">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>646</pd:x>
+        <pd:y>348</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/GetMessageByStatusCode.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <statusCode>
+                    <xsl:value-of select="$Start/root/statusCode"/>
+                </statusCode>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null-1">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>579</pd:x>
+        <pd:y>258</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SRStatusOpen</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SRStatusOpen</pd:from>
+        <pd:to>Null-1</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Query_GCCJP_SR_Status/pfx3:JP-TS_spcComm_spcWS_JP_QuerySR_Output/pfx3:psSRStatus)="Open"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SRType=CORP</pd:from>
+        <pd:to>UpdateGCCJPCorporateRTL</pd:to>
+        <pd:xpathDescription>Y</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:SRType = "CORP"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SRType=CORP</pd:from>
+        <pd:to>UpdateGCCJPCustomerRTL</pd:to>
+        <pd:xpathDescription>N</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateGCCJPCustomerRTL</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateGCCJPCorporateRTL</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Query_GCCJP_SR_Status</pd:from>
+        <pd:to>SRStatusOpen</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSRFInfo</pd:from>
+        <pd:to>Query_GCCJP_SR_Status</pd:to>
+        <pd:xpathDescription>exists keyid</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Start/root/ORI_SRF_SOURCEID) !=""
+or 
+tib:trim($GetSRFInfo/ns3:Resultsets/ns3:ResultSet1[1]/ns3:Record1[1]/ns3:KeyId) !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetMessageByStatusCode</pd:from>
+        <pd:to>SRType=CORP</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetSRFInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null-1</pd:from>
+        <pd:to>GetMessageByStatusCode</pd:to>
+        <pd:xpathDescription>Exist Status</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Start/root/statusCode) !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null-1</pd:from>
+        <pd:to>SRType=CORP</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSRFInfo</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

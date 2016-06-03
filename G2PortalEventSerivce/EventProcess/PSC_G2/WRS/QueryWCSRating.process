@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns3="http://tempuri.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Neuron/QueryURLRatingRQ.xsd" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://www.trendmicro.com/ESB/ACS/schemas/SMF">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/EvnetMsg/OnURLQueried.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>EventProcess/PSC_G2/WRS/QueryWCSRating.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:OnURLQueried"/>
+    <pd:startX>129</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$GetWCSRatingResult/response"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:response"/>
+    <pd:endX>689</pd:endX>
+    <pd:endY>66</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1427339622631</pd:targetNamespace>
+    <pd:activity name="GetWCSRatingResult">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>395</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <processName>/EventProcess/SubProcess/GetWCSRatingResult.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <URL>
+                    <xsl:value-of select="$Start/pfx:OnURLQueried/pfx:URL"/>
+                </URL>
+                <xsl:if test="$_globalVariables/ns1:GlobalVariables/Services/NeuronService/ATSSWRSCloseCallback/WCSLanguage">
+                    <Language>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/NeuronService/ATSSWRSCloseCallback/WCSLanguage"/>
+                    </Language>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ACSLog(77)">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>261</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/Utilities/ACSDBLogger/SendDBLog.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns3:InsertTaskLog>
+                <ns3:serviceID>
+                    <xsl:value-of select="$Start/pfx:OnURLQueried/pfx:ServiceID"/>
+                </ns3:serviceID>
+                <ns3:stepTypeID>
+                    <xsl:value-of select="77"/>
+                </ns3:stepTypeID>
+                <ns3:message>
+                    <xsl:value-of select="$Start/pfx:OnURLQueried/pfx:URL"/>
+                </ns3:message>
+            </ns3:InsertTaskLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateURLWCSResult">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>551</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/ExternalServices/ToACS/2.1 Subprocesses/Functions/SP/UpsertURLReputaion.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ServiceID>
+                    <xsl:value-of select="$Start/pfx:OnURLQueried/pfx:ServiceID"/>
+                </ServiceID>
+                <URLID>
+                    <xsl:value-of select="$Start/pfx:OnURLQueried/pfx:URLID"/>
+                </URLID>
+                <URL>
+                    <xsl:value-of select="$Start/pfx:OnURLQueried/pfx:URL"/>
+                </URL>
+                <WCS_Begin_Rs>
+                    <xsl:value-of select="tib:render-xml($GetWCSRatingResult/response,1)"/>
+                </WCS_Begin_Rs>
+                <xsl:choose>
+                    <xsl:when test="$GetWCSRatingResult/response/reputation=&quot;Untested&quot;"/>
+                    <xsl:otherwise>
+                        <WCS_Rating_Rs>
+                            <xsl:value-of select="tib:concat-sequence-format($GetWCSRatingResult/response/categories/category/@rating,&quot;,&quot;,0)"/>
+                        </WCS_Rating_Rs>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>260</pd:x>
+        <pd:y>182</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>396</pd:x>
+        <pd:y>190</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns5:ErrorReport/Data/*" element="ns4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <pfx:SMF>
+                    <pfx:SMFHeader>
+                        <pfx:MessageKey>
+                            <xsl:value-of select="$Start/pfx:OnURLQueried/pfx:ServiceID"/>
+                        </pfx:MessageKey>
+                        <pfx:ServiceName>
+                            <xsl:value-of select="&quot;QueryWCSRating&quot;"/>
+                        </pfx:ServiceName>
+                        <pfx:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </pfx:ServiceVersion>
+                        <pfx:SourceID>
+                            <xsl:value-of select="&quot;BW&quot;"/>
+                        </pfx:SourceID>
+                        <pfx:RqTimestamp>
+                            <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                        </pfx:RqTimestamp>
+                    </pfx:SMFHeader>
+                    <pfx:SMFBody>
+                        <pfx:Message>
+                            <pfx:SOAPMessage>
+                                <xsl:value-of select="tib:render-xml($Start/pfx:OnURLQueried, 1)"/>
+                            </pfx:SOAPMessage>
+                        </pfx:Message>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns5:ErrorReport/Data/ns4:Error)">
+                                <xsl:for-each select="$_error/ns5:ErrorReport/Data/ns4:Error">
+                                    <pfx:Error>
+                                        <pfx:src>
+                                            <xsl:value-of select="ns4:src"/>
+                                        </pfx:src>
+                                        <pfx:error_code>
+                                            <xsl:value-of select="ns4:error_code"/>
+                                        </pfx:error_code>
+                                        <pfx:error_message>
+                                            <xsl:value-of select="ns4:error_message"/>
+                                        </pfx:error_message>
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="ns4:stack_trace"/>
+                                        </pfx:error_detail>
+                                    </pfx:Error>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx:Error>
+                                    <pfx:src>
+                                        <xsl:value-of select="$_error/ns5:ErrorReport/ProcessStack"/>
+                                    </pfx:src>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="$_error/ns5:ErrorReport/MsgCode"/>
+                                    </pfx:error_code>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error/ns5:ErrorReport/Msg"/>
+                                    </pfx:error_message>
+                                    <xsl:if test="$_error/ns5:ErrorReport/StackTrace">
+                                        <pfx:error_detail>
+                                            <xsl:value-of select="$_error/ns5:ErrorReport/StackTrace"/>
+                                        </pfx:error_detail>
+                                    </xsl:if>
+                                </pfx:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx:SMFBody>
+                </pfx:SMF>
+                <ns3:InsertTaskLog>
+                    <ns3:serviceID>
+                        <xsl:value-of select="$Start/pfx:OnURLQueried/pfx:ServiceID"/>
+                    </ns3:serviceID>
+                    <ns3:stepTypeID>
+                        <xsl:value-of select="8077"/>
+                    </ns3:stepTypeID>
+                    <ns3:message>
+                        <xsl:value-of select="concat($Start/pfx:OnURLQueried/pfx:URL, &quot;&#xA;&quot;,$Catch/exceptiondata)"/>
+                    </ns3:message>
+                </ns3:InsertTaskLog>
+                <isESBLog>
+                    <xsl:value-of select="false()"/>
+                </isESBLog>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>533</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Catch/exceptiondata, 1)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;QueryWCSRatingFail&quot;"/>
+                </messageCode>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>GetWCSRatingResult</pd:from>
+        <pd:to>UpdateURLWCSResult</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ACSLog(77)</pd:from>
+        <pd:to>GetWCSRatingResult</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateURLWCSResult</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Handling Process</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ACSLog(77)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
