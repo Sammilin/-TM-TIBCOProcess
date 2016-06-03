@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.trendmicro.com/ESB/ACS/schemas/SMF"
+	 targetNamespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="PartnerMessage">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="AKAMAI" type="AKAMAIType"/>
+				<xs:element name="ChinaCache" type="ChinaCacheType"/>
+				<xs:element name="CDNetworks" type="CDNetworksType"/>
+				<xs:element name="AKAMAINonAU" type="AKAMAINonAUType"/>
+				<xs:element name="AKAMAI_Daily" type="AKAMAI_DailyType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="AKAMAIType">
+		<xs:sequence>
+			<xs:element name="StartDate" type="xs:string"/>
+			<xs:element name="EndDate" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ChinaCacheType">
+		<xs:sequence>
+			<xs:element name="QueryDate" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CDNetworksType">
+		<xs:sequence>
+			<xs:element name="StartDate" type="xs:string"/>
+			<xs:element name="EndDate" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AKAMAINonAUType">
+		<xs:sequence>
+			<xs:element name="StartDate" type="xs:string"/>
+			<xs:element name="EndDate" type="xs:string"/>
+			<xs:element name="tokenString" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AKAMAI_DailyType">
+		<xs:sequence>
+			<xs:element name="StartDate" type="xs:string"/>
+			<xs:element name="EndDate" type="xs:string"/>
+			<xs:element name="CPCode" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

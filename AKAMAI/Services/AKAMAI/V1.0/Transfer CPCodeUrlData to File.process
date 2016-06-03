@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx="https://control.akamai.com/HttpContentDeliveryReportService.xsd" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx5="http://xmlns.example.com/1331025767248" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2="http://xmlns.tibco.com/encodings/mime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="https://control.akamai.com/HttpContentDeliveryReportService.xsd" location="/WSDL/Client/AkamaiWSDL.wsdl"/>
+    <pd:name>Services/AKAMAI/V1.0/Transfer CPCodeUrlData to File.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="StartDate" type="xsd:string"/>
+                    <xsd:element name="EndDate" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>127</pd:startX>
+    <pd:startY>81</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1058</pd:endX>
+    <pd:endY>212</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1330508261290</pd:targetNamespace>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>239</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <element>
+                <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="root">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="readyDirect" type="xsd:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <readyDirect>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="concat(&quot;/ready/&quot;, tib:timestamp())"/>
+                </readyDirect>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call FTP Make Remote Directory Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>352</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <processName>/ExternalService/FTP Service/Create Ready Direct.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <FTPServiceName>
+                    <xsl:value-of select="&quot;akamai&quot;"/>
+                </FTPServiceName>
+                <newdirect>
+                    <xsl:value-of select="$Map-Data/root/readyDirect"/>
+                </newdirect>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>452</pd:x>
+        <pd:y>30</pd:y>
+        <pd:width>498</pd:width>
+        <pd:height>342</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/pfx:getCPCodesResponse/getCPCodesReturn/item</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>errorMesg</pd:outSlot>
+            <pd:activityOutputName>Catch</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>getURLForCPCode</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP Transfer Data Process</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>getURLForCPCode</pd:from>
+            <pd:to>FTP Transfer Data Process</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>Log</pd:to>
+            <pd:xpathDescription>CpCode No Data</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($_error_getURLForCPCode/ActivityErrors/defaultFaultElement)</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>Generate-Error-1</pd:to>
+            <pd:xpathDescription>Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-3407872</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="getURLForCPCode">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>557</pd:x>
+            <pd:y>107</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx:HttpContentDeliveryReportService</service>
+                <servicePort>HttpContentDeliveryReportService</servicePort>
+                <operation>getURLForCPCode</operation>
+                <soapAction/>
+                <endpointURL>https://control.akamai.com/nmrws/services/HttpContentDeliveryReportService</endpointURL>
+                <requireBasicAuth>true</requireBasicAuth>
+                <basicHttpAuthIdentity>/Certificates/Akamai_Identity.id</basicHttpAuthIdentity>
+                <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                    <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                    <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+                </ns0:ssl>
+                <policies>
+                    <incomingAttachmentPolicy>
+                        <writeToFile>true</writeToFile>
+                        <writeToFileDir>C:\temp\AKAMI</writeToFileDir>
+                        <createNonExistDir>true</createNonExistDir>
+                        <writeToFileLimit>0</writeToFileLimit>
+                    </incomingAttachmentPolicy>
+                </policies>
+            </config>
+            <pd:inputBindings>
+                <getURLForCPCode>
+                    <cpcodes>
+                        <item>
+                            <xsl:value-of select="$cu/item/cpcode"/>
+                        </item>
+                    </cpcodes>
+                    <startDate>
+                        <xsl:value-of select="if (tib:get-month-from-date(current-date())&lt;10) then &#xA;TM:stringReplace(tib:add-to-date(tib:parse-date(&quot;yyyyMMdd&quot;,concat(tib:get-year-from-date(current-date()), &quot;0&quot;,tib:get-month-from-date(current-date()),&quot;01&quot;)), 0, -1,0), '-', '')&#xA; else&#xA;TM:stringReplace(tib:add-to-date(tib:parse-date(&quot;yyyyMMdd&quot;,concat(tib:get-year-from-date(current-date()), tib:get-month-from-date(current-date()),&quot;01&quot;)), 0,-1, 0), '-', '')"/>
+                    </startDate>
+                    <endDate>
+                        <xsl:value-of select="if (tib:get-month-from-date(current-date())&lt;10) then &#xA;TM:stringReplace(tib:add-to-date(tib:parse-date(&quot;yyyyMMdd&quot;,concat(tib:get-year-from-date(current-date()), &quot;0&quot;,tib:get-month-from-date(current-date()),&quot;01&quot;)), 0, 0, -1), '-', '')&#xA; else&#xA;TM:stringReplace(tib:add-to-date(tib:parse-date(&quot;yyyyMMdd&quot;,concat(tib:get-year-from-date(current-date()), tib:get-month-from-date(current-date()),&quot;01&quot;)), 0, 0, -1), '-', '')"/>
+                    </endDate>
+                    <sortColumn>
+                        <xsl:value-of select="&quot;url&quot;"/>
+                    </sortColumn>
+                    <filter>
+                        <caseSensitive>
+                            <xsl:value-of select="0"/>
+                        </caseSensitive>
+                        <operand>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </operand>
+                        <operator>
+                            <xsl:value-of select="&quot;contains&quot;"/>
+                        </operator>
+                    </filter>
+                    <columns>
+                        <item>
+                            <xsl:value-of select="&quot;url&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;ok_volume_mb&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;error_volume_mb&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;ok_hits&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;0xx&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;200&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;206&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;2xx&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;302&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;304&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;3xx&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;404&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;4xx&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;origin_hits&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;origin_ok_volume_mb&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;origin_error_volume_mb&quot;"/>
+                        </item>
+                    </columns>
+                    <pfx2:mimeEnvelopeElement/>
+                </getURLForCPCode>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="FTP Transfer Data Process">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>702</pd:x>
+            <pd:y>114</pd:y>
+            <config>
+                <processName>/ExternalService/FTP Service/FTP Transfer File.process</processName>
+                <processNameXPath>if (empty($getURLForCPCode/getURLForCPCodeResponse/pfx2:mimeEnvelopeElement/mimePart)) then 
+"/ExternalService/FTP Service/Transfer data to file with FTP.process"
+ else 
+"/ExternalService/FTP Service/FTP Transfer File.process"</processNameXPath>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:choose>
+                        <xsl:when test="empty($getURLForCPCode/getURLForCPCodeResponse/pfx2:mimeEnvelopeElement/mimePart)">
+                            <FileName>
+                                <xsl:value-of select="concat(&quot;BW_ATTACHMENT_&quot;, tib:timestamp(),'.tmp')"/>
+                            </FileName>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <FileName>
+                                <xsl:value-of select="tib:substring-after-last($getURLForCPCode/getURLForCPCodeResponse/pfx2:mimeEnvelopeElement/mimePart[1]/fileName, '\')"/>
+                            </FileName>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="empty($getURLForCPCode/getURLForCPCodeResponse/pfx2:mimeEnvelopeElement/mimePart)">
+                            <data>
+                                <xsl:value-of select="$getURLForCPCode/getURLForCPCodeResponse/getURLForCPCodeReturn"/>
+                            </data>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <data>
+                                <xsl:value-of select="$getURLForCPCode/getURLForCPCodeResponse/pfx2:mimeEnvelopeElement/mimePart[1]/fileName"/>
+                            </data>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <service>
+                        <xsl:value-of select="&quot;akamai&quot;"/>
+                    </service>
+                    <readydirect>
+                        <xsl:value-of select="concat('/akamai', $Map-Data/root/readyDirect)"/>
+                    </readydirect>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>654</pd:x>
+            <pd:y>304</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <fault>localname=defaultFaultElement</fault>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Log">
+            <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+            <pd:resourceType>ae.activities.log</pd:resourceType>
+            <pd:x>785</pd:x>
+            <pd:y>213</pd:y>
+            <config>
+                <role>User</role>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInput>
+                    <message>
+                        <xsl:value-of select="concat(&quot;Error CPCode=&quot;,$cu/item/cpcode,&quot;&#xA;&quot;,$_error_getURLForCPCode/ActivityErrors/defaultFaultElement/faultstring)"/>
+                    </message>
+                    <xsl:if test="$_error_getURLForCPCode/ActivityErrors/defaultFaultElement/faultcode">
+                        <msgCode>
+                            <xsl:value-of select="$_error_getURLForCPCode/ActivityErrors/defaultFaultElement/faultcode"/>
+                        </msgCode>
+                    </xsl:if>
+                </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate-Error-1">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>797</pd:x>
+            <pd:y>305</pd:y>
+            <config>
+                <faultName>ErrorMessage</faultName>
+            </config>
+            <pd:inputBindings>
+                <pfx3:ActivityInput>
+                    <xsl:if test="$_error/ns3:ErrorReport/Msg">
+                        <message>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                        </message>
+                    </xsl:if>
+                    <xsl:if test="$_error/ns3:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                    <data>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error_FTP-Transfer-Data-Process/pfx4:Error)">
+                                <pfx4:Error>
+                                    <pfx4:src>
+                                        <xsl:value-of select="$_error_FTP-Transfer-Data-Process/pfx4:Error/pfx4:src"/>
+                                    </pfx4:src>
+                                    <pfx4:error_code>
+                                        <xsl:value-of select="$_error_FTP-Transfer-Data-Process/pfx4:Error/pfx4:error_code"/>
+                                    </pfx4:error_code>
+                                    <pfx4:error_message>
+                                        <xsl:value-of select="$_error_FTP-Transfer-Data-Process/pfx4:Error/pfx4:error_message"/>
+                                    </pfx4:error_message>
+                                    <pfx4:stack_trace>
+                                        <xsl:value-of select="$_error_FTP-Transfer-Data-Process/pfx4:Error/pfx4:stack_trace"/>
+                                    </pfx4:stack_trace>
+                                </pfx4:Error>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx4:Error>
+                                    <pfx4:src>
+                                        <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                                    </pfx4:src>
+                                    <pfx4:error_code>
+                                        <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                                    </pfx4:error_code>
+                                    <pfx4:error_message>
+                                        <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                                    </pfx4:error_message>
+                                    <pfx4:stack_trace>
+                                        <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                                    </pfx4:stack_trace>
+                                </pfx4:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </data>
+                </pfx3:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>1044</pd:x>
+        <pd:y>357</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Transfer CPCodeURLData Fail&quot;"/>
+                </message>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Call-FTP-Make-Remote-Directory-Process/pfx4:Error)">
+                            <pfx4:Error>
+                                <pfx4:src>
+                                    <xsl:value-of select="$_error_Call-FTP-Make-Remote-Directory-Process/pfx4:Error/pfx4:src"/>
+                                </pfx4:src>
+                                <pfx4:error_code>
+                                    <xsl:value-of select="$_error_Call-FTP-Make-Remote-Directory-Process/pfx4:Error/pfx4:error_code"/>
+                                </pfx4:error_code>
+                                <pfx4:error_message>
+                                    <xsl:value-of select="$_error_Call-FTP-Make-Remote-Directory-Process/pfx4:Error/pfx4:error_message"/>
+                                </pfx4:error_message>
+                                <pfx4:stack_trace>
+                                    <xsl:value-of select="$_error_Call-FTP-Make-Remote-Directory-Process/pfx4:Error/pfx4:stack_trace"/>
+                                </pfx4:stack_trace>
+                            </pfx4:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx4:Error>
+                                <pfx4:src>
+                                    <xsl:value-of select="$_error_Generate-Error-1/pfx4:Error/pfx4:src"/>
+                                </pfx4:src>
+                                <pfx4:error_code>
+                                    <xsl:value-of select="$_error_Generate-Error-1/pfx4:Error/pfx4:error_code"/>
+                                </pfx4:error_code>
+                                <pfx4:error_message>
+                                    <xsl:value-of select="$_error_Generate-Error-1/pfx4:Error/pfx4:error_message"/>
+                                </pfx4:error_message>
+                                <pfx4:stack_trace>
+                                    <xsl:value-of select="$_error_Generate-Error-1/pfx4:Error/pfx4:stack_trace"/>
+                                </pfx4:stack_trace>
+                            </pfx4:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Call FTP Make Remote Directory Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call FTP Make Remote Directory Process</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3407872</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

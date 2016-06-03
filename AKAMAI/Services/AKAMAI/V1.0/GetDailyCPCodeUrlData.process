@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM1="java://com.trendmicro.TMBWUtilities" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:ns5="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns6="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="https://control.akamai.com/HttpContentDeliveryReportService.xsd" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://xmlns.example.com/1331025767248" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2="http://xmlns.tibco.com/encodings/mime" xmlns:pfx7="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="https://control.akamai.com/HttpDownloadsReportService.xsd">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="https://control.akamai.com/HttpDownloadsReportService.xsd" location="/WSDL/Client/HttpDownloadsReportService.wsdl"/>
+    <wsdl:import namespace="https://control.akamai.com/HttpContentDeliveryReportService.xsd" location="/WSDL/Client/AkamaiWSDL.wsdl"/>
+    <pd:name>Services/AKAMAI/V1.0/GetDailyCPCodeUrlData.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>104</pd:x>
+        <pd:y>134</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/AKAMAI_Daily/DistinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1005</pd:endX>
+    <pd:endY>325</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1330508261290</pd:targetNamespace>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>107</pd:x>
+        <pd:y>272</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns6:ActivityInput>
+                <message>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns5:ActivityOutput/Body"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="&quot;AKAMAI Daily Start&quot;"/>
+                </msgCode>
+            </ns6:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log-1">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>881</pd:x>
+        <pd:y>323</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns6:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;AKAMAI Daily Success&quot;"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="&quot;AKAMAI Daily End&quot;"/>
+                </msgCode>
+            </ns6:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse SOAP XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>113</pd:x>
+        <pd:y>381</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx7:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns5:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PreProcess Transfer FTP">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>253</pd:x>
+        <pd:y>387</pd:y>
+        <config>
+            <processName>/Services/SharedServices/PreProcess Transfer FTP.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/*" element="ns4:SMF"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <root>
+                <xsl:copy-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>387</pd:x>
+        <pd:y>97</pd:y>
+        <pd:width>385</pd:width>
+        <pd:height>396</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF/ns4:SMFBody/ns4:Message/ns4:PartnerMessage/ns4:AKAMAI_Daily/ns4:CPCode</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Get and Transfer CPCodeUrlData to File</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get and Transfer CPCodeUrlData to File</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep 5 sec</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Error Handling Process</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get and Transfer CPCodeUrlData to File</pd:from>
+            <pd:to>Sleep 5 sec</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i div 20 = 0</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>Error Handling Process</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Get and Transfer CPCodeUrlData to File">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>491</pd:x>
+            <pd:y>202</pd:y>
+            <config>
+                <processName>/Services/AKAMAI/V1.0/Get and Transfer CPCodeUrlData to File.process</processName>
+                <spawn>false</spawn>
+            </config>
+            <pd:inputBindings>
+                <group>
+                    <cpCode>
+                        <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFBody[1]/ns4:Message/ns4:PartnerMessage/ns4:AKAMAI_Daily/ns4:CPCode[$i]"/>
+                    </cpCode>
+                    <StartDate>
+                        <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFBody[1]/ns4:Message/ns4:PartnerMessage/ns4:AKAMAI_Daily/ns4:StartDate"/>
+                    </StartDate>
+                    <EndDate>
+                        <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFBody[1]/ns4:Message/ns4:PartnerMessage/ns4:AKAMAI_Daily/ns4:EndDate"/>
+                    </EndDate>
+                    <readyDirect>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/AKAMAI_Daily/readydirect"/>
+                    </readyDirect>
+                    <savefilename>
+                        <xsl:value-of select="concat(&quot;BW_ATTACHMENT_&quot;, $PreProcess-Transfer-FTP/root/readyFilestamp,&quot;_&quot;,$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFBody[1]/ns4:Message/ns4:PartnerMessage/ns4:AKAMAI_Daily/ns4:CPCode[$i],&quot;.tmp&quot;)"/>
+                    </savefilename>
+                    <group>
+                        <ns4:SMF>
+                            <xsl:copy-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF/ns4:SMFHeader"/>
+                            <ns4:SMFBody>
+                                <xsl:copy-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF/ns4:SMFBody/ns4:Message"/>
+                            </ns4:SMFBody>
+                        </ns4:SMF>
+                    </group>
+                </group>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep 5 sec">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>582</pd:x>
+            <pd:y>309</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="5000"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>488</pd:x>
+            <pd:y>400</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Error Handling Process">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>679</pd:x>
+            <pd:y>408</pd:y>
+            <config>
+                <processName>/Services/SharedServices/Error Handling Process.process</processName>
+            </config>
+            <pd:coercions>
+                <pd:coercion xpath="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/*" element="ns4:SMF"/>
+                <pd:coercion xpath="$Catch/exceptiondata/*" element="pfx4:Error"/>
+            </pd:coercions>
+            <pd:inputBindings>
+                <group>
+                    <ns4:SMF>
+                        <ns4:SMFHeader>
+                            <ns4:MessageKey>
+                                <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFHeader/ns4:MessageKey"/>
+                            </ns4:MessageKey>
+                            <ns4:ServiceName>
+                                <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFHeader/ns4:ServiceName"/>
+                            </ns4:ServiceName>
+                            <ns4:ServiceVersion>
+                                <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFHeader/ns4:ServiceVersion"/>
+                            </ns4:ServiceVersion>
+                            <ns4:SourceID>
+                                <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFHeader/ns4:SourceID"/>
+                            </ns4:SourceID>
+                            <ns4:RsTimestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns4:RsTimestamp>
+                        </ns4:SMFHeader>
+                        <ns4:SMFBody>
+                            <xsl:copy-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF/ns4:SMFBody/ns4:Message"/>
+                            <xsl:for-each select="$Catch/exceptiondata/pfx4:Error">
+                                <ns4:Error>
+                                    <ns4:src>
+                                        <xsl:value-of select="pfx4:src"/>
+                                    </ns4:src>
+                                    <ns4:error_code>
+                                        <xsl:value-of select="pfx4:error_code"/>
+                                    </ns4:error_code>
+                                    <ns4:error_message>
+                                        <xsl:value-of select="pfx4:error_message"/>
+                                    </ns4:error_message>
+                                    <ns4:error_detail>
+                                        <xsl:value-of select="pfx4:stack_trace"/>
+                                    </ns4:error_detail>
+                                </ns4:Error>
+                            </xsl:for-each>
+                        </ns4:SMFBody>
+                    </ns4:SMF>
+                </group>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch-1">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>840</pd:x>
+        <pd:y>456</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error-Handling-Process-1">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1001</pd:x>
+        <pd:y>454</pd:y>
+        <config>
+            <processName>/Services/SharedServices/Error Handling Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="pfx4:Error"/>
+            <pd:coercion xpath="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/*" element="ns4:SMF"/>
+            <pd:coercion xpath="$Catch/exceptiondata/*" element="pfx4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <ns4:SMF>
+                    <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:when test="exists($_error_Parse-SOAP-XML/ActivityErrors)">
+                            <ns4:SMFHeader>
+                                <ns4:MessageKey>
+                                    <xsl:value-of select="TM:getGUID()"/>
+                                </ns4:MessageKey>
+                                <ns4:ServiceName>
+                                    <xsl:value-of select="&quot;akamai&quot;"/>
+                                </ns4:ServiceName>
+                                <ns4:ServiceVersion>
+                                    <xsl:value-of select="&quot;V1.0&quot;"/>
+                                </ns4:ServiceVersion>
+                                <ns4:SourceID>
+                                    <xsl:value-of select="&quot;partner&quot;"/>
+                                </ns4:SourceID>
+                                <ns4:SourceIP>
+                                    <xsl:value-of select="TM1:getIPAddress()"/>
+                                </ns4:SourceIP>
+                                <ns4:RsTimestamp>
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </ns4:RsTimestamp>
+                            </ns4:SMFHeader>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns4:SMFHeader>
+                                <ns4:MessageKey>
+                                    <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFHeader/ns4:MessageKey"/>
+                                </ns4:MessageKey>
+                                <ns4:ServiceName>
+                                    <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFHeader/ns4:ServiceName"/>
+                                </ns4:ServiceName>
+                                <ns4:ServiceVersion>
+                                    <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFHeader/ns4:ServiceVersion"/>
+                                </ns4:ServiceVersion>
+                                <ns4:SourceID>
+                                    <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFHeader/ns4:SourceID"/>
+                                </ns4:SourceID>
+                                <ns4:RsTimestamp>
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </ns4:RsTimestamp>
+                            </ns4:SMFHeader>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <ns4:SMFBody>
+                        <ns4:Message>
+                            <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                                <xsl:when test="exists($_error_Parse-SOAP-XML/ActivityErrors)">
+                                    <ns4:ACK>
+                                        <ns4:SERVICE_ID>
+                                            <xsl:value-of select="&quot;akamai daily service&quot;"/>
+                                        </ns4:SERVICE_ID>
+                                        <ns4:MESEAGE>
+                                            <xsl:value-of select="$JMS-Queue-Receiver/ns5:ActivityOutput/Body"/>
+                                        </ns4:MESEAGE>
+                                    </ns4:ACK>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <ns4:ACK>
+                                        <ns4:SERVICE_ID>
+                                            <xsl:value-of select="$Parse-SOAP-XML/pfx7:Envelope/pfx7:Body/ns4:SMF[1]/ns4:SMFHeader/ns4:ServiceName"/>
+                                        </ns4:SERVICE_ID>
+                                        <ns4:MESEAGE>
+                                            <xsl:value-of select="concat(&quot;Parse error,&quot;,$_error/ns3:ErrorReport/Msg)"/>
+                                        </ns4:MESEAGE>
+                                    </ns4:ACK>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </ns4:Message>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error/ns3:ErrorReport/Data)">
+                                <xsl:for-each select="$_error/ns3:ErrorReport/Data/pfx4:Error">
+                                    <ns4:Error>
+                                        <ns4:src>
+                                            <xsl:value-of select="pfx4:src"/>
+                                        </ns4:src>
+                                        <ns4:error_code>
+                                            <xsl:value-of select="pfx4:error_code"/>
+                                        </ns4:error_code>
+                                        <ns4:error_message>
+                                            <xsl:value-of select="pfx4:error_message"/>
+                                        </ns4:error_message>
+                                        <ns4:error_detail>
+                                            <xsl:value-of select="pfx4:stack_trace"/>
+                                        </ns4:error_detail>
+                                    </ns4:Error>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <ns4:Error>
+                                    <ns4:src>
+                                        <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                                    </ns4:src>
+                                    <ns4:error_code>
+                                        <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                                    </ns4:error_code>
+                                    <ns4:error_message>
+                                        <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                                    </ns4:error_message>
+                                    <xsl:if test="$_error/ns3:ErrorReport/StackTrace">
+                                        <ns4:error_detail>
+                                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                                        </ns4:error_detail>
+                                    </xsl:if>
+                                </ns4:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ns4:SMFBody>
+                </ns4:SMF>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Parse SOAP XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse SOAP XML</pd:from>
+        <pd:to>PreProcess Transfer FTP</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Log-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch-1</pd:from>
+        <pd:to>Error-Handling-Process-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error-Handling-Process-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PreProcess Transfer FTP</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

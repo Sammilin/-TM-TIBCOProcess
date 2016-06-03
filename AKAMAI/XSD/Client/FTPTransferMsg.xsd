@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/ESBService/XSD/Client/Schema.xsd"
+	 xmlns:ns0="http://www.trendmicro.com/ESB/schemas/messageHeader"
+	 targetNamespace="http://www.tibco.com/schemas/ESBService/XSD/Client/Schema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader" schemaLocation="../Common/messageheader.xsd"/>
+	<xs:element name="Message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RequestHeader" type="ns0:RequestHeader"/>
+				<xs:element name="MessageBody" type="FTPInfoType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="FTPInfoType">
+		<xs:sequence>
+			<xs:element name="transfertype">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="filetofile" type="FileToFileType"/>
+						<xs:element name="datatofile" type="DataToFileType"/>
+						<xs:element name="binarytofile" type="BinaryToFile"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="readydir" type="xs:string"/>
+			<xs:element name="savefilename" type="xs:string"/>
+			<xs:element name="host" type="xs:string" minOccurs="0"/>
+			<xs:element name="port" type="xs:string" minOccurs="0"/>
+			<xs:element name="username" type="xs:string" minOccurs="0"/>
+			<xs:element name="password" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FileToFileType">
+		<xs:sequence>
+			<xs:element name="localfile" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DataToFileType">
+		<xs:sequence>
+			<xs:element name="data" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BinaryToFile">
+		<xs:sequence>
+			<xs:element name="binarydata" type="xs:base64Binary"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:ns12="http://xmlns.tibco.com/encodings/mime" xmlns:pfx="http://xmlns.example.com/1331025767248" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx4="https://control.akamai.com/HttpContentDeliveryReportService.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx2="http://www.trendmicro.com/Partner/XSD/RequestMessage.xsd" xmlns:pfx7="https://control.akamai.com/HttpDownloadsReportService.xsd" xmlns:pfx6="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/Partner/XSD/RequestMessage.xsd" schemaLocation="/XSD/Provider/RequestMessage.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <wsdl:import namespace="http://xmlns.example.com/1331025767248" location="/WSDL/Client/PartnerWSDL.wsdl"/>
+    <wsdl:import namespace="https://control.akamai.com/HttpContentDeliveryReportService.xsd" location="/WSDL/Client/AkamaiWSDL.wsdl"/>
+    <pd:name>TestData/send queue akami.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1331087108529</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender-AKAMI">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>253</pd:x>
+        <pd:y>288</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/AKAMAI/DistinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx5:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <pfx5:Envelope>
+                        <pfx5:Body>
+                            <pfx3:SMF>
+                                <pfx3:SMFHeader>
+                                    <pfx3:MessageKey>
+                                        <xsl:value-of select="TM:getGUID()"/>
+                                    </pfx3:MessageKey>
+                                    <pfx3:ServiceName>
+                                        <xsl:value-of select="&quot;stage/akamai&quot;"/>
+                                    </pfx3:ServiceName>
+                                    <pfx3:ServiceVersion>
+                                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                                    </pfx3:ServiceVersion>
+                                    <pfx3:SourceID>
+                                        <xsl:value-of select="&quot;Partner&quot;"/>
+                                    </pfx3:SourceID>
+                                </pfx3:SMFHeader>
+                                <pfx3:SMFBody>
+                                    <pfx3:Message>
+                                        <pfx3:PartnerMessage>
+                                            <pfx3:AKAMAI>
+                                                <pfx3:StartDate>
+                                                    <xsl:value-of select="&quot;20150401&quot;"/>
+                                                </pfx3:StartDate>
+                                                <pfx3:EndDate>
+                                                    <xsl:value-of select="&quot;20150430&quot;"/>
+                                                </pfx3:EndDate>
+                                            </pfx3:AKAMAI>
+                                        </pfx3:PartnerMessage>
+                                    </pfx3:Message>
+                                </pfx3:SMFBody>
+                            </pfx3:SMF>
+                        </pfx5:Body>
+                    </pfx5:Envelope>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get CP code">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>257</pd:x>
+        <pd:y>36</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx4:HttpContentDeliveryReportService</service>
+            <servicePort>HttpContentDeliveryReportService</servicePort>
+            <operation>getCPCodes</operation>
+            <soapAction/>
+            <endpointURL>https://control.akamai.com/nmrws/services/HttpContentDeliveryReportService</endpointURL>
+            <requireBasicAuth>true</requireBasicAuth>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+            <useProxy>true</useProxy>
+            <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+        </config>
+        <pd:inputBindings>
+            <getCPCodes/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="getURLForCPCode">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>259</pd:x>
+        <pd:y>155</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx4:HttpContentDeliveryReportService</service>
+            <servicePort>HttpContentDeliveryReportService</servicePort>
+            <operation>getURLForCPCode</operation>
+            <soapAction/>
+            <endpointURL>https://control.akamai.com/nmrws/services/HttpContentDeliveryReportService</endpointURL>
+            <requireBasicAuth>true</requireBasicAuth>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+            <policies>
+                <incomingAttachmentPolicy>
+                    <writeToFile>false</writeToFile>
+                    <writeToFileDir>%%Services/AKAMAI/filePath%%</writeToFileDir>
+                    <createNonExistDir>true</createNonExistDir>
+                    <writeToFileLimit>0</writeToFileLimit>
+                </incomingAttachmentPolicy>
+            </policies>
+            <useProxy>true</useProxy>
+            <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+        </config>
+        <pd:inputBindings>
+            <getURLForCPCode>
+                <cpcodes>
+                    <item>
+                        <xsl:value-of select="&quot;6980&quot;"/>
+                    </item>
+                </cpcodes>
+                <startDate>
+                    <xsl:value-of select="&quot;20130101&quot;"/>
+                </startDate>
+                <endDate>
+                    <xsl:value-of select="&quot;20130131&quot;"/>
+                </endDate>
+                <sortColumn>
+                    <xsl:value-of select="&quot;url&quot;"/>
+                </sortColumn>
+                <filter>
+                    <caseSensitive>
+                        <xsl:value-of select="0"/>
+                    </caseSensitive>
+                    <operand>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </operand>
+                    <operator>
+                        <xsl:value-of select="&quot;contains&quot;"/>
+                    </operator>
+                </filter>
+                <columns>
+                    <item>
+                        <xsl:value-of select="&quot;url&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;ok_volume_mb&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;error_volume_mb&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;ok_hits&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;0xx&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;200&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;206&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;2xx&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;302&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;304&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;3xx&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;404&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;4xx&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;origin_hits&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;origin_ok_volume_mb&quot;"/>
+                    </item>
+                    <item>
+                        <xsl:value-of select="&quot;origin_error_volume_mb&quot;"/>
+                    </item>
+                </columns>
+                <ns12:mimeEnvelopeElement/>
+            </getURLForCPCode>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JMS Queue Sender-AKAMI</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender-AKAMI</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get CP code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>getURLForCPCode</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

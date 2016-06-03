@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns5="www.tibco.com/plugin/Sleep" xmlns:pfx="https://control.akamai.com/HttpContentDeliveryReportService.xsd" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx5="http://xmlns.example.com/1331025767248" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/error" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2="http://xmlns.tibco.com/encodings/mime" xmlns:pfx9="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pfx8="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx7="http://www.tibco.com/schemas/ESBService/XSD/Client/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="https://control.akamai.com/HttpDownloadsReportService.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/ESBService/XSD/Client/Schema.xsd" schemaLocation="/XSD/Client/FTPTransferMsg.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="https://control.akamai.com/HttpContentDeliveryReportService.xsd" location="/WSDL/Client/AkamaiWSDL.wsdl"/>
+    <pd:name>Services/AKAMAI/V1.0/Get and Transfer CPCodeUrlData to File.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="cpCode" type="xsd:string"/>
+                    <xsd:element name="StartDate" type="xsd:string"/>
+                    <xsd:element name="EndDate" type="xsd:string"/>
+                    <xsd:element name="readyDirect" type="xsd:string"/>
+                    <xsd:element name="savefilename" type="xsd:string"/>
+                    <xsd:element name="group">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx8:SMF"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>57</pd:startX>
+    <pd:startY>226</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>909</pd:endX>
+    <pd:endY>236</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx4:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1330508261290</pd:targetNamespace>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>941</pd:x>
+        <pd:y>361</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="pfx4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;ErrorCpCode:&quot;,$Start/group/cpCode,&quot;&lt;br>&quot;,&quot;ErrorMessage:&quot;,$_error_Generate-Error/pfx4:Error/pfx4:error_message)"/>
+                </message>
+                <xsl:if test="$_error/ns3:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($_error_Generate-Error/pfx4:Error/pfx4:error_message) !=&quot;&quot;">
+                            <xsl:copy-of select="$_error_Generate-Error/pfx4:Error"/>
+                        </xsl:when>
+                        <xsl:when test="tib:trim($_error/ns3:ErrorReport/Data/pfx4:Error/pfx4:error_code) !=&quot;&quot;">
+                            <xsl:copy-of select="$_error_Generate-Error/pfx4:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx4:Error>
+                                <pfx4:src>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                                </pfx4:src>
+                                <pfx4:error_code>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                                </pfx4:error_code>
+                                <pfx4:error_message>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                                </pfx4:error_message>
+                                <pfx4:stack_trace>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                                </pfx4:stack_trace>
+                            </pfx4:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>308</pd:x>
+        <pd:y>18</pd:y>
+        <pd:width>424</pd:width>
+        <pd:height>406</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:errorCondition>$getURLForCPCode/getURLForCPCodeResponse/getURLForCPCodeReturn/@xsi:nil="false"
+or
+tib:index-of($_error_getURLForCPCode/ActivityErrors/defaultFaultElement/faultstring,"ApplicationError")  !=-1
+or
+$i =5</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>getURLForCPCode</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JMS Queue Sender</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep 5 sec</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>getURLForCPCode</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:xpathDescription>Error</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-3407872</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep 5 sec</pd:to>
+            <pd:xpathDescription>IOException</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>tib:index-of($_error/ns3:ErrorReport/Msg,"Server.userExceptionjava.io.IOException")  !=-1</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Log</pd:to>
+            <pd:xpathDescription>no Data</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>tib:index-of($_error_getURLForCPCode/ActivityErrors/defaultFaultElement/faultstring,"ApplicationError")  !=-1</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>getURLForCPCode</pd:from>
+            <pd:to>Log-2</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log-2</pd:from>
+            <pd:to>JMS Queue Sender</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="getURLForCPCode">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>423</pd:x>
+            <pd:y>105</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx:HttpContentDeliveryReportService</service>
+                <servicePort>HttpContentDeliveryReportService</servicePort>
+                <operation>getURLForCPCode</operation>
+                <soapAction/>
+                <endpointURL>https://control.akamai.com/nmrws/services/HttpContentDeliveryReportService</endpointURL>
+                <requireBasicAuth>true</requireBasicAuth>
+                <basicHttpAuthIdentity>/Certificates/Akamai_Identity.id</basicHttpAuthIdentity>
+                <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                    <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                    <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+                </ns0:ssl>
+                <policies>
+                    <incomingAttachmentPolicy>
+                        <writeToFile>true</writeToFile>
+                        <writeToFileDir>%%Services/AKAMAI/filePath%%</writeToFileDir>
+                        <createNonExistDir>true</createNonExistDir>
+                        <writeToFileLimit>1000000</writeToFileLimit>
+                    </incomingAttachmentPolicy>
+                </policies>
+                <useProxy>true</useProxy>
+                <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+            </config>
+            <pd:inputBindings>
+                <getURLForCPCode>
+                    <cpcodes>
+                        <item>
+                            <xsl:value-of select="$Start/group/cpCode"/>
+                        </item>
+                    </cpcodes>
+                    <startDate>
+                        <xsl:value-of select="$Start/group/StartDate"/>
+                    </startDate>
+                    <endDate>
+                        <xsl:value-of select="$Start/group/EndDate"/>
+                    </endDate>
+                    <sortColumn>
+                        <xsl:value-of select="&quot;url&quot;"/>
+                    </sortColumn>
+                    <filter>
+                        <caseSensitive>
+                            <xsl:value-of select="0"/>
+                        </caseSensitive>
+                        <operand>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </operand>
+                        <operator>
+                            <xsl:value-of select="&quot;contains&quot;"/>
+                        </operator>
+                    </filter>
+                    <columns>
+                        <item>
+                            <xsl:value-of select="&quot;url&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;ok_volume_mb&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;error_volume_mb&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;ok_hits&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;0xx&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;200&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;206&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;2xx&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;302&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;304&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;3xx&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;404&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;4xx&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;origin_hits&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;origin_ok_volume_mb&quot;"/>
+                        </item>
+                        <item>
+                            <xsl:value-of select="&quot;origin_error_volume_mb&quot;"/>
+                        </item>
+                    </columns>
+                    <pfx2:mimeEnvelopeElement/>
+                </getURLForCPCode>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep 5 sec">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>569</pd:x>
+            <pd:y>229</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns5:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="5000"/>
+                    </IntervalInMillisec>
+                </ns5:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>421</pd:x>
+            <pd:y>230</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Log">
+            <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+            <pd:resourceType>ae.activities.log</pd:resourceType>
+            <pd:x>575</pd:x>
+            <pd:y>345</pd:y>
+            <config>
+                <role>User</role>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInput>
+                    <message>
+                        <xsl:value-of select="concat(&quot;Error CPCode=&quot;,$Start/group/cpCode,&quot;,No data&quot;)"/>
+                    </message>
+                    <xsl:if test="$_error_getURLForCPCode/ActivityErrors/defaultFaultElement/faultcode">
+                        <msgCode>
+                            <xsl:value-of select="$_error_getURLForCPCode/ActivityErrors/defaultFaultElement/faultcode"/>
+                        </msgCode>
+                    </xsl:if>
+                </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>426</pd:x>
+            <pd:y>344</pd:y>
+            <config>
+                <faultName>ErrorMessage</faultName>
+            </config>
+            <pd:inputBindings>
+                <pfx3:ActivityInput>
+                    <message>
+                        <xsl:value-of select="concat('cpCode=', $Start/group/cpCode,',startdate=',&#xA;$Start/group/StartDate,',enddate=',$Start/group/EndDate,&#xA;&quot;,error=&quot;,$_error/ns3:ErrorReport/Msg)"/>
+                    </message>
+                    <xsl:if test="$_error/ns3:ErrorReport/MsgCode">
+                        <messageCode>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                        </messageCode>
+                    </xsl:if>
+                    <data>
+                        <pfx4:Error>
+                            <pfx4:src>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                            </pfx4:src>
+                            <pfx4:error_code>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </pfx4:error_code>
+                            <pfx4:error_message>
+                                <xsl:value-of select="concat('cpCode=', $Start/group/cpCode,&quot;errmsg=&quot;,$_error/ns3:ErrorReport/Msg,&quot;&#xA;&quot;,$_error_getURLForCPCode/ActivityErrors)"/>
+                            </pfx4:error_message>
+                            <pfx4:stack_trace>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            </pfx4:stack_trace>
+                        </pfx4:Error>
+                    </data>
+                </pfx3:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="JMS Queue Sender">
+            <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+            <pd:x>638</pd:x>
+            <pd:y>104</pd:y>
+            <config>
+                <PermittedMessageType>XML Text</PermittedMessageType>
+                <SessionAttributes>
+                    <transacted>false</transacted>
+                    <acknowledgeMode>1</acknowledgeMode>
+                    <maxSessions>1</maxSessions>
+                    <destination>%%FTP/DistinationQueue%%</destination>
+                </SessionAttributes>
+                <ConfigurableHeaders>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSExpiration>0</JMSExpiration>
+                    <JMSPriority>4</JMSPriority>
+                </ConfigurableHeaders>
+                <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+                <InDataxsdString ref="pfx7:Message"/>
+            </config>
+            <pd:inputBindings>
+                <ns4:ActivityInput>
+                    <Body>
+                        <pfx7:Message>
+                            <xsl:for-each select="$Start/group/group/pfx8:SMF/pfx8:SMFHeader">
+                                <pfx7:RequestHeader>
+                                    <pfx9:MessageKey>
+                                        <xsl:value-of select="pfx8:MessageKey"/>
+                                    </pfx9:MessageKey>
+                                    <pfx9:ServiceName>
+                                        <xsl:value-of select="pfx8:ServiceName"/>
+                                    </pfx9:ServiceName>
+                                    <pfx9:ServiceVersion>
+                                        <xsl:value-of select="pfx8:ServiceVersion"/>
+                                    </pfx9:ServiceVersion>
+                                    <pfx9:SourceID>
+                                        <xsl:value-of select="pfx8:SourceID"/>
+                                    </pfx9:SourceID>
+                                    <xsl:if test="pfx8:RqTimestamp">
+                                        <pfx9:RqTimestamp>
+                                            <xsl:value-of select="pfx8:RqTimestamp"/>
+                                        </pfx9:RqTimestamp>
+                                    </xsl:if>
+                                </pfx7:RequestHeader>
+                            </xsl:for-each>
+                            <pfx7:MessageBody>
+                                <pfx7:transfertype>
+                                    <xsl:choose>
+                                        <xsl:when test="empty($getURLForCPCode/getURLForCPCodeResponse/pfx2:mimeEnvelopeElement/mimePart)">
+                                            <pfx7:datatofile>
+                                                <pfx7:data>
+                                                    <xsl:value-of select="$getURLForCPCode/getURLForCPCodeResponse/getURLForCPCodeReturn"/>
+                                                </pfx7:data>
+                                            </pfx7:datatofile>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:choose>
+                                                <xsl:when test="exists($getURLForCPCode/getURLForCPCodeResponse/pfx2:mimeEnvelopeElement/mimePart/textContent)">
+                                                    <pfx7:datatofile>
+                                                        <pfx7:data>
+                                                            <xsl:value-of select="$getURLForCPCode/getURLForCPCodeResponse/pfx2:mimeEnvelopeElement/mimePart[1]/textContent"/>
+                                                        </pfx7:data>
+                                                    </pfx7:datatofile>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <pfx7:filetofile>
+                                                        <pfx7:localfile>
+                                                            <xsl:value-of select="$getURLForCPCode/getURLForCPCodeResponse/pfx2:mimeEnvelopeElement/mimePart[1]/fileName"/>
+                                                        </pfx7:localfile>
+                                                    </pfx7:filetofile>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx7:transfertype>
+                                <pfx7:readydir>
+                                    <xsl:value-of select="$Start/group/readyDirect"/>
+                                </pfx7:readydir>
+                                <pfx7:savefilename>
+                                    <xsl:value-of select="$Start/group/savefilename"/>
+                                </pfx7:savefilename>
+                                <pfx7:host>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/FTP/Host"/>
+                                </pfx7:host>
+                                <pfx7:port>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/FTP/Port"/>
+                                </pfx7:port>
+                                <pfx7:username>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/FTP/UserName"/>
+                                </pfx7:username>
+                                <pfx7:password>
+                                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/FTP/Password"/>
+                                </pfx7:password>
+                            </pfx7:MessageBody>
+                        </pfx7:Message>
+                    </Body>
+                </ns4:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Log-2">
+            <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+            <pd:resourceType>ae.activities.log</pd:resourceType>
+            <pd:x>535</pd:x>
+            <pd:y>107</pd:y>
+            <config>
+                <role>User</role>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInput>
+                    <message>
+                        <xsl:value-of select="concat(&quot;send ftp info,cpcode=&quot;,$Start/group/cpCode, &quot;,startdate=&quot;,$Start/group/StartDate,&quot;,enddate=&quot;,$Start/group/EndDate)"/>
+                    </message>
+                    <msgCode>
+                        <xsl:value-of select="$Start/group/cpCode"/>
+                    </msgCode>
+                </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Log-1">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>823</pd:x>
+        <pd:y>360</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns0:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;ErrorCpCode:&quot;,$Start/group/cpCode,&quot;ErrorMessage:&quot;,&#xA;$_error_Generate-Error/pfx4:Error/pfx4:error_message)"/>
+                </message>
+                <xsl:if test="$_error/ns3:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </ns0:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ESBLogging">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>173</pd:x>
+        <pd:y>228</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns12:DBLogger>
+                <xsl:for-each select="$Start/group/group/pfx8:SMF/pfx8:SMFHeader">
+                    <ns12:MessageHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="pfx8:MessageKey"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="pfx8:ServiceName"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="pfx8:ServiceVersion"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="concat(pfx8:SourceID,&quot;_&quot;,../../../cpCode)"/>
+                        </ns12:SourceID>
+                        <xsl:if test="pfx8:SourceIP">
+                            <ns12:SourceIP>
+                                <xsl:value-of select="pfx8:SourceIP"/>
+                            </ns12:SourceIP>
+                        </xsl:if>
+                        <xsl:if test="pfx8:RqTimestamp">
+                            <ns12:RqTimestamp>
+                                <xsl:value-of select="pfx8:RqTimestamp"/>
+                            </ns12:RqTimestamp>
+                        </xsl:if>
+                    </ns12:MessageHeader>
+                </xsl:for-each>
+                <ns12:MessageBody>
+                    <xsl:copy-of select="$Start/group/group/pfx8:SMF/pfx8:SMFBody/pfx8:Message"/>
+                </ns12:MessageBody>
+            </ns12:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Log-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3407821</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-1</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ESBLogging</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ESBLogging</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

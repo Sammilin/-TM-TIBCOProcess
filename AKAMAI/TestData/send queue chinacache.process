@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="https://control.akamai.com/HttpContentDeliveryReportService.xsd" xmlns:pfx3="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx2="http://www.trendmicro.com/Partner/XSD/RequestMessage.xsd" xmlns:pfx="http://xmlns.example.com/1331025767248">
+    <xsd:import namespace="http://www.trendmicro.com/Partner/XSD/RequestMessage.xsd" schemaLocation="/XSD/Provider/RequestMessage.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <wsdl:import namespace="http://xmlns.example.com/1331025767248" location="/WSDL/Client/PartnerWSDL.wsdl"/>
+    <pd:name>TestData/send queue chinacache.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1331087108529</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender-AKAMI">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>450</pd:x>
+        <pd:y>206</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>trend.esb.PartnerService.V1.0</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <InDataxsdString ref="pfx3:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <pfx3:SMF>
+                        <pfx3:SMFHeader>
+                            <pfx3:MessageKey>
+                                <xsl:value-of select="TM:getGUID()"/>
+                            </pfx3:MessageKey>
+                            <pfx3:ServiceName>
+                                <xsl:value-of select="&quot;akami&quot;"/>
+                            </pfx3:ServiceName>
+                            <pfx3:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </pfx3:ServiceVersion>
+                            <pfx3:SourceID>
+                                <xsl:value-of select="&quot;partner&quot;"/>
+                            </pfx3:SourceID>
+                        </pfx3:SMFHeader>
+                        <pfx3:SMFBody>
+                            <pfx3:Message>
+                                <pfx3:PartnerMessage>
+                                    <pfx3:AKAMI>
+                                        <pfx3:StartDate>
+                                            <xsl:value-of select="&quot;20120201&quot;"/>
+                                        </pfx3:StartDate>
+                                        <pfx3:EndDate>
+                                            <xsl:value-of select="&quot;20120211&quot;"/>
+                                        </pfx3:EndDate>
+                                    </pfx3:AKAMI>
+                                </pfx3:PartnerMessage>
+                            </pfx3:Message>
+                        </pfx3:SMFBody>
+                    </pfx3:SMF>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>241</pd:x>
+        <pd:y>314</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:Service</service>
+            <servicePort>WebServicePortTypeEndpoint1</servicePort>
+            <operation>Operation</operation>
+            <soapAction>/WSDL/Service.serviceagent/WebServicePortTypeEndpoint1/Operation</soapAction>
+            <endpointURL>http://tw-ei-bw-dev:50002/WSDL/Service.serviceagent/WebServicePortTypeEndpoint1</endpointURL>
+        </config>
+        <pd:inputBindings>
+            <inputMessage/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS-Queue-Sender chinacache">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>262</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/Chinacache/DistinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <InDataxsdString ref="pfx3:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <pfx3:SMF>
+                        <pfx3:SMFHeader>
+                            <pfx3:MessageKey>
+                                <xsl:value-of select="TM:getGUID()"/>
+                            </pfx3:MessageKey>
+                            <pfx3:ServiceName>
+                                <xsl:value-of select="&quot;chinacache&quot;"/>
+                            </pfx3:ServiceName>
+                            <pfx3:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </pfx3:ServiceVersion>
+                            <pfx3:SourceID>
+                                <xsl:value-of select="&quot;partner&quot;"/>
+                            </pfx3:SourceID>
+                        </pfx3:SMFHeader>
+                        <pfx3:SMFBody>
+                            <pfx3:Message>
+                                <pfx3:PartnerMessage>
+                                    <pfx3:ChinaCache>
+                                        <pfx3:QueryDate>
+                                            <xsl:value-of select="&quot;20120301&quot;"/>
+                                        </pfx3:QueryDate>
+                                    </pfx3:ChinaCache>
+                                </pfx3:PartnerMessage>
+                            </pfx3:Message>
+                        </pfx3:SMFBody>
+                    </pfx3:SMF>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS-Queue-Sender AKAMI_NonAU">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>308</pd:x>
+        <pd:y>235</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>trend.esb.PartnerService.V1.0</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <InDataxsdString ref="pfx3:SMF"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <pfx3:SMF>
+                        <pfx3:SMFHeader>
+                            <pfx3:MessageKey>
+                                <xsl:value-of select="TM:getGUID()"/>
+                            </pfx3:MessageKey>
+                            <pfx3:ServiceName>
+                                <xsl:value-of select="&quot;akami.NonAU&quot;"/>
+                            </pfx3:ServiceName>
+                            <pfx3:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </pfx3:ServiceVersion>
+                            <pfx3:SourceID>
+                                <xsl:value-of select="&quot;partner&quot;"/>
+                            </pfx3:SourceID>
+                        </pfx3:SMFHeader>
+                        <pfx3:SMFBody>
+                            <pfx3:Message>
+                                <pfx3:PartnerMessage>
+                                    <pfx3:AKAMI>
+                                        <pfx3:StartDate>
+                                            <xsl:value-of select="&quot;20120201&quot;"/>
+                                        </pfx3:StartDate>
+                                        <pfx3:EndDate>
+                                            <xsl:value-of select="&quot;20120201&quot;"/>
+                                        </pfx3:EndDate>
+                                    </pfx3:AKAMI>
+                                </pfx3:PartnerMessage>
+                            </pfx3:Message>
+                        </pfx3:SMFBody>
+                    </pfx3:SMF>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JMS-Queue-Sender chinacache</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender-AKAMI</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS-Queue-Sender chinacache</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS-Queue-Sender AKAMI_NonAU</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.trendmicro.com/ESB/schemas/MailProperties.xsd"
+	 targetNamespace="http://www.trendmicro.com/ESB/schemas/MailProperties.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="Properties">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="MailGroup" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MailGroup">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SourceID" type="xs:string"/>
+				<xs:element name="To">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EmailAddress" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CC" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EmailAddress" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

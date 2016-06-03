@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx5="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="https://control.akamai.com/HttpContentDeliveryReportService.xsd" xmlns:pfx3="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx2="http://www.trendmicro.com/Partner/XSD/RequestMessage.xsd" xmlns:pfx="http://xmlns.example.com/1331025767248">
+    <xsd:import namespace="http://www.trendmicro.com/Partner/XSD/RequestMessage.xsd" schemaLocation="/XSD/Provider/RequestMessage.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <wsdl:import namespace="http://xmlns.example.com/1331025767248" location="/WSDL/Client/PartnerWSDL.wsdl"/>
+    <pd:name>TestData/send queue akami daily.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1331087108529</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender-AKAMI">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>282</pd:x>
+        <pd:y>188</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/AKAMAI_Daily/DistinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx5:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <pfx5:Envelope>
+                        <pfx5:Body>
+                            <pfx3:SMF>
+                                <pfx3:SMFHeader>
+                                    <pfx3:MessageKey>
+                                        <xsl:value-of select="TM:getGUID()"/>
+                                    </pfx3:MessageKey>
+                                    <pfx3:ServiceName>
+                                        <xsl:value-of select="&quot;akamai_daily&quot;"/>
+                                    </pfx3:ServiceName>
+                                    <pfx3:ServiceVersion>
+                                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                                    </pfx3:ServiceVersion>
+                                    <pfx3:SourceID>
+                                        <xsl:value-of select="&quot;Partner&quot;"/>
+                                    </pfx3:SourceID>
+                                </pfx3:SMFHeader>
+                                <pfx3:SMFBody>
+                                    <pfx3:Message>
+                                        <pfx3:PartnerMessage>
+                                            <pfx3:AKAMAI_Daily>
+                                                <pfx3:StartDate>
+                                                    <xsl:value-of select="&quot;20130507&quot;"/>
+                                                </pfx3:StartDate>
+                                                <pfx3:EndDate>
+                                                    <xsl:value-of select="&quot;20130507&quot;"/>
+                                                </pfx3:EndDate>
+                                                <pfx3:CPCode>
+                                                    <xsl:value-of select="&quot;6980&quot;"/>
+                                                </pfx3:CPCode>
+                                            </pfx3:AKAMAI_Daily>
+                                        </pfx3:PartnerMessage>
+                                    </pfx3:Message>
+                                </pfx3:SMFBody>
+                            </pfx3:SMF>
+                        </pfx5:Body>
+                    </pfx5:Envelope>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JMS Queue Sender-AKAMI</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender-AKAMI</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

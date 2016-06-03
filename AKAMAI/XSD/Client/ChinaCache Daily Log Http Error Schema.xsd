@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/ChinaDataLoad/XSD/Client/Schema.xsd"
+	 xmlns:ns0="http://xmlns.tibco.com/encodings/mime"
+	 targetNamespace="http://www.tibco.com/schemas/ChinaDataLoad/XSD/Client/Schema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://xmlns.tibco.com/encodings/mime"/>
+	<xs:complexType name="RequestActivityOutput">
+		<xs:sequence>
+			<xs:element name="Header" type="xs:string" form="unqualified" minOccurs="0"/>
+			<xs:element name="statusLine" type="statusLineType" form="unqualified" minOccurs="0"/>
+			<xs:element name="binaryContent" type="xs:base64Binary" form="unqualified" minOccurs="0"/>
+			<xs:element name="asciiContent" type="xs:string" form="unqualified" minOccurs="0"/>
+			<xs:element name="Headers" form="unqualified" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Allow" type="xs:string" form="unqualified" minOccurs="0"/>
+						<xs:element name="Content-Type" type="xs:string" form="unqualified" minOccurs="0"/>
+						<xs:element name="Content-Length" type="xs:string" form="unqualified" minOccurs="0"/>
+						<xs:element name="Content-Encoding" type="xs:string" form="unqualified" minOccurs="0"/>
+						<xs:element name="Date" type="xs:string" form="unqualified" minOccurs="0"/>
+						<xs:element name="Location" type="xs:string" form="unqualified" minOccurs="0"/>
+						<xs:element name="Set-Cookie" type="xs:string" form="unqualified" minOccurs="0"/>
+						<xs:element name="Pragma" type="xs:string" form="unqualified" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="statusLineType">
+		<xs:sequence>
+			<xs:element name="httpVersion" type="xs:string" form="unqualified" minOccurs="0"/>
+			<xs:element name="statusCode" type="xs:int" form="unqualified" minOccurs="0"/>
+			<xs:element name="reasonPhrase" type="xs:string" form="unqualified" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RequestActivityOutput" type="RequestActivityOutput"/>
+</xs:schema>

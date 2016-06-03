@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <pd:name>Services/SharedServices/PreProcess Transfer FTP.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx2:SMF"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>163</pd:startX>
+    <pd:startY>91</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <readyFilestamp>
+                <xsl:value-of select="tib:timestamp()"/>
+            </readyFilestamp>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="readyFilestamp" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>422</pd:endX>
+    <pd:endY>94</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1331778496008</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>335</pd:x>
+        <pd:y>238</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>478</pd:x>
+        <pd:y>239</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <xsl:if test="$_error/ns:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ESBLogging">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>286</pd:x>
+        <pd:y>93</pd:y>
+        <config>
+            <processName>/Utilities/ESBLogging/ESBLogging.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:DBLogger>
+                <xsl:for-each select="$Start/root/pfx2:SMF/pfx2:SMFHeader">
+                    <ns3:MessageHeader>
+                        <ns3:MessageKey>
+                            <xsl:value-of select="pfx2:MessageKey"/>
+                        </ns3:MessageKey>
+                        <ns3:ServiceName>
+                            <xsl:value-of select="pfx2:ServiceName"/>
+                        </ns3:ServiceName>
+                        <ns3:ServiceVersion>
+                            <xsl:value-of select="pfx2:ServiceVersion"/>
+                        </ns3:ServiceVersion>
+                        <ns3:SourceID>
+                            <xsl:value-of select="pfx2:SourceID"/>
+                        </ns3:SourceID>
+                        <xsl:if test="pfx2:SourceIP">
+                            <ns3:SourceIP>
+                                <xsl:value-of select="pfx2:SourceIP"/>
+                            </ns3:SourceIP>
+                        </xsl:if>
+                        <xsl:if test="pfx2:RqTimestamp">
+                            <ns3:RqTimestamp>
+                                <xsl:value-of select="pfx2:RqTimestamp"/>
+                            </ns3:RqTimestamp>
+                        </xsl:if>
+                        <xsl:if test="pfx2:RsTimestamp">
+                            <ns3:RsTimestamp>
+                                <xsl:value-of select="pfx2:RsTimestamp"/>
+                            </ns3:RsTimestamp>
+                        </xsl:if>
+                    </ns3:MessageHeader>
+                </xsl:for-each>
+                <ns3:MessageBody>
+                    <xsl:copy-of select="$Start/root/pfx2:SMF"/>
+                </ns3:MessageBody>
+            </ns3:DBLogger>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ESBLogging</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ESBLogging</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
