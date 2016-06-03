@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns22="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="AMSS Task Common WS" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns3="http://stgspnsupport.trendmicro.com/" xmlns:pfx5="http://tempuri.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS">
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader" schemaLocation="/XSD/Common/messageheader.xsd"/>
+    <xsd:import namespace="AMSS Task Common WS" schemaLocation="/WSDL/Provider/AMSS Task Common WS_AMSS Task Common WS.WSDL.wsdl"/>
+    <wsdl:import namespace="GCC Common WS" location="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <wsdl:import namespace="AMSS Task Common WS" location="/WSDL/Provider/AMSS Task Common WS_AMSS Task Common WS.WSDL.wsdl"/>
+    <pd:name>Services/SharedOperations/CreateAMSSInboundTask.process</pd:name>
+    <pd:startName>Create AMSSInboundTask</pd:startName>
+    <pd:startType>
+        <xsd:element name="CreateAMSSTask">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Input"/>
+                    <xsd:element name="RequestHeader" type="pfx4:RequestHeader"/>
+                    <xsd:element name="RequestSource" type="xsd:string"/>
+                    <xsd:element name="NeuronId" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>133</pd:startX>
+    <pd:startY>178</pd:startY>
+    <pd:returnBindings>
+        <pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output>
+            <AMSS_spcTask_spcCommon_spcWS_InboundTask_Output>
+                <xsl:copy-of select="$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output"/>
+            </AMSS_spcTask_spcCommon_spcWS_InboundTask_Output>
+        </pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType wsMsgRef="pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output"/>
+    <pd:endX>817</pd:endX>
+    <pd:endY>175</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1326786715583</pd:targetNamespace>
+    <pd:activity name="Call Back Neuron">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>671</pd:x>
+        <pd:y>294</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Neuron Task Call Back.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/*" element="pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx5:NotifyAmssTaskCreated>
+                <xsl:if test="$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/pfx:TaskId">
+                    <pfx5:AMSSID>
+                        <xsl:value-of select="$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/pfx:TaskId"/>
+                    </pfx5:AMSSID>
+                </xsl:if>
+                <xsl:if test="$Create-AMSSInboundTask/CreateAMSSTask/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Input/pfx:SHA1">
+                    <pfx5:Sha1>
+                        <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Input/pfx:SHA1"/>
+                    </pfx5:Sha1>
+                </xsl:if>
+                <pfx5:AMSSCreatedDatetime>
+                    <xsl:value-of select="tib:current-dateTime-timezone(0, 0)"/>
+                </pfx5:AMSSCreatedDatetime>
+                <pfx5:ServiceID>
+                    <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/NeuronId"/>
+                </pfx5:ServiceID>
+                <pfx5:taskType>
+                    <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Input/pfx:Type"/>
+                </pfx5:taskType>
+            </pfx5:NotifyAmssTaskCreated>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Back PSC">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>537</pd:x>
+        <pd:y>36</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/PSC Call Back.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/*" element="pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx5:UpdateCallbackInfo>
+                <pfx5:strMessageKey>
+                    <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:MessageKey"/>
+                </pfx5:strMessageKey>
+                <pfx5:strInputXml>
+                    <xsl:value-of select="tib:render-xml($Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output)"/>
+                </pfx5:strInputXml>
+            </pfx5:UpdateCallbackInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Back PSC Panel">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>669</pd:x>
+        <pd:y>182</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Panel Call Back.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/*" element="pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns3:UpdateCallbackInfoSoapIn>
+                <parameters>
+                    <ns3:UpdateCallbackInfo>
+                        <ns3:strMessageKey>
+                            <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:MessageKey"/>
+                        </ns3:strMessageKey>
+                        <ns3:strInputXml>
+                            <xsl:value-of select="tib:render-xml($Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output)"/>
+                        </ns3:strInputXml>
+                    </ns3:UpdateCallbackInfo>
+                </parameters>
+            </ns3:UpdateCallbackInfoSoapIn>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>63</pd:x>
+        <pd:y>321</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create AMSS Task WS">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>409</pd:x>
+        <pd:y>182</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Generic_HTTP_SOAP_Client/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties/>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="&quot;AMSSInboundTask&quot;"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <SourceID>
+                        <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:SourceID"/>
+                    </SourceID>
+                    <RqTimestamp>
+                        <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:RqTimestamp"/>
+                    </RqTimestamp>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-AMSS-Task/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>285</pd:x>
+        <pd:y>321</pd:y>
+        <config>
+            <processName>/Utilities/Resend/V1.0/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns1:DBLogger>
+                    <ns1:MessageHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="substring($Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:MessageKey, 1,38)"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="&quot;AMSSInboundTask&quot;"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:SourceID"/>
+                        </ns1:SourceID>
+                        <ns1:RqTimestamp>
+                            <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:RqTimestamp"/>
+                        </ns1:RqTimestamp>
+                        <ns1:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RsTimestamp>
+                    </ns1:MessageHeader>
+                    <ns1:MessageBody>
+                        <xsl:copy-of select="$Render-AMSS-Task/xmlString"/>
+                        <xsl:copy-of select="$Create-AMSS-Task-WS/ns:ActivityOutput/Body"/>
+                    </ns1:MessageBody>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Parse-AMSS-Task/ActivityErrors)">
+                            <ns22:Error>
+                                <ns22:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                </ns22:error_code>
+                                <ns22:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </ns22:stack_trace>
+                                <ns22:process_stack>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </ns22:process_stack>
+                                <ns22:error_message>
+                                    <xsl:value-of select="$Create-AMSS-Task-WS/ns:ActivityOutput/Body"/>
+                                </ns22:error_message>
+                            </ns22:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns22:Error>
+                                <ns22:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                </ns22:error_code>
+                                <ns22:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </ns22:stack_trace>
+                                <ns22:process_stack>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </ns22:process_stack>
+                                <xsl:if test="$_error/ns2:ErrorReport/Msg">
+                                    <ns22:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                    </ns22:error_message>
+                                </xsl:if>
+                            </ns22:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns1:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;CreateAMSSTask-Fail \n&quot;,$Render-AMSS-Task/xmlString,$Create-AMSS-Task-WS/ns:ActivityOutput/Body)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CreateAMSSTask-Fail'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>417</pd:x>
+        <pd:y>321</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Create AMSS Task error \n&quot;,$Render-AMSS-Task/xmlString)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CrtAMSSTaskErr'"/>
+                </messageCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>186</pd:x>
+        <pd:y>411</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Resend/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="&quot;AMSSInboundTask&quot;"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <SourceID>
+                        <xsl:value-of select="&quot;EI_Resend&quot;"/>
+                    </SourceID>
+                    <RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTimestamp>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-AMSS-Task/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>535</pd:x>
+        <pd:y>395</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/*" element="pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Log>
+                <ns1:DBLogger>
+                    <ns1:MessageHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="substring($Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:MessageKey, 1,38)"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="&quot;AMSSInboundTask&quot;"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:SourceID"/>
+                        </ns1:SourceID>
+                        <ns1:RqTimestamp>
+                            <xsl:value-of select="$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:RqTimestamp"/>
+                        </ns1:RqTimestamp>
+                        <ns1:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RsTimestamp>
+                    </ns1:MessageHeader>
+                    <ns1:MessageBody>
+                        <xsl:copy-of select="$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output"/>
+                    </ns1:MessageBody>
+                </ns1:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;CreateAMSSTask Status : &quot;,$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/pfx:Status,&#xA;&quot; with TaskID: &quot;,$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/pfx:TaskId,&#xA;&quot; with Error: &quot;,$Parse-AMSS-Task/pfx3:Envelope/pfx3:Body/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/pfx:Error,&#xA;&quot; MessageKey: &quot;,$Create-AMSSInboundTask/CreateAMSSTask/RequestHeader/pfx4:MessageKey)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'AMSSTask-Created'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse AMSS Task">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>534</pd:x>
+        <pd:y>172</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Create-AMSS-Task-WS/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render AMSS Task">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>266</pd:x>
+        <pd:y>171</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Envelope>
+                <pfx3:Body>
+                    <xsl:copy-of select="$Create-AMSSInboundTask/CreateAMSSTask/pfx:AMSS_spcTask_spcCommon_spcWS_InboundTask_Input"/>
+                </pfx3:Body>
+            </pfx3:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Create AMSSInboundTask</pd:from>
+        <pd:to>Render AMSS Task</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render AMSS Task</pd:from>
+        <pd:to>Create AMSS Task WS</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create AMSS Task WS</pd:from>
+        <pd:to>Parse AMSS Task</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse AMSS Task</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse AMSS Task</pd:from>
+        <pd:to>Call Back PSC Panel</pd:to>
+        <pd:xpathDescription>Call Back Panel</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Create-AMSSInboundTask/CreateAMSSTask/RequestSource='Panel'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:description>exists($_error_Create-AMSS-Task-WS/ActivityErrors)</pd:description>
+        <pd:from>Catch</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>1=2</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>ErrLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrLog</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse AMSS Task</pd:from>
+        <pd:to>Call Back PSC</pd:to>
+        <pd:xpathDescription>Call Back Portal</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Create-AMSSInboundTask/CreateAMSSTask/RequestSource='Portal'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Back PSC</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Back PSC Panel</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse AMSS Task</pd:from>
+        <pd:to>Call Back Neuron</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Create-AMSSInboundTask/CreateAMSSTask/RequestSource='Neuron'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Back Neuron</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

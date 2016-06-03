@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns42="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMSS_CreateInboundTask.xsd" xmlns:ns41="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMSS_CreateInboundFeedbackRs.xsd" xmlns:ns40="http://www.trendmicro.com/PSC/AMSS_CreateAMSSInboundFeedbackRs" xmlns:ns44="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Schema.xsd" xmlns:ns43="http://www.trendmicro.com/PSC/PSC_ErrorRs" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns16="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRs" xmlns:ns17="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRq" xmlns:ns14="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRs" xmlns:ns15="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRq" xmlns:ns18="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRs" xmlns:ns19="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" xmlns:ns12="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_QeuryCaseRq" xmlns:ns13="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRq" xmlns:ns10="http://www.trendmicro.com/ESB/Services/GCCIntegration/SRFRq" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns11="http://www.trendmicro.com/ESB/Services/GCCIntegration/SRFRs" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns29="GCC_U_Corporate_Contact_Notif_Pref_Service" xmlns:ns25="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:ns26="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" xmlns:ns27="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRs" xmlns:ns28="http://www.trendmicro.com/PSC/PSC_QueryNotificationPrfRq" xmlns:ns21="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:ns22="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRs" xmlns:ns23="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns24="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:ns20="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRs" xmlns:pfx3="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns38="http://www.trendmicro.com/PSC/PSC_AMTaskEscActRq" xmlns:ns39="http://www.trendmicro.com/PSC/AMSS_CreateInboundTaskRq" xmlns:ns36="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:ns37="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRs" xmlns:ns9="GCC Common WS" xmlns:ns34="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Result.xsd" xmlns:ns35="http://www.trendmicro.com/PSC/PSC_UpdateSRRq" xmlns:ns32="http://www.trendmicro.com/PSC/PSC_UpdateConNotifPrefRq" xmlns:ns33="http://www.trendmicro.com/PSC/PSC_CommonResultRs" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:alppTM="java://com.trendmicro.TMBWUtilities" xmlns:ns30="http://www.trendmicro.com/PSC/PSC_QueryNotificationPrfRs" xmlns:ns31="http://www.tibco.com/schemas/GCCPortal/xs/PSC/NotificationPref.xs" xmlns:ns6="http://www.trendmicro.com/ESB/Services/OrderCreation/CommonRs" xmlns:ns7="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns8="http://www.trendmicro.com/ESB/Services/DealRegistration/GMT_InternalProductRq" xmlns:ns2="http://www.trendmicro.com/ESB/Services/OrderCreation/OrderSubmissionRq" xmlns:ns1="http://siebel.com/asi/" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns3="http://www.trendmicro.com/ESB/Services/DealRegistration/DealRegistrationRq" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://siebel.com/asi/" schemaLocation="/WSDL/http___siebel.com_asi__RAEM_Internal_Product_WS_-_TIBCO.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCCIntegration/SRFRs" schemaLocation="/WSDL/Client/SRF/SRFRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCCIntegration/SRFRq" schemaLocation="/WSDL/Client/SRF/SRFRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/EI_JP_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/EI_JP_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/OrderCreation/CommonRs"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/JPXSD/EI_JP_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/JPXSD/EI_JP_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/ENXSD/EI_EN_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/ENXSD/EI_EN_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_QeuryCaseRq"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" schemaLocation="/WSDL/Client/CorporateXSD/EI_GCC_CreateCorporateCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRs" schemaLocation="/WSDL/Client/CorporateXSD/EI_GCC_CreateCorporateCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseActRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRs" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRs" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseActRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_QueryNotificationPrfRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_QueryNotificationPrfRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_QueryNotificationPrfRs" schemaLocation="/WSDL/Client/PSCXSD/PSC_QueryNotificationPrfRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateConNotifPrefRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateConNotifPrefRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateSRRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateSRRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRs" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateSRCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_AMTaskEscActRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_AMTaskEscActRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateAttScriptRq.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMSS_CreateInboundTask.xsd" schemaLocation="/XSD/PSC/AMSS_CreateInboundTask.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_ErrorRs" schemaLocation="/WSDL/Client/PSCXSD/PSC_ErrorRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/AMSS_CreateInboundTaskRq" schemaLocation="/WSDL/Client/PSCXSD/AMSS_CreateInboundTaskRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CommonResultRs" schemaLocation="/WSDL/Client/PSCXSD/PSC_CommonResultRs.xsd"/>
+    <pd:name>Services/PSCService/AMSS_CreateInboundTask/V1.0/Main.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:value-of select=""/>
+        </root>
+    </pd:returnBindings>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>85</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PSCService/AMSS_CreateInboundTask/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>621</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1302247535834</pd:targetNamespace>
+    <pd:activity name="Call Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>314</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/Services/PSCService/AMSS_CreateInboundTask/V1.0/ExecuteRequest.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-XML/pfx:Envelope/pfx:Body/*" element="ns39:AMSS_CreateInboundTaskRq" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns39:AMSS_CreateInboundTaskRq"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>195</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>430</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:Envelope>
+                <pfx:Body>
+                    <ns33:PSC_CommonResultRs>
+                        <ns33:ResponseHeader>
+                            <ns7:MessageKey>
+                                <xsl:value-of select="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseHeader/ns7:MessageKey"/>
+                            </ns7:MessageKey>
+                            <ns7:ServiceName>
+                                <xsl:value-of select="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseHeader/ns7:ServiceName"/>
+                            </ns7:ServiceName>
+                            <ns7:ServiceVersion>
+                                <xsl:value-of select="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseHeader/ns7:ServiceVersion"/>
+                            </ns7:ServiceVersion>
+                            <ns7:SourceID>
+                                <xsl:value-of select="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseHeader/ns7:SourceID"/>
+                            </ns7:SourceID>
+                            <xsl:if test="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseHeader/ns7:StatusCode">
+                                <ns7:StatusCode>
+                                    <xsl:value-of select="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseHeader/ns7:StatusCode"/>
+                                </ns7:StatusCode>
+                            </xsl:if>
+                            <xsl:if test="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseHeader/ns7:RqTimestamp">
+                                <ns7:RqTimestamp>
+                                    <xsl:value-of select="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseHeader/ns7:RqTimestamp"/>
+                                </ns7:RqTimestamp>
+                            </xsl:if>
+                            <ns7:RsTimestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns7:RsTimestamp>
+                        </ns33:ResponseHeader>
+                        <ns33:ResponseBody>
+                            <ns34:Result>
+                                <ns34:Status>
+                                    <xsl:value-of select="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseBody/ns41:Status"/>
+                                </ns34:Status>
+                                <xsl:if test="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseBody/ns41:Error">
+                                    <ns34:Message>
+                                        <xsl:value-of select="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseBody/ns41:Error"/>
+                                    </ns34:Message>
+                                </xsl:if>
+                                <ns34:ID>
+                                    <xsl:value-of select="$Call-Process/ns40:AMSS_CreateAMSSInboundFeedbackRs/ns40:ResponseBody/ns41:TaskId"/>
+                                </ns34:ID>
+                            </ns34:Result>
+                        </ns33:ResponseBody>
+                    </ns33:PSC_CommonResultRs>
+                </pfx:Body>
+            </pfx:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>524</pd:x>
+        <pd:y>73</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>333</pd:x>
+        <pd:y>174</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Fail Reply-to-JMS-Message-1">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>594</pd:x>
+        <pd:y>180</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Render-XML-1/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render-XML-1">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>464</pd:x>
+        <pd:y>177</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx:Envelope"/>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-XML/pfx:Envelope/pfx:Body/*" element="ns39:AMSS_CreateInboundTaskRq"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx:Envelope>
+                <pfx:Body>
+                    <ns33:PSC_CommonResultRs>
+                        <xsl:for-each select="$Parse-XML/pfx:Envelope/pfx:Body/ns39:AMSS_CreateInboundTaskRq[1]/ns39:RequestHeader">
+                            <ns33:ResponseHeader>
+                                <ns7:MessageKey>
+                                    <xsl:value-of select="ns7:MessageKey"/>
+                                </ns7:MessageKey>
+                                <ns7:ServiceName>
+                                    <xsl:value-of select="ns7:ServiceName"/>
+                                </ns7:ServiceName>
+                                <ns7:ServiceVersion>
+                                    <xsl:value-of select="ns7:ServiceVersion"/>
+                                </ns7:ServiceVersion>
+                                <ns7:SourceID>
+                                    <xsl:value-of select="ns7:SourceID"/>
+                                </ns7:SourceID>
+                                <xsl:if test="ns7:StatusCode">
+                                    <ns7:StatusCode>
+                                        <xsl:value-of select="ns7:StatusCode"/>
+                                    </ns7:StatusCode>
+                                </xsl:if>
+                                <xsl:if test="ns7:RqTimestamp">
+                                    <ns7:RqTimestamp>
+                                        <xsl:value-of select="ns7:RqTimestamp"/>
+                                    </ns7:RqTimestamp>
+                                </xsl:if>
+                                <ns7:RsTimestamp>
+                                    <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                                </ns7:RsTimestamp>
+                            </ns33:ResponseHeader>
+                        </xsl:for-each>
+                        <ns33:ResponseBody>
+                            <ns34:Result>
+                                <ns34:Status>
+                                    <xsl:value-of select="&quot;Fail&quot;"/>
+                                </ns34:Status>
+                                <xsl:if test="$_error/ns5:ErrorReport/Msg">
+                                    <ns34:Message>
+                                        <xsl:value-of select="$_error/ns5:ErrorReport/Msg"/>
+                                    </ns34:Message>
+                                </xsl:if>
+                                <xsl:if test="$Parse-XML/pfx:Envelope/pfx:Body/ns39:AMSS_CreateInboundTaskRq[1]/ns39:RequestHeader/ns7:SourceID">
+                                    <ns34:ID>
+                                        <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns39:AMSS_CreateInboundTaskRq[1]/ns39:RequestHeader/ns7:SourceID"/>
+                                    </ns34:ID>
+                                </xsl:if>
+                            </ns34:Result>
+                        </ns33:ResponseBody>
+                    </ns33:PSC_CommonResultRs>
+                </pfx:Body>
+            </pfx:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Call Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Process</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Reply to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render-XML-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render-XML-1</pd:from>
+        <pd:to>Fail Reply-to-JMS-Message-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Fail Reply-to-JMS-Message-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

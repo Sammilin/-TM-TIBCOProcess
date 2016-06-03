@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.trendmicro.com/PSC/PSC_AddAccountAttachmentRq"
+	 xmlns:ns0="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Attachment.xsd"
+	 xmlns:ns1="http://www.trendmicro.com/ESB/schemas/messageHeader"
+	 targetNamespace="http://www.trendmicro.com/PSC/PSC_AddAccountAttachmentRq"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Attachment.xsd" schemaLocation="../../../XSD/PSC/Attachment.xsd"/>
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader" schemaLocation="../../../XSD/Common/messageheader.xsd"/>
+	<xs:element name="Message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RequestHeader" type="ns1:RequestHeader"/>
+				<xs:element name="RequestBody">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AccountID" type="xs:string"/>
+							<xs:element name="ContactID" type="xs:string"/>
+							<xs:element name="Attachment" type="ns0:AttachmentDataType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

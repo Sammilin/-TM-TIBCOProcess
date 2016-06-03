@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="GCC_U_Corporate_SR_General_Operations_Service">
+    <xsd:import namespace="GCC_U_Corporate_SR_General_Operations_Service" schemaLocation="/WSDL/Provider/GCC_U_Corporate_SR_General_Operations_Service_GCC_U_Corporate_SR_General_Operations_Service.WSDL.wsdl"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <pd:name>Services/SharedOperations/CreatePrivXMLAct.process</pd:name>
+    <pd:startName>CreatePrivXMLAct</pd:startName>
+    <pd:startType>
+        <xsd:element name="CreatePrivXMLAct">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="PrivXMLAct" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="sSRNuumber" type="xsd:string"/>
+                                <xsd:element name="sXMLId" type="xsd:string"/>
+                                <xsd:element name="sXMLString" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>111</pd:startX>
+    <pd:startY>109</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>797</pd:endX>
+    <pd:endY>107</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334836113822</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>195</pd:x>
+        <pd:y>26</pd:y>
+        <pd:width>537</pd:width>
+        <pd:height>185</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$CreatePrivXMLAct/CreatePrivXMLAct/PrivXMLAct</pd:over>
+            <pd:iterationElementSlot>current</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Map Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Parse XML</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>Render XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Render XML</pd:from>
+            <pd:to>CreatePrivXMLAct WS</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CreatePrivXMLAct WS</pd:from>
+            <pd:to>Parse XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Render XML">
+            <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+            <pd:x>406</pd:x>
+            <pd:y>126</pd:y>
+            <config>
+                <renderAsText>text</renderAsText>
+                <validateInput>false</validateInput>
+                <term ref="pfx2:Envelope"/>
+            </config>
+            <pd:inputBindings>
+                <pfx2:Envelope>
+                    <pfx2:Body>
+                        <xsl:copy-of select="$Map-Data/pfx:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreatePrivXMLAct_Input"/>
+                    </pfx2:Body>
+                </pfx2:Envelope>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>298</pd:x>
+            <pd:y>126</pd:y>
+            <config>
+                <element ref="pfx:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreatePrivXMLAct_Input"/>
+            </config>
+            <pd:inputBindings>
+                <pfx:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreatePrivXMLAct_Input>
+                    <pfx:sSRNumber>
+                        <xsl:value-of select="$current/PrivXMLAct/sSRNuumber"/>
+                    </pfx:sSRNumber>
+                    <pfx:sXMLId>
+                        <xsl:value-of select="$current/PrivXMLAct/sXMLId"/>
+                    </pfx:sXMLId>
+                    <pfx:sXMLString>
+                        <xsl:value-of select="$current/PrivXMLAct/sXMLString"/>
+                    </pfx:sXMLString>
+                </pfx:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreatePrivXMLAct_Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="CreatePrivXMLAct WS">
+            <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+            <pd:x>528</pd:x>
+            <pd:y>135</pd:y>
+            <config>
+                <PermittedMessageType>Text</PermittedMessageType>
+                <SessionAttributes>
+                    <transacted>false</transacted>
+                    <acknowledgeMode>1</acknowledgeMode>
+                    <maxSessions>1</maxSessions>
+                    <destination>%%Utilities/Generic_HTTP_SOAP_Client/V1.0/DestinationQueue%%</destination>
+                </SessionAttributes>
+                <ConfigurableHeaders>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSExpiration>0</JMSExpiration>
+                    <JMSPriority>4</JMSPriority>
+                </ConfigurableHeaders>
+                <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+                <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInput>
+                    <OtherProperties>
+                        <MessageKey>
+                            <xsl:value-of select="$CreatePrivXMLAct/CreatePrivXMLAct/MessageKey"/>
+                        </MessageKey>
+                        <ServiceName>
+                            <xsl:value-of select="'CreatePrivXMLAct'"/>
+                        </ServiceName>
+                        <ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ServiceVersion>
+                        <SourceID>
+                            <xsl:value-of select="'ESB'"/>
+                        </SourceID>
+                        <RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </RqTimestamp>
+                    </OtherProperties>
+                    <Body>
+                        <xsl:value-of select="$Render-XML/xmlString"/>
+                    </Body>
+                </ns:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Parse XML">
+            <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+            <pd:x>636</pd:x>
+            <pd:y>126</pd:y>
+            <config>
+                <inputStyle>text</inputStyle>
+                <xsdVersion>default</xsdVersion>
+                <validateOutput>true</validateOutput>
+                <term ref="pfx2:Envelope"/>
+            </config>
+            <pd:inputBindings>
+                <xmlString>
+                    <xsl:value-of select="$CreatePrivXMLAct-WS/ns:ActivityOutput/Body"/>
+                </xmlString>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>379</pd:x>
+        <pd:y>317</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>585</pd:x>
+        <pd:y>317</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Failed-CreatePrivXML :&#xA;&quot;,tib:render-xml($Catch/exceptiondata))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'Failed-CreatePrivXML'"/>
+                </messageCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>CreatePrivXMLAct</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

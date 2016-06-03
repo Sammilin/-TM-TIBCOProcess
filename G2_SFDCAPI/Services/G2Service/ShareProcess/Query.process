@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx="urn:enterprise.soap.sforce.com" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ref="http://www.tibco.com/tnt/utilitySchema" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns3="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:pfx5="http://www.siebel.com/xml/RAEM%20Internal%20Product%20Interface" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="GCC Common WS" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx2="urn:sobject.enterprise.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="urn:enterprise.soap.sforce.com" schemaLocation="/WSDL/Provider/TSSalesforceWSDL1.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Provider/TSSalesforceWSDL1.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <pd:name>Services/G2Service/ShareProcess/Query.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Sessionid" type="xsd:token"/>
+                    <xsd:element name="QueryString" type="xsd:string"/>
+                    <xsd:element name="ServerURL" type="xsd:string"/>
+                    <xsd:element name="messagekey" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>191</pd:startX>
+    <pd:startY>104</pd:startY>
+    <pd:returnBindings>
+        <Output>
+            <pfx:queryAllResponse>
+                <xsl:copy-of select="$SOAPQuery/outputMessage/pfx:queryResponse/pfx:result"/>
+            </pfx:queryAllResponse>
+        </Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:queryAllResponse"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>497</pd:endX>
+    <pd:endY>111</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1412823732693</pd:targetNamespace>
+    <pd:activity name="SOAPQuery">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>335</pd:x>
+        <pd:y>108</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>query</operation>
+            <soapAction/>
+            <endpointURL>%%Services/G2Service/EndpointURL%%</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+            <useProxy>true</useProxy>
+            <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx:SessionHeader>
+                            <pfx:sessionId>
+                                <xsl:value-of select="$Start/root/Sessionid"/>
+                            </pfx:sessionId>
+                        </pfx:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.QueryOptions>
+                        <pfx:QueryOptions/>
+                    </Header.QueryOptions>
+                    <Header.MruHeader/>
+                    <Header.PackageVersionHeader/>
+                </headers>
+                <pfx:query>
+                    <pfx:queryString>
+                        <xsl:value-of select="$Start/root/QueryString"/>
+                    </pfx:queryString>
+                </pfx:query>
+                <ns3:_configData>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($Start/root/ServerURL) !=&quot;&quot;">
+                            <xsl:if test="$Start/root/ServerURL">
+                                <endpointURL>
+                                    <xsl:value-of select="$Start/root/ServerURL"/>
+                                </endpointURL>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <endpointURL>
+                                <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/G2Service/EndpointURL"/>
+                            </endpointURL>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns3:_configData>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>223</pd:x>
+        <pd:y>258</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>394</pd:x>
+        <pd:y>258</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <pfx3:Error>
+                        <pfx3:error_code>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </pfx3:error_code>
+                        <pfx3:stack_trace>
+                            <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                        </pfx3:stack_trace>
+                        <pfx3:process_stack>
+                            <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                        </pfx3:process_stack>
+                        <pfx3:error_message>
+                            <xsl:value-of select="tib:render-xml($Catch/exceptiondata,1)"/>
+                        </pfx3:error_message>
+                    </pfx3:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPQuery</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

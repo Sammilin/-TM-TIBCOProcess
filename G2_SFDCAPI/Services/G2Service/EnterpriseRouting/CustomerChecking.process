@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns5="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/WSDL/Client/G2XSD/Routing/RoutingCheckingRq.xsd" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns7="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/WSDL/Client/G2XSD/Routing/Schema.xsd2" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns8="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/WSDL/Client/G2XSD/Routing/Schema.xsd2" schemaLocation="/WSDL/Client/G2XSD/Routing/RoutingCheckingRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/WSDL/Client/G2XSD/Routing/RoutingCheckingRq.xsd" schemaLocation="/WSDL/Client/G2XSD/Routing/RoutingCheckingRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch"/>
+    <pd:name>Services/G2Service/EnterpriseRouting/CustomerChecking.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>97</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>trend.esb.EIPlatform.G2_RoutingCheck.V1.0</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1053</pd:endX>
+    <pd:endY>71</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1417770139733</pd:targetNamespace>
+    <pd:activity name="Log Process ST">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>387</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <processName>/Utilities/Resend/V1.0/Log Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-XML/pfx:Envelope/pfx:Body/*" element="ns5:G2_RoutingCheckRq"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Log>
+                <ns12:DBLogger>
+                    <xsl:for-each select="$Parse-XML/pfx:Envelope/pfx:Body/ns5:G2_RoutingCheckRq[1]/ns5:RequestHeader">
+                        <ns12:MessageHeader>
+                            <ns12:MessageKey>
+                                <xsl:value-of select="ns6:MessageKey"/>
+                            </ns12:MessageKey>
+                            <ns12:ServiceName>
+                                <xsl:value-of select="ns6:ServiceName"/>
+                            </ns12:ServiceName>
+                            <ns12:ServiceVersion>
+                                <xsl:value-of select="ns6:ServiceVersion"/>
+                            </ns12:ServiceVersion>
+                            <ns12:SourceID>
+                                <xsl:value-of select="ns6:SourceID"/>
+                            </ns12:SourceID>
+                            <ns12:RqTimestamp>
+                                <xsl:value-of select="ns6:RqTimestamp"/>
+                            </ns12:RqTimestamp>
+                            <ns12:RsTimestamp>
+                                <xsl:value-of select="ns6:RsTimestamp"/>
+                            </ns12:RsTimestamp>
+                        </ns12:MessageHeader>
+                    </xsl:for-each>
+                    <ns12:MessageBody>
+                        <xsl:copy-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns5:G2_RoutingCheckRq/ns5:RequestBody/ns5:SRFDispatchInfo"/>
+                    </ns12:MessageBody>
+                </ns12:DBLogger>
+                <message>
+                    <xsl:value-of select="&quot;customerChecking rq&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;customerChecking&quot;"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SRFRouting">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>510</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <processName>/Dispatcher/SRFRouting.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Message>
+                    <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns5:G2_RoutingCheckRq[1]/ns5:RequestHeader/ns6:MessageKey"/>
+                </Message>
+                <mail>
+                    <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns5:G2_RoutingCheckRq[1]/ns5:RequestBody/ns5:SRFDispatchInfo/ns5:mail"/>
+                </mail>
+                <ac>
+                    <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns5:G2_RoutingCheckRq[1]/ns5:RequestBody/ns5:SRFDispatchInfo/ns5:ac"/>
+                </ac>
+                <region_id>
+                    <xsl:value-of select="5"/>
+                </region_id>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>244</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns4:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>938</pd:x>
+        <pd:y>83</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>783</pd:x>
+        <pd:y>73</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:Envelope>
+                <pfx:Body>
+                    <ns7:RoutingCheckingRs>
+                        <xsl:for-each select="$Parse-XML/pfx:Envelope/pfx:Body/ns5:G2_RoutingCheckRq[1]/ns5:RequestHeader">
+                            <ns7:ResponseHeader>
+                                <ns6:MessageKey>
+                                    <xsl:value-of select="ns6:MessageKey"/>
+                                </ns6:MessageKey>
+                                <ns6:ServiceName>
+                                    <xsl:value-of select="ns6:ServiceName"/>
+                                </ns6:ServiceName>
+                                <ns6:ServiceVersion>
+                                    <xsl:value-of select="ns6:ServiceVersion"/>
+                                </ns6:ServiceVersion>
+                                <ns6:SourceID>
+                                    <xsl:value-of select="ns6:SourceID"/>
+                                </ns6:SourceID>
+                                <xsl:if test="ns6:StatusCode">
+                                    <ns6:StatusCode>
+                                        <xsl:value-of select="ns6:StatusCode"/>
+                                    </ns6:StatusCode>
+                                </xsl:if>
+                                <xsl:if test="ns6:RqTimestamp">
+                                    <ns6:RqTimestamp>
+                                        <xsl:value-of select="ns6:RqTimestamp"/>
+                                    </ns6:RqTimestamp>
+                                </xsl:if>
+                                <ns6:RsTimestamp>
+                                    <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                                </ns6:RsTimestamp>
+                            </ns7:ResponseHeader>
+                        </xsl:for-each>
+                        <ns7:ResponseBody>
+                            <ns7:is_Enterprise>
+                                <xsl:value-of select="$SRFRouting/Output/is_enterprise"/>
+                            </ns7:is_Enterprise>
+                            <ns7:Status>
+                                <xsl:value-of select="&quot;SUCCESS&quot;"/>
+                            </ns7:Status>
+                        </ns7:ResponseBody>
+                    </ns7:RoutingCheckingRs>
+                </pfx:Body>
+            </pfx:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log-Process-ED">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>636</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <processName>/Utilities/Resend/V1.0/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns12:DBLogger>
+                    <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Parse-XML/pfx:Envelope/pfx:Body/ns5:G2_RoutingCheckRq[1]/ns5:RequestHeader">
+                        <ns12:MessageHeader>
+                            <ns12:MessageKey>
+                                <xsl:value-of select="ns6:MessageKey"/>
+                            </ns12:MessageKey>
+                            <ns12:ServiceName>
+                                <xsl:value-of select="ns6:ServiceName"/>
+                            </ns12:ServiceName>
+                            <ns12:ServiceVersion>
+                                <xsl:value-of select="ns6:ServiceVersion"/>
+                            </ns12:ServiceVersion>
+                            <ns12:SourceID>
+                                <xsl:value-of select="ns6:SourceID"/>
+                            </ns12:SourceID>
+                            <ns12:RqTimestamp>
+                                <xsl:value-of select="ns6:RqTimestamp"/>
+                            </ns12:RqTimestamp>
+                            <ns12:RsTimestamp>
+                                <xsl:value-of select="ns6:RsTimestamp"/>
+                            </ns12:RsTimestamp>
+                        </ns12:MessageHeader>
+                    </xsl:for-each>
+                    <ns12:MessageBody>
+                        <xsl:copy-of select="$SRFRouting/Output"/>
+                    </ns12:MessageBody>
+                </ns12:DBLogger>
+                <message>
+                    <xsl:value-of select="&quot;customerChecking Rs&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;customerChecking&quot;"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>551</pd:x>
+        <pd:y>213</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ErrorHandling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>691</pd:x>
+        <pd:y>212</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/ErrorHandling.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns2:ErrorReport/Data/*" element="ns8:Error"/>
+            <pd:coercion xpath="$Parse-XML/pfx:Envelope/pfx:Body/*" element="ns5:G2_RoutingCheckRq"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <root>
+                <isResend>
+                    <xsl:value-of select="0"/>
+                </isResend>
+                <isReply>
+                    <xsl:value-of select="1"/>
+                </isReply>
+                <ns12:DBLogger>
+                    <xsl:for-each select="$Parse-XML/pfx:Envelope/pfx:Body/ns5:G2_RoutingCheckRq[1]/ns5:RequestHeader">
+                        <ns12:MessageHeader>
+                            <ns12:MessageKey>
+                                <xsl:value-of select="ns6:MessageKey"/>
+                            </ns12:MessageKey>
+                            <ns12:ServiceName>
+                                <xsl:value-of select="ns6:ServiceName"/>
+                            </ns12:ServiceName>
+                            <ns12:ServiceVersion>
+                                <xsl:value-of select="ns6:ServiceVersion"/>
+                            </ns12:ServiceVersion>
+                            <ns12:SourceID>
+                                <xsl:value-of select="ns6:SourceID"/>
+                            </ns12:SourceID>
+                            <ns12:RqTimestamp>
+                                <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                            </ns12:RqTimestamp>
+                            <ns12:RsTimestamp>
+                                <xsl:value-of select="ns6:RsTimestamp"/>
+                            </ns12:RsTimestamp>
+                        </ns12:MessageHeader>
+                    </xsl:for-each>
+                    <ns12:MessageBody>
+                        <xsl:copy-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns5:G2_RoutingCheckRq/ns5:RequestBody"/>
+                    </ns12:MessageBody>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns2:ErrorReport/Data/ns8:Error)">
+                            <ns3:Error>
+                                <ns3:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns8:Error/ns8:error_code"/>
+                                </ns3:error_code>
+                                <ns3:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns8:Error/ns8:stack_trace"/>
+                                </ns3:stack_trace>
+                                <ns3:process_stack>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns8:Error/ns8:src"/>
+                                </ns3:process_stack>
+                                <ns3:error_message>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/Data/ns8:Error/ns8:error_message"/>
+                                </ns3:error_message>
+                            </ns3:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns3:Error>
+                                <ns3:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                </ns3:error_code>
+                                <ns3:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </ns3:stack_trace>
+                                <ns3:process_stack>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </ns3:process_stack>
+                                <xsl:if test="$_error/ns2:ErrorReport/Msg">
+                                    <ns3:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                    </ns3:error_message>
+                                </xsl:if>
+                            </ns3:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns12:DBLogger>
+                <resend>
+                    <resendDestination>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </resendDestination>
+                    <resendcount>
+                        <xsl:value-of select="0"/>
+                    </resendcount>
+                </resend>
+                <ErrReply>
+                    <pfx:Envelope>
+                        <pfx:Body>
+                            <pfx:Envelope>
+                                <pfx:Body>
+                                    <ns7:RoutingCheckingRs>
+                                        <xsl:for-each select="$Parse-XML/pfx:Envelope/pfx:Body/ns5:G2_RoutingCheckRq[1]/ns5:RequestHeader">
+                                            <ns7:ResponseHeader>
+                                                <ns6:MessageKey>
+                                                    <xsl:value-of select="ns6:MessageKey"/>
+                                                </ns6:MessageKey>
+                                                <ns6:ServiceName>
+                                                    <xsl:value-of select="ns6:ServiceName"/>
+                                                </ns6:ServiceName>
+                                                <ns6:ServiceVersion>
+                                                    <xsl:value-of select="ns6:ServiceVersion"/>
+                                                </ns6:ServiceVersion>
+                                                <ns6:SourceID>
+                                                    <xsl:value-of select="ns6:SourceID"/>
+                                                </ns6:SourceID>
+                                                <xsl:if test="ns6:StatusCode">
+                                                    <ns6:StatusCode>
+                                                        <xsl:value-of select="ns6:StatusCode"/>
+                                                    </ns6:StatusCode>
+                                                </xsl:if>
+                                                <xsl:if test="ns6:RqTimestamp">
+                                                    <ns6:RqTimestamp>
+                                                        <xsl:value-of select="ns6:RqTimestamp"/>
+                                                    </ns6:RqTimestamp>
+                                                </xsl:if>
+                                                <ns6:RsTimestamp>
+                                                    <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                                                </ns6:RsTimestamp>
+                                            </ns7:ResponseHeader>
+                                        </xsl:for-each>
+                                        <ns7:ResponseBody>
+                                            <ns7:Status>
+                                                <xsl:value-of select="&quot;FAIL&quot;"/>
+                                            </ns7:Status>
+                                            <ns7:Message>
+                                                <xsl:value-of select="tib:render-xml($Catch/exceptiondata, 1)"/>
+                                            </ns7:Message>
+                                        </ns7:ResponseBody>
+                                    </ns7:RoutingCheckingRs>
+                                </pfx:Body>
+                            </pfx:Envelope>
+                        </pfx:Body>
+                    </pfx:Envelope>
+                </ErrReply>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply-to-JMS-Message-1">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>847</pd:x>
+        <pd:y>214</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$ErrorHandling/root/ErrXml"/>
+                </Body>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SRFRouting</pd:from>
+        <pd:to>Log-Process-ED</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process ST</pd:from>
+        <pd:to>SRFRouting</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Log Process ST</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Reply to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-Process-ED</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrorHandling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorHandling</pd:from>
+        <pd:to>Reply-to-JMS-Message-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply-to-JMS-Message-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

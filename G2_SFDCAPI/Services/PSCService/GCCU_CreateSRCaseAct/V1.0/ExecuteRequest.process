@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRs" xmlns:pfx15="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:pfx14="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRs" xmlns:pfx13="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRq" xmlns:pfx12="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRs" xmlns:pfx11="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRq" xmlns:pfx10="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRs" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx19="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx18="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:pfx17="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/Services/DealRegistration/DealRegistrationRq" xmlns:pfx3="http://www.trendmicro.com/ESB/Services/OrderCreation/OrderSubmissionRq" xmlns:pfx2="http://siebel.com/asi/" xmlns:pfx9="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRq" xmlns:pfx8="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_QeuryCaseRq" xmlns:pfx7="JP Common WS" xmlns:pfx6="http://www.trendmicro.com/ESB/Services/DealRegistration/GMT_InternalProductRq" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="www.tibco.com/plugin/Sleep" xmlns:ns9="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" xmlns:alppTM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns5="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment" xmlns:ns13="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns6="GCC_PH_CON_CHAT_WS" xmlns:pfx="http://www.siebel.com/xml/RAEM%20Internal%20Product%20Interface" xmlns:ns7="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns8="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseActivity.xsd" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="GCC Common WS" xmlns:pfx22="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx23="http://www.trendmicro.com/PSC/PSC_CreateSRActivityRq" xmlns:pfx20="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:pfx21="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:pfx26="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx27="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AttScript.xsd" xmlns:pfx24="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:pfx25="http://www.trendmicro.com/PSC/PSC_CreateMultiPrivXMLActRq">
+    <xsd:import namespace="http://www.siebel.com/xml/RAEM%20Internal%20Product%20Interface" schemaLocation="/WSDL/Siebel WSDL/http___siebel.com_asi__RAEM_Internal_Product_WS_-_TIBCO.WSDL.wsdl"/>
+    <xsd:import namespace="http://siebel.com/asi/" schemaLocation="/WSDL/http___siebel.com_asi__RAEM_Internal_Product_WS_-_TIBCO.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/DealRegistration/GMT_InternalProductRq" schemaLocation="/WSDL/SRFRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="JP Common WS" schemaLocation="/WSDL/Provider/JP Common WS_JP Common WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/EI_JP_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/EI_JP_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/JPXSD/EI_JP_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/ENXSD/EI_EN_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/JPXSD/EI_JP_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/ENXSD/EI_EN_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_QeuryCaseRq"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" schemaLocation="/WSDL/Client/CorporateXSD/EI_GCC_CreateCorporateCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRs" schemaLocation="/WSDL/Client/CorporateXSD/EI_GCC_CreateCorporateCaseRs.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC Common WS_GCC Common WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" schemaLocation="/XSD/Portal/PortalSRCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" schemaLocation="/XSD/Portal/PortalSRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/DBLogger" schemaLocation="/XSD/Common/logger.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseActRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" schemaLocation="/XSD/Portal/PortalSRActResult.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC Common WS_GCC Common WS v4.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" schemaLocation="/XSD/PSC/GCCSRCaseResult.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateSRActivityRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateSRActivityRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateMultiPrivXMLActRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateMultiPrivXMLActRq.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <pd:name>Services/PSCService/GCCU_CreateSRCaseAct/V1.0/ExecuteRequest.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx23:PSC_CreateSRActivityRq"/>
+    <pd:startX>105</pd:startX>
+    <pd:startY>152</pd:startY>
+    <pd:returnBindings>
+        <Response>
+            <pfx24:Result>
+                <xsl:if test="$CreateCorpSRAct/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:sActId">
+                    <pfx24:ActivityID>
+                        <xsl:value-of select="$CreateCorpSRAct/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:sActId"/>
+                    </pfx24:ActivityID>
+                </xsl:if>
+                <pfx24:Status>
+                    <xsl:value-of select="''"/>
+                </pfx24:Status>
+                <xsl:if test="$CreateCorpSRAct/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:sCreateActMsg">
+                    <pfx24:Message>
+                        <xsl:value-of select="$CreateCorpSRAct/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:sCreateActMsg"/>
+                    </pfx24:Message>
+                </xsl:if>
+            </pfx24:Result>
+        </Response>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Response" type="pfx24:GCCSRCaseResultType"/>
+    </pd:endType>
+    <pd:endX>634</pd:endX>
+    <pd:endY>153</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx5:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1302247535834</pd:targetNamespace>
+    <pd:activity name="Call Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>272</pd:x>
+        <pd:y>156</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <pfx19:DBLogger>
+                    <pfx19:MessageHeader>
+                        <pfx19:MessageKey>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:MessageKey"/>
+                        </pfx19:MessageKey>
+                        <pfx19:ServiceName>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:ServiceName"/>
+                        </pfx19:ServiceName>
+                        <pfx19:ServiceVersion>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:ServiceVersion"/>
+                        </pfx19:ServiceVersion>
+                        <pfx19:SourceID>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:SourceID"/>
+                        </pfx19:SourceID>
+                        <pfx19:RqTimestamp>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:RqTimestamp"/>
+                        </pfx19:RqTimestamp>
+                    </pfx19:MessageHeader>
+                    <pfx19:MessageBody>
+                        <xsl:copy-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity"/>
+                    </pfx19:MessageBody>
+                </pfx19:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;INPUT XML: &quot;,tib:render-xml($Start/pfx23:PSC_CreateSRActivityRq),&quot;\n SourceID:  &quot;,$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:SourceId)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'GCCU_CreateSRCaseAct'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>827</pd:x>
+        <pd:y>216</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create AMSS">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>443</pd:x>
+        <pd:y>418</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/CreateMalwareTask_V2.process</processName>
+        </config>
+        <pd:inputBindings>
+            <CreateMalwareTask>
+                <MalwareTask>
+                    <xsl:for-each select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:File">
+                        <File>
+                            <FileID>
+                                <xsl:value-of select="ns8:FileID"/>
+                            </FileID>
+                            <SHA1>
+                                <xsl:value-of select="ns8:SHA1"/>
+                            </SHA1>
+                            <FileName>
+                                <xsl:value-of select="ns8:FileName"/>
+                            </FileName>
+                            <FileSize>
+                                <xsl:value-of select="ns8:FileSize"/>
+                            </FileSize>
+                            <FTPLocation>
+                                <xsl:value-of select="ns8:FTPLocation"/>
+                            </FTPLocation>
+                            <AMSSTaskType>
+                                <xsl:value-of select="ns8:AMSSTaskType"/>
+                            </AMSSTaskType>
+                        </File>
+                    </xsl:for-each>
+                </MalwareTask>
+                <AMSSInboundTaskInput>
+                    <SouceReferenceNumber>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:SRNumber"/>
+                    </SouceReferenceNumber>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:PatternVersion">
+                        <PatternVersion>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:PatternVersion"/>
+                        </PatternVersion>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:PatternBranch">
+                        <PatternBranch>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:PatternBranch"/>
+                        </PatternBranch>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:PatternType">
+                        <PatternType>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:PatternType"/>
+                        </PatternType>
+                    </xsl:if>
+                    <Title>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:ActTitle"/>
+                    </Title>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:Country">
+                        <Country>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:Country"/>
+                        </Country>
+                    </xsl:if>
+                    <FirstName>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:FirstName"/>
+                    </FirstName>
+                    <LastName>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:LastName"/>
+                    </LastName>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:OS">
+                        <OS>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:OS"/>
+                        </OS>
+                    </xsl:if>
+                    <Entitlement>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:EntitlementName"/>
+                    </Entitlement>
+                    <Priority>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:Priority"/>
+                    </Priority>
+                    <Email>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:Email"/>
+                    </Email>
+                    <Description>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:ActBody"/>
+                    </Description>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:Region">
+                        <Region>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:Region"/>
+                        </Region>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:ProductName">
+                        <ProductName>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:ProductName"/>
+                        </ProductName>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:ProductGIC">
+                        <ProductGIC>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:ProductGIC"/>
+                        </ProductGIC>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:TAMEmail">
+                        <TAMEmail>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:TAMEmail"/>
+                        </TAMEmail>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:IsAMEX">
+                        <IsAMEX>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:IsAMEX"/>
+                        </IsAMEX>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:OriginalType">
+                        <OriginalType>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:OriginalType"/>
+                        </OriginalType>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:TaskLabel">
+                        <TaskLabel>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:TaskLabel"/>
+                        </TaskLabel>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:ServiceLevel">
+                        <ServiceLevel>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:ServiceLevel"/>
+                        </ServiceLevel>
+                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:SubmitTime)">
+                            <SubmitDate>
+                                <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:SubmitTime"/>
+                            </SubmitDate>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <SubmitDate>
+                                <xsl:value-of select="tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0))"/>
+                            </SubmitDate>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:if test="exists($Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:PatternFlag)">
+                        <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:PatternFlag">
+                            <PatternFlag>
+                                <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:PatternFlag"/>
+                            </PatternFlag>
+                        </xsl:if>
+                    </xsl:if>
+                </AMSSInboundTaskInput>
+                <EscalationActivityInput>
+                    <sSRNumber>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:SRNumber"/>
+                    </sSRNumber>
+                    <IoRepresetation>
+                        <Description>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:ActBody"/>
+                        </Description>
+                        <Title>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:ActTitle"/>
+                        </Title>
+                        <Type>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:EscActType"/>
+                        </Type>
+                        <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:NeuronId">
+                            <NeuronId>
+                                <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:NeuronId"/>
+                            </NeuronId>
+                        </xsl:if>
+                    </IoRepresetation>
+                </EscalationActivityInput>
+                <UpdateMalwareTaskInput>
+                    <PortalSourceID>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:SourceId"/>
+                    </PortalSourceID>
+                    <SRNumber>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:SRNumber"/>
+                    </SRNumber>
+                    <ActivityRowID>
+                        <xsl:value-of select="$CreateCorpSRAct/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:sActId"/>
+                    </ActivityRowID>
+                </UpdateMalwareTaskInput>
+                <MessageKey>
+                    <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:MessageKey"/>
+                </MessageKey>
+                <SourceID>
+                    <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:SourceID"/>
+                </SourceID>
+                <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:OpenAMSSFlag">
+                    <OpenAMSSFlag>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:OpenAMSSFlag"/>
+                    </OpenAMSSFlag>
+                </xsl:if>
+                <ArchFileName>
+                    <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:OrgArchFileName"/>
+                </ArchFileName>
+                <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:ArchFileSHA1">
+                    <ArchFileSHA1>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:ArchFileSHA1"/>
+                    </ArchFileSHA1>
+                </xsl:if>
+                <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:ArchFileLocaiton">
+                    <ArchFileLocation>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask/ns8:ArchFileLocaiton"/>
+                    </ArchFileLocation>
+                </xsl:if>
+                <RequestSource>
+                    <xsl:value-of select="'Portal'"/>
+                </RequestSource>
+            </CreateMalwareTask>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateAttachment">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>353</pd:x>
+        <pd:y>321</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/CreateAttScript_V2.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns9:PSC_CreateAttScriptRq>
+                <ns9:RequestHeader>
+                    <ns7:MessageKey>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:MessageKey"/>
+                    </ns7:MessageKey>
+                    <ns7:ServiceName>
+                        <xsl:value-of select="'CreateAttScript'"/>
+                    </ns7:ServiceName>
+                    <ns7:ServiceVersion>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:ServiceVersion"/>
+                    </ns7:ServiceVersion>
+                    <ns7:SourceID>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:SourceID"/>
+                    </ns7:SourceID>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:RqTimestamp">
+                        <ns7:RqTimestamp>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:RqTimestamp"/>
+                        </ns7:RqTimestamp>
+                    </xsl:if>
+                </ns9:RequestHeader>
+                <ns9:RequestBody>
+                    <pfx27:GUID>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:MessageKey"/>
+                    </pfx27:GUID>
+                    <pfx27:ActivityID>
+                        <xsl:value-of select="$CreateCorpSRAct/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:sActId"/>
+                    </pfx27:ActivityID>
+                    <pfx27:ResendCount>
+                        <xsl:value-of select="0"/>
+                    </pfx27:ResendCount>
+                    <xsl:for-each select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:Attachment/ns8:File">
+                        <pfx27:URL>
+                            <pfx27:FileExt>
+                                <xsl:value-of select="ns8:FileExt"/>
+                            </pfx27:FileExt>
+                            <pfx27:FileName>
+                                <xsl:value-of select="ns8:FileName"/>
+                            </pfx27:FileName>
+                            <pfx27:FilePath>
+                                <xsl:value-of select="ns8:FilePath"/>
+                            </pfx27:FilePath>
+                            <pfx27:FileType>
+                                <xsl:value-of select="ns8:FileType"/>
+                            </pfx27:FileType>
+                            <pfx27:Comment2>
+                                <xsl:value-of select="ns8:Comment2"/>
+                            </pfx27:Comment2>
+                        </pfx27:URL>
+                    </xsl:for-each>
+                </ns9:RequestBody>
+            </ns9:PSC_CreateAttScriptRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateCorpSRAct">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>107</pd:x>
+        <pd:y>314</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/CreateCorpSRAct.process</processName>
+        </config>
+        <pd:inputBindings>
+            <CreateCorpSRAct>
+                <ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Input>
+                    <ns3:sSourceSubmitTime>
+                        <xsl:value-of select="tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0))"/>
+                    </ns3:sSourceSubmitTime>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:ActTitle">
+                        <ns3:sActTitle>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:ActTitle"/>
+                        </ns3:sActTitle>
+                    </xsl:if>
+                    <ns3:sSRNumber>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:SRNumber"/>
+                    </ns3:sSRNumber>
+                    <ns3:sActBody>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:ActBody"/>
+                    </ns3:sActBody>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:ActOwner">
+                        <ns3:sActOwner>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:ActOwner"/>
+                        </ns3:sActOwner>
+                    </xsl:if>
+                    <ns3:sActType>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:ActType"/>
+                    </ns3:sActType>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:CC">
+                        <ns3:sCC>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:CC"/>
+                        </ns3:sCC>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:To">
+                        <ns3:sTo>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:To"/>
+                        </ns3:sTo>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:From">
+                        <ns3:sFrom>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:From"/>
+                        </ns3:sFrom>
+                    </xsl:if>
+                    <ns3:sSourceSystem>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:SourceSystem"/>
+                    </ns3:sSourceSystem>
+                    <ns3:sSourceId>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:SourceId"/>
+                    </ns3:sSourceId>
+                    <ns3:sPrivateFlg>
+                        <xsl:value-of select="'N'"/>
+                    </ns3:sPrivateFlg>
+                </ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Input>
+                <MessageHeader>
+                    <ns7:MessageKey>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:MessageKey"/>
+                    </ns7:MessageKey>
+                    <ns7:ServiceName>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:ServiceName"/>
+                    </ns7:ServiceName>
+                    <ns7:ServiceVersion>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:ServiceVersion"/>
+                    </ns7:ServiceVersion>
+                    <ns7:SourceID>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:SourceID"/>
+                    </ns7:SourceID>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:StatusCode">
+                        <ns7:StatusCode>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:StatusCode"/>
+                        </ns7:StatusCode>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:RqTimestamp">
+                        <ns7:RqTimestamp>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:RqTimestamp"/>
+                        </ns7:RqTimestamp>
+                    </xsl:if>
+                </MessageHeader>
+            </CreateCorpSRAct>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateMultiPrivXMLAct">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>502</pd:x>
+        <pd:y>536</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/CreateMultiPrivXMLAct.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx25:PSC_CreateMultiPrivXMLActRq>
+                <pfx25:RequestHeader>
+                    <ns7:MessageKey>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:MessageKey"/>
+                    </ns7:MessageKey>
+                    <ns7:ServiceName>
+                        <xsl:value-of select="'CreateMultiPrivXMLAct'"/>
+                    </ns7:ServiceName>
+                    <ns7:ServiceVersion>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:ServiceVersion"/>
+                    </ns7:ServiceVersion>
+                    <ns7:SourceID>
+                        <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:SourceID"/>
+                    </ns7:SourceID>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:StatusCode">
+                        <ns7:StatusCode>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:StatusCode"/>
+                        </ns7:StatusCode>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:RqTimestamp">
+                        <ns7:RqTimestamp>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:RqTimestamp"/>
+                        </ns7:RqTimestamp>
+                    </xsl:if>
+                </pfx25:RequestHeader>
+                <pfx25:RequestBody>
+                    <pfx25:ResendCount>
+                        <xsl:value-of select="0"/>
+                    </pfx25:ResendCount>
+                    <xsl:for-each select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:CleanFailed/ns8:PrivXML">
+                        <pfx25:PrivXMLAct>
+                            <pfx25:sSRNumber>
+                                <xsl:value-of select="ns8:sSRNuumber"/>
+                            </pfx25:sSRNumber>
+                            <pfx25:sXMLId>
+                                <xsl:value-of select="ns8:sXMLId"/>
+                            </pfx25:sXMLId>
+                            <pfx25:sXMLString>
+                                <xsl:value-of select="ns8:sXMLString"/>
+                            </pfx25:sXMLString>
+                        </pfx25:PrivXMLAct>
+                    </xsl:for-each>
+                </pfx25:RequestBody>
+            </pfx25:PSC_CreateMultiPrivXMLActRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>951</pd:x>
+        <pd:y>216</pd:y>
+        <config>
+            <processName>/Utilities/Resend/V1.0/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <pfx19:DBLogger>
+                    <pfx19:MessageHeader>
+                        <pfx19:MessageKey>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:MessageKey"/>
+                        </pfx19:MessageKey>
+                        <pfx19:ServiceName>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:ServiceName"/>
+                        </pfx19:ServiceName>
+                        <pfx19:ServiceVersion>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:ServiceVersion"/>
+                        </pfx19:ServiceVersion>
+                        <pfx19:SourceID>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:SourceID"/>
+                        </pfx19:SourceID>
+                        <pfx19:RqTimestamp>
+                            <xsl:value-of select="$Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestHeader/ns7:RqTimestamp"/>
+                        </pfx19:RqTimestamp>
+                        <pfx19:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </pfx19:RsTimestamp>
+                    </pfx19:MessageHeader>
+                    <pfx19:MessageBody>
+                        <xsl:copy-of select="$Start/pfx23:PSC_CreateSRActivityRq"/>
+                    </pfx19:MessageBody>
+                    <pfx5:Error>
+                        <pfx5:error_code>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </pfx5:error_code>
+                        <pfx5:stack_trace>
+                            <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                        </pfx5:stack_trace>
+                        <pfx5:process_stack>
+                            <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                        </pfx5:process_stack>
+                    </pfx5:Error>
+                </pfx19:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;CreateAct-Fail \n&quot;,$Start/pfx23:PSC_CreateSRActivityRq)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CreateAct-Fail'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>1091</pd:x>
+        <pd:y>343</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Create SR Act  error \n&quot;,tib:render-xml($Catch/exceptiondata))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CrtSRActFail'"/>
+                </messageCode>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>967</pd:x>
+        <pd:y>343</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PSCService/GCCU_CreateSRCaseAct/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties/>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Render-Resend/xmlString"/>
+                </Body>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Resend">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>854</pd:x>
+        <pd:y>343</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx26:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx26:Envelope>
+                <pfx26:Body>
+                    <xsl:copy-of select="$Start/pfx23:PSC_CreateSRActivityRq"/>
+                </pfx26:Body>
+            </pfx26:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sleep">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>1048</pd:x>
+        <pd:y>215</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns14:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/ResendWaitingPeriod"/>
+                </IntervalInMillisec>
+            </ns14:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Call Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>CreateCorpSRAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateCorpSRAct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateCorpSRAct</pd:from>
+        <pd:to>CreateAttachment</pd:to>
+        <pd:xpathDescription>With Attachment</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:Attachment) and ($CreateCorpSRAct/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:sCreateActResult='SUCCESS')</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateAttachment</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateCorpSRAct</pd:from>
+        <pd:to>Create AMSS</pd:to>
+        <pd:xpathDescription>With MalwareTask</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:MalwareTask) and ($CreateCorpSRAct/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:GCC_spcCommon_spcWS_CreateCorpSRAct_Output/ns3:sCreateActResult='SUCCESS')</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create AMSS</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateCorpSRAct</pd:from>
+        <pd:to>CreateMultiPrivXMLAct</pd:to>
+        <pd:xpathDescription>Clean Failed</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/pfx23:PSC_CreateSRActivityRq/pfx23:RequestBody/ns8:GCCSRCaseActivity/ns8:CleanFailed)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateMultiPrivXMLAct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrLog</pd:from>
+        <pd:to>Sleep</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep</pd:from>
+        <pd:to>Render Resend</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Resend</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx="urn:enterprise.soap.sforce.com" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx8="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:pfx7="GCC Common WS" xmlns:pfx6="http://www.siebel.com/xml/RAEM%20Internal%20Product%20Interface">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <pd:name>Services/G2Service/ShareProcess/LoginToSFDC.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>116</pd:startX>
+    <pd:startY>199</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <SessionID>
+                <xsl:value-of select="$SFDC-Login/outputMessage/pfx:loginResponse/pfx:result/pfx:sessionId"/>
+            </SessionID>
+            <ServerURL>
+                <xsl:value-of select="$SFDC-Login/outputMessage/pfx:loginResponse/pfx:result/pfx:serverUrl"/>
+            </ServerURL>
+            <sessionSecondsValid>
+                <xsl:value-of select="$SFDC-Login/outputMessage/pfx:loginResponse/pfx:result/pfx:userInfo/pfx:sessionSecondsValid"/>
+            </sessionSecondsValid>
+            <userId>
+                <xsl:value-of select="$SFDC-Login/outputMessage/pfx:loginResponse/pfx:result/pfx:userId"/>
+            </userId>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="SessionID" type="xsd:string"/>
+                    <xsd:element name="ServerURL" type="xsd:string"/>
+                    <xsd:element name="sessionSecondsValid" type="xsd:string"/>
+                    <xsd:element name="userId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>701</pd:endX>
+    <pd:endY>203</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1412823732693</pd:targetNamespace>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>839</pd:x>
+        <pd:y>336</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($_error_SFDCLogin-Generate-Error/pfx3:Error/pfx3:error_code) !=&quot;&quot;">
+                            <xsl:copy-of select="$_error_SFDCLogin-Generate-Error/pfx3:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx3:Error>
+                                <pfx3:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </pfx3:error_code>
+                                <pfx3:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </pfx3:stack_trace>
+                                <pfx3:process_stack>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </pfx3:process_stack>
+                                <xsl:if test="$_error/ns2:ErrorReport/Msg">
+                                    <pfx3:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                    </pfx3:error_message>
+                                </xsl:if>
+                            </pfx3:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>668</pd:x>
+        <pd:y>339</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>231</pd:x>
+        <pd:y>35</pd:y>
+        <pd:width>358</pd:width>
+        <pd:height>322</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$i &gt; $_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/retryTimes or exists($SFDC-Login/outputMessage/pfx:loginResponse)</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SFDC Login</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SFDC Login</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SFDC Login</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-6750208</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:xpathDescription>TimeOut</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($_error_SFDC-Login/ActivityErrors/pfx8:ActivityTimedOutException) and $i &lt;=$_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/retryTimes</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>SFDCLogin Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="SFDC Login">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>389</pd:x>
+            <pd:y>105</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx:SforceService</service>
+                <servicePort>Soap</servicePort>
+                <operation>login</operation>
+                <soapAction/>
+                <endpointURL>https://test.salesforce.com/services/Soap/c/33.0/0DFq00000004CMH</endpointURL>
+                <requireBasicAuth>false</requireBasicAuth>
+                <policies>
+                    <incomingAttachmentPolicy>
+                        <writeToFile>false</writeToFile>
+                    </incomingAttachmentPolicy>
+                </policies>
+                <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                    <ns0:strongCipherSuitesOnly>false</ns0:strongCipherSuitesOnly>
+                    <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+                </ns0:ssl>
+                <useProxy>true</useProxy>
+                <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <pfx:login>
+                        <pfx:username>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/username"/>
+                        </pfx:username>
+                        <pfx:password>
+                            <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/password, $_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/securitytoken)"/>
+                        </pfx:password>
+                    </pfx:login>
+                    <ns:_configData>
+                        <endpointURL>
+                            <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/EndpointURL"/>
+                        </endpointURL>
+                    </ns:_configData>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>469</pd:x>
+            <pd:y>216</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/waittingIntervalms"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>327</pd:x>
+            <pd:y>216</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="SFDCLogin Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>418</pd:x>
+            <pd:y>286</pd:y>
+            <config>
+                <faultName>errorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns3:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                    </message>
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                    </messageCode>
+                    <data>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error_SFDC-Login/ActivityErrors/LoginFault)">
+                                <pfx3:Error>
+                                    <pfx3:error_code>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                    </pfx3:error_code>
+                                    <pfx3:stack_trace>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                    </pfx3:stack_trace>
+                                    <pfx3:process_stack>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                    </pfx3:process_stack>
+                                    <pfx3:error_message>
+                                        <xsl:value-of select="tib:render-xml($_error_SFDC-Login/ActivityErrors/LoginFault, 1)"/>
+                                    </pfx3:error_message>
+                                </pfx3:Error>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx3:Error>
+                                    <pfx3:error_code>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                    </pfx3:error_code>
+                                    <pfx3:stack_trace>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                    </pfx3:stack_trace>
+                                    <pfx3:process_stack>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                    </pfx3:process_stack>
+                                    <pfx3:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                    </pfx3:error_message>
+                                </pfx3:Error>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </data>
+                </ns3:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

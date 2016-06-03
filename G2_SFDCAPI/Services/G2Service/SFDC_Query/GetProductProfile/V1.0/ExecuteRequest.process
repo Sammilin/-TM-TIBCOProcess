@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="urn:enterprise.soap.sforce.com" xmlns:ns5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileListRq" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns1="urn:sobject.enterprise.soap.sforce.com" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/XSD/G2/SFDCQueryRS/getProductProfile.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetProductProfileResult.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileRq" xmlns:pfx3="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileListRs" xmlns:pfx2="http://www.trendmicro.com/SFDC/SFDC_GetAllProductProfileListRq" xmlns:pfx8="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx7="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileRs">
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetAllProductProfileListRq" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetAllProductProfileListRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileListRq" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetProductProfileListRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileListRs" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetProductProfileListRs.xsd"/>
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileRs" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetProductProfileRs.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetProductProfileResult.xsd" schemaLocation="/XSD/G2/GetProductProfileResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileRq" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetProductProfileRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/XSD/G2/SFDCQueryRS/getProductProfile.xsd" schemaLocation="/XSD/G2/SFDCQueryRS/getProductProfile.xsd"/>
+    <pd:name>Services/G2Service/SFDC_Query/GetProductProfile/V1.0/ExecuteRequest.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:SFDC_GetProductProfileRq"/>
+    <pd:startX>63</pd:startX>
+    <pd:startY>114</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <param>
+                <pfx5:ResultSet1>
+                    <xsl:for-each select="$GetProductProfile/ns3:result/ns3:records[1]">
+                        <pfx5:Record1>
+                            <pfx5:AccountID>
+                                <xsl:value-of select="ns3:Account_ID__c"/>
+                            </pfx5:AccountID>
+                            <pfx5:ProductProfileID>
+                                <xsl:value-of select="ns3:ID"/>
+                            </pfx5:ProductProfileID>
+                            <pfx5:ProfileName>
+                                <xsl:value-of select="ns3:TS_Profile_Name__c"/>
+                            </pfx5:ProfileName>
+                            <pfx5:ProductName>
+                                <xsl:value-of select="ns3:TS_Product_Name__c"/>
+                            </pfx5:ProductName>
+                            <pfx5:ProductVersion>
+                                <xsl:value-of select="ns3:TS_Product_Version__c"/>
+                            </pfx5:ProductVersion>
+                            <pfx5:ProductLanguage>
+                                <xsl:value-of select="ns3:TS_Product_Language__c"/>
+                            </pfx5:ProductLanguage>
+                            <pfx5:OS>
+                                <xsl:value-of select="ns3:TS_OS__c"/>
+                            </pfx5:OS>
+                            <pfx5:OSLanguage>
+                                <xsl:value-of select="ns3:TS_OS_Language__c"/>
+                            </pfx5:OSLanguage>
+                            <pfx5:ServicePack>
+                                <xsl:value-of select="ns3:TS_Service_Pack__c"/>
+                            </pfx5:ServicePack>
+                            <pfx5:ScanEngineVersion>
+                                <xsl:value-of select="ns3:TS_Scan_Engine_Version__c"/>
+                            </pfx5:ScanEngineVersion>
+                            <pfx5:PatternType>
+                                <xsl:value-of select="ns3:TS_Pattern_Type__c"/>
+                            </pfx5:PatternType>
+                            <pfx5:OfficeScanServiceGUID>
+                                <xsl:value-of select="ns3:TS_Office_Scan_Service_GUID__c"/>
+                            </pfx5:OfficeScanServiceGUID>
+                            <pfx5:LastUpdatedDate>
+                                <xsl:value-of select="ns3:LastModifiedDate"/>
+                            </pfx5:LastUpdatedDate>
+                        </pfx5:Record1>
+                    </xsl:for-each>
+                </pfx5:ResultSet1>
+            </param>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="param" type="pfx5:GetProductProfileResultType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>771</pd:endX>
+    <pd:endY>117</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx7:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1423559235236</pd:targetNamespace>
+    <pd:activity name="Call Log Process Rq">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>207</pd:x>
+        <pd:y>123</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <pfx8:DBLogger>
+                    <xsl:for-each select="$Start/pfx4:SFDC_GetProductProfileRq/pfx4:RequestHeader">
+                        <pfx8:MessageHeader>
+                            <pfx8:MessageKey>
+                                <xsl:value-of select="ns2:MessageKey"/>
+                            </pfx8:MessageKey>
+                            <pfx8:ServiceName>
+                                <xsl:value-of select="ns2:ServiceName"/>
+                            </pfx8:ServiceName>
+                            <pfx8:ServiceVersion>
+                                <xsl:value-of select="ns2:ServiceVersion"/>
+                            </pfx8:ServiceVersion>
+                            <pfx8:SourceID>
+                                <xsl:value-of select="ns2:SourceID"/>
+                            </pfx8:SourceID>
+                            <xsl:if test="ns2:RqTimestamp">
+                                <pfx8:RqTimestamp>
+                                    <xsl:value-of select="ns2:RqTimestamp"/>
+                                </pfx8:RqTimestamp>
+                            </xsl:if>
+                        </pfx8:MessageHeader>
+                    </xsl:for-each>
+                    <pfx8:MessageBody>
+                        <xsl:copy-of select="$Start/pfx4:SFDC_GetProductProfileRq/pfx4:RequestBody/ancestor-or-self::*/namespace::node()"/>
+                        <xsl:copy-of select="$Start/pfx4:SFDC_GetProductProfileRq/pfx4:RequestBody/@*"/>
+                        <xsl:copy-of select="$Start/pfx4:SFDC_GetProductProfileRq/pfx4:RequestBody/node()"/>
+                    </pfx8:MessageBody>
+                </pfx8:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;INPUT XML: &quot;,tib:render-xml($Start/pfx4:SFDC_GetProductProfileRq))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'SFDC_GetProductProfileRQ'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>196</pd:x>
+        <pd:y>283</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>414</pd:x>
+        <pd:y>283</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns4:ErrorReport/Data/*" element="pfx7:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns5:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Query/pfx7:Error)">
+                            <pfx7:Error>
+                                <pfx7:error_code>
+                                    <xsl:value-of select="&quot;GetProductProfileFail&quot;"/>
+                                </pfx7:error_code>
+                                <pfx7:stack_trace>
+                                    <xsl:value-of select="$_error_Query/pfx7:Error/pfx7:stack_trace"/>
+                                </pfx7:stack_trace>
+                                <pfx7:process_stack>
+                                    <xsl:value-of select="$_error_Query/pfx7:Error/pfx7:process_stack"/>
+                                </pfx7:process_stack>
+                                <xsl:if test="$_error_Query/pfx7:Error/pfx7:error_message">
+                                    <pfx7:error_message>
+                                        <xsl:value-of select="$_error_Query/pfx7:Error/pfx7:error_message"/>
+                                    </pfx7:error_message>
+                                </xsl:if>
+                            </pfx7:Error>
+                        </xsl:when>
+                        <xsl:when test="exists($_error/ns4:ErrorReport/Data/pfx7:Error)">
+                            <xsl:copy-of select="$_error/ns4:ErrorReport/Data/pfx7:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx7:Error>
+                                <pfx7:error_code>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/MsgCode"/>
+                                </pfx7:error_code>
+                                <pfx7:stack_trace>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                                </pfx7:stack_trace>
+                                <pfx7:process_stack>
+                                    <xsl:value-of select="$_error/ns4:ErrorReport/ProcessStack"/>
+                                </pfx7:process_stack>
+                                <xsl:if test="$_error/ns4:ErrorReport/Msg">
+                                    <pfx7:error_message>
+                                        <xsl:value-of select="$_error/ns4:ErrorReport/Msg"/>
+                                    </pfx7:error_message>
+                                </xsl:if>
+                            </pfx7:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetProductProfile">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>601</pd:x>
+        <pd:y>120</pd:y>
+        <config>
+            <element ref="ns3:result"/>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Query/Output/ns:queryAllResponse/ns:result/ns:records" type="ns1:TS_Product_Profile__c"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns3:result>
+                <xsl:for-each select="$Query/Output/ns:queryAllResponse/ns:result/ns:records">
+                    <ns3:records>
+                        <ns3:ID>
+                            <xsl:value-of select="ns1:Id"/>
+                        </ns3:ID>
+                        <xsl:if test="ns1:Account_ID__c">
+                            <ns3:Account_ID__c>
+                                <xsl:value-of select="ns1:Account_ID__c"/>
+                            </ns3:Account_ID__c>
+                        </xsl:if>
+                        <xsl:if test="ns1:TS_OS_Language__c">
+                            <ns3:TS_OS_Language__c>
+                                <xsl:value-of select="ns1:TS_OS_Language__c"/>
+                            </ns3:TS_OS_Language__c>
+                        </xsl:if>
+                        <xsl:if test="ns1:TS_OS__c">
+                            <ns3:TS_OS__c>
+                                <xsl:value-of select="ns1:TS_OS__c"/>
+                            </ns3:TS_OS__c>
+                        </xsl:if>
+                        <xsl:if test="ns1:TS_Pattern_Type__c">
+                            <ns3:TS_Pattern_Type__c>
+                                <xsl:value-of select="ns1:TS_Pattern_Type__c"/>
+                            </ns3:TS_Pattern_Type__c>
+                        </xsl:if>
+                        <xsl:if test="ns1:TS_Product_Language__c">
+                            <ns3:TS_Product_Language__c>
+                                <xsl:value-of select="ns1:TS_Product_Language__c"/>
+                            </ns3:TS_Product_Language__c>
+                        </xsl:if>
+                        <xsl:if test="ns1:TS_Product_Name__c">
+                            <ns3:TS_Product_Name__c>
+                                <xsl:value-of select="ns1:TS_Product_Name__c"/>
+                            </ns3:TS_Product_Name__c>
+                        </xsl:if>
+                        <xsl:if test="ns1:TS_Product_Version__c">
+                            <ns3:TS_Product_Version__c>
+                                <xsl:value-of select="ns1:TS_Product_Version__c"/>
+                            </ns3:TS_Product_Version__c>
+                        </xsl:if>
+                        <xsl:if test="ns1:TS_Profile_Name__c">
+                            <ns3:TS_Profile_Name__c>
+                                <xsl:value-of select="ns1:TS_Profile_Name__c"/>
+                            </ns3:TS_Profile_Name__c>
+                        </xsl:if>
+                        <xsl:if test="ns1:TS_Scan_Engine_Version__c">
+                            <ns3:TS_Scan_Engine_Version__c>
+                                <xsl:value-of select="ns1:TS_Scan_Engine_Version__c"/>
+                            </ns3:TS_Scan_Engine_Version__c>
+                        </xsl:if>
+                        <xsl:if test="ns1:TS_Service_Pack__c">
+                            <ns3:TS_Service_Pack__c>
+                                <xsl:value-of select="ns1:TS_Service_Pack__c"/>
+                            </ns3:TS_Service_Pack__c>
+                        </xsl:if>
+                        <ns3:TS_Office_Scan_Service_GUID__c>
+                            <xsl:value-of select="ns1:TS_Office_Scan_Service_GUID__c"/>
+                        </ns3:TS_Office_Scan_Service_GUID__c>
+                        <xsl:if test="ns1:LastModifiedDate">
+                            <ns3:LastModifiedDate>
+                                <xsl:value-of select="ns1:LastModifiedDate"/>
+                            </ns3:LastModifiedDate>
+                        </xsl:if>
+                    </ns3:records>
+                </xsl:for-each>
+            </ns3:result>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Login">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>335</pd:x>
+        <pd:y>119</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/Login.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Query">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>462</pd:x>
+        <pd:y>118</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/Query.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Sessionid>
+                    <xsl:value-of select="$Login/root/SessionID"/>
+                </Sessionid>
+                <QueryString>
+                    <xsl:value-of select="concat(&quot;select ID,Name,LastModifiedDate,TS_Profile_Name__c,TS_Product_Name__c,TS_Product_Version__c,TS_Product_Language__c,TS_Scan_Engine_Version__c,TS_Pattern_Type__c,TS_OS__c,Account_ID__c,TS_Office_Scan_Service_GUID__c,TS_OS_Language__c,TS_Service_Pack__c from TS_Product_Profile__c where ID='&quot;,$Start/pfx4:SFDC_GetProductProfileRq/pfx4:RequestBody/pfx4:ProductProfileID,&quot;'&quot;)"/>
+                </QueryString>
+                <ServerURL>
+                    <xsl:value-of select="$Login/root/ServerURL"/>
+                </ServerURL>
+                <messagekey>
+                    <xsl:value-of select="$Start/pfx4:SFDC_GetProductProfileRq/pfx4:RequestHeader/ns2:MessageKey"/>
+                </messagekey>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call Log Process Rq</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Query</pd:from>
+        <pd:to>GetProductProfile</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetProductProfile</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Log Process Rq</pd:from>
+        <pd:to>Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Login</pd:from>
+        <pd:to>Query</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

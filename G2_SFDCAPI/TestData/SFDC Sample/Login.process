@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://stgspnsupport.trendmicro.com/" xmlns:pfx="urn:enterprise.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <pd:name>TestData/SFDC Sample/Login.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>127</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <SessionID>
+                <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx:loginResponse/pfx:result/pfx:sessionId"/>
+            </SessionID>
+            <xsl:if test="not(($SOAPRequestReply/outputMessage/pfx:loginResponse/pfx:result/pfx:serverUrl/@xsi:nil=(&quot;true&quot;)) or ($SOAPRequestReply/outputMessage/pfx:loginResponse/pfx:result/pfx:serverUrl/@xsi:nil=(&quot;1&quot;)))">
+                <ServerURL>
+                    <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx:loginResponse/pfx:result/pfx:serverUrl"/>
+                </ServerURL>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="SessionID" type="xsd:string"/>
+                    <xsd:element name="ServerURL" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>450</pd:endX>
+    <pd:endY>63</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1412823732693</pd:targetNamespace>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>287</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>login</operation>
+            <soapAction/>
+            <endpointURL>%%Services/G2Service/SFDCLogin/EndpointURL%%</endpointURL>
+            <requireBasicAuth>false</requireBasicAuth>
+            <policies>
+                <incomingAttachmentPolicy>
+                    <writeToFile>false</writeToFile>
+                </incomingAttachmentPolicy>
+            </policies>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>false</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx:login>
+                    <pfx:username>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/username"/>
+                    </pfx:username>
+                    <pfx:password>
+                        <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/password, $_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/securitytoken)"/>
+                    </pfx:password>
+                </pfx:login>
+                <ns:_configData>
+                    <endpointURL>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDCLogin/EndpointURL"/>
+                    </endpointURL>
+                </ns:_configData>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

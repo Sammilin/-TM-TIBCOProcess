@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx="urn:enterprise.soap.sforce.com" xmlns:ns2="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ref="http://www.tibco.com/tnt/utilitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="GCC Common WS" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.siebel.com/xml/RAEM%20Internal%20Product%20Interface" xmlns:pfx3="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:pfx2="urn:sobject.enterprise.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="urn:enterprise.soap.sforce.com" schemaLocation="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <pd:name>TestData/SFDC Sample/Query.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Sessionid" type="xsd:token"/>
+                    <xsd:element name="QueryString" type="xsd:string"/>
+                    <xsd:element name="ServerURL" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>153</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings>
+        <Output>
+            <pfx:queryAllResponse>
+                <xsl:copy-of select="$SOAPQuery/outputMessage/pfx:queryResponse/pfx:result"/>
+            </pfx:queryAllResponse>
+        </Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:queryAllResponse"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>495</pd:endX>
+    <pd:endY>58</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1412823732693</pd:targetNamespace>
+    <pd:activity name="SOAPQuery">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>301</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>query</operation>
+            <soapAction/>
+            <endpointURL>%%Services/G2Service/EndpointURL%%</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+            <useProxy>true</useProxy>
+            <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx:SessionHeader>
+                            <pfx:sessionId>
+                                <xsl:value-of select="$Start/root/Sessionid"/>
+                            </pfx:sessionId>
+                        </pfx:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.QueryOptions/>
+                    <Header.MruHeader/>
+                    <Header.PackageVersionHeader/>
+                </headers>
+                <pfx:query>
+                    <pfx:queryString>
+                        <xsl:value-of select="$Start/root/QueryString"/>
+                    </pfx:queryString>
+                </pfx:query>
+                <ns2:_configData>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($Start/root/ServerURL) !=&quot;&quot;">
+                            <xsl:if test="$Start/root/ServerURL">
+                                <endpointURL>
+                                    <xsl:value-of select="$Start/root/ServerURL"/>
+                                </endpointURL>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <endpointURL>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/G2Service/EndpointURL"/>
+                            </endpointURL>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns2:_configData>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SOAPCreateCase">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>307</pd:x>
+        <pd:y>153</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>create</operation>
+            <soapAction/>
+            <endpointURL>https://test.salesforce.com/services/Soap/c/31.0/0DFJ00000008PGP</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx:create>
+                    <pfx:sObjects xsi:type="pfx2:Case"/>
+                </pfx:create>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SOAPUpdateCase">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>310</pd:x>
+        <pd:y>251</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>update</operation>
+            <soapAction/>
+            <endpointURL>https://test.salesforce.com/services/Soap/c/31.0/0DFJ00000008PGP</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx:update>
+                    <pfx:sObjects xsi:type="pfx2:Case"/>
+                </pfx:update>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPQuery</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPCreateCase</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>1=2</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPCreateCase</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPUpdateCase</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>1=2</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPUpdateCase</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:TM1="java://com.trendmicro.TMBWUtilities" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:ns41="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/XSD/Schema.xsd8" xmlns:pfx31="JP Common WS" xmlns:pfx5="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx4="http://www.tibco.com/schemas/GCCPortal/XSD/Neuron/EvnetMsg/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pfx2="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" xmlns:pfx6="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRs" xmlns:ns15="http://tempuri.org/" xmlns:ns9="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd2" xmlns:ns5="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns12="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Account.xsd" xmlns:ns31="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/XSD/Schema.xsd7" xmlns:ns6="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns13="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:ns10="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetAccountActivityId.xsd" xmlns:ns7="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/XSD/Schema.xsd9" xmlns:pfx="http://trend.com.tw/PSCWSDL" xmlns:ns11="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns8="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd6" xmlns:ns51="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/schemas/ACSService2.1/ExternalServices/ToACS/2.1 Subprocesses/Functions/XSD/GetNeuronServiceMainByServiceID.xsd" xmlns:ns1="http://www.trendmicro.com/ESB/FRS/schemas/SMF" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRq" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/SMF.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/EvnetMsg/SubmittingInput.xsd" schemaLocation="/XSD/Common/EvnetMsg/SubmittingInput.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SMF" schemaLocation="/XSD/Common/EvnetMsg/OnCompleted.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch" schemaLocation="/XSD/Common/SRFDispatch.xsd"/>
+    <pd:name>Services/G2Service/ShareProcess/GetTQAMailTemplate.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element name="JsonData" type="xsd:string"/>
+                    <xsd:element name="TmpType" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>55</pd:startX>
+    <pd:startY>82</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Template>
+                <xsl:value-of select="$GetTemplateRenderResult-XML/GetTemplateRenderResult/Result"/>
+            </Template>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Template" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>781</pd:endX>
+    <pd:endY>87</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="ns6:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1403150137286</pd:targetNamespace>
+    <pd:activity name="GetTemplateRenderResult">
+        <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+        <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+        <pd:x>312</pd:x>
+        <pd:y>83</pd:y>
+        <config>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <serverhost>%%Services/G2Service/ShareProcess/MailTQA/HOST%%</serverhost>
+            <serverport>%%Services/G2Service/ShareProcess/MailTQA/PORT%%</serverport>
+            <customField>
+                <row>
+                    <attribute>TypeID</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>required</attributeCard>
+                </row>
+                <row>
+                    <attribute>JSONData</attribute>
+                    <attributeType>string</attributeType>
+                    <attributeCard>required</attributeCard>
+                </row>
+            </customField>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+            <OutputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </OutputHeaders>
+        </config>
+        <pd:inputBindings>
+            <RequestActivityInput>
+                <Host>
+                    <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/Services/G2Service/ShareProcess/MailTQA/HOST"/>
+                </Host>
+                <Port>
+                    <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/Services/G2Service/ShareProcess/MailTQA/PORT"/>
+                </Port>
+                <Method>
+                    <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/Services/G2Service/ShareProcess/MailTQA/GetTemplateRenderResult/Method"/>
+                </Method>
+                <RequestURI>
+                    <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/Services/G2Service/ShareProcess/MailTQA/GetTemplateRenderResult/requestURI"/>
+                </RequestURI>
+                <parameters>
+                    <TypeID>
+                        <xsl:value-of select="$Start/root/TmpType"/>
+                    </TypeID>
+                    <JSONData>
+                        <xsl:value-of select="TM1:URLEncode($Start/root/JsonData)"/>
+                    </JSONData>
+                </parameters>
+            </RequestActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetTemplateRenderResult XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>450</pd:x>
+        <pd:y>92</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="GetTemplateRenderResult">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:all>
+                                <xsd:element name="Code" type="xsd:string"/>
+                                <xsd:element name="Msg" type="xsd:string"/>
+                                <xsd:element name="Result" type="xsd:string"/>
+                            </xsd:all>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="concat(&quot;&lt;GetTemplateRenderResult>&quot;,TM1:parseJSONtoXML($GetTemplateRenderResult/RequestActivityOutput/asciiContent,1), &quot;&lt;/GetTemplateRenderResult>&quot;)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>180</pd:x>
+        <pd:y>284</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>348</pd:x>
+        <pd:y>284</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns51:ErrorReport/Data/*" element="ns6:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx1:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns51:ErrorReport/Data/ns6:Error)">
+                            <ns6:Error>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim($_error/ns51:ErrorReport/Data/ns6:Error/ns6:src) =&quot;&quot;">
+                                        <ns6:src>
+                                            <xsl:value-of select="$_error/ns51:ErrorReport/ProcessStack"/>
+                                        </ns6:src>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <ns6:src>
+                                            <xsl:value-of select="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:src"/>
+                                        </ns6:src>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <ns6:error_code>
+                                    <xsl:value-of select="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:error_code"/>
+                                </ns6:error_code>
+                                <ns6:error_message>
+                                    <xsl:value-of select="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:error_message"/>
+                                </ns6:error_message>
+                                <xsl:choose>
+                                    <xsl:when test="tib:trim($_error/ns51:ErrorReport/Data/ns6:Error/ns6:stack_trace) =&quot;&quot;">
+                                        <ns6:stack_trace>
+                                            <xsl:value-of select="$_error/ns51:ErrorReport/StackTrace"/>
+                                        </ns6:stack_trace>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <ns6:stack_trace>
+                                            <xsl:value-of select="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:stack_trace"/>
+                                        </ns6:stack_trace>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:if test="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:traceMessageKey">
+                                    <ns6:traceMessageKey>
+                                        <xsl:value-of select="$_error/ns51:ErrorReport/Data/ns6:Error/ns6:traceMessageKey"/>
+                                    </ns6:traceMessageKey>
+                                </xsl:if>
+                            </ns6:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns6:Error>
+                                <ns6:src>
+                                    <xsl:value-of select="$_error/ns51:ErrorReport/ProcessStack"/>
+                                </ns6:src>
+                                <ns6:error_code>
+                                    <xsl:value-of select="$_error/ns51:ErrorReport/MsgCode"/>
+                                </ns6:error_code>
+                                <ns6:error_message>
+                                    <xsl:value-of select="$_error/ns51:ErrorReport/Msg"/>
+                                </ns6:error_message>
+                                <ns6:stack_trace>
+                                    <xsl:value-of select="$_error/ns51:ErrorReport/StackTrace"/>
+                                </ns6:stack_trace>
+                            </ns6:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>176</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns11:DBLogger>
+                    <ns11:MessageHeader>
+                        <ns11:MessageKey>
+                            <xsl:value-of select="$Start/root/MessageKey"/>
+                        </ns11:MessageKey>
+                        <ns11:ServiceName>
+                            <xsl:value-of select="&quot;GetTQAMailTemplate&quot;"/>
+                        </ns11:ServiceName>
+                        <ns11:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns11:ServiceVersion>
+                        <ns11:SourceID>
+                            <xsl:value-of select="&quot;Portal&quot;"/>
+                        </ns11:SourceID>
+                        <ns11:RqTimestamp>
+                            <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                        </ns11:RqTimestamp>
+                    </ns11:MessageHeader>
+                    <ns11:MessageBody>
+                        <xsl:copy-of select="$Start/root"/>
+                    </ns11:MessageBody>
+                </ns11:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;GetTQAMailTemplate Start&quot;, $Start/root/MessageKey)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;GetTQAMailTemplateST &quot;"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log-Process-end">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>663</pd:x>
+        <pd:y>84</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns11:DBLogger>
+                    <ns11:MessageHeader>
+                        <ns11:MessageKey>
+                            <xsl:value-of select="$Start/root/MessageKey"/>
+                        </ns11:MessageKey>
+                        <ns11:ServiceName>
+                            <xsl:value-of select="&quot;GetTQAMailTemplate&quot;"/>
+                        </ns11:ServiceName>
+                        <ns11:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns11:ServiceVersion>
+                        <ns11:SourceID>
+                            <xsl:value-of select="&quot;Portal&quot;"/>
+                        </ns11:SourceID>
+                        <ns11:RqTimestamp>
+                            <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                        </ns11:RqTimestamp>
+                        <ns11:RsTimestamp>
+                            <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                        </ns11:RsTimestamp>
+                    </ns11:MessageHeader>
+                    <ns11:MessageBody>
+                        <xsl:copy-of select="$GetTemplateRenderResult-XML/GetTemplateRenderResult"/>
+                    </ns11:MessageBody>
+                </ns11:DBLogger>
+                <message>
+                    <xsl:value-of select="&quot;sucess&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;GetTQAMailTemplate Rs&quot;"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call GetTemplateRenderResult Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>454</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx1:ActivityInput>
+                <data>
+                    <ns6:Error>
+                        <ns6:src>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns6:src>
+                        <ns6:error_code>
+                            <xsl:value-of select="$GetTemplateRenderResult-XML/GetTemplateRenderResult/Code"/>
+                        </ns6:error_code>
+                        <ns6:error_message>
+                            <xsl:value-of select="$GetTemplateRenderResult-XML/GetTemplateRenderResult/Msg"/>
+                        </ns6:error_message>
+                        <ns6:stack_trace>
+                            <xsl:value-of select="$_processContext/ns51:ProcessContext/TrackingInfo[1]"/>
+                        </ns6:stack_trace>
+                        <ns6:traceMessageKey>
+                            <xsl:value-of select="$Start/root/MessageKey"/>
+                        </ns6:traceMessageKey>
+                    </ns6:Error>
+                </data>
+            </pfx1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetTemplateRenderResult</pd:from>
+        <pd:to>GetTemplateRenderResult XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetTemplateRenderResult XML</pd:from>
+        <pd:to>Log-Process-end</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$GetTemplateRenderResult-XML/GetTemplateRenderResult/Code=100</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>GetTemplateRenderResult</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-Process-end</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetTemplateRenderResult XML</pd:from>
+        <pd:to>Call GetTemplateRenderResult Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

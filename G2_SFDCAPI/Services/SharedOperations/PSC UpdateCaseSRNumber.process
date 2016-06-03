@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="GCC Common WS" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pfx2="JP Common WS" xmlns:pfx="http://tempuri.org/">
+    <wsdl:import namespace="http://tempuri.org/"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Provider/PSCCaseWS.wsdl"/>
+    <pd:name>Services/SharedOperations/PSC UpdateCaseSRNumber.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType wsMsgRef="pfx:UpdateCaseSRNumberSoapIn"/>
+    <pd:startX>158</pd:startX>
+    <pd:startY>158</pd:startY>
+    <pd:returnBindings>
+        <pfx:UpdateCaseSRNumberSoapOut>
+            <parameters>
+                <xsl:copy-of select="$SOAPRequestReply/outputMessage/pfx:UpdateCaseSRNumberResponse"/>
+            </parameters>
+        </pfx:UpdateCaseSRNumberSoapOut>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType wsMsgRef="pfx:UpdateCaseSRNumberSoapOut"/>
+    <pd:endX>459</pd:endX>
+    <pd:endY>158</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1326352487124</pd:targetNamespace>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>298</pd:x>
+        <pd:y>157</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:PSCCaseWS</service>
+            <servicePort>PSCCaseWSSoap</servicePort>
+            <operation>UpdateCaseSRNumber</operation>
+            <soapAction>http://tempuri.org/UpdateCaseSRNumber</soapAction>
+            <endpointURL>http://qapscadm.trendmicro.com:8080/PSCCaseWS.asmx</endpointURL>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <xsl:copy-of select="$Start/pfx:UpdateCaseSRNumberSoapIn/parameters/pfx:UpdateCaseSRNumber"/>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>361</pd:x>
+        <pd:y>56</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat('Updade PSC Case Input: ',tib:render-xml($Start/pfx:UpdateCaseSRNumberSoapIn),&#xA;&quot;\n Output : &quot;,$SOAPRequestReply/outputMessage/pfx:UpdateCaseSRNumberResponse/pfx:UpdateCaseSRNumberResult,&#xA;&quot;\PortalSourceID : &quot;,$Start/pfx:UpdateCaseSRNumberSoapIn/parameters/pfx:UpdateCaseSRNumber/pfx:PortalSourceID)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="'UpdatePSC-Case'"/>
+                </msgCode>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

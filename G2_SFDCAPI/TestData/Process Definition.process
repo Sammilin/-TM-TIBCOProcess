@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns5="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMTaskEscAct.xsd" xmlns:ns6="http://www.tibco.com/pe/EngineTypes" xmlns:ns7="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="GCC Common WS" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns1="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:ns4="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="AMSS Task Common WS" xmlns:pfx4="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:pfx2="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx9="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx8="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:pfx7="http://www.trendmicro.com/PSC/PSC_AMTaskEscActRq" xmlns:pfx6="GCC_U_Corporate_SR_General_Operations_Service">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_AMTaskEscActRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_AMTaskEscActRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseActRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <wsdl:import namespace="GCC Common WS"/>
+    <wsdl:import namespace="GCC_U_Corporate_SR_General_Operations_Service" location="/WSDL/Provider/GCC_U_Corporate_SR_General_Operations_Service_GCC_U_Corporate_SR_General_Operations_Service.WSDL.wsdl"/>
+    <wsdl:import namespace="AMSS Task Common WS" location="/WSDL/Provider/AMSS Task Common WS_AMSS Task Common WS.WSDL.wsdl"/>
+    <wsdl:import namespace="GCC Common WS" location="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <pd:name>TestData/Process Definition.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="count" type="xsd:int" minOccurs="0"/>
+                    <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>90</pd:startX>
+    <pd:startY>94</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>381</pd:endX>
+    <pd:endY>97</pd:endY>
+    <pd:errorSchemas>
+        <Schema0 ref="pfx9:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1307606427727</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>228</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PSCService/PSC_AMTaskEscAct/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <pfx4:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </pfx4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>210</pd:x>
+        <pd:y>151</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx7:PSC_AMTaskEscActRq"/>
+        </config>
+        <pd:inputBindings>
+            <pfx7:PSC_AMTaskEscActRq>
+                <pfx7:RequestHeader>
+                    <ns2:MessageKey>
+                        <xsl:value-of select="'70c17085-1e9b-4661-924e-7653ee98e12d'"/>
+                    </ns2:MessageKey>
+                    <ns2:ServiceName>
+                        <xsl:value-of select="'PSC_AMTaskEscAct'"/>
+                    </ns2:ServiceName>
+                    <ns2:ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ns2:ServiceVersion>
+                    <ns2:SourceID>
+                        <xsl:value-of select="'BW-Resend'"/>
+                    </ns2:SourceID>
+                    <ns2:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns2:RqTimestamp>
+                </pfx7:RequestHeader>
+                <pfx7:RequestBody>
+                    <ns5:AMSSTask>
+                        <ns5:SHA1>
+                            <xsl:value-of select="'F3270CFCE7E7CC7807FF4B9C7F878F6F636C3C88'"/>
+                        </ns5:SHA1>
+                        <ns5:SRNumber>
+                            <xsl:value-of select="'1-1-798514182'"/>
+                        </ns5:SRNumber>
+                        <ns5:FirstName>
+                            <xsl:value-of select="'PSC'"/>
+                        </ns5:FirstName>
+                        <ns5:LastName>
+                            <xsl:value-of select="'TESTER'"/>
+                        </ns5:LastName>
+                        <ns5:FTPLocation>
+                            <xsl:value-of select="'http://sample.ctis.trendmicro.com/filedownload.ashx?serviceid=70c17085-1e9b-4661-924e-7653ee98e12d&amp;filename=ATTK Sample with suspicious files.zip'"/>
+                        </ns5:FTPLocation>
+                        <ns5:SourceReferenceNumber>
+                            <xsl:value-of select="'1-1-798514182'"/>
+                        </ns5:SourceReferenceNumber>
+                        <ns5:SourceId>
+                            <xsl:value-of select="'70c17085-1e9b-4661-924e-7653ee98e12d'"/>
+                        </ns5:SourceId>
+                        <ns5:Title>
+                            <xsl:value-of select="'[TEST][TEST][TEST][TEST][TEST][TEST]'"/>
+                        </ns5:Title>
+                        <ns5:PatternBranch>
+                            <xsl:value-of select="'Conventional Pattern'"/>
+                        </ns5:PatternBranch>
+                        <ns5:Type>
+                            <xsl:value-of select="'SIC Log Analysis'"/>
+                        </ns5:Type>
+                        <ns5:Country>
+                            <xsl:value-of select="'USA'"/>
+                        </ns5:Country>
+                        <ns5:FileName>
+                            <xsl:value-of select="'ATTK Sample with suspicious files.zip'"/>
+                        </ns5:FileName>
+                        <ns5:OS>
+                            <xsl:value-of select="'Windows 7 32-Bit'"/>
+                        </ns5:OS>
+                        <ns5:Entitlement>
+                            <xsl:value-of select="'Technical Account Management Services - Silver'"/>
+                        </ns5:Entitlement>
+                        <ns5:TAMEmail>
+                            <xsl:value-of select="'jenny_shieh@trend.com.tw'"/>
+                        </ns5:TAMEmail>
+                        <ns5:Priority>
+                            <xsl:value-of select="'P2'"/>
+                        </ns5:Priority>
+                        <ns5:Source>
+                            <xsl:value-of select="'GCCU'"/>
+                        </ns5:Source>
+                        <ns5:SubmitDate>
+                            <xsl:value-of select="'07/27/2013 17:30:07'"/>
+                        </ns5:SubmitDate>
+                        <ns5:Product>
+                            <xsl:value-of select="'ENCRYPTION FOR EMAIL'"/>
+                        </ns5:Product>
+                        <ns5:FileSize>
+                            <xsl:value-of select="''"/>
+                        </ns5:FileSize>
+                        <ns5:Email>
+                            <xsl:value-of select="'alloftrendpscsystemadmin@dl.trendmicro.com'"/>
+                        </ns5:Email>
+                        <ns5:Description>
+                            <xsl:value-of select="'http://ctis.trendmicro.com/index.html?e_argument=&amp;sessionid='"/>
+                        </ns5:Description>
+                        <ns5:Region>
+                            <xsl:value-of select="'NABU'"/>
+                        </ns5:Region>
+                        <ns5:TaskLabel>
+                            <xsl:value-of select="'PSP_Auto'"/>
+                        </ns5:TaskLabel>
+                        <ns5:ServiceLevel>
+                            <xsl:value-of select="'PS2'"/>
+                        </ns5:ServiceLevel>
+                    </ns5:AMSSTask>
+                    <ns5:EscalationAct>
+                        <ns5:AMSSTaskType>
+                            <xsl:value-of select="'SIC Log Analysis'"/>
+                        </ns5:AMSSTaskType>
+                        <ns5:Description>
+                            <xsl:value-of select="'http://ctis.trendmicro.com/index.html?e_argument=&amp;sessionid='"/>
+                        </ns5:Description>
+                        <ns5:FileLocation>
+                            <xsl:value-of select="'http://sample.ctis.trendmicro.com/filedownload.ashx?serviceid=70c17085-1e9b-4661-924e-7653ee98e12d&amp;filename=ATTK Sample with suspicious files.zip'"/>
+                        </ns5:FileLocation>
+                        <ns5:IntegrationSourceId>
+                            <xsl:value-of select="''"/>
+                        </ns5:IntegrationSourceId>
+                        <ns5:NeuronId>
+                            <xsl:value-of select="'70c17085-1e9b-4661-924e-7653ee98e12d'"/>
+                        </ns5:NeuronId>
+                        <ns5:OriginalFileName>
+                            <xsl:value-of select="'ATTK Sample with suspicious files.zip'"/>
+                        </ns5:OriginalFileName>
+                        <ns5:SHA1>
+                            <xsl:value-of select="'F3270CFCE7E7CC7807FF4B9C7F878F6F636C3C8'"/>
+                        </ns5:SHA1>
+                        <ns5:Source>
+                            <xsl:value-of select="'GCCU'"/>
+                        </ns5:Source>
+                        <ns5:Title>
+                            <xsl:value-of select="'[TEST][TEST][TEST][TEST][TEST][TEST]'"/>
+                        </ns5:Title>
+                        <ns5:Type>
+                            <xsl:value-of select="'AMSS Task Created'"/>
+                        </ns5:Type>
+                        <ns5:sSRNumber>
+                            <xsl:value-of select="'1-1-798514182'"/>
+                        </ns5:sSRNumber>
+                        <ns5:sIntegrationSource>
+                            <xsl:value-of select="'AMSS'"/>
+                        </ns5:sIntegrationSource>
+                    </ns5:EscalationAct>
+                    <ns5:UpdateMalwareTaskInput>
+                        <ns5:PortalSourceID>
+                            <xsl:value-of select="'70c17085-1e9b-4661-924e-7653ee98e12d'"/>
+                        </ns5:PortalSourceID>
+                        <ns5:SRNumber>
+                            <xsl:value-of select="'1-1-798514182'"/>
+                        </ns5:SRNumber>
+                        <ns5:ActivityRowID>
+                            <xsl:value-of select="''"/>
+                        </ns5:ActivityRowID>
+                    </ns5:UpdateMalwareTaskInput>
+                    <ns5:RetryTime>
+                        <xsl:value-of select="'1'"/>
+                    </ns5:RetryTime>
+                    <ns5:RequestSource>
+                        <xsl:value-of select="'Neuron'"/>
+                    </ns5:RequestSource>
+                </pfx7:RequestBody>
+            </pfx7:PSC_AMTaskEscActRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>206</pd:x>
+        <pd:y>257</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="param1" type="xsd:string"/>
+                            <xsd:element name="IsNumber" type="xsd:string"/>
+                            <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <param1>
+                    <xsl:value-of select="tib:base64-to-string($Start/root/param)"/>
+                </param1>
+                <IsNumber>
+                    <xsl:value-of select="concat('MonthlyUsageReport_',tib:format-date('yyyyMMdd', current-date()),&quot;_&quot; ,tib:timestamp())"/>
+                </IsNumber>
+                <param>
+                    <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd&quot;,tib:current-dateTime-timezone(0,0) )"/>
+                </param>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>309</pd:x>
+        <pd:y>186</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx9:Error"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="'&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>  &lt;ns0:Error xmlns:ns0=&quot;http://www.trendmicro.com/ESB/schemas/error&quot;>     &lt;ns0:src>Utilities/Generic_HTTP_SOAP_Client/V1.0/Main.process/Call GetClientInfo Process>Utilities/Generic_HTTP_SOAP_Client/V1.0/GetClientInfo.process/Generate Error&lt;/ns0:src>     &lt;ns0:error_code>-&lt;/ns0:error_code>     &lt;ns0:error_message>Missing ClinetInfo in D:\TIBCO_PROJECT\DealRegistrationProperties\SiebelClient_DEV.xml, ServiceName=BW_CreateAttScript&lt;/ns0:error_message>     &lt;ns0:stack_trace>Job-1180771 Error in [Utilities/Generic_HTTP_SOAP_Client/V1.0/GetClientInfo.process/Generate Error] Missing ClinetInfo in D:\TIBCO_PROJECT\DealRegistrationProperties\SiebelClient_DEV.xml, ServiceName=BW_CreateAttScript&amp;#xD; &#x9;at com.tibco.pe.core.GenerateErrorActivity.eval(GenerateErrorActivity.java:142)&amp;#xD; &#x9;at com.tibco.pe.plugin.Activity.eval(Activity.java:241)&amp;#xD; &#x9;at com.tibco.pe.core.TaskImpl.eval(TaskImpl.java:574)&amp;#xD; &#x9;at com.tibco.pe.core.Job.a(Job.java:712)&amp;#xD; &#x9;at com.tibco.pe.core.Job.k(Job.java:501)&amp;#xD; &#x9;at com.tibco.pe.core.JobDispatcher$JobCourier.a(JobDispatcher.java:249)&amp;#xD; &#x9;at com.tibco.pe.core.JobDispatcher$JobCourier.run(JobDispatcher.java:200)&amp;#xD; &amp;#xD; &lt;/ns0:Error>'"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>147</pd:x>
+        <pd:y>341</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>294</pd:x>
+        <pd:y>341</pd:y>
+        <config>
+            <faultName>Schema0</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns7:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Generate-Error-1/pfx9:Error)">
+                            <xsl:copy-of select="$_error_Generate-Error-1/pfx9:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx9:Error>
+                                <pfx9:src>
+                                    <xsl:value-of select="$_error/ns6:ErrorReport/ProcessStack"/>
+                                </pfx9:src>
+                                <pfx9:error_code>
+                                    <xsl:value-of select="$_error/ns6:ErrorReport/MsgCode"/>
+                                </pfx9:error_code>
+                                <pfx9:error_message>
+                                    <xsl:value-of select="$_error/ns6:ErrorReport/Msg"/>
+                                </pfx9:error_message>
+                                <pfx9:stack_trace>
+                                    <xsl:value-of select="$_error/ns6:ErrorReport/StackTrace"/>
+                                </pfx9:stack_trace>
+                            </pfx9:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns7:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>418</pd:x>
+        <pd:y>242</pd:y>
+        <config>
+            <faultName>Schema0</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns7:ActivityInput>
+                <data>
+                    <pfx9:Error>
+                        <pfx9:src>
+                            <xsl:value-of select="$_error/ns6:ErrorReport/ProcessStack"/>
+                        </pfx9:src>
+                        <pfx9:error_code>
+                            <xsl:value-of select="$_error/ns6:ErrorReport/MsgCode"/>
+                        </pfx9:error_code>
+                        <pfx9:error_message>
+                            <xsl:value-of select="$_error/ns6:ErrorReport/Msg"/>
+                        </pfx9:error_message>
+                        <pfx9:stack_trace>
+                            <xsl:value-of select="$_error/ns6:ErrorReport/StackTrace"/>
+                        </pfx9:stack_trace>
+                    </pfx9:Error>
+                </data>
+            </ns7:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

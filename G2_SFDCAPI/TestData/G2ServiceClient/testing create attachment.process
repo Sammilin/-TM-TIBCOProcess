@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/XSD/G2/Schema.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/G2/SFDC_CreateSRActivityRq.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_CreateSRActivityRq.xsd" schemaLocation="/WSDL/Client/G2XSD/SFDC_CreateSRActivityRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/XSD/G2/Schema.xsd" schemaLocation="/XSD/G2/SFDC_CreateAttachment.xsd"/>
+    <pd:name>TestData/G2ServiceClient/testing create attachment.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1417169464786</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>290</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/G2Service/SFDC_CreateSRCaseAct/V1.0/DestinationQueueAtt%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <Body>
+                    <pfx:Envelope>
+                        <pfx:Body>
+                            <ns1:SFDC_CreateAttachment>
+                                <ns1:TraceMessagekey>
+                                    <xsl:value-of select="TM:getGUID()"/>
+                                </ns1:TraceMessagekey>
+                                <ns1:SRID>
+                                    <xsl:value-of select="&quot;500J0000004moC3IAI&quot;"/>
+                                </ns1:SRID>
+                                <ns1:ActID>
+                                    <xsl:value-of select="&quot;00TJ000000UCDivMAH&quot;"/>
+                                </ns1:ActID>
+                                <ns1:Attachments>
+                                    <ns1:FileName>
+                                        <xsl:value-of select="&quot;http://sample.ctis.trendmicro.com/filedownload.ashx?serviceid=afc60cef-5e56-40fc-a072-b20aa3e172d2&quot;"/>
+                                    </ns1:FileName>
+                                    <ns1:FileURL>
+                                        <xsl:value-of select="&quot;http://sample.ctis.trendmicro.com/filedownload.ashx?serviceid=afc60cef-5e56-40fc-a072-b20aa3e172d2&quot;"/>
+                                    </ns1:FileURL>
+                                    <ns1:FileType>
+                                        <xsl:value-of select="&quot;application/x-zip-compressed&quot;"/>
+                                    </ns1:FileType>
+                                    <ns1:Description>
+                                        <xsl:value-of select="&quot;WOMAN CHILD - CORE 5_encrypted.zip&quot;"/>
+                                    </ns1:Description>
+                                </ns1:Attachments>
+                            </ns1:SFDC_CreateAttachment>
+                        </pfx:Body>
+                    </pfx:Envelope>
+                </Body>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

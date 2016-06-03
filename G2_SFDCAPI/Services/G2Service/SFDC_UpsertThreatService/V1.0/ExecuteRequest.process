@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRs" xmlns:pfx15="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" xmlns:pfx14="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRs" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:pfx13="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRq" xmlns:pfx12="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRs" xmlns:pfx11="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRq" xmlns:pfx10="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRs" xmlns:pfx19="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx18="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:pfx17="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns14="www.tibco.com/plugin/Sleep" xmlns:ns15="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns13="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://www.siebel.com/xml/RAEM%20Internal%20Product%20Interface" xmlns:ns10="http://xmlns.tibco.com/encodings/mime" xmlns:ns11="http://www.tibco.com/schemas/GCCProtal/XSD/G2/SFDC_Account.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx31="urn:enterprise.soap.sforce.com" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx4="http://www.trendmicro.com/ESB/Services/DealRegistration/DealRegistrationRq" xmlns:pfx32="http://tempuri.org/" xmlns:pfx33="http://www.tibco.com/schemas/GCCPortal/WSDL/Client/G2XSD/Schema.xsd" xmlns:pfx3="http://www.trendmicro.com/ESB/Services/OrderCreation/OrderSubmissionRq" xmlns:pfx34="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRq" xmlns:pfx2="http://siebel.com/asi/" xmlns:pfx35="http://www.trendmicro.com/G2/G2_CreateAccountActivityRq" xmlns:pfx9="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRq" xmlns:pfx36="http://www.trendmicro.com/G2/SFDC_CreateAccountActivityRq" xmlns:pfx8="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_QeuryCaseRq" xmlns:pfx37="http://www.trendmicro.com/G2/SFDC_UpsetThreatServiceRq" xmlns:pfx7="JP Common WS" xmlns:pfx38="http://www.trendmicro.com/G2/SFDC_UpsertThreatServiceRq" xmlns:pfx6="http://www.trendmicro.com/ESB/Services/DealRegistration/GMT_InternalProductRq" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx30="urn:sobject.enterprise.soap.sforce.com" xmlns:ns9="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" xmlns:ns5="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment" xmlns:alppTM="java://com.trendmicro.TMBWUtilities" xmlns:ns6="GCC_PH_CON_CHAT_WS" xmlns:ns7="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns8="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseActivity.xsd" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx28="http://www.trendmicro.com/G2/G2_CreateSRActivityRq" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx29="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCSRCaseResult.xsd" xmlns:ns3="GCC Common WS" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx22="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" xmlns:pfx23="http://www.trendmicro.com/PSC/PSC_CreateSRActivityRq" xmlns:pfx20="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:pfx21="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:pfx26="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx27="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AttScript.xsd" xmlns:pfx24="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx25="http://www.trendmicro.com/PSC/PSC_CreateMultiPrivXMLActRq">
+    <xsd:import namespace="http://www.siebel.com/xml/RAEM%20Internal%20Product%20Interface" schemaLocation="/WSDL/Siebel WSDL/http___siebel.com_asi__RAEM_Internal_Product_WS_-_TIBCO.WSDL.wsdl"/>
+    <xsd:import namespace="http://siebel.com/asi/" schemaLocation="/WSDL/http___siebel.com_asi__RAEM_Internal_Product_WS_-_TIBCO.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/DealRegistration/GMT_InternalProductRq" schemaLocation="/WSDL/SRFRq.xsd"/>
+    <xsd:import namespace="JP Common WS" schemaLocation="/WSDL/Provider/JP Common WS_JP Common WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/EI_JP_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/EI_JP_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/JPXSD/EI_JP_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/ENXSD/EI_EN_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/JPXSD/EI_JP_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/ENXSD/EI_EN_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_QeuryCaseRq"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" schemaLocation="/WSDL/Client/CorporateXSD/EI_GCC_CreateCorporateCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRs" schemaLocation="/WSDL/Client/CorporateXSD/EI_GCC_CreateCorporateCaseRs.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC Common WS_GCC Common WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" schemaLocation="/XSD/Portal/PortalSRCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" schemaLocation="/XSD/Portal/PortalSRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/DBLogger" schemaLocation="/XSD/Common/logger.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseActRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" schemaLocation="/XSD/Portal/PortalSRActResult.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC Common WS_GCC Common WS v4.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" schemaLocation="/XSD/PSC/GCCSRCaseResult.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateSRActivityRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateSRActivityRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateMultiPrivXMLActRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateMultiPrivXMLActRq.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/G2_CreateSRActivityRq" schemaLocation="/WSDL/Client/G2XSD/G2_CreateSRActivityRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/WSDL/Client/G2XSD/Schema.xsd" schemaLocation="/WSDL/Client/G2XSD/G2_UpdateSRRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCSRCaseResult.xsd" schemaLocation="/XSD/G2/SFDC_SRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/G2_CreateAccountActivityRq" schemaLocation="/WSDL/Client/G2XSD/G2_UpsetAccountActivityRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_CreateAccountActivityRq" schemaLocation="/WSDL/Client/G2XSD/SFDC_UpsetAccountActivityRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_UpsetThreatServiceRq" schemaLocation="/WSDL/Client/G2XSD/SFDC_UpsetThreatServiceRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_UpsertThreatServiceRq" schemaLocation="/WSDL/Client/G2XSD/SFDC_UpsertThreatServiceRq.xsd"/>
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <pd:name>Services/G2Service/SFDC_UpsertThreatService/V1.0/ExecuteRequest.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx38:SFDC_UpsertThreatServiceRq"/>
+    <pd:startX>81</pd:startX>
+    <pd:startY>168</pd:startY>
+    <pd:returnBindings>
+        <Response>
+            <pfx29:Result>
+                <xsl:choose>
+                    <xsl:when test="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId !=&quot;&quot;">
+                        <xsl:if test="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId">
+                            <pfx29:ActivityID>
+                                <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId"/>
+                            </pfx29:ActivityID>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:if test="not(($SFDCCreateThreateService/outputMessage/pfx31:createResponse/pfx31:result[1]/pfx31:id/@xsi:nil=(&quot;true&quot;)) or ($SFDCCreateThreateService/outputMessage/pfx31:createResponse/pfx31:result[1]/pfx31:id/@xsi:nil=(&quot;1&quot;)))">
+                            <pfx29:ActivityID>
+                                <xsl:value-of select="$SFDCCreateThreateService/outputMessage/pfx31:createResponse/pfx31:result[1]/pfx31:id"/>
+                            </pfx29:ActivityID>
+                        </xsl:if>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <pfx29:Status>
+                    <xsl:value-of select="&quot;SUCCESS&quot;"/>
+                </pfx29:Status>
+            </pfx29:Result>
+        </Response>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Response" type="pfx29:SFDCSRCaseResultType"/>
+    </pd:endType>
+    <pd:endX>1003</pd:endX>
+    <pd:endY>167</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx5:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1302247535834</pd:targetNamespace>
+    <pd:activity name="Call Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>194</pd:x>
+        <pd:y>166</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <pfx19:DBLogger>
+                    <xsl:for-each select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestHeader">
+                        <pfx19:MessageHeader>
+                            <pfx19:MessageKey>
+                                <xsl:value-of select="ns7:MessageKey"/>
+                            </pfx19:MessageKey>
+                            <pfx19:ServiceName>
+                                <xsl:value-of select="ns7:ServiceName"/>
+                            </pfx19:ServiceName>
+                            <pfx19:ServiceVersion>
+                                <xsl:value-of select="ns7:ServiceVersion"/>
+                            </pfx19:ServiceVersion>
+                            <pfx19:SourceID>
+                                <xsl:value-of select="ns7:SourceID"/>
+                            </pfx19:SourceID>
+                            <xsl:if test="ns7:RqTimestamp">
+                                <pfx19:RqTimestamp>
+                                    <xsl:value-of select="ns7:RqTimestamp"/>
+                                </pfx19:RqTimestamp>
+                            </xsl:if>
+                            <xsl:if test="ns7:RsTimestamp">
+                                <pfx19:RsTimestamp>
+                                    <xsl:value-of select="ns7:RsTimestamp"/>
+                                </pfx19:RsTimestamp>
+                            </xsl:if>
+                        </pfx19:MessageHeader>
+                    </xsl:for-each>
+                    <pfx19:MessageBody>
+                        <xsl:copy-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/ancestor-or-self::*/namespace::node()"/>
+                        <xsl:copy-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/@*"/>
+                        <xsl:copy-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/node()"/>
+                    </pfx19:MessageBody>
+                </pfx19:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;INPUT XML: &quot;,tib:render-xml($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;SFDC_UpsertThreatService Rq&quot;"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>916</pd:x>
+        <pd:y>377</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>1117</pd:x>
+        <pd:y>375</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns:ErrorReport/Data/*" element="pfx5:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_SFDCUpdateThreatService/ActivityErrors)">
+                            <pfx5:Error>
+                                <pfx5:error_code>
+                                    <xsl:value-of select="'UpsertThreatServiceFail'"/>
+                                </pfx5:error_code>
+                                <pfx5:stack_trace>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                                </pfx5:stack_trace>
+                                <pfx5:process_stack>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                                </pfx5:process_stack>
+                                <xsl:if test="$_error/ns:ErrorReport/Msg">
+                                    <pfx5:error_message>
+                                        <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                                    </pfx5:error_message>
+                                </xsl:if>
+                            </pfx5:Error>
+                        </xsl:when>
+                        <xsl:when test="exists($_error_SFDCUpsetThreatService-Object-Generate-Error/pfx5:Error)">
+                            <pfx5:Error>
+                                <pfx5:error_code>
+                                    <xsl:value-of select="$_error_SFDCUpsetThreatService-Object-Generate-Error/pfx5:Error/pfx5:error_code"/>
+                                </pfx5:error_code>
+                                <pfx5:stack_trace>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                                </pfx5:stack_trace>
+                                <pfx5:process_stack>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                                </pfx5:process_stack>
+                                <xsl:if test="$_error_SFDCUpsetThreatService-Object-Generate-Error/pfx5:Error/pfx5:error_message">
+                                    <pfx5:error_message>
+                                        <xsl:value-of select="$_error_SFDCUpsetThreatService-Object-Generate-Error/pfx5:Error/pfx5:error_message"/>
+                                    </pfx5:error_message>
+                                </xsl:if>
+                            </pfx5:Error>
+                        </xsl:when>
+                        <xsl:when test="exists($_error/ns:ErrorReport/Data/pfx5:Error)">
+                            <xsl:copy-of select="$_error/ns:ErrorReport/Data/pfx5:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx5:Error>
+                                <pfx5:error_code>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                                </pfx5:error_code>
+                                <pfx5:stack_trace>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                                </pfx5:stack_trace>
+                                <pfx5:process_stack>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                                </pfx5:process_stack>
+                                <xsl:if test="$_error/ns:ErrorReport/Msg">
+                                    <pfx5:error_message>
+                                        <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                                    </pfx5:error_message>
+                                </xsl:if>
+                            </pfx5:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFDC Login">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>465</pd:x>
+        <pd:y>164</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/Login.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>844</pd:x>
+        <pd:y>162</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <pfx19:DBLogger>
+                    <xsl:for-each select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestHeader">
+                        <pfx19:MessageHeader>
+                            <pfx19:MessageKey>
+                                <xsl:value-of select="ns7:MessageKey"/>
+                            </pfx19:MessageKey>
+                            <pfx19:ServiceName>
+                                <xsl:value-of select="ns7:ServiceName"/>
+                            </pfx19:ServiceName>
+                            <pfx19:ServiceVersion>
+                                <xsl:value-of select="ns7:ServiceVersion"/>
+                            </pfx19:ServiceVersion>
+                            <pfx19:SourceID>
+                                <xsl:value-of select="ns7:SourceID"/>
+                            </pfx19:SourceID>
+                            <xsl:if test="ns7:RqTimestamp">
+                                <pfx19:RqTimestamp>
+                                    <xsl:value-of select="ns7:RqTimestamp"/>
+                                </pfx19:RqTimestamp>
+                            </xsl:if>
+                            <xsl:if test="ns7:RsTimestamp">
+                                <pfx19:RsTimestamp>
+                                    <xsl:value-of select="ns7:RsTimestamp"/>
+                                </pfx19:RsTimestamp>
+                            </xsl:if>
+                        </pfx19:MessageHeader>
+                    </xsl:for-each>
+                    <pfx19:MessageBody>
+                        <xsl:choose>
+                            <xsl:when test="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId !=&quot;&quot;">
+                                <xsl:copy-of select="$SFDCUpdateThreatService/outputMessage/pfx31:updateResponse/pfx31:result"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:copy-of select="$SFDCCreateThreateService/outputMessage/pfx31:createResponse/pfx31:result"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx19:MessageBody>
+                </pfx19:DBLogger>
+                <message>
+                    <xsl:value-of select="&quot;Success&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;SFDC_UpsertThreatService Rs&quot;"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFDCUpsetThreatService Object Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>643</pd:x>
+        <pd:y>305</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId !=&quot;&quot;">
+                            <pfx5:Error>
+                                <pfx5:error_code>
+                                    <xsl:value-of select="$SFDCUpdateThreatService/outputMessage/pfx31:updateResponse/pfx31:result[1]/pfx31:errors[1]/pfx31:statusCode"/>
+                                </pfx5:error_code>
+                                <pfx5:stack_trace>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </pfx5:stack_trace>
+                                <pfx5:process_stack>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </pfx5:process_stack>
+                                <pfx5:error_message>
+                                    <xsl:value-of select="tib:render-xml($SFDCUpdateThreatService/outputMessage/pfx31:updateResponse, 1)"/>
+                                </pfx5:error_message>
+                            </pfx5:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx5:Error>
+                                <pfx5:error_code>
+                                    <xsl:value-of select="$SFDCCreateThreateService/outputMessage/pfx31:createResponse/pfx31:result[1]/pfx31:errors[1]/pfx31:statusCode"/>
+                                </pfx5:error_code>
+                                <pfx5:stack_trace>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </pfx5:stack_trace>
+                                <pfx5:process_stack>
+                                    <xsl:value-of select="&quot;&quot;"/>
+                                </pfx5:process_stack>
+                                <xsl:if test="$SFDCCreateThreateService/outputMessage/pfx31:createResponse/pfx31:result[1]/pfx31:errors[1]/pfx31:message">
+                                    <pfx5:error_message>
+                                        <xsl:value-of select="$SFDCCreateThreateService/outputMessage/pfx31:createResponse/pfx31:result[1]/pfx31:errors[1]/pfx31:message"/>
+                                    </pfx5:error_message>
+                                </xsl:if>
+                            </pfx5:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFDCCreateThreateService">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>470</pd:x>
+        <pd:y>382</pd:y>
+        <config>
+            <timeout>180</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx31:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>create</operation>
+            <soapAction/>
+            <endpointURL>%%Services/G2Service/EndpointURL%%</endpointURL>
+            <useProxy>true</useProxy>
+            <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx31:SessionHeader>
+                            <pfx31:sessionId>
+                                <xsl:value-of select="$SFDC-Login/root/SessionID"/>
+                            </pfx31:sessionId>
+                        </pfx31:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.AssignmentRuleHeader/>
+                    <Header.MruHeader/>
+                    <Header.AllowFieldTruncationHeader/>
+                    <Header.DisableFeedTrackingHeader/>
+                    <Header.StreamingEnabledHeader/>
+                    <Header.AllOrNoneHeader/>
+                    <Header.DuplicateRuleHeader/>
+                    <Header.LocaleOptions/>
+                    <Header.DebuggingHeader/>
+                    <Header.PackageVersionHeader/>
+                    <Header.EmailHeader/>
+                </headers>
+                <pfx31:create>
+                    <pfx31:sObjects xsi:type="pfx30:TS_Threat_Service__c">
+                        <pfx30:Id xsi:nil="true"/>
+                        <xsl:choose>
+                            <xsl:when test="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:AccountId !=&quot;&quot;">
+                                <pfx30:Account__c>
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:AccountId"/>
+                                </pfx30:Account__c>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx30:Account__c xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:RelatedSR) and&#xA;tib:trim($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:RelatedSR)!=&quot;&quot;">
+                                <xsl:if test="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:RelatedSR">
+                                    <pfx30:Case__c>
+                                        <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:RelatedSR"/>
+                                    </pfx30:Case__c>
+                                </xsl:if>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <pfx30:Contact_Email__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactEmail)">
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactEmail"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx30:Contact_Email__c>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactId) !=&quot;&quot;">
+                                <xsl:if test="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactId">
+                                    <pfx30:Contact__c>
+                                        <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactId"/>
+                                    </pfx30:Contact__c>
+                                </xsl:if>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx30:Contact__c xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx30:Description__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Description)">
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Description"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx30:Description__c>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:NeuronId) !=&quot;&quot;">
+                                <pfx30:Neuron_ID__c>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:NeuronId)">
+                                            <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:NeuronId"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx30:Neuron_ID__c>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:TS_Create_Case)">
+                                <pfx30:TS_Create_Case__c>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:TS_Create_Case)">
+                                            <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:TS_Create_Case"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx30:TS_Create_Case__c>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <pfx30:TS_File_Name__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ArchiveName)">
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ArchiveName"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx30:TS_File_Name__c>
+                        <pfx30:TS_Status__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Status)">
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Status"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx30:TS_Status__c>
+                        <pfx30:TS_Upload_Session_ID__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:UploadSessionID)">
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:UploadSessionID"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx30:TS_Upload_Session_ID__c>
+                        <pfx30:Title__c>
+                            <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Title"/>
+                        </pfx30:Title__c>
+                    </pfx31:sObjects>
+                </pfx31:create>
+                <ns15:_configData>
+                    <endpointURL>
+                        <xsl:value-of select="$SFDC-Login/root/ServerURL"/>
+                    </endpointURL>
+                    <timeout>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDC_UpsertThreatService/V1.0/timeoutsec"/>
+                    </timeout>
+                </ns15:_configData>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFDCUpdateThreatService">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>638</pd:x>
+        <pd:y>160</pd:y>
+        <config>
+            <timeout>180</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx31:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>update</operation>
+            <soapAction/>
+            <endpointURL>https://test.salesforce.com/services/Soap/c/32.0/0DFq00000004CGn</endpointURL>
+            <useProxy>true</useProxy>
+            <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx31:SessionHeader>
+                            <pfx31:sessionId>
+                                <xsl:value-of select="$SFDC-Login/root/SessionID"/>
+                            </pfx31:sessionId>
+                        </pfx31:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.AssignmentRuleHeader/>
+                    <Header.MruHeader/>
+                    <Header.AllowFieldTruncationHeader/>
+                    <Header.DisableFeedTrackingHeader/>
+                    <Header.StreamingEnabledHeader/>
+                    <Header.AllOrNoneHeader/>
+                    <Header.DuplicateRuleHeader/>
+                    <Header.LocaleOptions/>
+                    <Header.DebuggingHeader/>
+                    <Header.PackageVersionHeader/>
+                    <Header.EmailHeader/>
+                    <Header.OwnerChangeOptions/>
+                </headers>
+                <ns15:_configData>
+                    <endpointURL>
+                        <xsl:value-of select="$SFDC-Login/root/ServerURL"/>
+                    </endpointURL>
+                    <timeout>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/G2Service/SFDC_UpsertThreatService/V1.0/timeoutsec"/>
+                    </timeout>
+                </ns15:_configData>
+                <pfx31:update>
+                    <pfx31:sObjects xsi:type="pfx30:TS_Threat_Service__c">
+                        <xsl:choose>
+                            <xsl:when test="upper-case(tib:left($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId,3)) = 'TS-'">
+                                <pfx30:Id>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($QuerySFDCID/Response/ThreatServiceID)">
+                                            <xsl:value-of select="$QuerySFDCID/Response/ThreatServiceID"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx30:Id>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx30:Id>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId)">
+                                            <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx30:Id>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:AccountId) !=&quot;&quot;">
+                                <pfx30:Account__c>
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:AccountId"/>
+                                </pfx30:Account__c>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:RelatedSR) and&#xA;tib:trim($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:RelatedSR) !=&quot;&quot;">
+                                <pfx30:Case__c>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:RelatedSR)">
+                                            <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:RelatedSR"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx30:Case__c>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <xsl:if test="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactEmail">
+                            <pfx30:Contact_Email__c>
+                                <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactEmail"/>
+                            </pfx30:Contact_Email__c>
+                        </xsl:if>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactId) !=&quot;&quot; and &#xA;empty($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactId)">
+                                <pfx30:Contact__c>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactId)">
+                                            <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ContactId"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx30:Contact__c>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <xsl:if test="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Description">
+                            <pfx30:Description__c>
+                                <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Description"/>
+                            </pfx30:Description__c>
+                        </xsl:if>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:NeuronId) !=&quot;&quot;">
+                                <pfx30:Neuron_ID__c>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:NeuronId)">
+                                            <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:NeuronId"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx30:Neuron_ID__c>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:TS_Create_Case)">
+                                <pfx30:TS_Create_Case__c>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:TS_Create_Case)">
+                                            <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:TS_Create_Case"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx30:TS_Create_Case__c>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <pfx30:TS_File_Name__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ArchiveName)">
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ArchiveName"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx30:TS_File_Name__c>
+                        <pfx30:TS_Status__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Status)">
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Status"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx30:TS_Status__c>
+                        <pfx30:TS_Upload_Session_ID__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:UploadSessionID)">
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:UploadSessionID"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx30:TS_Upload_Session_ID__c>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Title) !=&quot;&quot;">
+                                <pfx30:Title__c>
+                                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:Title"/>
+                                </pfx30:Title__c>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                    </pfx31:sObjects>
+                </pfx31:update>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="QuerySFDCID">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>330</pd:x>
+        <pd:y>257</pd:y>
+        <config>
+            <processName>/Services/G2Service/SFDC_CreateMalwareEmailNotification/V1.0/QuerySFDCID.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Request>
+                <Messagekey>
+                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestHeader/ns7:MessageKey"/>
+                </Messagekey>
+                <ThreatServiceName>
+                    <xsl:value-of select="$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId"/>
+                </ThreatServiceName>
+                <SRNumber>
+                    <xsl:value-of select="''"/>
+                </SRNumber>
+            </Request>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Call Log Process</pd:from>
+        <pd:to>SFDC Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDC Login</pd:from>
+        <pd:to>SFDCCreateThreateService</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDCCreateThreateService</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDCCreateThreateService</pd:from>
+        <pd:to>SFDCUpsetThreatService Object Generate Error</pd:to>
+        <pd:xpathDescription>false</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3394816</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$SFDCCreateThreateService/outputMessage/pfx31:createResponse/pfx31:result/pfx31:success="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDC Login</pd:from>
+        <pd:to>SFDCUpdateThreatService</pd:to>
+        <pd:xpathDescription>Update</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDCUpdateThreatService</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDCUpdateThreatService</pd:from>
+        <pd:to>SFDCUpsetThreatService Object Generate Error</pd:to>
+        <pd:xpathDescription>return false</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-6750157</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$SFDCUpdateThreatService/outputMessage/pfx31:updateResponse/pfx31:result/pfx31:success="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Log Process</pd:from>
+        <pd:to>QuerySFDCID</pd:to>
+        <pd:xpathDescription>ActivityID Prefix TS</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>upper-case(tib:left($Start/pfx38:SFDC_UpsertThreatServiceRq/pfx38:RequestBody/pfx38:UpsetThreatService/ns11:ActivityId,3)) = 'TS-'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>QuerySFDCID</pd:from>
+        <pd:to>SFDC Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

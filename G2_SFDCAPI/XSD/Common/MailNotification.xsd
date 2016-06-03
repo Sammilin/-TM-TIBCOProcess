@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd6"
+	 targetNamespace="http://www.tibco.com/schemas/ACSService2.1/XSD/Common/Schema.xsd6"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="MailNotification">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="from" type="xs:string" minOccurs="0"/>
+				<xs:element name="to" type="xs:string" minOccurs="0"/>
+				<xs:element name="cc" type="xs:string" minOccurs="0"/>
+				<xs:element name="GetmailTemplate">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Consumer" type="xs:string"/>
+							<xs:element name="LanguageCode" type="xs:string"/>
+							<xs:element name="Template" type="xs:int"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="MailContentParameter">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Group" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="key" type="xs:string"/>
+										<xs:element name="value" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Content-Type" type="xs:string"/>
+				<xs:element name="isSendMail" type="xs:boolean"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

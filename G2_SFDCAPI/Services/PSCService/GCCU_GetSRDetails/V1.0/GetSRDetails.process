@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx13="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx12="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx11="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCGetSRDetailsResults.xsd" xmlns:pfx10="http://www.trendmicro.com/PSC/AMSS_CreateAMSSInboundFeedbackRq" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx5="http://www.trendmicro.com/PSC/PSC_UpdateAccountRq" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/PSC/PSC_CommonResultRs" xmlns:pfx3="http://www.trendmicro.com/PSC/PSC_UpdateContactInfoRq" xmlns:pfx2="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx9="AMSS Task Common WS" xmlns:pfx8="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRq" xmlns:pfx7="http://www.trendmicro.com/PSC/PSC_DeleteAccountRq" xmlns:pfx6="http://www.trendmicro.com/PSC/PSC_UpdateEntitlementRq" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMSS_CreateInboundFeedbackRq.xsd" xmlns:ns6="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="GCC Common WS" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns1="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Contact.xsd" xmlns:ns4="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Entitlement.xsd" xmlns:ns3="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Account.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateContactInfoRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateContactInfoRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CommonResultRs" schemaLocation="/WSDL/Client/PSCXSD/PSC_CommonResultRs.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateAccountRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateAccountRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateEntitlementRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateEntitlementRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_DeleteAccountRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_DeleteAccountRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateAccountActivityRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/AMSS_CreateAMSSInboundFeedbackRq" schemaLocation="/WSDL/Client/PSCXSD/AMSS_CreateAMSSInboundFeedbackRq.xsd"/>
+    <xsd:import namespace="AMSS Task Common WS" schemaLocation="/WSDL/Provider/AMSS Task Common WS_AMSS Task Common WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCGetSRDetailsResults.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCGetSRDetailsResults.xsd" schemaLocation="/XSD/PSC/GetSRDetailsResults.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <pd:name>Services/PSCService/GCCU_GetSRDetails/V1.0/GetSRDetails.process</pd:name>
+    <pd:startName>GetSRDetails</pd:startName>
+    <pd:startType>
+        <xsd:element name="SRNumber" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>122</pd:startX>
+    <pd:startY>90</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Parse-XML/Resultsets"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Resultsets" type="pfx11:Resultsets"/>
+    </pd:endType>
+    <pd:endX>610</pd:endX>
+    <pd:endY>90</pd:endY>
+    <pd:errorSchemas>
+        <ErrorSchema ref="pfx12:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1319615428298</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>279</pd:x>
+        <pd:y>253</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>484</pd:x>
+        <pd:y>253</pd:y>
+        <config>
+            <faultName>ErrorSchema</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx13:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Failed-GetSRDetails :&#xA;&quot;,tib:render-xml($Catch/exceptiondata))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'Failed-GetSRDetails'"/>
+                </messageCode>
+                <data>
+                    <pfx12:Error>
+                        <pfx12:error_code>
+                            <xsl:value-of select="''"/>
+                        </pfx12:error_code>
+                        <pfx12:stack_trace>
+                            <xsl:value-of select="if(exists($_error_JDBC-Call-Procedure/ActivityErrors)) then&#xA;concat(&#xA;&quot;Result from GCC: &quot;, $JDBC-Call-Procedure/resultSet/UnresolvedResultsets, &quot; *** &quot;, &#xA;&quot;stackTrace from TIBCO BW: &quot;, $_error/ns6:ErrorReport/StackTrace&#xA;)&#xA;else&#xA;concat(&#xA;&quot;stackTrace from TIBCO BW: &quot;, $_error/ns6:ErrorReport/StackTrace&#xA;)"/>
+                        </pfx12:stack_trace>
+                        <pfx12:process_stack>
+                            <xsl:value-of select="$_error/ns6:ErrorReport/ProcessStack"/>
+                        </pfx12:process_stack>
+                    </pfx12:Error>
+                </data>
+            </pfx13:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JDBC Call Procedure">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>277</pd:x>
+        <pd:y>99</pd:y>
+        <config>
+            <timeout>120</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/DBconnect/GCCUSDBR Connection.sharedjdbc</jdbcSharedConfig>
+            <ProcedureName>usp_tibco_get_SRDetails;1</ProcedureName>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@SRNum</colName>
+                    <colType>1</colType>
+                    <dataType>-9</dataType>
+                    <typeName>nvarchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <SRNum>
+                        <xsl:value-of select="$GetSRDetails/SRNumber"/>
+                    </SRNum>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>444</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="Resultsets" type="pfx11:Resultsets"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="concat(&#xA;&quot;&lt;Resultsets>&quot;,&#xA;TM:stringReplace(TM:stringReplace(TM:stringReplace(TM:stringReplace(substring-before(substring-after($JDBC-Call-Procedure/resultSet/UnresolvedResultsets, '&lt;Resultsets>'), '&lt;/Resultsets>'), 'ResultSet1', 'ResultSet1 xmlns:ns0=&quot;http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCGetSRDetailsResults.xsd&quot;'), '&lt;', '&lt;ns0:'), '&lt;ns0:/', '&lt;/ns0:'), '&lt;/ns0:ResultSet1 xmlns:ns0=&quot;http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCGetSRDetailsResults.xsd&quot;>', '&lt;/ns0:ResultSet1>'), &#xA;&quot;&lt;/Resultsets>&quot;&#xA;)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Call Procedure</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSRDetails</pd:from>
+        <pd:to>JDBC Call Procedure</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

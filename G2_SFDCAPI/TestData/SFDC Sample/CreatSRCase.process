@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx2="urn:sobject.enterprise.soap.sforce.com" xmlns:pfx="urn:enterprise.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <pd:name>TestData/SFDC Sample/CreatSRCase.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Sessionid" type="xsd:token"/>
+                    <xsd:element name="CreateSRCase" type="pfx2:Case"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>153</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings>
+        <QueryOutput>
+            <QueryResult>
+                <xsl:copy-of select="$SOAPQuery/outputMessage/pfx:queryResponse/pfx:result/ancestor-or-self::*/namespace::node()"/>
+                <xsl:copy-of select="$SOAPQuery/outputMessage/pfx:queryResponse/pfx:result/@*"/>
+                <xsl:copy-of select="$SOAPQuery/outputMessage/pfx:queryResponse/pfx:result/node()"/>
+            </QueryResult>
+        </QueryOutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="QueryOutput">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="QueryResult" type="pfx:QueryResult"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>495</pd:endX>
+    <pd:endY>58</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1412823732693</pd:targetNamespace>
+    <pd:activity name="SOAPCreateCase">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>318</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>create</operation>
+            <soapAction/>
+            <endpointURL>https://cs10.salesforce.com/services/Soap/c/31.0/0DFJ00000008PGP</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx:create>
+                    <xsl:for-each select="$Start/root/CreateSRCase">
+                        <pfx:sObjects>
+                            <xsl:for-each select="pfx2:fieldsToNull">
+                                <pfx2:fieldsToNull>
+                                    <xsl:copy-of select="./@xsi:nil"/>
+                                    <xsl:value-of select="."/>
+                                </pfx2:fieldsToNull>
+                            </xsl:for-each>
+                            <pfx2:Id>
+                                <xsl:copy-of select="pfx2:Id/@xsi:nil"/>
+                                <xsl:value-of select="pfx2:Id"/>
+                            </pfx2:Id>
+                        </pfx:sObjects>
+                    </xsl:for-each>
+                </pfx:create>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx:SessionHeader>
+                            <pfx:sessionId>
+                                <xsl:value-of select="$Start/root/Sessionid"/>
+                            </pfx:sessionId>
+                        </pfx:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.AssignmentRuleHeader/>
+                    <Header.MruHeader/>
+                    <Header.AllowFieldTruncationHeader/>
+                    <Header.DisableFeedTrackingHeader/>
+                    <Header.StreamingEnabledHeader/>
+                    <Header.AllOrNoneHeader/>
+                    <Header.DebuggingHeader/>
+                    <Header.PackageVersionHeader/>
+                    <Header.EmailHeader/>
+                </headers>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPCreateCase</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPCreateCase</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

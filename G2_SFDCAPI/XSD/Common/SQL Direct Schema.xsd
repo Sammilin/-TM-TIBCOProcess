@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/SQLDirect/Schema.xsd"
+	 targetNamespace="http://www.tibco.com/SQLDirect/Schema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="unknownResult">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="row" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="row">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="column" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="column">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="name"/>
+				<xs:element ref="value"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="name" type="xs:string"/>
+	<xs:element name="value" type="xs:anyType" nillable="true"/>
+	<xs:element name="group">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="unknownResult" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" xmlns:pfx2="http://stgspnsupport.trendmicro.com/" xmlns:pfx="http://tempuri.org/">
+    <xsd:import namespace="http://tempuri.org/" schemaLocation="/WSDL/Provider/NeuronCallBack.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" schemaLocation="/XSD/Neuron/SRCreatedCallbackRQ.xsd"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Provider/NeuronCallBack.wsdl"/>
+    <pd:name>Services/SharedOperations/Neuron SR Call Back.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx3:SRCreatedCallbackRQ"/>
+    <pd:startX>151</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>63</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1347959975848</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>299</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PSCService/NeuronCallBack/SRDestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/Neuron JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="tib:render-xml($Start/pfx3:SRCreatedCallbackRQ)"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>303</pd:x>
+        <pd:y>168</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns2:DBLogger>
+                    <ns2:MessageHeader>
+                        <ns2:MessageKey>
+                            <xsl:value-of select="$Start/pfx3:SRCreatedCallbackRQ/pfx3:SERVICE_ID"/>
+                        </ns2:MessageKey>
+                        <ns2:ServiceName>
+                            <xsl:value-of select="'NeuronSRCallBack'"/>
+                        </ns2:ServiceName>
+                        <ns2:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns2:ServiceVersion>
+                        <ns2:SourceID>
+                            <xsl:value-of select="'TIBCO BW'"/>
+                        </ns2:SourceID>
+                        <ns2:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns2:RqTimestamp>
+                    </ns2:MessageHeader>
+                    <ns2:MessageBody>
+                        <xsl:copy-of select="$Start/pfx3:SRCreatedCallbackRQ"/>
+                    </ns2:MessageBody>
+                </ns2:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;Neuron SR Call Back. Service_ID&quot;,$Start/pfx3:SRCreatedCallbackRQ/pfx3:SERVICE_ID,&quot; SRNumber: &quot;, $Start/pfx3:SRCreatedCallbackRQ/pfx3:SRNumber)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;PSCNeuronSRCall&quot;"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

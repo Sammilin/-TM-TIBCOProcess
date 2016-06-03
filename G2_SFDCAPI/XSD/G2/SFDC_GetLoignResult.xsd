@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/XSD/G2/GetLoignResult.xsd"
+	 xmlns:ns1="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetContactResult.xsd"
+	 xmlns:ns2="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetAccountInoResult.xsd"
+	 xmlns:ns0="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetEntitlementInfoResult.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/XSD/G2/GetLoignResult.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetContactResult.xsd" schemaLocation="GetContactResult.xsd"/>
+	<xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetAccountInoResult.xsd" schemaLocation="GetAccountInoResult.xsd"/>
+	<xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetEntitlementInfoResult.xsd" schemaLocation="GetEntitlementInfoResult.xsd"/>
+	<xs:complexType name="SFDC_GetLoignResultType">
+		<xs:sequence>
+			<xs:element name="AccountList">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Account" type="LoginAccountsType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LoginAccountsType">
+		<xs:sequence>
+			<xs:element name="PSPStatus" type="xs:string"/>
+			<xs:element name="AccountInfo" type="ns2:AccountInfoType"/>
+			<xs:element name="Entitlements">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="EntiltementList" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="EntitlementResult">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="ID" type="xs:string"/>
+												<xs:element name="Name" type="xs:string"/>
+												<xs:element name="Type" type="xs:string"/>
+												<xs:element name="StartDate" type="xs:string"/>
+												<xs:element name="EndDate" type="xs:string"/>
+												<xs:element name="InitialIncidents" type="xs:string"/>
+												<xs:element name="UsedQuantity" type="xs:string"/>
+												<xs:element name="CurrentIncidents" type="xs:string"/>
+												<xs:element name="Region" type="xs:string"/>
+												<xs:element name="HandlingTeam" type="xs:string"/>
+												<xs:element name="ServiceLevel" type="xs:string"/>
+												<xs:element name="Status" type="xs:string" minOccurs="0"/>
+												<xs:element name="EntitlementStatus" type="xs:string" minOccurs="0"/>
+												<xs:element name="Contact" type="ns1:ContactType" minOccurs="0"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

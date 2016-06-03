@@ -1,0 +1,966 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCSRCaseResult.xsd" xmlns:pfx15="urn:enterprise.soap.sforce.com" xmlns:pfx14="urn:sobject.enterprise.soap.sforce.com" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx13="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_SRCase.xsd" xmlns:pfx12="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_CreateSRCase.xsd" xmlns:pfx11="http://www.tibco.com/schemas/GCCPortal/XSD/G2/Schema.xsd" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx10="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AttScript.xsd" xmlns:pfx19="http://www.trendmicro.com/SFDC/SFDC_GetSRListRq" xmlns:pfx18="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" xmlns:pfx17="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx4="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS" xmlns:pfx9="http://tempuri.org/" xmlns:pfx8="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:pfx7="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/SRCaseCategory.xsd" xmlns:pfx6="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCase.xsd" xmlns:ns16="http://www.trendmicro.com/G2/G2_CreateSRCaseRq" xmlns:ns17="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRq" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.trendmicro.com/PSC/PSC_CreateMultiPrivXMLActRq" xmlns:ns15="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" xmlns:ns18="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetSRInfoResult.xsd" xmlns:ns19="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:ns9="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:alppTM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/EngineTypes" xmlns:ns13="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" xmlns:ns6="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:pfx="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns7="www.tibco.com/plugin/Sleep" xmlns:ns10="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns11="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRq" xmlns:ns8="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:ns2="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns4="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment%20Script" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx20="http://www.tibco.com/schemas/GCCProtal/XSD/G2/SFDC_SRCase.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" schemaLocation="/XSD/Portal/PortalSRCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" schemaLocation="/XSD/Portal/PortalSRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseActRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/SRCaseCategory.xsd" schemaLocation="/XSD/PSC/SRCaseCategory.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateSRCaseRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" schemaLocation="/XSD/PSC/GCCSRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCase.xsd" schemaLocation="/XSD/PSC/GCCSRCase.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCSRCaseResult.xsd" schemaLocation="/XSD/G2/SFDC_SRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/G2_CreateSRCaseRq" schemaLocation="/WSDL/Client/G2XSD/G2_CreateSRCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_SRCase.xsd" schemaLocation="/XSD/G2/SFDC_SRCaseType.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_SRCase.xsd"/>
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <wsdl:import namespace="GCC Common WS" location="/WSDL/Provider/GCC Common WS_GCC Common WS.WSDL.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <pd:name>Services/G2Service/SFDC_CreateSRCase/V1.0/CreateSFDCCorporateCase.process</pd:name>
+    <pd:description/>
+    <pd:startName>CreateSFDCCorporateCase</pd:startName>
+    <pd:startType>
+        <xsd:element name="CorpCaseInput" type="pfx13:SFDCSRCaseType"/>
+    </pd:startType>
+    <pd:startX>62</pd:startX>
+    <pd:startY>77</pd:startY>
+    <pd:returnBindings>
+        <CorpResponse>
+            <pfx16:Result>
+                <pfx16:SRID>
+                    <xsl:value-of select="$GlobalVar/root/SFDCCaseID"/>
+                </pfx16:SRID>
+                <pfx16:ActivityID>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </pfx16:ActivityID>
+                <pfx16:Status>
+                    <xsl:value-of select="&quot;SUCCESS&quot;"/>
+                </pfx16:Status>
+            </pfx16:Result>
+        </CorpResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="CorpResponse" type="pfx16:SFDCSRCaseResultType"/>
+    </pd:endType>
+    <pd:endX>1320</pd:endX>
+    <pd:endY>194</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx17:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <GlobalVar>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="SFDCCaseID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </GlobalVar>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1317276212736</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>801</pd:x>
+        <pd:y>302</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>1010</pd:x>
+        <pd:y>301</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns12:ErrorReport/Data/*" element="pfx17:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <xsl:choose>
+                    <xsl:when test="exists($_error_SFDCSOAPCreate/ActivityErrors)">
+                        <messageCode>
+                            <xsl:value-of select="'CreateSRFail'"/>
+                        </messageCode>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <messageCode>
+                            <xsl:value-of select="&quot;ERROR&quot;"/>
+                        </messageCode>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_SFDC-Object-Generate-Error/pfx17:Error)">
+                            <pfx17:Error>
+                                <pfx17:error_code>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/MsgCode"/>
+                                </pfx17:error_code>
+                                <pfx17:stack_trace>
+                                    <xsl:value-of select="concat(&quot;SOAP Response Message:&lt;br> &lt;![CDATA[&quot;,$_error_SFDC-Object-Generate-Error/pfx17:Error/pfx17:error_message,&quot;]]> &lt;br>&quot;,$_error/ns12:ErrorReport/StackTrace)"/>
+                                </pfx17:stack_trace>
+                                <pfx17:process_stack>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/ProcessStack"/>
+                                </pfx17:process_stack>
+                                <pfx17:error_message>
+                                    <xsl:value-of select="$_error_SFDC-Object-Generate-Error/pfx17:Error/pfx17:error_message"/>
+                                </pfx17:error_message>
+                            </pfx17:Error>
+                        </xsl:when>
+                        <xsl:when test="exists($_error_SFDCSOAPCreate/ActivityErrors)">
+                            <pfx17:Error>
+                                <pfx17:error_code>
+                                    <xsl:value-of select="'CreateSRFail'"/>
+                                </pfx17:error_code>
+                                <pfx17:stack_trace>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/StackTrace"/>
+                                </pfx17:stack_trace>
+                                <pfx17:process_stack>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/ProcessStack"/>
+                                </pfx17:process_stack>
+                                <xsl:if test="$_error/ns12:ErrorReport/Msg">
+                                    <pfx17:error_message>
+                                        <xsl:value-of select="$_error/ns12:ErrorReport/Msg"/>
+                                    </pfx17:error_message>
+                                </xsl:if>
+                            </pfx17:Error>
+                        </xsl:when>
+                        <xsl:when test="exists($_error/ns12:ErrorReport/Data/pfx17:Error)">
+                            <xsl:copy-of select="$_error/ns12:ErrorReport/Data/pfx17:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx17:Error>
+                                <pfx17:error_code>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/MsgCode"/>
+                                </pfx17:error_code>
+                                <pfx17:stack_trace>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/StackTrace"/>
+                                </pfx17:stack_trace>
+                                <pfx17:process_stack>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/ProcessStack"/>
+                                </pfx17:process_stack>
+                                <xsl:if test="$_error/ns12:ErrorReport/Msg">
+                                    <pfx17:error_message>
+                                        <xsl:value-of select="$_error/ns12:ErrorReport/Msg"/>
+                                    </pfx17:error_message>
+                                </xsl:if>
+                            </pfx17:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1196</pd:x>
+        <pd:y>193</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns1:DBLogger>
+                    <ns1:MessageHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PortalSourceID"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="'SFDC_CreateSRCase'"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="'PSCPortal'"/>
+                        </ns1:SourceID>
+                        <ns1:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RqTimestamp>
+                        <ns1:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RsTimestamp>
+                    </ns1:MessageHeader>
+                    <ns1:MessageBody>
+                        <xsl:copy-of select="$Render-XML/xmlString"/>
+                    </ns1:MessageBody>
+                </ns1:DBLogger>
+                <message>
+                    <xsl:value-of select="concat('SR created,',&#xA;&quot;SR ID: '&quot;,$Get-SR-Number/Output/pfx15:queryAllResponse/pfx15:result/pfx15:records[1]/pfx14:Id,&#xA;&quot;SR Number: '&quot;,$Get-SR-Number/Output/pfx15:queryAllResponse/pfx15:result/pfx15:records[1]/pfx14:CaseNumber,&#xA;&quot;\n PortalSourceID : &quot;,$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PortalSourceID)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'SFDC_CreateSRCaseRs'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Neuron">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1086</pd:x>
+        <pd:y>73</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/Services/SharedOperations/Neuron SR Call Back.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns15:SRCreatedCallbackRQ>
+                <ns15:SERVICE_ID>
+                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID"/>
+                </ns15:SERVICE_ID>
+                <ns15:SRNumber>
+                    <xsl:value-of select="$Get-SR-Number/Output/pfx15:queryAllResponse/pfx15:result/pfx15:records[1]/pfx14:CaseNumber"/>
+                </ns15:SRNumber>
+            </ns15:SRCreatedCallbackRQ>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFDCLogin">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>200</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/Login.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="SFDCSOAPCreate">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>359</pd:x>
+        <pd:y>223</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx15:SforceService</service>
+            <servicePort>Soap</servicePort>
+            <operation>create</operation>
+            <soapAction/>
+            <endpointURL>https://test.salesforce.com/services/Soap/c/35.0/0DFK0000000Cbm1</endpointURL>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+            <useProxy>true</useProxy>
+            <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <headers>
+                    <Header.SessionHeader>
+                        <pfx15:SessionHeader>
+                            <pfx15:sessionId>
+                                <xsl:value-of select="$SFDCLogin/root/SessionID"/>
+                            </pfx15:sessionId>
+                        </pfx15:SessionHeader>
+                    </Header.SessionHeader>
+                    <Header.AssignmentRuleHeader/>
+                    <Header.MruHeader/>
+                    <Header.AllowFieldTruncationHeader/>
+                    <Header.DisableFeedTrackingHeader/>
+                    <Header.StreamingEnabledHeader/>
+                    <Header.AllOrNoneHeader/>
+                    <Header.DuplicateRuleHeader/>
+                    <Header.LocaleOptions/>
+                    <Header.DebuggingHeader/>
+                    <Header.PackageVersionHeader/>
+                    <Header.EmailHeader/>
+                </headers>
+                <pfx15:create>
+                    <pfx15:sObjects xsi:type="pfx14:Case">
+                        <pfx14:Id xsi:nil="true"/>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:AccountID) !=&quot;&quot;">
+                                <pfx14:AccountId>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:AccountID)">
+                                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:AccountID"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx14:AccountId>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx14:AccountId xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx14:Activation_Code__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:ActivationCode)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:ActivationCode"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:Activation_Code__c>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:ContactID) !=&quot;&quot;">
+                                <pfx14:ContactId>
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:ContactID"/>
+                                </pfx14:ContactId>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx14:ContactId xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx14:Description>
+                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Description"/>
+                        </pfx14:Description>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:EntitlementID) !=&quot;&quot;">
+                                <pfx14:EntitlementId>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:EntitlementID)">
+                                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:EntitlementID"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx14:EntitlementId>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx14:EntitlementId xsi:nil="true"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx14:GlobalCRM_3C_Group__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:GlobalCRM_3C_Group)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:GlobalCRM_3C_Group"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:GlobalCRM_3C_Group__c>
+                        <xsl:choose>
+                            <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Case_Origin)">
+                                <pfx14:Origin>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Case_Origin)">
+                                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Case_Origin"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx14:Origin>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx14:Origin>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:SubSystem)">
+                                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:SubSystem"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx14:Origin>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx14:Priority>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Urgency)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Urgency"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:Priority>
+                        <pfx14:Subject>
+                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Title"/>
+                        </pfx14:Subject>
+                        <pfx14:SuppliedCompany>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:AccountName)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:AccountName"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:SuppliedCompany>
+                        <pfx14:SuppliedEmail>
+                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:EmailAddress"/>
+                        </pfx14:SuppliedEmail>
+                        <pfx14:SuppliedName>
+                            <xsl:value-of select="concat($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:FirstName,&quot; &quot;,$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:LastName)"/>
+                        </pfx14:SuppliedName>
+                        <pfx14:SuppliedPhone>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Phone)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Phone"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:SuppliedPhone>
+                        <pfx14:TS_Business_Impact__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:BusinessImpact)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:BusinessImpact"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Business_Impact__c>
+                        <pfx14:TS_Case_Language__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PreferredLanguage)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PreferredLanguage"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Case_Language__c>
+                        <pfx14:TS_Country__c>
+                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Country"/>
+                        </pfx14:TS_Country__c>
+                        <pfx14:TS_Email_CC_Recipients__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:EmailCC)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:EmailCC"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Email_CC_Recipients__c>
+                        <pfx14:TS_Issue_Category__c>
+                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:SRType"/>
+                        </pfx14:TS_Issue_Category__c>
+                        <pfx14:TS_Issue_Sub_Category__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:SubCategory)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:SubCategory"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Issue_Sub_Category__c>
+                        <pfx14:TS_OS_Language__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSOSLanguage)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSOSLanguage"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_OS_Language__c>
+                        <pfx14:TS_OS__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSProdOS)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSProdOS"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_OS__c>
+                        <pfx14:TS_Pattern_Type__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PatternType)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PatternType"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Pattern_Type__c>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSPatternVersion) !=&quot;&quot;">
+                                <pfx14:TS_Pattern_Version__c>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSPatternVersion)">
+                                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSPatternVersion"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx14:TS_Pattern_Version__c>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <pfx14:TS_Preferred_ContactTime_Range__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PreferredContactTime)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PreferredContactTime"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Preferred_ContactTime_Range__c>
+                        <pfx14:TS_Preferred_Contact_Method__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PreferredContactMethod)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PreferredContactMethod"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Preferred_Contact_Method__c>
+                        <pfx14:TS_Product_Language__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSProdLanguage)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSProdLanguage"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Product_Language__c>
+                        <pfx14:TS_Product_Name__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSPordName)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSPordName"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Product_Name__c>
+                        <pfx14:TS_Product_Version__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSProdVersion)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TSProdVersion"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Product_Version__c>
+                        <pfx14:TS_Scan_Engine_Version__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:ScanEngineVersion)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:ScanEngineVersion"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Scan_Engine_Version__c>
+                        <pfx14:TS_Service_Pack__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TS_ServicePack)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:TS_ServicePack"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Service_Pack__c>
+                        <pfx14:TS_Source_ID__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Source_ID__c>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PortalSourceID) !=&quot;&quot;">
+                                <pfx14:TS_Source_Portal_ID__c>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PortalSourceID)">
+                                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PortalSourceID"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx14:TS_Source_Portal_ID__c>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <pfx14:TS_Source__c>
+                            <xsl:choose>
+                                <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:SubSystem)">
+                                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:SubSystem"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx14:TS_Source__c>
+                        <xsl:choose>
+                            <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Sub_Status) and&#xA;tib:trim($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Sub_Status) !=&quot;&quot;">
+                                <pfx14:TS_Sub_Status__c>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Sub_Status)">
+                                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:Sub_Status"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </pfx14:TS_Sub_Status__c>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx14:TS_Sub_Status__c>
+                                    <xsl:value-of select="&quot;New&quot;"/>
+                                </pfx14:TS_Sub_Status__c>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx15:sObjects>
+                </pfx15:create>
+                <ns19:_configData>
+                    <endpointURL>
+                        <xsl:value-of select="$SFDCLogin/root/ServerURL"/>
+                    </endpointURL>
+                </ns19:_configData>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call PSC">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>975</pd:x>
+        <pd:y>74</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/PSC Call Back.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx9:UpdateCallbackInfo>
+                <xsl:if test="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID">
+                    <pfx9:strMessageKey>
+                        <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID"/>
+                    </pfx9:strMessageKey>
+                </xsl:if>
+                <pfx9:strInputXml>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </pfx9:strInputXml>
+            </pfx9:UpdateCallbackInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFDC Object Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>508</pd:x>
+        <pd:y>236</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <data>
+                    <pfx17:Error>
+                        <pfx17:error_code>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx17:error_code>
+                        <pfx17:stack_trace>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx17:stack_trace>
+                        <pfx17:process_stack>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx17:process_stack>
+                        <pfx17:error_message>
+                            <xsl:value-of select="tib:render-xml($SFDCSOAPCreate/outputMessage/pfx15:createResponse, 1)"/>
+                        </pfx17:error_message>
+                    </pfx17:Error>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>829</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term>
+                <xsd:element name="SFDCSRCreateRs">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="CaseID" type="xsd:string"/>
+                            <xsd:element name="SRNumber" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Get-SR-Number/Output/pfx15:queryAllResponse/pfx15:result/pfx15:records" type="pfx14:Case"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <SFDCSRCreateRs>
+                <CaseID>
+                    <xsl:value-of select="$Get-SR-Number/Output/pfx15:queryAllResponse/pfx15:result/pfx15:records[1]/pfx14:Id"/>
+                </CaseID>
+                <SRNumber>
+                    <xsl:value-of select="$Get-SR-Number/Output/pfx15:queryAllResponse/pfx15:result/pfx15:records[1]/pfx14:CaseNumber"/>
+                </SRNumber>
+            </SFDCSRCreateRs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get SR Number">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>709</pd:x>
+        <pd:y>75</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/Query.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Sessionid>
+                    <xsl:value-of select="$SFDCLogin/root/SessionID"/>
+                </Sessionid>
+                <QueryString>
+                    <xsl:value-of select="concat(&quot;SELECT ID,CaseNumber   From Case  WHERE Id = '&quot;,$GlobalVar/root/SFDCCaseID,&quot;'&quot;)"/>
+                </QueryString>
+                <ServerURL>
+                    <xsl:value-of select="$SFDCLogin/root/ServerURL"/>
+                </ServerURL>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateCaseComment">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>577</pd:x>
+        <pd:y>76</pd:y>
+        <config>
+            <processName>/Services/G2Service/SFDC_CreateSRCase/V1.0/CreateCaseComment.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$CheckSRIsExists/Output/pfx15:queryAllResponse/pfx15:result/pfx15:records" type="pfx14:Case"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <root>
+                <PortalSourceID>
+                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PortalSourceID"/>
+                </PortalSourceID>
+                <CaseID>
+                    <xsl:value-of select="$GlobalVar/root/SFDCCaseID"/>
+                </CaseID>
+                <PrivateNotes>
+                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:PrivateNote"/>
+                </PrivateNotes>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>901</pd:x>
+        <pd:y>190</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="CheckSRIsExists">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>359</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/Query.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Sessionid>
+                    <xsl:value-of select="$SFDCLogin/root/SessionID"/>
+                </Sessionid>
+                <QueryString>
+                    <xsl:value-of select="concat(&quot;select ID,CaseNumber,AccountId,ContactId,EntitlementId,TS_Source_ID__c From Case Where TS_Source_ID__c='&quot;, $CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID,&quot;'&quot;)"/>
+                </QueryString>
+                <ServerURL>
+                    <xsl:value-of select="$SFDCLogin/root/ServerURL"/>
+                </ServerURL>
+                <xsl:if test="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID">
+                    <messagekey>
+                        <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID"/>
+                    </messagekey>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>472</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <variableName>GlobalVar</variableName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$CheckSRIsExists/Output/pfx15:queryAllResponse/pfx15:result/pfx15:records" type="pfx14:Case"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="tib:trim($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID)!=&quot;&quot; and $CheckSRIsExists/Output/pfx15:queryAllResponse/pfx15:result/pfx15:size>0">
+                    <root>
+                        <SFDCCaseID>
+                            <xsl:value-of select="$CheckSRIsExists/Output/pfx15:queryAllResponse/pfx15:result/pfx15:records[1]/pfx14:Id"/>
+                        </SFDCCaseID>
+                    </root>
+                </xsl:when>
+                <xsl:otherwise>
+                    <root>
+                        <SFDCCaseID>
+                            <xsl:value-of select="$SFDCSOAPCreate/outputMessage/pfx15:createResponse/pfx15:result[1]/pfx15:id"/>
+                        </SFDCCaseID>
+                    </root>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Neuron</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateSFDCCorporateCase</pd:from>
+        <pd:to>SFDCLogin</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDCLogin</pd:from>
+        <pd:to>SFDCSOAPCreate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDCSOAPCreate</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call PSC</pd:from>
+        <pd:to>Call Neuron</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDCSOAPCreate</pd:from>
+        <pd:to>SFDC Object Generate Error</pd:to>
+        <pd:xpathDescription>success=false</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-6750157</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$SFDCSOAPCreate/outputMessage/pfx15:createResponse/pfx15:result/pfx15:success="false" or 
+$SFDCSOAPCreate/outputMessage/pfx15:createResponse/pfx15:result/pfx15:success=0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get SR Number</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateCaseComment</pd:from>
+        <pd:to>Get SR Number</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Call PSC</pd:to>
+        <pd:xpathDescription>exist CaseID</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDCLogin</pd:from>
+        <pd:to>CheckSRIsExists</pd:to>
+        <pd:xpathDescription>CaseID Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($CreateSFDCCorporateCase/CorpCaseInput/pfx13:SRCase/pfx13:CaseID)!=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CheckSRIsExists</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:xpathDescription>Case Exists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CheckSRIsExists/Output/pfx15:queryAllResponse/pfx15:result/pfx15:size&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CheckSRIsExists</pd:from>
+        <pd:to>SFDCSOAPCreate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>CreateCaseComment</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

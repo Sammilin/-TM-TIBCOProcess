@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns5="http://www.trendmicro.com/G2/SFDC_CommonResultRs" xmlns:ns6="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_Common_Type.xsd" xmlns:ns7="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:pfx="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns8="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRq.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns3="http://www.trendmicro.com/G2/SFDC_CreateSRActivityRq.xsd" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS" xmlns:pfx8="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseActivity.xsd" xmlns:pfx7="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" xmlns:pfx6="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" schemaLocation="/XSD/Portal/PortalSRCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" schemaLocation="/XSD/Portal/PortalSRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd" schemaLocation="/XSD/Portal/PortalSRAct.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" schemaLocation="/XSD/Portal/PortalSRActResult.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseActRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRq.xsd" schemaLocation="/WSDL/Client/G2XSD/SFDC_CreateSRCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_CreateSRActivityRq.xsd" schemaLocation="/WSDL/Client/G2XSD/SFDC_CreateSRActivityRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_CommonResultRs" schemaLocation="/WSDL/Client/G2XSD/SFDC_CommonResultRs.xsd"/>
+    <wsdl:import namespace="GCC Common WS" location="/WSDL/Provider/GCC Common WS_GCC Common WS.WSDL.wsdl"/>
+    <pd:name>Services/PortalService/EI_CreatePortalCorpAct/V1.0/CreateSFDCCorporateCaseAct.process</pd:name>
+    <pd:startName>CreateSFDCCorporateCaseAct</pd:startName>
+    <pd:startType>
+        <xsd:element name="CorpActInput">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="PortalSRAct" type="pfx6:PortalSRActType"/>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>149</pd:startX>
+    <pd:startY>396</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$Create-CorpAct/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/*" element="ns5:SFDC_CommonResultRs"/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <CorpResponse>
+            <xsl:if test="$Create-CorpAct/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns5:SFDC_CommonResultRs[1]/ns5:ResponseBody/ns5:Result/ns6:ActivityID">
+                <pfx7:ActivityID>
+                    <xsl:value-of select="$Create-CorpAct/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns5:SFDC_CommonResultRs[1]/ns5:ResponseBody/ns5:Result/ns6:ActivityID"/>
+                </pfx7:ActivityID>
+            </xsl:if>
+            <xsl:if test="$Create-CorpAct/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns5:SFDC_CommonResultRs[1]/ns5:ResponseBody/ns5:Result/ns6:Message">
+                <pfx7:CreateActMsg>
+                    <xsl:value-of select="$Create-CorpAct/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns5:SFDC_CommonResultRs[1]/ns5:ResponseBody/ns5:Result/ns6:Message"/>
+                </pfx7:CreateActMsg>
+            </xsl:if>
+            <pfx7:CreateActResult>
+                <xsl:value-of select="tib:render-xml($Create-CorpAct/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns5:SFDC_CommonResultRs[1]/ns5:ResponseBody/ns5:Result,1)"/>
+            </pfx7:CreateActResult>
+            <pfx7:TIBCO_RETURN_CODE>
+                <xsl:value-of select="&quot;SUCCESS&quot;"/>
+            </pfx7:TIBCO_RETURN_CODE>
+        </CorpResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="CorpResponse" type="pfx7:PortalSRActResultType"/>
+    </pd:endType>
+    <pd:endX>744</pd:endX>
+    <pd:endY>394</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1317276212736</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>336</pd:x>
+        <pd:y>504</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create CorpAct">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>430</pd:x>
+        <pd:y>395</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/G2Service/SFDC_CreateSRCaseAct/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties/>
+            <InDataxsdString ref="pfx3:Envelope"/>
+            <OutDataxsdString ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties/>
+                <Body>
+                    <pfx3:Envelope>
+                        <pfx3:Body>
+                            <ns3:SFDC_CreateSRActivityRq>
+                                <ns3:RequestHeader>
+                                    <ns4:MessageKey>
+                                        <xsl:value-of select="$CreateSFDCCorporateCaseAct/CorpActInput/MessageKey"/>
+                                    </ns4:MessageKey>
+                                    <ns4:ServiceName>
+                                        <xsl:value-of select="&quot;SFDC_CreateSRCaseAct&quot;"/>
+                                    </ns4:ServiceName>
+                                    <ns4:ServiceVersion>
+                                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                                    </ns4:ServiceVersion>
+                                    <ns4:SourceID>
+                                        <xsl:value-of select="&quot;Portal&quot;"/>
+                                    </ns4:SourceID>
+                                    <ns4:RqTimestamp>
+                                        <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                                    </ns4:RqTimestamp>
+                                </ns3:RequestHeader>
+                                <ns3:RequestBody>
+                                    <pfx8:SFDCSRCaseActivity>
+                                        <xsl:if test="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:ActTitle">
+                                            <pfx8:ActTitle>
+                                                <xsl:value-of select="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:ActTitle"/>
+                                            </pfx8:ActTitle>
+                                        </xsl:if>
+                                        <pfx8:SRNumber>
+                                            <xsl:value-of select="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:SRNumber"/>
+                                        </pfx8:SRNumber>
+                                        <pfx8:ActBody>
+                                            <xsl:value-of select="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:ActBody"/>
+                                        </pfx8:ActBody>
+                                        <pfx8:ActType>
+                                            <xsl:value-of select="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:ActType"/>
+                                        </pfx8:ActType>
+                                        <pfx8:To>
+                                            <xsl:value-of select="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:Email"/>
+                                        </pfx8:To>
+                                        <pfx8:SourceSystem>
+                                            <xsl:value-of select="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:SourceSystem"/>
+                                        </pfx8:SourceSystem>
+                                        <pfx8:SourceId>
+                                            <xsl:value-of select="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:PortalSourceId"/>
+                                        </pfx8:SourceId>
+                                        <xsl:choose>
+                                            <xsl:when test="exists($CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:Attachment) and exists($CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:ToNeuron) and ($CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:ToNeuron='Y')">
+                                                <pfx8:Attachment>
+                                                    <pfx8:File>
+                                                        <pfx8:FileExt>
+                                                            <xsl:value-of select="&quot;&quot;"/>
+                                                        </pfx8:FileExt>
+                                                        <pfx8:FileName>
+                                                            <xsl:value-of select="$Neuron-Sample-Submission/NEURON/NEURON_SAMPLEPATH"/>
+                                                        </pfx8:FileName>
+                                                        <pfx8:FilePath>
+                                                            <xsl:value-of select="&quot;&quot;"/>
+                                                        </pfx8:FilePath>
+                                                        <pfx8:FileType>
+                                                            <xsl:value-of select="&quot;URL&quot;"/>
+                                                        </pfx8:FileType>
+                                                    </pfx8:File>
+                                                </pfx8:Attachment>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <pfx8:Attachment>
+                                                    <xsl:for-each select="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:Attachment/pfx6:URL">
+                                                        <pfx8:File>
+                                                            <pfx8:FileExt>
+                                                                <xsl:value-of select="&quot;&quot;"/>
+                                                            </pfx8:FileExt>
+                                                            <pfx8:FileName>
+                                                                <xsl:value-of select="."/>
+                                                            </pfx8:FileName>
+                                                            <pfx8:FilePath>
+                                                                <xsl:value-of select="&quot;&quot;"/>
+                                                            </pfx8:FilePath>
+                                                            <pfx8:FileType>
+                                                                <xsl:value-of select="&quot;&quot;"/>
+                                                            </pfx8:FileType>
+                                                        </pfx8:File>
+                                                    </xsl:for-each>
+                                                </pfx8:Attachment>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <pfx8:Private>
+                                            <xsl:value-of select="&quot;false&quot;"/>
+                                        </pfx8:Private>
+                                        <pfx8:isResend>
+                                            <xsl:value-of select="1"/>
+                                        </pfx8:isResend>
+                                    </pfx8:SFDCSRCaseActivity>
+                                </ns3:RequestBody>
+                            </ns3:SFDC_CreateSRActivityRq>
+                        </pfx3:Body>
+                    </pfx3:Envelope>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>498</pd:x>
+        <pd:y>503</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Create Siebel Corp ACT error \n&quot;,$Catch/exceptiondata)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CrtCorpActErr'"/>
+                </messageCode>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>568</pd:x>
+        <pd:y>396</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Create-CorpAct/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/*" element="ns5:SFDC_CommonResultRs"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Log>
+                <ns1:DBLogger>
+                    <ns1:MessageHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:SourceId"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="'GCC_CreateCorporateAct'"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="'EI_ESB'"/>
+                        </ns1:SourceID>
+                        <ns1:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RqTimestamp>
+                        <ns1:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RsTimestamp>
+                    </ns1:MessageHeader>
+                    <ns1:MessageBody>
+                        <xsl:copy-of select="$Create-CorpAct/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns5:SFDC_CommonResultRs/ns5:ResponseBody/ns5:Result"/>
+                    </ns1:MessageBody>
+                </ns1:DBLogger>
+                <message>
+                    <xsl:value-of select="concat('Activity created, Act ID: ',$Create-CorpAct/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns5:SFDC_CommonResultRs[1]/ns5:ResponseBody/ns5:Result/ns6:ActivityID)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CorpSRAct-Created'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Neuron Sample Submission">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>304</pd:x>
+        <pd:y>285</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Neuron Sample Submission.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <path>
+                    <xsl:value-of select="$CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:Attachment/pfx6:URL[1]"/>
+                </path>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>CreateSFDCCorporateCaseAct</pd:from>
+        <pd:to>Neuron Sample Submission</pd:to>
+        <pd:xpathDescription>ToNeuron</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:Attachment) and exists($CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:ToNeuron) and ($CreateSFDCCorporateCaseAct/CorpActInput/PortalSRAct/pfx6:ToNeuron='Y')</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create CorpAct</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Neuron Sample Submission</pd:from>
+        <pd:to>Create CorpAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateSFDCCorporateCaseAct</pd:from>
+        <pd:to>Create CorpAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

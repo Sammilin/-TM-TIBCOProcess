@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serviceResource xmlns:wsdl="http://trend.com.tw/EI_GCCWSDL">
+    <ns0:import xmlns:ns0="http://schemas.xmlsoap.org/wsdl/" namespace="http://trend.com.tw/EI_GCCWSDL" location="/WSDL/Client/EI_GCC.wsdl"/>
+    <config>
+        <wsdl namespace="http://xmlns.example.com/1316598840510" embedWsdlComponents="true" embedSchemaComponents="true" embedJndiProperties="false"/>
+        <class>com.tibco.bw.service.serviceAgent.ServiceServiceAgent</class>
+        <implType>bw</implType>
+        <groups>
+            <row isDefault="true" groupName="Default"/>
+        </groups>
+        <isAMXCompliant>false</isAMXCompliant>
+        <serviceChange>Tue Oct 18 23:26:04 CST 2011</serviceChange>
+        <name>EI_GCC_Service</name>
+        <resourceType>service.definition</resourceType>
+        <interfaceImpl>
+            <tab>
+                <tabName>EI_GCC</tabName>
+                <tabType>bw</tabType>
+                <config>
+                    <wsdlDetail location="/WSDL/Client/EI_GCC.wsdl" portType="EI_GCC" ns="http://trend.com.tw/EI_GCCWSDL"/>
+                    <detail>
+                        <tab>
+                            <tabName>service.definition.impl.tab.label</tabName>
+                            <tabType>impl</tabType>
+                            <config>
+                                <operations>
+                                    <row opName="EI_CreatePortalCase" opImpl="/Simulations/ServiceClient/EI_CreatePortalCase/V1.0/Main.process"/>
+                                    <row opName="EI_CreatePortalCaseAct" opImpl="/Simulations/ServiceClient/EI_CreatePortalCorpAct/V1.0/Main.process"/>
+                                </operations>
+                            </config>
+                        </tab>
+                        <tab>
+                            <tabName>service.definition.ep.tab.label</tabName>
+                            <tabType>ep</tabType>
+                            <config>
+                                <epBindings>
+                                    <row epName="EI_GCCEndpoint1" epType="soap">
+                                        <config>
+                                            <epDetail>
+                                                <tab>
+                                                    <tabName>soap.service.transport.ui.transport.tab.label</tabName>
+                                                    <tabType>transport</tabType>
+                                                    <config>
+                                                        <sharedChannel>/Resources/HTTP/HTTP Connection.sharedhttp</sharedChannel>
+                                                        <transport>
+                                                            <config>
+                                                                <useBasicAuthentication>false</useBasicAuthentication>
+                                                                <httpURI>/WSDL/Client/EI_GCC_Service.serviceagent/EI_GCCEndpoint1</httpURI>
+                                                            </config>
+                                                        </transport>
+                                                    </config>
+                                                </tab>
+                                                <tab>
+                                                    <tabName>soap.service.transport.ui.details.tab.label</tabName>
+                                                    <tabType>details</tabType>
+                                                    <config>
+                                                        <operationStyle>document</operationStyle>
+                                                        <soapVersion>SOAP 1.1</soapVersion>
+                                                        <soap>
+                                                            <operation name="EI_CreatePortalCase">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Client/EI_GCC_Service.serviceagent/EI_GCCEndpoint1/EI_CreatePortalCase</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                        <inputNamespace/>
+                                                                        <outputNamespace/>
+                                                                        <faultNamespace/>
+                                                                        <portAddressPrefix/>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                            <operation name="EI_CreatePortalCaseAct">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/WSDL/Client/EI_GCC_Service.serviceagent/EI_GCCEndpoint1/EI_CreatePortalCaseAct</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                        <inputNamespace/>
+                                                                        <outputNamespace/>
+                                                                        <faultNamespace/>
+                                                                        <portAddressPrefix/>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                        </soap>
+                                                    </config>
+                                                </tab>
+                                            </epDetail>
+                                        </config>
+                                    </row>
+                                </epBindings>
+                            </config>
+                        </tab>
+                    </detail>
+                </config>
+            </tab>
+        </interfaceImpl>
+    </config>
+</serviceResource>

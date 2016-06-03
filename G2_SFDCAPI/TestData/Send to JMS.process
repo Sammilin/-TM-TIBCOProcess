@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+    <pd:name>TestData/Send to JMS.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1351402316228</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>294</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PSCService/PSC_AMTaskEscAct/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="'&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;ns0:PSC_AMTaskEscActRq xmlns:ns0=&quot;http://www.trendmicro.com/PSC/PSC_AMTaskEscActRq&quot;>&lt;ns0:RequestHeader>&lt;ns1:MessageKey xmlns:ns1=&quot;http://www.trendmicro.com/ESB/schemas/messageHeader&quot;>5f418232-0a65-43aa-921f-e90b288b7d4f&lt;/ns1:MessageKey>&lt;ns1:ServiceName xmlns:ns1=&quot;http://www.trendmicro.com/ESB/schemas/messageHeader&quot;>PSC_AMTaskEscAct&lt;/ns1:ServiceName>&lt;ns1:ServiceVersion xmlns:ns1=&quot;http://www.trendmicro.com/ESB/schemas/messageHeader&quot;>V1.0&lt;/ns1:ServiceVersion>&lt;ns1:SourceID xmlns:ns1=&quot;http://www.trendmicro.com/ESB/schemas/messageHeader&quot;>BW-Resend&lt;/ns1:SourceID>&lt;ns1:RqTimestamp xmlns:ns1=&quot;http://www.trendmicro.com/ESB/schemas/messageHeader&quot;>2013-02-23T01:19:21.143-08:00&lt;/ns1:RqTimestamp>&lt;/ns0:RequestHeader>&lt;ns0:RequestBody>&lt;ns1:AMSSTask xmlns:ns1=&quot;http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMTaskEscAct.xsd&quot;>&lt;ns1:SHA1>2F423ECACE28A7B61D6BD39495C47C46F4A932B7&lt;/ns1:SHA1>&lt;ns1:SRNumber>1-1-732138542&lt;/ns1:SRNumber>&lt;ns1:FirstName>HIRONORI&lt;/ns1:FirstName>&lt;ns1:LastName>KAWADA&lt;/ns1:LastName>&lt;ns1:FTPLocation>ftp://10.48.244.132/rsvp/UPLOADVIRUS/RSVP/2F/423/ECA/CE28A/2F423ECACE28A7B61D6BD39495C47C46F4A932B7/2F423ECACE28A7B61D6BD39495C47C46F4A932B7&lt;/ns1:FTPLocation>&lt;ns1:SourceReferenceNumber>1-1-732138542&lt;/ns1:SourceReferenceNumber>&lt;ns1:PatternVersion/>&lt;ns1:Title>TAM Uploaded File by TRENDJP\\KTANAKA / pcpkxx028_1.zip&lt;/ns1:Title>&lt;ns1:PatternBranch/>&lt;ns1:Type>File to Verify&lt;/ns1:Type>&lt;ns1:Country>Japan&lt;/ns1:Country>&lt;ns1:FileName>pcpkxx028_1.zip&lt;/ns1:FileName>&lt;ns1:OS>Other&lt;/ns1:OS>&lt;ns1:Entitlement>Premium Support - Diamond&lt;/ns1:Entitlement>&lt;ns1:TAMEmail>keisuke_tanaka@trendmicro.co.jp&lt;/ns1:TAMEmail>&lt;ns1:Priority>P5&lt;/ns1:Priority>&lt;ns1:Source>GCCU&lt;/ns1:Source>&lt;ns1:SubmitDate>02/23/2013 08:19:20&lt;/ns1:SubmitDate>&lt;ns1:Product>Not Applicable&lt;/ns1:Product>&lt;ns1:FileSize>2291172&lt;/ns1:FileSize>&lt;ns1:Email>hironori.kawada@mofa.go.jp&lt;/ns1:Email>&lt;ns1:Description>TAM Uploaded File@#File Name: pcpkxx028_1.zip@#File Ext: ZIP@#File Type: application/octet-stream@#from GCC-U&lt;/ns1:Description>&lt;ns1:Region>JP&lt;/ns1:Region>&lt;/ns1:AMSSTask>&lt;ns1:EscalationAct xmlns:ns1=&quot;http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMTaskEscAct.xsd&quot;>&lt;ns1:AMSSTaskType>File to Verify&lt;/ns1:AMSSTaskType>&lt;ns1:Description>TAM Uploaded File@#File Name: pcpkxx028_1.zip@#File Ext: ZIP@#File Type: application/octet-stream@#from GCC-U&lt;/ns1:Description>&lt;ns1:FileLocation>ftp://10.48.244.132/rsvp/UPLOADVIRUS/RSVP/2F/423/ECA/CE28A/2F423ECACE28A7B61D6BD39495C47C46F4A932B7/2F423ECACE28A7B61D6BD39495C47C46F4A932B7&lt;/ns1:FileLocation>&lt;ns1:IntegrationSourceId>plfZlAD3c0GDSClQ14rEog&lt;/ns1:IntegrationSourceId>&lt;ns1:NeuronId>9b3565a5-38ae-4b57-a8af-a4e3c84bde4a&lt;/ns1:NeuronId>&lt;ns1:OriginalFileName>pcpkxx028_1.zip&lt;/ns1:OriginalFileName>&lt;ns1:SHA1>2F423ECACE28A7B61D6BD39495C47C46F4A932B7&lt;/ns1:SHA1>&lt;ns1:Source>GCCU&lt;/ns1:Source>&lt;ns1:Title>TAM Uploaded File by TRENDJP\\KTANAKA / pcpkxx028_1.zip&lt;/ns1:Title>&lt;ns1:Type>AMSS Task Created&lt;/ns1:Type>&lt;ns1:sSRNumber>1-1-732138542&lt;/ns1:sSRNumber>&lt;ns1:sIntegrationSource>AMSS&lt;/ns1:sIntegrationSource>&lt;/ns1:EscalationAct>&lt;ns1:UpdateMalwareTaskInput xmlns:ns1=&quot;http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMTaskEscAct.xsd&quot;>&lt;ns1:PortalSourceID>MoJBX2UKqkOSH_kLKIt9Tw&lt;/ns1:PortalSourceID>&lt;ns1:SRNumber>1-1-732138542&lt;/ns1:SRNumber>&lt;ns1:ActivityRowID>1-C48IY5&lt;/ns1:ActivityRowID>&lt;/ns1:UpdateMalwareTaskInput>&lt;ns1:RetryTime xmlns:ns1=&quot;http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMTaskEscAct.xsd&quot;>3&lt;/ns1:RetryTime>&lt;ns1:RequestSource xmlns:ns1=&quot;http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMTaskEscAct.xsd&quot;>Portal&lt;/ns1:RequestSource>&lt;/ns0:RequestBody>&lt;/ns0:PSC_AMTaskEscActRq>'"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>135</pd:x>
+        <pd:y>143</pd:y>
+        <pd:width>388</pd:width>
+        <pd:height>240</pd:height>
+        <pd:collapsedWidth>52</pd:collapsedWidth>
+        <pd:collapsedHeight>71</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>false() or $i=3</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Map Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-6750157</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Map-Data/root/param=2</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Map Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>299</pd:x>
+            <pd:y>209</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="param" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <root/>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>417</pd:x>
+            <pd:y>311</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
+                    <IntervalInMillisec>
+                        <xsl:value-of select="3000"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>205</pd:x>
+            <pd:y>312</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <pfx:ActivityInput/>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>296</pd:x>
+            <pd:y>312</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>226</pd:x>
+        <pd:y>436</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>366</pd:x>
+        <pd:y>441</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx:ActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

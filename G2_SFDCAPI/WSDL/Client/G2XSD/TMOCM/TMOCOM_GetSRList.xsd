@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.trendmicro.com/SFDC/TMOCM/SFDC_GetSRList.xsd"
+	 xmlns:ns0="http://www.trendmicro.com/ESB/schemas/messageHeader"
+	 xmlns:ns1="http://www.tibco.com/schemas/GCCPortal/XSD/GetSRListResults.xsd"
+	 xmlns:ns2="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_Common_Type.xsd"
+	 targetNamespace="http://www.trendmicro.com/SFDC/TMOCM/SFDC_GetSRList.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader" schemaLocation="../../../../XSD/Common/messageheader.xsd"/>
+	<xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/GetSRListResults.xsd" schemaLocation="../../../../XSD/G2/GetSRListResults.xsd"/>
+	<xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_Common_Type.xsd" schemaLocation="../../../../XSD/G2/SFDC_Common_Type.xsd"/>
+	<xs:element name="TMOCM_GetSRListRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RequestHeader" type="ns0:RequestHeader"/>
+				<xs:element name="RequestBody">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="QuerySRList" type="GetSRListRqType"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="GetSRListRqType">
+		<xs:sequence>
+			<xs:element name="ContactID" type="xs:string"/>
+			<xs:element name="SRStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="RowStart" type="xs:string"/>
+			<xs:element name="RowEnd" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="TMOCM_GetSRListRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ResponseHeader" type="ns0:RequestHeader"/>
+				<xs:element name="ResponseBody">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="result" type="ns1:Resultsets"/>
+							<xs:element name="Error" type="ns2:ErrorType" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

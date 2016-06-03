@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns4="www.tibco.com/plugin/Sleep" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS">
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" schemaLocation="/XSD/Portal/PortalSRCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" schemaLocation="/XSD/Portal/PortalSRCaseResult.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <wsdl:import namespace="GCC Common WS" location="/WSDL/Provider/GCC Common WS_GCC Common WS.WSDL.wsdl"/>
+    <pd:name>Services/PortalService/EI_CreatePortalCase/V1.0/CreateGCCConsumerCase.process</pd:name>
+    <pd:startName>CreateGCCConsumerCase</pd:startName>
+    <pd:startType>
+        <xsd:element name="ConCaseInput">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="PortalSRCase" type="pfx:PortalSRCaseType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>90</pd:startX>
+    <pd:startY>56</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$Parse-ConSR/pfx3:Envelope/pfx3:Body/*" element="pfx2:GCC_spcCommon_spcWS_CreatePortalConsumerCase_Output" cardinality=""/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <ConResponse>
+            <pfx4:Activity_ID>
+                <xsl:value-of select="$Parse-ConSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreatePortalConsumerCase_Output/pfx2:ActivityId"/>
+            </pfx4:Activity_ID>
+            <pfx4:SR_ID>
+                <xsl:value-of select="$Parse-ConSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreatePortalConsumerCase_Output/pfx2:SRNum"/>
+            </pfx4:SR_ID>
+            <pfx4:Siebel_ERROR>
+                <xsl:value-of select="$Parse-ConSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreatePortalConsumerCase_Output/pfx2:Error"/>
+            </pfx4:Siebel_ERROR>
+            <pfx4:TIBCO_RETURN_CODE>
+                <xsl:value-of select="''"/>
+            </pfx4:TIBCO_RETURN_CODE>
+        </ConResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="ConResponse" type="pfx4:PortalSRCaseType"/>
+    </pd:endType>
+    <pd:endX>717</pd:endX>
+    <pd:endY>60</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1317276212736</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>285</pd:x>
+        <pd:y>295</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create ConSR">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>471</pd:x>
+        <pd:y>58</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Generic_HTTP_SOAP_Client/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties/>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="'CreatePortalConsumerCase'"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTimestamp>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-ConCaseSR/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>564</pd:x>
+        <pd:y>295</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Create Siebel Consumer SR error \n&quot;,$Render-ConCaseSR/xmlString)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CrtSRErr'"/>
+                </messageCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>439</pd:x>
+        <pd:y>403</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Resend/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="'CreatePortalConsumerCase'"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <SourceID>
+                        <xsl:value-of select="&quot;TIBCO Resend&quot;"/>
+                    </SourceID>
+                    <RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTimestamp>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-ConCaseSR/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map ConCaseSR">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>218</pd:x>
+        <pd:y>56</pd:y>
+        <config>
+            <element ref="pfx2:GCC_spcCommon_spcWS_CreatePortalConsumerCase_Input"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:GCC_spcCommon_spcWS_CreatePortalConsumerCase_Input>
+                <pfx2:ContactCountry>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Country"/>
+                </pfx2:ContactCountry>
+                <pfx2:SearchedKB>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:DidSearchDB"/>
+                </pfx2:SearchedKB>
+                <xsl:choose>
+                    <xsl:when test="exists($CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment/pfx:URL[1]) and&#xA;tib:trim($CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment/pfx:URL[1])  !=&quot;&quot;">
+                        <pfx2:WithAttachment>
+                            <xsl:value-of select="'Y'"/>
+                        </pfx2:WithAttachment>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx2:WithAttachment>
+                            <xsl:value-of select="'N'"/>
+                        </pfx2:WithAttachment>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <pfx2:Language>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductLanguage"/>
+                </pfx2:Language>
+                <pfx2:SRType>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SRType"/>
+                </pfx2:SRType>
+                <pfx2:SourceId>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                </pfx2:SourceId>
+                <pfx2:InternetConnectionType>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:InternetConnections"/>
+                </pfx2:InternetConnectionType>
+                <pfx2:PatternFileNumber>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PatternFileNumber"/>
+                </pfx2:PatternFileNumber>
+                <pfx2:SN>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SerialNumber"/>
+                </pfx2:SN>
+                <pfx2:SystemNotificationFlag>
+                    <xsl:value-of select="'Y'"/>
+                </pfx2:SystemNotificationFlag>
+                <pfx2:Version>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductVersion"/>
+                </pfx2:Version>
+                <pfx2:ContactLN>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:LastName"/>
+                </pfx2:ContactLN>
+                <pfx2:ContactFN>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirstName"/>
+                </pfx2:ContactFN>
+                <pfx2:ICSSurveyNotificationFlag>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Wouldyouparticipateinasurvey"/>
+                </pfx2:ICSSurveyNotificationFlag>
+                <pfx2:OS>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:OperatingSystem"/>
+                </pfx2:OS>
+                <pfx2:ProductGIC>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductGIC"/>
+                </pfx2:ProductGIC>
+                <pfx2:SRDesc>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Description"/>
+                </pfx2:SRDesc>
+                <xsl:if test="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment/pfx:URL[1]">
+                    <pfx2:URLAttachments>
+                        <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment/pfx:URL[1]"/>
+                    </pfx2:URLAttachments>
+                </xsl:if>
+                <pfx2:ContactPhone>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PhoneNumber"/>
+                </pfx2:ContactPhone>
+                <pfx2:PortalFields>
+                    <xsl:value-of select="concat(&#xA;&quot;Date Created: &quot;,tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0)),&#xA;&quot;@#Search KB: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:DidSearchDB,&#xA;&quot;@#Solution ID/s: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SolutionID,&#xA;&quot;@#ProductInformation&quot;,'',&#xA;&quot;@#GIC: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductGIC,&#xA;&quot;@#Product Version: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductVersion,&#xA;&quot;@#ProductName: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductName,&#xA;&quot;@#Language: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductLanguage,&#xA;&quot;@#Operating System: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:OperatingSystem,&#xA;&quot;@#Serial Number: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SerialNumber,&#xA;&quot;@#Pattern File Number: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PatternFileNumber,&#xA;&quot;@#System Information&quot;,'',&#xA;&quot;@#Internet Connection: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:InternetConnections,&#xA;&quot;@#File Attachments: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment/pfx:URL[1],&#xA;&quot;@#Personal Information&quot;,'',&#xA;&quot;@#Email: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EmailAddress,&#xA;&quot;@#First Name: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirstName,&#xA;&quot;@#Last Name: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:LastName,&#xA;&quot;@#Phone Number: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PhoneNumber,&#xA;&quot;@#Location: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Country,&#xA;&quot;@#SRDesc: &quot;,$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Description)"/>
+                </pfx2:PortalFields>
+                <pfx2:ReferenceNum>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SolutionID"/>
+                </pfx2:ReferenceNum>
+                <xsl:if test="exists($CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:TSProdId)">
+                    <xsl:if test="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:TSProdId">
+                        <pfx2:TSProductId>
+                            <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:TSProdId"/>
+                        </pfx2:TSProductId>
+                    </xsl:if>
+                </xsl:if>
+                <pfx2:ContactEmail>
+                    <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EmailAddress"/>
+                </pfx2:ContactEmail>
+            </pfx2:GCC_spcCommon_spcWS_CreatePortalConsumerCase_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse ConSR">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>589</pd:x>
+        <pd:y>59</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Create-ConSR/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render ConCaseSR">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>355</pd:x>
+        <pd:y>59</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Envelope>
+                <pfx3:Body>
+                    <xsl:copy-of select="$Map-ConCaseSR/pfx2:GCC_spcCommon_spcWS_CreatePortalConsumerCase_Input"/>
+                </pfx3:Body>
+            </pfx3:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>655</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns2:DBLogger>
+                    <ns2:MessageHeader>
+                        <ns2:MessageKey>
+                            <xsl:value-of select="$CreateGCCConsumerCase/ConCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                        </ns2:MessageKey>
+                        <ns2:ServiceName>
+                            <xsl:value-of select="'GCC_CreateConsumerCase'"/>
+                        </ns2:ServiceName>
+                        <ns2:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns2:ServiceVersion>
+                        <ns2:SourceID>
+                            <xsl:value-of select="'EI_ESB'"/>
+                        </ns2:SourceID>
+                        <ns2:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns2:RqTimestamp>
+                        <ns2:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns2:RsTimestamp>
+                    </ns2:MessageHeader>
+                    <ns2:MessageBody>
+                        <xsl:copy-of select="$Create-ConSR/ns:ActivityOutput/Body"/>
+                    </ns2:MessageBody>
+                </ns2:DBLogger>
+                <message>
+                    <xsl:value-of select="$Create-ConSR/ns:ActivityOutput/Body"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'ConSR-Created'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>CreateGCCConsumerCase</pd:from>
+        <pd:to>Map ConCaseSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map ConCaseSR</pd:from>
+        <pd:to>Render ConCaseSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render ConCaseSR</pd:from>
+        <pd:to>Create ConSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create ConSR</pd:from>
+        <pd:to>Parse ConSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse ConSR</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($_error_Create-ConSR/ActivityErrors) or exists($_error_Parse-ConSR/ActivityErrors)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse ConSR</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

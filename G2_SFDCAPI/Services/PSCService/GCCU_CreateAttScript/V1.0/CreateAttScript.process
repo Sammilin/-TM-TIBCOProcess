@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns22="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns13="http://tempuri.org/" xmlns:ns6="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns7="www.tibco.com/plugin/Sleep" xmlns:pfx="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" xmlns:ns8="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:ns2="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment%20Script" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns4="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AttScript.xsd" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="GCC_U_Corporate_SR_General_Operations_Service" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateAttScriptRq.xsd"/>
+    <xsd:import namespace="GCC_U_Corporate_SR_General_Operations_Service" schemaLocation="/WSDL/Provider/GCC_U_Corporate_SR_General_Operations_Service_GCC_U_Corporate_SR_General_Operations_Service.WSDL.wsdl"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <pd:name>Services/PSCService/GCCU_CreateAttScript/V1.0/CreateAttScript.process</pd:name>
+    <pd:startName>CreateAttScript</pd:startName>
+    <pd:startType ref="pfx:PSC_CreateAttScriptRq"/>
+    <pd:startX>157</pd:startX>
+    <pd:startY>212</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$Parse-Attach/pfx3:Envelope/pfx3:Body/*" element="pfx2:GCC_spcCommon_spcWS_CreateAttScript_Output" cardinality=""/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <CreateAttachment>
+            <Result>
+                <xsl:value-of select="$Parse-Attach/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateAttScript_Output/pfx2:Result"/>
+            </Result>
+        </CreateAttachment>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="CreateAttachment">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Result" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>703</pd:endX>
+    <pd:endY>212</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1319711434293</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>169</pd:x>
+        <pd:y>417</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create CorpAttachment">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>494</pd:x>
+        <pd:y>221</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Generic_HTTP_SOAP_Client/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties/>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="'PSC_CreateAttScript'"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTimestamp>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-Attach/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>298</pd:x>
+        <pd:y>417</pd:y>
+        <config>
+            <processName>/Utilities/Resend/V1.0/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns12:DBLogger>
+                    <ns12:MessageHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:MessageKey"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:ServiceName"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:ServiceVersion"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:SourceID"/>
+                        </ns12:SourceID>
+                        <ns12:RqTimestamp>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:RqTimestamp"/>
+                        </ns12:RqTimestamp>
+                    </ns12:MessageHeader>
+                    <ns12:MessageBody>
+                        <xsl:copy-of select="$Render-Attach/xmlString"/>
+                    </ns12:MessageBody>
+                    <ns22:Error>
+                        <ns22:error_code>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                        </ns22:error_code>
+                        <ns22:stack_trace>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                        </ns22:stack_trace>
+                        <ns22:process_stack>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                        </ns22:process_stack>
+                    </ns22:Error>
+                </ns12:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;CreateAtt-Fail \n&quot;,$Render-Attach/xmlString)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CreateAtt-Fail'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>664</pd:x>
+        <pd:y>417</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Create Siebel Corp Attachment  error \n&quot;,$Render-Attach/xmlString)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CrtCorpAttachErr'"/>
+                </messageCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>597</pd:x>
+        <pd:y>532</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PSCService/GCCU_CreateAttScript/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="'GCCU_CreateAttScript'"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <SourceID>
+                        <xsl:value-of select="'EI_Resend'"/>
+                    </SourceID>
+                    <RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTimestamp>
+                    <ResendCount>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:ResendCount+1"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-Resend/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>659</pd:x>
+        <pd:y>336</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-Attach/pfx3:Envelope/pfx3:Body/*" element="pfx2:GCC_spcCommon_spcWS_CreateAttScript_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Log>
+                <ns12:DBLogger>
+                    <ns12:MessageHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:MessageKey"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:ServiceName"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:ServiceVersion"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:SourceID"/>
+                        </ns12:SourceID>
+                        <ns12:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns12:RqTimestamp>
+                        <ns12:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns12:RsTimestamp>
+                    </ns12:MessageHeader>
+                    <ns12:MessageBody>
+                        <xsl:copy-of select="$Parse-Attach/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateAttScript_Output"/>
+                    </ns12:MessageBody>
+                </ns12:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;CreateAttachment : &quot;,$Parse-Attach/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateAttScript_Output/pfx2:Result,&#xA;&quot; with Activity ID: &quot;,$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:ActivityID,&quot; MessageKey: &quot;,$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:MessageKey)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CorpAttach-Created'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mail Notification">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>472</pd:x>
+        <pd:y>416</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SubjectMessage>
+                    <xsl:value-of select="concat(&quot;[&quot;,$_globalVariables/ns6:GlobalVariables/ESBBW/Environment,&quot; &quot;,$_globalVariables/ns6:GlobalVariables/ESBBW/Domain,&quot;] &quot;,&quot;Create GCCU AttScript Fail - Resend Up to Limit&quot;)"/>
+                </SubjectMessage>
+                <DetailStackTrace>
+                    <xsl:value-of select="tib:render-xml($Catch/exceptiondata)"/>
+                </DetailStackTrace>
+                <ns8:MailInfo>
+                    <ns8:MessageKey>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:MessageKey"/>
+                    </ns8:MessageKey>
+                    <ns8:ServiceName>
+                        <xsl:value-of select="&quot;GCCU_CreateAttScript&quot;"/>
+                    </ns8:ServiceName>
+                    <ns8:ServiceVersion>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:ServiceVersion"/>
+                    </ns8:ServiceVersion>
+                    <ns8:AttachFile>
+                        <ns8:AttachContent>
+                            <ns8:content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment; filename=&quot;, $CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:MessageKey,&quot;.xml&quot;)"/>
+                            </ns8:content-disposition>
+                            <ns8:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns8:content-type>
+                            <ns8:content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </ns8:content-transfer-encoding>
+                            <ns8:textContent>
+                                <xsl:value-of select="tib:render-xml($CreateAttScript/pfx:PSC_CreateAttScriptRq)"/>
+                            </ns8:textContent>
+                        </ns8:AttachContent>
+                    </ns8:AttachFile>
+                </ns8:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Attachment">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>266</pd:x>
+        <pd:y>212</pd:y>
+        <config>
+            <element ref="pfx2:GCC_spcCommon_spcWS_CreateAttScript_Input"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:GCC_spcCommon_spcWS_CreateAttScript_Input>
+                <ns2:ListOfGccIoActionAttachmentScript>
+                    <ns2:Action>
+                        <ns2:Id>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:ActivityID"/>
+                        </ns2:Id>
+                        <ns2:ActivityId>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:ActivityID"/>
+                        </ns2:ActivityId>
+                        <ns2:ActivityUID>
+                            <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:ActivityID"/>
+                        </ns2:ActivityUID>
+                        <ns2:ListOfGccActionAttachmentScript>
+                            <xsl:for-each select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:URL">
+                                <ns2:GccActionAttachmentScript>
+                                    <ns2:ActivityId>
+                                        <xsl:value-of select="../ns4:ActivityID"/>
+                                    </ns2:ActivityId>
+                                    <ns2:ActivityFileExt>
+                                        <xsl:value-of select="ns4:FileExt"/>
+                                    </ns2:ActivityFileExt>
+                                    <ns2:ActivityFileName>
+                                        <xsl:value-of select="ns4:FileName"/>
+                                    </ns2:ActivityFileName>
+                                    <ns2:ActivityFileSrcPath>
+                                        <xsl:value-of select="ns4:FilePath"/>
+                                    </ns2:ActivityFileSrcPath>
+                                    <ns2:Comment2>
+                                        <xsl:value-of select="ns4:Comment2"/>
+                                    </ns2:Comment2>
+                                    <xsl:if test="upper-case(ns4:FileExt) !='URL'">
+                                        <ns2:ActivityFileBuffer>
+                                            <xsl:value-of select="''"/>
+                                        </ns2:ActivityFileBuffer>
+                                    </xsl:if>
+                                </ns2:GccActionAttachmentScript>
+                            </xsl:for-each>
+                        </ns2:ListOfGccActionAttachmentScript>
+                    </ns2:Action>
+                </ns2:ListOfGccIoActionAttachmentScript>
+            </pfx2:GCC_spcCommon_spcWS_CreateAttScript_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse Attach">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>597</pd:x>
+        <pd:y>211</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Create-CorpAttachment/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Attach">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>377</pd:x>
+        <pd:y>211</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Envelope>
+                <pfx3:Body>
+                    <xsl:copy-of select="$Map-Attachment/pfx2:GCC_spcCommon_spcWS_CreateAttScript_Input"/>
+                </pfx3:Body>
+            </pfx3:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Resend">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>470</pd:x>
+        <pd:y>532</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx:PSC_CreateAttScriptRq"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:PSC_CreateAttScriptRq>
+                <pfx:RequestHeader>
+                    <ns5:MessageKey>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:MessageKey"/>
+                    </ns5:MessageKey>
+                    <ns5:ServiceName>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:ServiceName"/>
+                    </ns5:ServiceName>
+                    <ns5:ServiceVersion>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:ServiceVersion"/>
+                    </ns5:ServiceVersion>
+                    <ns5:SourceID>
+                        <xsl:value-of select="'EI_Resend'"/>
+                    </ns5:SourceID>
+                    <ns5:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns5:RqTimestamp>
+                </pfx:RequestHeader>
+                <pfx:RequestBody>
+                    <ns4:GUID>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:GUID"/>
+                    </ns4:GUID>
+                    <ns4:ActivityID>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:ActivityID"/>
+                    </ns4:ActivityID>
+                    <ns4:ResendCount>
+                        <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:ResendCount+1"/>
+                    </ns4:ResendCount>
+                    <xsl:copy-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:URL"/>
+                </pfx:RequestBody>
+            </pfx:PSC_CreateAttScriptRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sleep">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>352</pd:x>
+        <pd:y>532</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns7:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="$_globalVariables/ns6:GlobalVariables/Services/ResendWaitingPeriod"/>
+                </IntervalInMillisec>
+            </ns7:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PSC Call Back">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>657</pd:x>
+        <pd:y>110</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/PSC Call Back.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-Attach/pfx3:Envelope/pfx3:Body/*" element="pfx2:GCC_spcCommon_spcWS_CreateAttScript_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns13:UpdateCallbackInfo>
+                <ns13:strMessageKey>
+                    <xsl:value-of select="$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestHeader/ns5:MessageKey"/>
+                </ns13:strMessageKey>
+                <ns13:strInputXml>
+                    <xsl:value-of select="tib:render-xml($Parse-Attach/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateAttScript_Output)"/>
+                </ns13:strInputXml>
+            </ns13:UpdateCallbackInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Render Attach</pd:from>
+        <pd:to>Create CorpAttachment</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create CorpAttachment</pd:from>
+        <pd:to>Parse Attach</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateAttScript</pd:from>
+        <pd:to>Map Attachment</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Attachment</pd:from>
+        <pd:to>Render Attach</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Attach</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrLog</pd:from>
+        <pd:to>Sleep</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateAttScript/pfx:PSC_CreateAttScriptRq/pfx:RequestBody/ns4:ResendCount&lt; $_globalVariables/ns6:GlobalVariables/Services/ResendLimit</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep</pd:from>
+        <pd:to>Render Resend</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Resend</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrLog</pd:from>
+        <pd:to>Mail Notification</pd:to>
+        <pd:xpathDescription>Up To Limit</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mail Notification</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Attach</pd:from>
+        <pd:to>PSC Call Back</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PSC Call Back</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMSS_CreateInboundFeedbackRq.xsd" xmlns:ns5="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Result.xsd" xmlns:ns6="http://www.tibco.com/pe/EngineTypes" xmlns:ns7="http://www.siebel.com/xml/AMSS%20Task%20Attachment%20IO" xmlns:pfx="http://www.trendmicro.com/PSC/AMSS_CreateAMSSInboundFeedbackRq" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="AMSS Task Common WS" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns4="http://tempuri.org/" xmlns:ns3="http://www.siebel.com/xml/GCC-U%20Corporate%20SR%20AMSS%20Escalation%20Input" xmlns:pfx5="http://www.trendmicro.com/PSC/PSC_TaskFeedbackRq" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/PSC/AMSS_CreateAMSSInboundFeedbackRs" xmlns:pfx3="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMSS_CreateInboundFeedbackRs.xsd" xmlns:pfx2="GCC-U_AMSS_Escalation_WS" xmlns:pfx7="http://www.trendmicro.com/PSC/PSC_CommonResultRs" xmlns:pfx6="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/TaskFeedback.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/PSC/AMSS_CreateAMSSInboundFeedbackRq" schemaLocation="/WSDL/Client/PSCXSD/AMSS_CreateAMSSInboundFeedbackRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMSS_CreateInboundFeedbackRs.xsd" schemaLocation="/XSD/PSC/AMSS_CreateInboundFeedbackRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/AMSS_CreateAMSSInboundFeedbackRs" schemaLocation="/WSDL/Client/PSCXSD/AMSS_CreateAMSSInboundFeedbackRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_TaskFeedbackRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_TaskFeedbackRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CommonResultRs" schemaLocation="/WSDL/Client/PSCXSD/PSC_CommonResultRs.xsd"/>
+    <pd:name>Services/PSCService/GCCU_CreateTaskFeedback/V1.0/ExecuteRequest.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx5:PSC_TaskFeedbackRq"/>
+    <pd:startX>116</pd:startX>
+    <pd:startY>133</pd:startY>
+    <pd:returnBindings>
+        <pfx7:PSC_CommonResultRs>
+            <pfx7:ResponseHeader>
+                <ns1:MessageKey>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:MessageKey"/>
+                </ns1:MessageKey>
+                <ns1:ServiceName>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:ServiceName"/>
+                </ns1:ServiceName>
+                <ns1:ServiceVersion>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:ServiceVersion"/>
+                </ns1:ServiceVersion>
+                <ns1:SourceID>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:SourceID"/>
+                </ns1:SourceID>
+                <ns1:StatusCode>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:StatusCode"/>
+                </ns1:StatusCode>
+                <ns1:RqTimestamp>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:RqTimestamp"/>
+                </ns1:RqTimestamp>
+                <ns1:RsTimestamp>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns1:RsTimestamp>
+            </pfx7:ResponseHeader>
+            <pfx7:ResponseBody>
+                <ns5:Result>
+                    <ns5:Status>
+                        <xsl:value-of select="'Success'"/>
+                    </ns5:Status>
+                    <ns5:Message>
+                        <xsl:value-of select="'Success'"/>
+                    </ns5:Message>
+                    <ns5:ID>
+                        <xsl:value-of select="''"/>
+                    </ns5:ID>
+                </ns5:Result>
+            </pfx7:ResponseBody>
+        </pfx7:PSC_CommonResultRs>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx7:PSC_CommonResultRs"/>
+    <pd:endX>639</pd:endX>
+    <pd:endY>216</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1330484801877</pd:targetNamespace>
+    <pd:activity name="Create AMSS TaskFeedback">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>262</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/CreateAMSSInboundFeedback.process</processName>
+        </config>
+        <pd:inputBindings>
+            <InboundFeedback>
+                <ns2:AMSS_spcTask_spcCommon_spcWS_InboundFeedback_Input>
+                    <ns2:SHA1>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:File[1]/pfx6:SHA1"/>
+                    </ns2:SHA1>
+                    <ns2:FTPLocation>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:File[1]/pfx6:FTPLocation"/>
+                    </ns2:FTPLocation>
+                    <ns2:FirstName>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:FirstName"/>
+                    </ns2:FirstName>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ParentTaskID">
+                        <ns2:ParentTaskId>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ParentTaskID"/>
+                        </ns2:ParentTaskId>
+                    </xsl:if>
+                    <ns2:SourceReferenceNumber>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:SRNum"/>
+                    </ns2:SourceReferenceNumber>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternVersion">
+                        <ns2:PatternVersion>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternVersion"/>
+                        </ns2:PatternVersion>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternBranch">
+                        <ns2:PatternBranch>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternBranch"/>
+                        </ns2:PatternBranch>
+                    </xsl:if>
+                    <ns2:Title>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Title"/>
+                    </ns2:Title>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Country">
+                        <ns2:Country>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Country"/>
+                        </ns2:Country>
+                    </xsl:if>
+                    <ns2:FileName>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:File[1]/pfx6:FileName"/>
+                    </ns2:FileName>
+                    <ns2:Entitlement>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:EntitlementName"/>
+                    </ns2:Entitlement>
+                    <ns2:LastName>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:LastName"/>
+                    </ns2:LastName>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:OS">
+                        <ns2:OS>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:OS"/>
+                        </ns2:OS>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ProductName">
+                        <ns2:Product>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ProductName"/>
+                        </ns2:Product>
+                    </xsl:if>
+                    <ns2:Source>
+                        <xsl:value-of select="'GCCU'"/>
+                    </ns2:Source>
+                    <ns2:SubmitDate>
+                        <xsl:value-of select="tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0))"/>
+                    </ns2:SubmitDate>
+                    <ns2:Description>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Description"/>
+                    </ns2:Description>
+                    <ns2:Email>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Email"/>
+                    </ns2:Email>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Region">
+                        <ns2:Region>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Region"/>
+                        </ns2:Region>
+                    </xsl:if>
+                </ns2:AMSS_spcTask_spcCommon_spcWS_InboundFeedback_Input>
+                <SourceID>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:SourceID"/>
+                </SourceID>
+                <MessageKey>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:MessageKey"/>
+                </MessageKey>
+            </InboundFeedback>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Create Esc Activity">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>389</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/CreateGCCEscalationActivity.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <GCCEscalation>
+                <MessageHeader>
+                    <xsl:copy-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ancestor-or-self::*/namespace::node()"/>
+                    <xsl:copy-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/@*"/>
+                    <xsl:copy-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/node()"/>
+                </MessageHeader>
+                <pfx2:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Input>
+                    <ns3:ListOfGcc-UCorporateSrAmssEscalationInput>
+                        <ns3:Gcc-UCorporateSrAmssEscalation-IoRepresentation>
+                            <ns3:AMSSTaskId>
+                                <xsl:value-of select="$Create-AMSS-TaskFeedback/ns2:AMSS_spcTask_spcCommon_spcWS_InboundFeedback_Output/ns2:TaskId"/>
+                            </ns3:AMSSTaskId>
+                            <ns3:AMSSTaskType>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:AMSSType"/>
+                            </ns3:AMSSTaskType>
+                            <ns3:Description>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Description"/>
+                            </ns3:Description>
+                            <ns3:FileLocation>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:File[1]/pfx6:FTPLocation"/>
+                            </ns3:FileLocation>
+                            <ns3:IntegrationSourceId>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:File[1]/pfx6:FileID"/>
+                            </ns3:IntegrationSourceId>
+                            <ns3:NeuronId>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:NeuronId"/>
+                            </ns3:NeuronId>
+                            <ns3:OriginalFileName>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:File[1]/pfx6:FileName"/>
+                            </ns3:OriginalFileName>
+                            <ns3:SHA1>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:File[1]/pfx6:SHA1"/>
+                            </ns3:SHA1>
+                            <ns3:Source>
+                                <xsl:value-of select="'GCCU'"/>
+                            </ns3:Source>
+                            <ns3:Title>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Title"/>
+                            </ns3:Title>
+                            <ns3:Type>
+                                <xsl:value-of select="'Outbound to AMSS'"/>
+                            </ns3:Type>
+                            <ns3:AMSSParentTaskId>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ParentTaskID"/>
+                            </ns3:AMSSParentTaskId>
+                        </ns3:Gcc-UCorporateSrAmssEscalation-IoRepresentation>
+                    </ns3:ListOfGcc-UCorporateSrAmssEscalationInput>
+                    <pfx2:sSRNumber>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:SRNum"/>
+                    </pfx2:sSRNumber>
+                    <pfx2:sIntegrationSource>
+                        <xsl:value-of select="'AMSS'"/>
+                    </pfx2:sIntegrationSource>
+                </pfx2:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Input>
+            </GCCEscalation>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Create MalwareTask">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>265</pd:x>
+        <pd:y>218</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/CreateMalwareTask_V2.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <CreateMalwareTask>
+                <MalwareTask>
+                    <xsl:for-each select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:File">
+                        <File>
+                            <FileID>
+                                <xsl:value-of select="pfx6:FileID"/>
+                            </FileID>
+                            <SHA1>
+                                <xsl:value-of select="pfx6:SHA1"/>
+                            </SHA1>
+                            <FileName>
+                                <xsl:value-of select="pfx6:FileName"/>
+                            </FileName>
+                            <FileSize>
+                                <xsl:value-of select="pfx6:FileSize"/>
+                            </FileSize>
+                            <FTPLocation>
+                                <xsl:value-of select="pfx6:FTPLocation"/>
+                            </FTPLocation>
+                            <AMSSTaskType>
+                                <xsl:value-of select="pfx6:AMSSTaskType"/>
+                            </AMSSTaskType>
+                        </File>
+                    </xsl:for-each>
+                </MalwareTask>
+                <AMSSInboundTaskInput>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:SrouceRefNumber)">
+                            <SouceReferenceNumber>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:SrouceRefNumber"/>
+                            </SouceReferenceNumber>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <SouceReferenceNumber>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:SRNum"/>
+                            </SouceReferenceNumber>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternVersion">
+                        <PatternVersion>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternVersion"/>
+                        </PatternVersion>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternBranch">
+                        <PatternBranch>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternBranch"/>
+                        </PatternBranch>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternType">
+                        <PatternType>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternType"/>
+                        </PatternType>
+                    </xsl:if>
+                    <Title>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Title"/>
+                    </Title>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Country">
+                        <Country>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Country"/>
+                        </Country>
+                    </xsl:if>
+                    <FirstName>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:FirstName"/>
+                    </FirstName>
+                    <LastName>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:LastName"/>
+                    </LastName>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:OS">
+                        <OS>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:OS"/>
+                        </OS>
+                    </xsl:if>
+                    <Entitlement>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:EntitlementName"/>
+                    </Entitlement>
+                    <Priority>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Priority"/>
+                    </Priority>
+                    <Email>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Email"/>
+                    </Email>
+                    <Description>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Description"/>
+                    </Description>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Region">
+                        <Region>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:Region"/>
+                        </Region>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ParentTaskID">
+                        <ParentTaskID>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ParentTaskID"/>
+                        </ParentTaskID>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ProductName">
+                        <ProductName>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ProductName"/>
+                        </ProductName>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ProductGIC">
+                        <ProductGIC>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ProductGIC"/>
+                        </ProductGIC>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:TAMEmail">
+                        <TAMEmail>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:TAMEmail"/>
+                        </TAMEmail>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:IsAMEX">
+                        <IsAMEX>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:IsAMEX"/>
+                        </IsAMEX>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:OriginalType">
+                        <OriginalType>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:OriginalType"/>
+                        </OriginalType>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:TaskLabel">
+                        <TaskLabel>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:TaskLabel"/>
+                        </TaskLabel>
+                    </xsl:if>
+                    <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ServiceLevel">
+                        <ServiceLevel>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ServiceLevel"/>
+                        </ServiceLevel>
+                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:SubmitDate)">
+                            <SubmitDate>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:SubmitDate"/>
+                            </SubmitDate>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <SubmitDate>
+                                <xsl:value-of select="tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0))"/>
+                            </SubmitDate>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:if test="exists($Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternFlag)">
+                        <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternFlag">
+                            <PatternFlag>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:PatternFlag"/>
+                            </PatternFlag>
+                        </xsl:if>
+                    </xsl:if>
+                </AMSSInboundTaskInput>
+                <EscalationActivityInput>
+                    <sSRNumber>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:SRNum"/>
+                    </sSRNumber>
+                    <IoRepresetation>
+                        <Description>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Description"/>
+                        </Description>
+                        <Title>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Title"/>
+                        </Title>
+                        <Type>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:EscActType"/>
+                        </Type>
+                        <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:NeuronId">
+                            <NeuronId>
+                                <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:NeuronId"/>
+                            </NeuronId>
+                        </xsl:if>
+                    </IoRepresetation>
+                </EscalationActivityInput>
+                <UpdateMalwareTaskInput>
+                    <PortalSourceID>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:MessageKey"/>
+                    </PortalSourceID>
+                    <SRNumber>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:SRNum"/>
+                    </SRNumber>
+                    <ActivityRowID>
+                        <xsl:value-of select="''"/>
+                    </ActivityRowID>
+                </UpdateMalwareTaskInput>
+                <MessageKey>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:MessageKey"/>
+                </MessageKey>
+                <SourceID>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestHeader/ns1:SourceID"/>
+                </SourceID>
+                <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:OpenAMSSFlag">
+                    <OpenAMSSFlag>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:OpenAMSSFlag"/>
+                    </OpenAMSSFlag>
+                </xsl:if>
+                <ArchFileName>
+                    <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:OrgArchFileName"/>
+                </ArchFileName>
+                <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ArchFileSHA1">
+                    <ArchFileSHA1>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ArchFileSHA1"/>
+                    </ArchFileSHA1>
+                </xsl:if>
+                <xsl:if test="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ArchFileLocaiton">
+                    <ArchFileLocation>
+                        <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:ArchFileLocaiton"/>
+                    </ArchFileLocation>
+                </xsl:if>
+                <xsl:if test="exists($Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:AMESAttach)">
+                    <xsl:for-each select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:Malware/pfx6:AMESAttach">
+                        <AMESAttach>
+                            <FileName>
+                                <xsl:value-of select="pfx6:FileName"/>
+                            </FileName>
+                            <FileExt>
+                                <xsl:value-of select="pfx6:FileExt"/>
+                            </FileExt>
+                            <FilePath>
+                                <xsl:value-of select="pfx6:FilePath"/>
+                            </FilePath>
+                            <FileType>
+                                <xsl:value-of select="pfx6:FileType"/>
+                            </FileType>
+                            <FileBinary>
+                                <xsl:value-of select="pfx6:FileBinary"/>
+                            </FileBinary>
+                        </AMESAttach>
+                    </xsl:for-each>
+                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="exists($Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:CallBack)">
+                        <RequestSource>
+                            <xsl:value-of select="$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:CallBack"/>
+                        </RequestSource>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <RequestSource>
+                            <xsl:value-of select="'Panel'"/>
+                        </RequestSource>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </CreateMalwareTask>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>639</pd:x>
+        <pd:y>361</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Create AMSS TaskFeedback</pd:to>
+        <pd:xpathDescription>Feedback</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:TaskOrFeedback = 'Feedback'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create AMSS TaskFeedback</pd:from>
+        <pd:to>Create Esc Activity</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create Esc Activity</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Create MalwareTask</pd:to>
+        <pd:xpathDescription>Task</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/pfx5:PSC_TaskFeedbackRq/pfx5:RequestBody/pfx6:TaskOrFeedback = 'Task'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create MalwareTask</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

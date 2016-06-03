@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns9="http://www.siebel.com/xml/GCC-U%20Corp%20SR%20-%20Hidden%20Activities%20IO" xmlns:ns22="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns6="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns10="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:ns7="www.tibco.com/plugin/Sleep" xmlns:pfx="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" xmlns:ns8="GCC_U_Corporate_SR_General_Operations_Service" xmlns:ns2="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment%20Script" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns4="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AttScript.xsd" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:pfx5="http://tempuri.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/PSC/PSC_CreateMultiPrivXMLActRq" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateAttScriptRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateMultiPrivXMLActRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateMultiPrivXMLActRq.xsd"/>
+    <xsd:import namespace="GCC_U_Corporate_SR_General_Operations_Service" schemaLocation="/WSDL/Provider/GCC_U_Corporate_SR_General_Operations_Service_GCC_U_Corporate_SR_General_Operations_Service.WSDL.wsdl"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Provider/PSCCallbackWS.wsdl"/>
+    <pd:name>Services/PSCService/GCCU_CreateMultiPrivXML/V1.0/CreateMultiPrivXMLAct.process</pd:name>
+    <pd:startName>CreateMultiPrivXMLAct</pd:startName>
+    <pd:startType ref="pfx4:PSC_CreateMultiPrivXMLActRq"/>
+    <pd:startX>133</pd:startX>
+    <pd:startY>177</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$Parse-Attach/pfx3:Envelope/pfx3:Body/*" element="pfx2:GCC_spcCommon_spcWS_CreateAttScript_Output" cardinality=""/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <CreateMultiPrivXML>
+            <Result>
+                <xsl:value-of select="tib:render-xml($Parse-MultiPrivXMLAct/pfx3:Envelope/pfx3:Body/ns8:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreateMultiPrivXMLAct_Output)"/>
+            </Result>
+        </CreateMultiPrivXML>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="CreateMultiPrivXML">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Result" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>749</pd:endX>
+    <pd:endY>179</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1319711434293</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>146</pd:x>
+        <pd:y>405</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Send MultiPrivXMLAct">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>471</pd:x>
+        <pd:y>177</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Generic_HTTP_SOAP_Client/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties/>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="'CreateMultiPrivXMLAct'"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <xsl:if test="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:RqTimestamp">
+                        <RqTimestamp>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:RqTimestamp"/>
+                        </RqTimestamp>
+                    </xsl:if>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-MultiPrivXMLAct/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>275</pd:x>
+        <pd:y>405</pd:y>
+        <config>
+            <processName>/Utilities/Resend/V1.0/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns12:DBLogger>
+                    <ns12:MessageHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:MessageKey"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:ServiceName"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:ServiceVersion"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:SourceID"/>
+                        </ns12:SourceID>
+                        <ns12:RqTimestamp>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:RqTimestamp"/>
+                        </ns12:RqTimestamp>
+                    </ns12:MessageHeader>
+                    <ns12:MessageBody>
+                        <xsl:copy-of select="$Render-MultiPrivXMLAct/xmlString"/>
+                    </ns12:MessageBody>
+                    <ns22:Error>
+                        <ns22:error_code>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                        </ns22:error_code>
+                        <ns22:stack_trace>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                        </ns22:stack_trace>
+                        <ns22:process_stack>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                        </ns22:process_stack>
+                    </ns22:Error>
+                </ns12:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;CreateMultiPrivXML-Fail \n&quot;,$Render-MultiPrivXMLAct/xmlString)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CreateMultiPrivXML'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>641</pd:x>
+        <pd:y>405</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Create MultiPrivXMLAct  error \n&quot;,tib:render-xml($Catch/exceptiondata))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CrtMultiPrivXMLActErr'"/>
+                </messageCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>574</pd:x>
+        <pd:y>520</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Resend/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="'GCCU_CreateMultiPrivXML'"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <SourceID>
+                        <xsl:value-of select="'EI_Resend'"/>
+                    </SourceID>
+                    <RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTimestamp>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-MultiPrivXMLAct/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>649</pd:x>
+        <pd:y>305</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-MultiPrivXMLAct/pfx3:Envelope/pfx3:Body/*" element="ns8:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreateMultiPrivXMLAct_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Log>
+                <ns12:DBLogger>
+                    <ns12:MessageHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:MessageKey"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:ServiceName"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:ServiceVersion"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:SourceID"/>
+                        </ns12:SourceID>
+                        <ns12:RqTimestamp>
+                            <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:RqTimestamp"/>
+                        </ns12:RqTimestamp>
+                        <ns12:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns12:RsTimestamp>
+                    </ns12:MessageHeader>
+                    <ns12:MessageBody>
+                        <xsl:copy-of select="$Parse-MultiPrivXMLAct/pfx3:Envelope/pfx3:Body/ns8:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreateMultiPrivXMLAct_Output"/>
+                    </ns12:MessageBody>
+                </ns12:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;CreateMultiPrivXMLAct : &quot;,tib:render-xml($Parse-MultiPrivXMLAct/pfx3:Envelope/pfx3:Body/ns8:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreateMultiPrivXMLAct_Output))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'MultiPrivXMLAct-Created'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mail Notification">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>449</pd:x>
+        <pd:y>405</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SubjectMessage>
+                    <xsl:value-of select="concat(&quot;[&quot;,$_globalVariables/ns6:GlobalVariables/ESBBW/Environment,&quot; &quot;,$_globalVariables/ns6:GlobalVariables/ESBBW/Domain,&quot;] &quot;,&quot;Create GCCU MultiPrivXMLAct Fail - Resend Up to Limit&quot;)"/>
+                </SubjectMessage>
+                <DetailStackTrace>
+                    <xsl:value-of select="tib:render-xml($Catch/exceptiondata)"/>
+                </DetailStackTrace>
+                <ns10:MailInfo>
+                    <ns10:MessageKey>
+                        <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:MessageKey"/>
+                    </ns10:MessageKey>
+                    <ns10:ServiceName>
+                        <xsl:value-of select="'GCCU_CreateMultiPrivXML'"/>
+                    </ns10:ServiceName>
+                    <ns10:ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ns10:ServiceVersion>
+                    <ns10:AttachFile>
+                        <ns10:AttachContent>
+                            <ns10:content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment; filename=&quot;, $CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:MessageKey,&quot;.xml&quot;)"/>
+                            </ns10:content-disposition>
+                            <ns10:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns10:content-type>
+                            <ns10:content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </ns10:content-transfer-encoding>
+                            <ns10:textContent>
+                                <xsl:value-of select="tib:render-xml($CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq)"/>
+                            </ns10:textContent>
+                        </ns10:AttachContent>
+                    </ns10:AttachFile>
+                </ns10:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map MultiPrivXMLAct">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>177</pd:y>
+        <config>
+            <element ref="ns8:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreateMultiPrivXMLAct_Input"/>
+        </config>
+        <pd:inputBindings>
+            <ns8:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreateMultiPrivXMLAct_Input>
+                <ns9:ListOfGcc-UCorpSr-HiddenActivitiesIo>
+                    <xsl:for-each select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestBody/pfx4:PrivXMLAct">
+                        <ns9:Gcc-UCorporateSrHiddenActivities-IoRepresentation>
+                            <ns9:sSRNumber>
+                                <xsl:value-of select="pfx4:sSRNumber"/>
+                            </ns9:sSRNumber>
+                            <ns9:sXMLId>
+                                <xsl:value-of select="pfx4:sXMLId"/>
+                            </ns9:sXMLId>
+                            <ns9:sXMLString>
+                                <xsl:value-of select="pfx4:sXMLString"/>
+                            </ns9:sXMLString>
+                        </ns9:Gcc-UCorporateSrHiddenActivities-IoRepresentation>
+                    </xsl:for-each>
+                </ns9:ListOfGcc-UCorpSr-HiddenActivitiesIo>
+            </ns8:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreateMultiPrivXMLAct_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse MultiPrivXMLAct">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>587</pd:x>
+        <pd:y>180</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Send-MultiPrivXMLAct/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render MultiPrivXMLAct">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>353</pd:x>
+        <pd:y>185</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Envelope>
+                <pfx3:Body>
+                    <xsl:copy-of select="$Map-MultiPrivXMLAct/ns8:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreateMultiPrivXMLAct_Input"/>
+                </pfx3:Body>
+            </pfx3:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Resend">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>447</pd:x>
+        <pd:y>519</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx4:PSC_CreateMultiPrivXMLActRq"/>
+        </config>
+        <pd:inputBindings>
+            <pfx4:PSC_CreateMultiPrivXMLActRq>
+                <pfx4:RequestHeader>
+                    <ns5:MessageKey>
+                        <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:MessageKey"/>
+                    </ns5:MessageKey>
+                    <ns5:ServiceName>
+                        <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:ServiceName"/>
+                    </ns5:ServiceName>
+                    <ns5:ServiceVersion>
+                        <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:ServiceVersion"/>
+                    </ns5:ServiceVersion>
+                    <ns5:SourceID>
+                        <xsl:value-of select="'EI_Resend'"/>
+                    </ns5:SourceID>
+                    <ns5:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns5:RqTimestamp>
+                </pfx4:RequestHeader>
+                <pfx4:RequestBody>
+                    <pfx4:ResendCount>
+                        <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestBody/pfx4:ResendCount+1"/>
+                    </pfx4:ResendCount>
+                    <xsl:copy-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestBody/pfx4:PrivXMLAct"/>
+                </pfx4:RequestBody>
+            </pfx4:PSC_CreateMultiPrivXMLActRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sleep">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>330</pd:x>
+        <pd:y>520</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns7:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="$_globalVariables/ns6:GlobalVariables/Services/ResendWaitingPeriod"/>
+                </IntervalInMillisec>
+            </ns7:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PSC Call Back">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>661</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/PSC Call Back.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-MultiPrivXMLAct/pfx3:Envelope/pfx3:Body/*" element="ns8:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreateMultiPrivXMLAct_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx5:UpdateCallbackInfo>
+                <pfx5:strMessageKey>
+                    <xsl:value-of select="$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestHeader/ns5:MessageKey"/>
+                </pfx5:strMessageKey>
+                <pfx5:strInputXml>
+                    <xsl:value-of select="tib:render-xml($Parse-MultiPrivXMLAct/pfx3:Envelope/pfx3:Body/ns8:GCC_spcU_spcCorporate_spcSR_spcGeneral_spcOperations_spcService_CreateMultiPrivXMLAct_Output)"/>
+                </pfx5:strInputXml>
+            </pfx5:UpdateCallbackInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Render MultiPrivXMLAct</pd:from>
+        <pd:to>Send MultiPrivXMLAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send MultiPrivXMLAct</pd:from>
+        <pd:to>Parse MultiPrivXMLAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateMultiPrivXMLAct</pd:from>
+        <pd:to>Map MultiPrivXMLAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map MultiPrivXMLAct</pd:from>
+        <pd:to>Render MultiPrivXMLAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse MultiPrivXMLAct</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrLog</pd:from>
+        <pd:to>Sleep</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateMultiPrivXMLAct/pfx4:PSC_CreateMultiPrivXMLActRq/pfx4:RequestBody/pfx4:ResendCount &lt; $_globalVariables/ns6:GlobalVariables/Services/ResendLimit</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep</pd:from>
+        <pd:to>Render Resend</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Resend</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrLog</pd:from>
+        <pd:to>Mail Notification</pd:to>
+        <pd:xpathDescription>Up to Limit</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mail Notification</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse MultiPrivXMLAct</pd:from>
+        <pd:to>PSC Call Back</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PSC Call Back</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

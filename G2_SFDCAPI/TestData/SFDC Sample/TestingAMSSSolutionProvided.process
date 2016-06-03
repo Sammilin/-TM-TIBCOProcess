@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/schemas/GCCPortal/WSDL/Client/AMSS Solution Provided/CreateOneAMSSEscRecRq.xsd" xmlns:ns3="http://www.tibco.com/schemas/GCCPortal/XSD/G2/AMSS Solution Provided/CreateOneAMSSEscRec.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/WSDL/Client/AMSS Solution Provided/CreateOneAMSSEscRecRq.xsd" schemaLocation="/WSDL/Client/AMSS Solution Provided XSD/CreateOneAMSSEscRecRq.xsd"/>
+    <pd:name>TestData/SFDC Sample/TestingAMSSSolutionProvided.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Desc" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1421140791165</pd:targetNamespace>
+    <pd:activity name="JMS Queue Requestor">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>293</pd:x>
+        <pd:y>99</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/G2Service/AMSSSolutionProvided/CreateOneAMSSEscRec/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx:Envelope"/>
+            <OutDataxsdString ref="pfx:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <Body>
+                    <pfx:Envelope>
+                        <pfx:Body>
+                            <ns:CreateOneAMSSEscRecRq>
+                                <ns:RequestHeader>
+                                    <pfx2:MessageKey>
+                                        <xsl:value-of select="&quot;f720ed09-62ce-4398-87ea-e81150ad9eb2&quot;"/>
+                                    </pfx2:MessageKey>
+                                    <pfx2:ServiceName>
+                                        <xsl:value-of select="&quot;CreateOneAMSSEscRec&quot;"/>
+                                    </pfx2:ServiceName>
+                                    <pfx2:ServiceVersion>
+                                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                                    </pfx2:ServiceVersion>
+                                    <pfx2:SourceID>
+                                        <xsl:value-of select="&quot;AMSS&quot;"/>
+                                    </pfx2:SourceID>
+                                </ns:RequestHeader>
+                                <ns:RequestBody>
+                                    <ns3:sIntegrationSource>
+                                        <xsl:value-of select="&quot;AMSS&quot;"/>
+                                    </ns3:sIntegrationSource>
+                                    <ns3:sSRNumber>
+                                        <xsl:value-of select="&quot;00003891&quot;"/>
+                                    </ns3:sSRNumber>
+                                    <ns3:AMSSParentTaskId>
+                                        <xsl:value-of select="&quot;1-JLKR64&quot;"/>
+                                    </ns3:AMSSParentTaskId>
+                                    <ns3:AMSSTaskId>
+                                        <xsl:value-of select="&quot;1-JLBA60&quot;"/>
+                                    </ns3:AMSSTaskId>
+                                    <ns3:AMSSTaskType>
+                                        <xsl:value-of select="&quot;SIC Log Analysis/Final Solution&quot;"/>
+                                    </ns3:AMSSTaskType>
+                                    <ns3:Description>
+                                        <xsl:value-of select="$Start/root/Desc"/>
+                                    </ns3:Description>
+                                    <ns3:FileLocation>
+                                        <xsl:value-of select="&quot;http://sample.ctis.trendmicro.com/filedownload.ashx?serviceid=0fb5e81b-5592-42b8-b25e-0265ee3d40d6&quot;"/>
+                                    </ns3:FileLocation>
+                                    <ns3:IntegrationSourceId>
+                                        <xsl:value-of select="&quot;1-JLBA60&quot;"/>
+                                    </ns3:IntegrationSourceId>
+                                    <ns3:SHA1>
+                                        <xsl:value-of select="&quot;52661CD35D7741591A7E558A3FD4082EBDE06A89&quot;"/>
+                                    </ns3:SHA1>
+                                    <ns3:Source>
+                                        <xsl:value-of select="&quot;SFDC&quot;"/>
+                                    </ns3:Source>
+                                    <ns3:Title>
+                                        <xsl:value-of select="&quot;Supporting File Uploaded&quot;"/>
+                                    </ns3:Title>
+                                    <ns3:Type>
+                                        <xsl:value-of select="&quot;Final Solution Provided&quot;"/>
+                                    </ns3:Type>
+                                </ns:RequestBody>
+                            </ns:CreateOneAMSSEscRecRq>
+                        </pfx:Body>
+                    </pfx:Envelope>
+                </Body>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JMS Queue Requestor</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Requestor</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

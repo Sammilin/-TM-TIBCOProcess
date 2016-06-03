@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/">
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+            <s:element name="ValidPGUID">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="pguid" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ValidPGUIDResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ValidPGUIDResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateMalwareTask">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="PortalSourceID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="SRNumber" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="ActivityRowID" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="TaskResult" type="tns:ArrayOfMalwareTaskResult"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ArrayOfMalwareTaskResult">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="unbounded" name="MalwareTaskResult" nillable="true" type="tns:MalwareTaskResult"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="MalwareTaskResult">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="ID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="TaskID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="EscActivityRowID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="UpdateMalwareTaskResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="UpdateMalwareTaskResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CreateMalwareTask">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="oP_Activity" type="tns:Activity"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_SRNumber" type="s:string"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_NeuronID" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="Activity">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="ActivityID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="ActivityType" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="CreatedBy" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="Created" nillable="true" type="s:dateTime"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="DisplayCreated" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="SRNumber" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Attachments" type="tns:ArrayOfAttachment"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Task" type="tns:MalwareTask"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="CaseID" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ArrayOfAttachment">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="unbounded" name="Attachment" nillable="true" type="tns:Attachment"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="Attachment">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentName" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentFileName" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentContentType" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentURL" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="AttachmentSize" type="s:long"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AttachmentType" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AccountID" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="CreatedDate" type="s:dateTime"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="DisplayCreatedDate" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="CreatedBy" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="ModifiedDate" type="s:dateTime"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="DisplayModifiedDate" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="ModifiedBy" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="Category" type="tns:AttachmentCategory"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="ExistInWhere" type="tns:AttachmentExistInWhere"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="MachineName" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="GccRowID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="NeuronID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="MappingID" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:simpleType name="AttachmentCategory">
+                <s:restriction base="s:string">
+                    <s:enumeration value="Account"/>
+                    <s:enumeration value="ProductCase"/>
+                    <s:enumeration value="FeatureRequestCase"/>
+                    <s:enumeration value="MalwareCase"/>
+                    <s:enumeration value="SPAMCase"/>
+                    <s:enumeration value="ThreatService"/>
+                    <s:enumeration value="Virus"/>
+                    <s:enumeration value="Log"/>
+                </s:restriction>
+            </s:simpleType>
+            <s:simpleType name="AttachmentExistInWhere">
+                <s:list>
+                    <s:simpleType>
+                        <s:restriction base="s:string">
+                            <s:enumeration value="NotExisted"/>
+                            <s:enumeration value="URL"/>
+                            <s:enumeration value="PSCWebServer"/>
+                            <s:enumeration value="PSCSharedFolder"/>
+                            <s:enumeration value="ThrendMicroGlobalFTP"/>
+                            <s:enumeration value="NeuronSampleBank"/>
+                            <s:enumeration value="PanelWebServer"/>
+                        </s:restriction>
+                    </s:simpleType>
+                </s:list>
+            </s:simpleType>
+            <s:complexType name="MalwareTask">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="TaskID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="TaskType" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Priority" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Source" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="GccRowID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="CreatedBy" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="Created" type="s:dateTime"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Files" type="tns:ArrayOfMalwareTaskFile"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ArrayOfMalwareTaskFile">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="unbounded" name="MalwareTaskFile" nillable="true" type="tns:MalwareTaskFile"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="MalwareTaskFile">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="FileID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="FileSize" type="s:long"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="FTPLocation" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="SHA1" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="GccRowID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="EscActivityRowID" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="CreateMalwareTaskResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="CreateMalwareTaskResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="AddAttachment">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="oP_Attachment" type="tns:Attachment"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="oP_Activity" type="tns:Activity"/>
+                        <s:element minOccurs="0" maxOccurs="1" name="sP_SRNumber" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="AddAttachmentResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="AddAttachmentResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SendNotification">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sL_OutputXML" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SendNotificationResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="SendNotificationResult" type="s:boolean"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="ValidPGUIDSoapIn">
+        <wsdl:part name="parameters" element="tns:ValidPGUID"/>
+    </wsdl:message>
+    <wsdl:message name="ValidPGUIDSoapOut">
+        <wsdl:part name="parameters" element="tns:ValidPGUIDResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateMalwareTaskSoapIn">
+        <wsdl:part name="parameters" element="tns:UpdateMalwareTask"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateMalwareTaskSoapOut">
+        <wsdl:part name="parameters" element="tns:UpdateMalwareTaskResponse"/>
+    </wsdl:message>
+    <wsdl:message name="CreateMalwareTaskSoapIn">
+        <wsdl:part name="parameters" element="tns:CreateMalwareTask"/>
+    </wsdl:message>
+    <wsdl:message name="CreateMalwareTaskSoapOut">
+        <wsdl:part name="parameters" element="tns:CreateMalwareTaskResponse"/>
+    </wsdl:message>
+    <wsdl:message name="AddAttachmentSoapIn">
+        <wsdl:part name="parameters" element="tns:AddAttachment"/>
+    </wsdl:message>
+    <wsdl:message name="AddAttachmentSoapOut">
+        <wsdl:part name="parameters" element="tns:AddAttachmentResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SendNotificationSoapIn">
+        <wsdl:part name="parameters" element="tns:SendNotification"/>
+    </wsdl:message>
+    <wsdl:message name="SendNotificationSoapOut">
+        <wsdl:part name="parameters" element="tns:SendNotificationResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="PSCThreatWSSoap">
+        <wsdl:operation name="ValidPGUID">
+            <wsdl:input message="tns:ValidPGUIDSoapIn"/>
+            <wsdl:output message="tns:ValidPGUIDSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateMalwareTask">
+            <wsdl:input message="tns:UpdateMalwareTaskSoapIn"/>
+            <wsdl:output message="tns:UpdateMalwareTaskSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateMalwareTask">
+            <wsdl:input message="tns:CreateMalwareTaskSoapIn"/>
+            <wsdl:output message="tns:CreateMalwareTaskSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="AddAttachment">
+            <wsdl:input message="tns:AddAttachmentSoapIn"/>
+            <wsdl:output message="tns:AddAttachmentSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SendNotification">
+            <wsdl:input message="tns:SendNotificationSoapIn"/>
+            <wsdl:output message="tns:SendNotificationSoapOut"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="PSCThreatWSSoap" type="tns:PSCThreatWSSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ValidPGUID">
+            <soap:operation soapAction="http://tempuri.org/ValidPGUID" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateMalwareTask">
+            <soap:operation soapAction="http://tempuri.org/UpdateMalwareTask" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateMalwareTask">
+            <soap:operation soapAction="http://tempuri.org/CreateMalwareTask" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddAttachment">
+            <soap:operation soapAction="http://tempuri.org/AddAttachment" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SendNotification">
+            <soap:operation soapAction="http://tempuri.org/SendNotification" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="PSCThreatWSSoap12" type="tns:PSCThreatWSSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ValidPGUID">
+            <soap12:operation soapAction="http://tempuri.org/ValidPGUID" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateMalwareTask">
+            <soap12:operation soapAction="http://tempuri.org/UpdateMalwareTask" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateMalwareTask">
+            <soap12:operation soapAction="http://tempuri.org/CreateMalwareTask" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddAttachment">
+            <soap12:operation soapAction="http://tempuri.org/AddAttachment" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SendNotification">
+            <soap12:operation soapAction="http://tempuri.org/SendNotification" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="PSCThreatWS">
+        <wsdl:port name="PSCThreatWSSoap" binding="tns:PSCThreatWSSoap">
+            <soap:address location="http://sjdc-qasptweb11.us.trendnet.org:8080/PSCThreatWS.asmx"/>
+        </wsdl:port>
+        <wsdl:port name="PSCThreatWSSoap12" binding="tns:PSCThreatWSSoap12">
+            <soap12:address location="http://sjdc-qasptweb11.us.trendnet.org:8080/PSCThreatWS.asmx"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

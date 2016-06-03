@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:tns="http://xmlns.example.com/1402302032670" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns0="http://www.tibco.com/schemas/GCCPortal/WSDL/Client/ThreatService/Schema.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="Untitled" targetNamespace="http://xmlns.example.com/1402302032670">
+    <wsdl:types>
+        <xs:schema xmlns="http://www.tibco.com/schemas/GCCPortal/WSDL/Client/ThreatService/Schema.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/GCCPortal/WSDL/Client/ThreatService/Schema.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:element name="SampleSubmissionRq">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ID" type="xs:string"/>
+                        <xs:element name="XmlMessage" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SamplesubmissionRs">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="NeuronServiceID" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:service name="ThreatService">
+        <wsdl:port name="PortTypeEndpoint1" binding="tns:PortTypeEndpoint1Binding">
+            <soap:address location="http://localhost:50002/WSDL/Client/ThreatService/ThreatService.serviceagent/PortTypeEndpoint1"/>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="PortType">
+        <wsdl:operation name="NeuronSampleSubmission">
+            <wsdl:input message="tns:NeuronSampleSubmissionRq"/>
+            <wsdl:output message="tns:NeuronSampleSubmissionRs"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="PortTypeEndpoint1Binding" type="tns:PortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="NeuronSampleSubmission">
+            <soap:operation style="document" soapAction="/WSDL/Client/ThreatService/ThreatService.serviceagent/PortTypeEndpoint1/NeuronSampleSubmission"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="part1"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="part1"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:message name="NeuronSampleSubmissionRq">
+        <wsdl:part name="part1" element="ns0:SampleSubmissionRq"/>
+    </wsdl:message>
+    <wsdl:message name="NeuronSampleSubmissionRs">
+        <wsdl:part name="part1" element="ns0:SamplesubmissionRs"/>
+    </wsdl:message>
+</wsdl:definitions>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://tempuri.org/">
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Provider/NeuronCallBack.wsdl"/>
+    <pd:name>Services/SharedOperations/Neuron Sample Submission.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="path" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Parse-XML/NEURON"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="NEURON">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="NEURON_SERVICEID" type="xsd:string"/>
+                    <xsd:element name="NEURON_SAMPLEPATH" type="xsd:string"/>
+                    <xsd:element name="NEURON_STATUS" type="xsd:string"/>
+                    <xsd:element name="NEURON_MESSAGE" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>474</pd:endX>
+    <pd:endY>65</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1366099271726</pd:targetNamespace>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>297</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx:ACSServices</service>
+            <servicePort>ACSServicesSoap</servicePort>
+            <operation>SampleSubmission</operation>
+            <soapAction>http://tempuri.org/SampleSubmission</soapAction>
+            <endpointURL>%%Resources/WebService/NeuronCallBack/URL%%</endpointURL>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx:SampleSubmission>
+                    <pfx:submissionInput>
+                        <xsl:value-of select="concat('&#xA;&lt;NEURON>&#xA;  &lt;DEFAULT_INFO>&#xA;    &lt;SERVICE_CONSUMER>FA68E2B1-BD55-4017-9F5C-A69A943AE1F7&lt;/SERVICE_CONSUMER>&#xA;    &lt;UPLOAD_METHOD type=&quot;UNC&quot; >&#xA;      &lt;INF name=&quot;address&quot;>',$Start/Input/path,'&lt;/INF>&#xA;    &lt;/UPLOAD_METHOD>&#xA;    &lt;AM_CASE_AUTO_SUBMIT value=&quot;false&quot; />&#xA;    &lt;FILE_EXTRACT_TYPE BypassExtraction=&quot;true&quot; />&#xA;    &lt;UPLOAD_ARCHIVE_TO_AM>False&lt;/UPLOAD_ARCHIVE_TO_AM>&#xA;  &lt;/DEFAULT_INFO>&#xA;&lt;/NEURON>')"/>
+                    </pfx:submissionInput>
+                </pfx:SampleSubmission>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>386</pd:x>
+        <pd:y>182</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term>
+                <xsd:element name="NEURON">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="NEURON_SERVICEID" type="xsd:string"/>
+                            <xsd:element name="NEURON_SAMPLEPATH" type="xsd:string"/>
+                            <xsd:element name="NEURON_STATUS" type="xsd:string"/>
+                            <xsd:element name="NEURON_MESSAGE" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx:SampleSubmissionResponse/pfx:SampleSubmissionResult"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

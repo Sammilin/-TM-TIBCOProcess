@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx13="GCC_U_CORP_ACCOUNT_WS" xmlns:pfx12="http://www.trendmicro.com/PSC/PSC_UpSerProductProfileRq" xmlns:pfx11="http://www.trendmicro.com/PSC/PSC_UpdateConNotifPrefRq" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx10="http://www.trendmicro.com/PSC/PSC_QueryNotificationPrfRq" xmlns:ns5="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/ProductProfile.xsd" xmlns:pfx="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns4="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/UpdateNotification.xsd" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS" xmlns:pfx9="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/NotificationQuery.xsd" xmlns:pfx8="GCC_U_Corporate_Contact_Notif_Pref_Service" xmlns:pfx7="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" xmlns:pfx6="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" schemaLocation="/XSD/Portal/PortalSRCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" schemaLocation="/XSD/Portal/PortalSRCaseResult.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd" schemaLocation="/XSD/Portal/PortalSRAct.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" schemaLocation="/XSD/Portal/PortalSRActResult.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/NotificationQuery.xsd" schemaLocation="/XSD/PSC/NotificationQuery.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_QueryNotificationPrfRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_QueryNotificationPrfRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateConNotifPrefRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateConNotifPrefRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpSerProductProfileRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpSerProductProfileRq.xsd"/>
+    <xsd:import namespace="GCC_U_Corporate_Contact_Notif_Pref_Service" schemaLocation="/WSDL/Provider/GCC_U_Corporate_Contact_Notif_Pref_Service_GCC_U_Corporate_Contact_Notif_Pref_Service.WSDL.wsdl"/>
+    <xsd:import namespace="GCC_U_CORP_ACCOUNT_WS"/>
+    <wsdl:import namespace="GCC_U_Corporate_Contact_Notif_Pref_Service" location="/WSDL/Provider/GCC_U_Corporate_Contact_Notif_Pref_Service_GCC_U_Corporate_Contact_Notif_Pref_Service.WSDL.wsdl"/>
+    <wsdl:import namespace="GCC Common WS"/>
+    <pd:name>Services/PSCService/GCCU_UpsertProductProfile/V1.0/UpsertProductProfile.process</pd:name>
+    <pd:startName>UpSerProductProf</pd:startName>
+    <pd:startType ref="pfx12:PSC_UpSerProductProfileRq"/>
+    <pd:startX>70</pd:startX>
+    <pd:startY>177</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$Parse-UpSerProductProf/pfx3:Envelope/pfx3:Body/*" element="pfx13:GCC_spcAccount_spcScripts_Upsert_AccProductProfile_Output" cardinality=""/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Parse-UpSerProductProf/pfx3:Envelope/pfx3:Body/pfx13:GCC_spcAccount_spcScripts_Upsert_AccProductProfile_Output"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx13:GCC_spcAccount_spcScripts_Upsert_AccProductProfile_Output"/>
+    <pd:endX>769</pd:endX>
+    <pd:endY>179</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1317276212736</pd:targetNamespace>
+    <pd:activity name="Call UpSerProductProf">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>503</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Generic_HTTP_SOAP_Client/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties/>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestHeader/ns3:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="&quot;Upsert_AccProductProfile&quot;"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTimestamp>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-UpSerProductProf/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map UpSerProductProf">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>224</pd:x>
+        <pd:y>178</pd:y>
+        <config>
+            <element ref="pfx13:GCC_spcAccount_spcScripts_Upsert_AccProductProfile_Input"/>
+        </config>
+        <pd:inputBindings>
+            <pfx13:GCC_spcAccount_spcScripts_Upsert_AccProductProfile_Input>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:SmartScanServer">
+                    <pfx13:SmartScanServerFlag>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:SmartScanServer"/>
+                    </pfx13:SmartScanServerFlag>
+                </xsl:if>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:EmailRep_SpamFilterFlag">
+                    <pfx13:EmailRep_SpamFilterFlag>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:EmailRep_SpamFilterFlag"/>
+                    </pfx13:EmailRep_SpamFilterFlag>
+                </xsl:if>
+                <pfx13:Notes>
+                    <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:Note"/>
+                </pfx13:Notes>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:OfficeScanServerGUID">
+                    <pfx13:OfficeScanServerGUID>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:OfficeScanServerGUID"/>
+                    </pfx13:OfficeScanServerGUID>
+                </xsl:if>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:PortalGUID">
+                    <pfx13:PortalGUID>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:PortalGUID"/>
+                    </pfx13:PortalGUID>
+                </xsl:if>
+                <pfx13:ProductProfileId>
+                    <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductProfileId"/>
+                </pfx13:ProductProfileId>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductLicense">
+                    <pfx13:ProductLicense>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductLicense"/>
+                    </pfx13:ProductLicense>
+                </xsl:if>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:VirusPatternType">
+                    <pfx13:VirusPatternType>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:VirusPatternType"/>
+                    </pfx13:VirusPatternType>
+                </xsl:if>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:WebReputationFlag">
+                    <pfx13:WebReputationFlag>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:WebReputationFlag"/>
+                    </pfx13:WebReputationFlag>
+                </xsl:if>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ToolBoxCollection">
+                    <pfx13:ToolboxCollection>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ToolBoxCollection"/>
+                    </pfx13:ToolboxCollection>
+                </xsl:if>
+                <pfx13:ProductId>
+                    <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductId"/>
+                </pfx13:ProductId>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductVersion">
+                    <pfx13:ProductVersion>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductVersion"/>
+                    </pfx13:ProductVersion>
+                </xsl:if>
+                <pfx13:Type>
+                    <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:Type"/>
+                </pfx13:Type>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductLanguage">
+                    <pfx13:ProductLanguage>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductLanguage"/>
+                    </pfx13:ProductLanguage>
+                </xsl:if>
+                <xsl:if test="exists($UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductOSLanguage)">
+                    <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductOSLanguage">
+                        <pfx13:ProductOSLanguage>
+                            <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductOSLanguage"/>
+                        </pfx13:ProductOSLanguage>
+                    </xsl:if>
+                </xsl:if>
+                <pfx13:AccountId>
+                    <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:AccountId"/>
+                </pfx13:AccountId>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ScanEngineVersion">
+                    <pfx13:ScanEngineVersion>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ScanEngineVersion"/>
+                    </pfx13:ScanEngineVersion>
+                </xsl:if>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:Location">
+                    <pfx13:Location>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:Location"/>
+                    </pfx13:Location>
+                </xsl:if>
+                <pfx13:Name>
+                    <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:Name"/>
+                </pfx13:Name>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductOS">
+                    <pfx13:ProductOS>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:ProductOS"/>
+                    </pfx13:ProductOS>
+                </xsl:if>
+                <xsl:if test="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:Region">
+                    <pfx13:Region>
+                        <xsl:value-of select="$UpSerProductProf/pfx12:PSC_UpSerProductProfileRq/pfx12:RequestBody/ns5:ProductProfile/ns5:Region"/>
+                    </pfx13:Region>
+                </xsl:if>
+            </pfx13:GCC_spcAccount_spcScripts_Upsert_AccProductProfile_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse UpSerProductProf">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>625</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Call-UpSerProductProf/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render UpSerProductProf">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>366</pd:x>
+        <pd:y>188</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Envelope>
+                <pfx3:Body>
+                    <xsl:copy-of select="$Map-UpSerProductProf/pfx13:GCC_spcAccount_spcScripts_Upsert_AccProductProfile_Input"/>
+                </pfx3:Body>
+            </pfx3:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Map UpSerProductProf</pd:from>
+        <pd:to>Render UpSerProductProf</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render UpSerProductProf</pd:from>
+        <pd:to>Call UpSerProductProf</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpSerProductProf</pd:from>
+        <pd:to>Map UpSerProductProf</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call UpSerProductProf</pd:from>
+        <pd:to>Parse UpSerProductProf</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse UpSerProductProf</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

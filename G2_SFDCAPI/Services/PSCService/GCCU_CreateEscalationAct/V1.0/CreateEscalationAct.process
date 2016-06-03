@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns22="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx5="http://www.trendmicro.com/PSC/PSC_CreateEscalationActRq" xmlns:pfx4="GCC_U_Corporate_SR_General_Operations_Service" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://stgspnsupport.trendmicro.com/" xmlns:ns9="GCC-U_AMSS_Escalation_WS" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns6="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns13="http://tempuri.org/" xmlns:pfx="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" xmlns:ns7="www.tibco.com/plugin/Sleep" xmlns:ns10="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/EscalationActivity.xsd" xmlns:ns8="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:ns11="http://www.siebel.com/xml/GCC-U%20Corporate%20SR%20AMSS%20Escalation%20Input" xmlns:ns2="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment%20Script" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns4="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AttScript.xsd" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateAttScriptRq.xsd"/>
+    <xsd:import namespace="GCC_U_Corporate_SR_General_Operations_Service" schemaLocation="/WSDL/Provider/GCC_U_Corporate_SR_General_Operations_Service_GCC_U_Corporate_SR_General_Operations_Service.WSDL.wsdl"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="GCC-U_AMSS_Escalation_WS" schemaLocation="/WSDL/Provider/GCC-U_AMSS_Escalation_WS_GCC-U_AMSS_Escalation_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateEscalationActRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateEscalationActRq.xsd"/>
+    <pd:name>Services/PSCService/GCCU_CreateEscalationAct/V1.0/CreateEscalationAct.process</pd:name>
+    <pd:startName>CreateEscalationAct</pd:startName>
+    <pd:startType ref="pfx5:PSC_CreateEscalationActRq"/>
+    <pd:startX>157</pd:startX>
+    <pd:startY>212</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$Parse-Attach/pfx3:Envelope/pfx3:Body/*" element="pfx2:GCC_spcCommon_spcWS_CreateAttScript_Output" cardinality=""/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <CreateAttachment>
+            <Result>
+                <xsl:value-of select="$Parse-EscAct/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateAttScript_Output/pfx2:Result"/>
+            </Result>
+        </CreateAttachment>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endX>840</pd:endX>
+    <pd:endY>211</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1319711434293</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>169</pd:x>
+        <pd:y>417</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create EscAct">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>492</pd:x>
+        <pd:y>211</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Generic_HTTP_SOAP_Client/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties/>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="&quot;CreateEscalationActivity&quot;"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <SourceID>
+                        <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:SourceID"/>
+                    </SourceID>
+                    <xsl:if test="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:StatusCode">
+                        <StatusCode>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:StatusCode"/>
+                        </StatusCode>
+                    </xsl:if>
+                    <xsl:if test="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:RqTimestamp">
+                        <RqTimestamp>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:RqTimestamp"/>
+                        </RqTimestamp>
+                    </xsl:if>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-EscAct/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>298</pd:x>
+        <pd:y>417</pd:y>
+        <config>
+            <processName>/Utilities/Resend/V1.0/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns12:DBLogger>
+                    <ns12:MessageHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:MessageKey"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:ServiceName"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:ServiceVersion"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:SourceID"/>
+                        </ns12:SourceID>
+                        <ns12:RqTimestamp>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:RqTimestamp"/>
+                        </ns12:RqTimestamp>
+                    </ns12:MessageHeader>
+                    <ns12:MessageBody>
+                        <xsl:copy-of select="$Render-EscAct/xmlString"/>
+                    </ns12:MessageBody>
+                    <ns22:Error>
+                        <ns22:error_code>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                        </ns22:error_code>
+                        <ns22:stack_trace>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                        </ns22:stack_trace>
+                        <ns22:process_stack>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                        </ns22:process_stack>
+                    </ns22:Error>
+                </ns12:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;CreateEscAct-Fail \n&quot;,$Render-EscAct/xmlString)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CreateEscAct-Fail'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>664</pd:x>
+        <pd:y>417</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Create Siebel Corp Attachment  error \n&quot;,$Render-EscAct/xmlString)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CrtCorpAttachErr'"/>
+                </messageCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>597</pd:x>
+        <pd:y>532</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PSCService/GCCU_CreateEscalationAct/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="'GCCU_CreateEscalationAct'"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <SourceID>
+                        <xsl:value-of select="'EI_Resend'"/>
+                    </SourceID>
+                    <RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTimestamp>
+                    <ResendCount>
+                        <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:ResendCount+1"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-Resend/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>733</pd:x>
+        <pd:y>340</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-EscAct/pfx3:Envelope/pfx3:Body/*" element="ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Log>
+                <ns12:DBLogger>
+                    <ns12:MessageHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:MessageKey"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:ServiceName"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:ServiceVersion"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:SourceID"/>
+                        </ns12:SourceID>
+                        <ns12:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns12:RqTimestamp>
+                        <ns12:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns12:RsTimestamp>
+                    </ns12:MessageHeader>
+                    <ns12:MessageBody>
+                        <xsl:copy-of select="$Parse-EscAct/pfx3:Envelope/pfx3:Body/ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Output"/>
+                    </ns12:MessageBody>
+                </ns12:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;CreateEscAct : &quot;,tib:render-xml($Parse-EscAct/pfx3:Envelope/pfx3:Body/ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Output))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'EscAct-Created'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mail Notification">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>472</pd:x>
+        <pd:y>416</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SubjectMessage>
+                    <xsl:value-of select="concat(&quot;[&quot;,$_globalVariables/ns6:GlobalVariables/ESBBW/Environment,&quot; &quot;,$_globalVariables/ns6:GlobalVariables/ESBBW/Domain,&quot;] &quot;,&quot;Create GCCU AttScript Fail - Resend Up to Limit&quot;)"/>
+                </SubjectMessage>
+                <DetailStackTrace>
+                    <xsl:value-of select="tib:render-xml($Catch/exceptiondata)"/>
+                </DetailStackTrace>
+                <ns8:MailInfo>
+                    <ns8:MessageKey>
+                        <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:MessageKey"/>
+                    </ns8:MessageKey>
+                    <ns8:ServiceName>
+                        <xsl:value-of select="&quot;GCCU_CreateEscalationAct&quot;"/>
+                    </ns8:ServiceName>
+                    <ns8:ServiceVersion>
+                        <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:ServiceVersion"/>
+                    </ns8:ServiceVersion>
+                    <ns8:AttachFile>
+                        <ns8:AttachContent>
+                            <ns8:content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment; filename=&quot;, $CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:MessageKey,&quot;.xml&quot;)"/>
+                            </ns8:content-disposition>
+                            <ns8:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns8:content-type>
+                            <ns8:content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </ns8:content-transfer-encoding>
+                            <ns8:textContent>
+                                <xsl:value-of select="tib:render-xml($CreateEscalationAct/pfx5:PSC_CreateEscalationActRq)"/>
+                            </ns8:textContent>
+                        </ns8:AttachContent>
+                    </ns8:AttachFile>
+                </ns8:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map EscAct">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>266</pd:x>
+        <pd:y>212</pd:y>
+        <config>
+            <element ref="ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Input"/>
+        </config>
+        <pd:inputBindings>
+            <ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Input>
+                <ns11:ListOfGcc-UCorporateSrAmssEscalationInput>
+                    <ns11:Gcc-UCorporateSrAmssEscalation-IoRepresentation>
+                        <xsl:if test="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:AMSSTaskId">
+                            <ns11:AMSSTaskId>
+                                <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:AMSSTaskId"/>
+                            </ns11:AMSSTaskId>
+                        </xsl:if>
+                        <ns11:AMSSTaskType>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:AMSSTaskType"/>
+                        </ns11:AMSSTaskType>
+                        <ns11:Description>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:Description"/>
+                        </ns11:Description>
+                        <ns11:FileLocation>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:FileLocation"/>
+                        </ns11:FileLocation>
+                        <ns11:IntegrationSourceId>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:IntegrationSourceId"/>
+                        </ns11:IntegrationSourceId>
+                        <xsl:if test="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:NeuronId">
+                            <ns11:NeuronId>
+                                <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:NeuronId"/>
+                            </ns11:NeuronId>
+                        </xsl:if>
+                        <ns11:OriginalFileName>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:OriinalFileName"/>
+                        </ns11:OriginalFileName>
+                        <ns11:SHA1>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:SHA1"/>
+                        </ns11:SHA1>
+                        <ns11:Source>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:Source"/>
+                        </ns11:Source>
+                        <ns11:Title>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:Title"/>
+                        </ns11:Title>
+                        <ns11:Type>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:Type"/>
+                        </ns11:Type>
+                        <xsl:if test="exists($CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:AMSSParentTaskId)">
+                            <xsl:if test="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:AMSSParentTaskId">
+                                <ns11:AMSSParentTaskId>
+                                    <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:AMSSEscalation/ns10:AMSSParentTaskId"/>
+                                </ns11:AMSSParentTaskId>
+                            </xsl:if>
+                        </xsl:if>
+                    </ns11:Gcc-UCorporateSrAmssEscalation-IoRepresentation>
+                </ns11:ListOfGcc-UCorporateSrAmssEscalationInput>
+                <ns9:sSRNumber>
+                    <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:SRNumber"/>
+                </ns9:sSRNumber>
+                <ns9:sIntegrationSource>
+                    <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:EscalationAct/ns10:IntegrationSource"/>
+                </ns9:sIntegrationSource>
+            </ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse EscAct">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>597</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Create-EscAct/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render EscAct">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>377</pd:x>
+        <pd:y>211</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Envelope>
+                <pfx3:Body>
+                    <xsl:copy-of select="$Map-EscAct/ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Input"/>
+                </pfx3:Body>
+            </pfx3:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Resend">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>470</pd:x>
+        <pd:y>532</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx5:PSC_CreateEscalationActRq"/>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sleep">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>352</pd:x>
+        <pd:y>532</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns7:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="$_globalVariables/ns6:GlobalVariables/Services/ResendWaitingPeriod"/>
+                </IntervalInMillisec>
+            </ns7:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PSC Call Back">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>709</pd:x>
+        <pd:y>92</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/PSC Call Back.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-EscAct/pfx3:Envelope/pfx3:Body/*" element="ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns13:UpdateCallbackInfo>
+                <ns13:strMessageKey>
+                    <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:MessageKey"/>
+                </ns13:strMessageKey>
+                <ns13:strInputXml>
+                    <xsl:value-of select="tib:render-xml($Parse-EscAct/pfx3:Envelope/pfx3:Body/ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Output)"/>
+                </ns13:strInputXml>
+            </ns13:UpdateCallbackInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Panel Call Back">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>721</pd:x>
+        <pd:y>212</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Panel Call Back.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-EscAct/pfx3:Envelope/pfx3:Body/*" element="ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns14:UpdateCallbackInfoSoapIn>
+                <parameters>
+                    <ns14:UpdateCallbackInfo>
+                        <ns14:strMessageKey>
+                            <xsl:value-of select="$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestHeader/ns5:MessageKey"/>
+                        </ns14:strMessageKey>
+                        <ns14:strInputXml>
+                            <xsl:value-of select="tib:render-xml($Parse-EscAct/pfx3:Envelope/pfx3:Body/ns9:GCC-U_spcAMSS_spcEscalation_spcWS_CreateAMSSEscRec_Output)"/>
+                        </ns14:strInputXml>
+                    </ns14:UpdateCallbackInfo>
+                </parameters>
+            </ns14:UpdateCallbackInfoSoapIn>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Render EscAct</pd:from>
+        <pd:to>Create EscAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create EscAct</pd:from>
+        <pd:to>Parse EscAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateEscalationAct</pd:from>
+        <pd:to>Map EscAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map EscAct</pd:from>
+        <pd:to>Render EscAct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse EscAct</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrLog</pd:from>
+        <pd:to>Sleep</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:ResendCount&lt; $_globalVariables/ns6:GlobalVariables/Services/ResendLimit</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep</pd:from>
+        <pd:to>Render Resend</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Resend</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrLog</pd:from>
+        <pd:to>Mail Notification</pd:to>
+        <pd:xpathDescription>Up To Limit</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mail Notification</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse EscAct</pd:from>
+        <pd:to>PSC Call Back</pd:to>
+        <pd:xpathDescription>Portal Call Back</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:RequestSource='Portal'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PSC Call Back</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse EscAct</pd:from>
+        <pd:to>Panel Call Back</pd:to>
+        <pd:xpathDescription>Call Back Panel</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateEscalationAct/pfx5:PSC_CreateEscalationActRq/pfx5:RequestBody/ns10:RequestSource='Panel'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Panel Call Back</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

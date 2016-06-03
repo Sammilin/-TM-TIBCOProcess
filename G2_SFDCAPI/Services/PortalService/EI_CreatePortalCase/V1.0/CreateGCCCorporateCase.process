@@ -1,0 +1,1014 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns9="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:alppTM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns6="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:ns10="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns7="www.tibco.com/plugin/Sleep" xmlns:pfx="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns8="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns4="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment%20Script" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" schemaLocation="/XSD/Portal/PortalSRCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" schemaLocation="/XSD/Portal/PortalSRCaseResult.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseActRq.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRq.xsd"/>
+    <wsdl:import namespace="GCC Common WS" location="/WSDL/Provider/GCC Common WS_GCC Common WS.WSDL.wsdl"/>
+    <pd:name>Services/PortalService/EI_CreatePortalCase/V1.0/CreateGCCCorporateCase.process</pd:name>
+    <pd:startName>CreateGCCCorporateCase</pd:startName>
+    <pd:startType>
+        <xsd:element name="CorpCaseInput">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="PortalSRCase" type="pfx:PortalSRCaseType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>62</pd:startX>
+    <pd:startY>79</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/*" element="pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output" cardinality=""/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <CorpResponse>
+            <xsl:if test="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_INFO">
+                <pfx4:Activity_ID>
+                    <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_INFO"/>
+                </pfx4:Activity_ID>
+            </xsl:if>
+            <pfx4:SR_ID>
+                <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psSR_spcNumber"/>
+            </pfx4:SR_ID>
+            <xsl:choose>
+                <xsl:when test="not(exists($CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment))">
+                    <pfx4:Siebel_ERROR>
+                        <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_MSG"/>
+                    </pfx4:Siebel_ERROR>
+                </xsl:when>
+                <xsl:otherwise>
+                    <pfx4:Siebel_ERROR>
+                        <xsl:value-of select="concat(&quot;CreateCorpCase:&quot;,$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_MSG,&#xA;&quot;Attachement JMS Key:&quot;,$Send-Create-Attachment/ns:aEmptyOutputClass/ns:MessageID)"/>
+                    </pfx4:Siebel_ERROR>
+                </xsl:otherwise>
+            </xsl:choose>
+            <pfx4:TIBCO_RETURN_CODE>
+                <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_CODE"/>
+            </pfx4:TIBCO_RETURN_CODE>
+        </CorpResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="CorpResponse" type="pfx4:PortalSRCaseType"/>
+    </pd:endType>
+    <pd:endX>1005</pd:endX>
+    <pd:endY>288</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1317276212736</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>88</pd:x>
+        <pd:y>294</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create CorpSR">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>442</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Generic_HTTP_SOAP_Client/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties/>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="&quot;CreateCorpCase&quot;"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTimestamp>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-CorpCaseSR/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>380</pd:x>
+        <pd:y>294</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($_error_Create-CorpSR/ActivityErrors) or exists($_error_Parse-CorpSR/ActivityErrors)">
+                    <pfx5:ActivityInput>
+                        <message>
+                            <xsl:value-of select="concat(&quot;Create Siebel Corp SR error \n&quot;,$Render-CorpCaseSR/xmlString)"/>
+                        </message>
+                        <messageCode>
+                            <xsl:value-of select="'CrtSRErr'"/>
+                        </messageCode>
+                    </pfx5:ActivityInput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <pfx5:ActivityInput>
+                        <message>
+                            <xsl:value-of select="tib:render-xml($Catch/exceptiondata)"/>
+                        </message>
+                        <messageCode>
+                            <xsl:value-of select="'ERROR'"/>
+                        </messageCode>
+                    </pfx5:ActivityInput>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>232</pd:x>
+        <pd:y>478</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Render-CorpSR/xmlString"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="'ResendCorpCase'"/>
+                </msgCode>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>547</pd:x>
+        <pd:y>293</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns1:DBLogger>
+                    <ns1:MessageHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="'GCC_CreateCorporateCase'"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="'EI_ESB'"/>
+                        </ns1:SourceID>
+                        <ns1:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RqTimestamp>
+                        <ns1:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RsTimestamp>
+                    </ns1:MessageHeader>
+                    <ns1:MessageBody>
+                        <xsl:copy-of select="$Parse-CorpSR/pfx3:Envelope"/>
+                    </ns1:MessageBody>
+                </ns1:DBLogger>
+                <message>
+                    <xsl:value-of select="concat('SR created, SR Number: ',$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psSR_spcNumber,&#xA;&quot;\n ActivityID : &quot;,$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_INFO,&#xA;&quot;\PortalSourceID : &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CorpSR-Created'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mail Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>820</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ResponseCode>
+                    <xsl:value-of select="&quot;CrtCorpCaseErr&quot;"/>
+                </ResponseCode>
+                <DetailStackTrace>
+                    <xsl:value-of select="tib:render-xml($Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output)"/>
+                </DetailStackTrace>
+                <ns6:MailInfo>
+                    <ns6:MessageKey>
+                        <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                    </ns6:MessageKey>
+                    <ns6:ServiceName>
+                        <xsl:value-of select="'EI_CreatePortal'"/>
+                    </ns6:ServiceName>
+                    <ns6:ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ns6:ServiceVersion>
+                    <ns6:AttachFile>
+                        <ns6:AttachContent>
+                            <ns6:content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment; filename=&quot;, &quot;CorpCase.xml&quot;)"/>
+                            </ns6:content-disposition>
+                            <ns6:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns6:content-type>
+                            <ns6:content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </ns6:content-transfer-encoding>
+                            <ns6:textContent>
+                                <xsl:value-of select="tib:render-xml($CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase)"/>
+                            </ns6:textContent>
+                        </ns6:AttachContent>
+                    </ns6:AttachFile>
+                </ns6:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map CorpCaseSR">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>204</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <element ref="pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Input"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Input>
+                <pfx2:psAccountName>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:AccountName"/>
+                </pfx2:psAccountName>
+                <pfx2:psActyEmailTO>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EmailAddress"/>
+                </pfx2:psActyEmailTO>
+                <pfx2:psSourceID>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                </pfx2:psSourceID>
+                <pfx2:psTeamTrackID>
+                    <xsl:value-of select="''"/>
+                </pfx2:psTeamTrackID>
+                <pfx2:psTickID>
+                    <xsl:value-of select="''"/>
+                </pfx2:psTickID>
+                <xsl:if test="exists($CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:TSProdId)">
+                    <xsl:if test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:TSProdId">
+                        <pfx2:psTSProdId>
+                            <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:TSProdId"/>
+                        </pfx2:psTSProdId>
+                    </xsl:if>
+                </xsl:if>
+                <pfx2:psContactSurveyNotifPref>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Wouldyouparticipateinasurvey"/>
+                </pfx2:psContactSurveyNotifPref>
+                <pfx2:psNonDeductReason>
+                    <xsl:value-of select="''"/>
+                </pfx2:psNonDeductReason>
+                <pfx2:psSRSource>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SRSource"/>
+                </pfx2:psSRSource>
+                <pfx2:psStepsToResolve>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:InitialTroubleshootingPerformed"/>
+                </pfx2:psStepsToResolve>
+                <pfx2:psUsingProxy>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Areyouusingproxy"/>
+                </pfx2:psUsingProxy>
+                <pfx2:psSRSurveyNotifPref>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Wouldyouparticipateinasurvey"/>
+                </pfx2:psSRSurveyNotifPref>
+                <pfx2:psActyEmailCC>
+                    <xsl:value-of select="''"/>
+                </pfx2:psActyEmailCC>
+                <pfx2:psActySenderName>
+                    <xsl:value-of select="''"/>
+                </pfx2:psActySenderName>
+                <pfx2:psSubSystem>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubSystem"/>
+                </pfx2:psSubSystem>
+                <pfx2:psUsingFirewall>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Areyouusingfirewall"/>
+                </pfx2:psUsingFirewall>
+                <pfx2:psIHDeduction>
+                    <xsl:value-of select="''"/>
+                </pfx2:psIHDeduction>
+                <pfx2:psCaseClassification>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Classification"/>
+                </pfx2:psCaseClassification>
+                <pfx2:psTSProdOS>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:OperatingSystem"/>
+                </pfx2:psTSProdOS>
+                <pfx2:psAccountActivationCode>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ActivationCode"/>
+                </pfx2:psAccountActivationCode>
+                <pfx2:psActyDesc>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Title"/>
+                </pfx2:psActyDesc>
+                <pfx2:psActyEmailBody>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Description"/>
+                </pfx2:psActyEmailBody>
+                <pfx2:psNoofSeats>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:NumberofSeat"/>
+                </pfx2:psNoofSeats>
+                <pfx2:psSRDesc>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Description"/>
+                </pfx2:psSRDesc>
+                <xsl:if test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EntitlementID">
+                    <pfx2:psEntitlementID>
+                        <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EntitlementID"/>
+                    </pfx2:psEntitlementID>
+                </xsl:if>
+                <pfx2:psActyEmailFormat>
+                    <xsl:value-of select="'Plain Text'"/>
+                </pfx2:psActyEmailFormat>
+                <pfx2:psActyType>
+                    <xsl:value-of select="'Online Submission'"/>
+                </pfx2:psActyType>
+                <pfx2:psScanEngineVersion>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ScanEngineVersion"/>
+                </pfx2:psScanEngineVersion>
+                <xsl:if test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:CustExperience">
+                    <pfx2:psCustExperience>
+                        <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:CustExperience"/>
+                    </pfx2:psCustExperience>
+                </xsl:if>
+                <xsl:if test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:BetaProjectId">
+                    <pfx2:psBetaProjectId>
+                        <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:BetaProjectId"/>
+                    </pfx2:psBetaProjectId>
+                </xsl:if>
+                <pfx2:psExtraErrorMsg>
+                    <xsl:value-of select="''"/>
+                </pfx2:psExtraErrorMsg>
+                <pfx2:psOSVersion>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:OperatingSystem"/>
+                </pfx2:psOSVersion>
+                <xsl:if test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PatternType">
+                    <pfx2:psPatternType>
+                        <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PatternType"/>
+                    </pfx2:psPatternType>
+                </xsl:if>
+                <pfx2:psContactEmail>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EmailAddress"/>
+                </pfx2:psContactEmail>
+                <pfx2:psContactFName>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirstName"/>
+                </pfx2:psContactFName>
+                <pfx2:psContactLName>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:LastName"/>
+                </pfx2:psContactLName>
+                <pfx2:psKBID>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SolutionID"/>
+                </pfx2:psKBID>
+                <pfx2:psSearchDB>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:DidSearchDB"/>
+                </pfx2:psSearchDB>
+                <pfx2:psAssetNum>
+                    <xsl:value-of select="''"/>
+                </pfx2:psAssetNum>
+                <pfx2:psFeatureReqID>
+                    <xsl:value-of select="''"/>
+                </pfx2:psFeatureReqID>
+                <pfx2:psProblemCat>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProblemCategory"/>
+                </pfx2:psProblemCat>
+                <pfx2:psSourceTime>
+                    <xsl:value-of select="tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0))"/>
+                </pfx2:psSourceTime>
+                <pfx2:psSubProblemCat>
+                    <xsl:value-of select="alppTM:stringReplace($CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubCategory, &quot;'&quot;, &quot;?&quot;)"/>
+                </pfx2:psSubProblemCat>
+                <xsl:if test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SPNPortalID">
+                    <pfx2:psSPNPortalID>
+                        <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SPNPortalID"/>
+                    </pfx2:psSPNPortalID>
+                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubSystem = 'Portal - Beta'">
+                        <pfx2:psContactSystemNotifPref>
+                            <xsl:value-of select="'N'"/>
+                        </pfx2:psContactSystemNotifPref>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx2:psContactSystemNotifPref>
+                            <xsl:value-of select="'Y'"/>
+                        </pfx2:psContactSystemNotifPref>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <pfx2:psActyEmailAttachFlg>
+                    <xsl:value-of select="'Y'"/>
+                </pfx2:psActyEmailAttachFlg>
+                <pfx2:psSRTitle>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Title"/>
+                </pfx2:psSRTitle>
+                <xsl:if test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PreferredLanguage">
+                    <pfx2:psSRLanguage>
+                        <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PreferredLanguage"/>
+                    </pfx2:psSRLanguage>
+                </xsl:if>
+                <pfx2:psTSProdVersion>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductVersion"/>
+                </pfx2:psTSProdVersion>
+                <pfx2:psMyLocation>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Country"/>
+                </pfx2:psMyLocation>
+                <pfx2:psPatternFileNum>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PatternFileNumber"/>
+                </pfx2:psPatternFileNum>
+                <pfx2:psAccountID>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:AccountID"/>
+                </pfx2:psAccountID>
+                <pfx2:psActyComments>
+                    <xsl:value-of select="''"/>
+                </pfx2:psActyComments>
+                <xsl:choose>
+                    <xsl:when test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubSystem='Portal - POCM'">
+                        <pfx2:psActyPrivateNotes>
+                            <xsl:value-of select="concat(&#xA;&quot;Portal Input: &quot;,&#xA;&quot;@#Entitlement Name : &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EntitlementName,&#xA;&quot;@#Product Information: &quot;,&#xA;&quot;@#Product : &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductName,&#xA;&quot;@#Product GIC: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductGIC,&#xA;&quot;@#Product Version: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductVersion,&#xA;&quot;@#OperatingSystem: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:OperatingSystem,&#xA;&quot;@#Product Language: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductLanguage,&#xA;&quot;@#ActivationCode: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ActivationCode,&#xA;&quot;@#&quot;,&#xA;&quot;@#Problem Description: &quot;,&#xA;&quot;@#Problem Category: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProblemCategory, &#xA;&quot;@#Sub Category: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubCategory, &#xA;&quot;@#Title: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Title,&#xA;&quot;@#Priority: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Priority, &#xA;&quot;@#Description: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Description,&#xA;&quot;@#&quot;,&#xA;&quot;@#Personal Information: &quot;,&#xA;&quot;@#Salutation: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Salutation,&#xA;&quot;@#First Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirstName,&#xA;&quot;@#Last Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:LastName, &#xA;&quot;@#Phone Number: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PhoneNumber, &#xA;&quot;@#Email Address: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EmailAddress, &#xA;&quot;@#Company Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:CompanyName, &#xA;&quot;@#Preferred Language: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PreferredLanguage,&#xA;&quot;@#Country: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Country,&#xA;&quot;@#Would you participate in a survey: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Wouldyouparticipateinasurvey,&#xA;&quot;@#Attachment: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment,&#xA;&quot;@#SPN Portal ID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SPNPortalID,&#xA;&quot;@#Seat Count: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SeatCount,&#xA;&quot;@#&quot;,&#xA;&quot;@#DateCreated : &quot;,tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0)))"/>
+                        </pfx2:psActyPrivateNotes>
+                    </xsl:when>
+                    <xsl:when test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubSystem='Portal - Select'">
+                        <pfx2:psActyPrivateNotes>
+                            <xsl:value-of select="concat(&#xA;&quot;Portal Input: &quot;,&#xA;&quot;@#Entitlement Name : &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EntitlementName,&#xA;&quot;@#Product Information: &quot;,&#xA;&quot;@#Product: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductName,&#xA;&quot;@#Product GIC: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductGIC,&#xA;&quot;@#Product Version: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductVersion,&#xA;&quot;@#Operating System: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:OperatingSystem,&#xA;&quot;@#Product Language: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductLanguage,&#xA;&quot;@#Activation Code: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ActivationCode,&#xA;&quot;@#Number of Seats: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:NumberofSeat, &#xA;&quot;@#&quot;,&#xA;&quot;@#Problem Description: &quot;,&#xA;&quot;@#SR Type: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SRType, &#xA;&quot;@#Query Type: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:QueryType, &#xA;&quot;@#Problem Category: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProblemCategory, &#xA;&quot;@#Sub Category: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubCategory, &#xA;&quot;@#Title: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Title,&#xA;&quot;@#Description: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Description,&#xA;&quot;@#&quot;,&#xA;&quot;@#Personal Information: &quot;,&#xA;&quot;@#Company Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:CompanyName, &#xA;&quot;@#Salutation: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Salutation,&#xA;&quot;@#First Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirstName,&#xA;&quot;@#Last Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:LastName, &#xA;&quot;@#Phone Number: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PhoneNumber, &#xA;&quot;@#Email Address: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EmailAddress, &#xA;&quot;@#Preferred Language: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PreferredLanguage,&#xA;&quot;@#Country: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Country,&#xA;&quot;@#Would you participatein a survey: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Wouldyouparticipateinasurvey,&#xA;&quot;@#Attachment: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment,&#xA;&quot;@#SPN Portal ID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SPNPortalID,&#xA;&quot;@#Seat Count: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SeatCount,&#xA;&quot;@#&quot;,&#xA;&quot;@#DateCreated : &quot;,tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0)))"/>
+                        </pfx2:psActyPrivateNotes>
+                    </xsl:when>
+                    <xsl:when test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubSystem='SRF - EMEA'">
+                        <pfx2:psActyPrivateNotes>
+                            <xsl:value-of select="concat(&#xA;&quot;Online Submission Input: &quot;,&#xA;&quot;@#Entitlement Name : &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EntitlementName,&#xA;&quot;@#Personal Information: &quot;,&#xA;&quot;@#Account ID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:AccountID, &#xA;&quot;@#First Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirstName,&#xA;&quot;@#Last Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:LastName,&#xA;&quot;@#Country: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Country,&#xA;&quot;@#Send Reply To: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EmailAddress, &#xA;&quot;@#Phone Number: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PhoneNumber, &#xA;&quot;@#Company Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:CompanyName,&#xA;&quot;@#&quot;,&#xA;&quot;@#Product Information: &quot;,&#xA;&quot;@#GIC: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductGIC, &#xA;&quot;@#Product Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductName, &#xA;&quot;@#Product Version: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductVersion, &#xA;&quot;@#Product Language: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductLanguage, &#xA;&quot;@#Pattern File Number: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PatternFileNumber, &#xA;&quot;@#Number of Seats: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:NumberofSeat,&#xA;&quot;@#AC: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ActivationCode, &#xA;&quot;@#Scan Engine Version: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ScanEngineVersion, &#xA;&quot;@#OS Version: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:OperatingSystem, &#xA;&quot;@#Are you using proxy?: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Areyouusingproxy, &#xA;&quot;@#Proxy Server: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UseProxyAuth, &#xA;&quot;@#Are you using Proxy Authentication: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UseProxyAuth, &#xA;&quot;@#Are you using firewall?: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Areyouusingfirewall, &#xA;&quot;@#FireWall Description: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirewallServer, &#xA;&quot;@#Are you using FireWall Authentication?: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UseFirewallAuth, &#xA;&quot;@#FireWall Authentication Type: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirewallAuthenticationType, &#xA;&quot;@#Problem Category: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProblemCategory, &#xA;&quot;@#FTP Location: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FTPLocation, &#xA;&quot;@#User Type: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UserType, &#xA;&quot;@#&quot;,&#xA;&quot;@#Problem Description: &quot;,&#xA;&quot;@#Problem Description: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Description, &#xA;&quot;@#UserName Password: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FTPUserNamePassword, &#xA;&quot;@#Solution ID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SolutionID, &#xA;&quot;@#Did you search our Knowledge Based for a solution?: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:DidSearchDB, &#xA;&quot;@#Steps Taken to resolve: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:InitialTroubleshootingPerformed,&#xA;&quot;@#&quot;,&#xA;&quot;@#SPN Portal ID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SPNPortalID,&#xA;&quot;@#Seat Count: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SeatCount,&#xA;&quot;@#&quot;,&#xA;&quot;@#DateCreated : &quot;,tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0)))"/>
+                        </pfx2:psActyPrivateNotes>
+                    </xsl:when>
+                    <xsl:when test="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubSystem='SRF - English'">
+                        <pfx2:psActyPrivateNotes>
+                            <xsl:value-of select="concat(&#xA;&quot;Online Submission Input: &quot;,&#xA;&quot;@#Entitlement Name : &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EntitlementName,&#xA;&quot;@#Personal Information: &quot;,&#xA;&quot;@#Account ID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:AccountID, &#xA;&quot;@#First Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirstName,&#xA;&quot;@#Last Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:LastName,&#xA;&quot;@#Country: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Country,&#xA;&quot;@#Send Reply To: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EmailAddress, &#xA;&quot;@#Phone Number: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PhoneNumber, &#xA;&quot;@#Company Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:CompanyName,&#xA;&quot;@#&quot;,&#xA;&quot;@#Product Information: &quot;,&#xA;&quot;@#GIC: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductGIC, &#xA;&quot;@#Product Name: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductName, &#xA;&quot;@#Product Version: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductVersion, &#xA;&quot;@#Product Language: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductLanguage, &#xA;&quot;@#Pattern File Number: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PatternFileNumber, &#xA;&quot;@#Number of Seats: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:NumberofSeat,&#xA;&quot;@#AC: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ActivationCode, &#xA;&quot;@#Scan Engine Version: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ScanEngineVersion, &#xA;&quot;@#OS Version: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:OperatingSystem, &#xA;&quot;@#Are you using proxy?: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Areyouusingproxy, &#xA;&quot;@#Proxy Server: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UseProxyAuth, &#xA;&quot;@#Are you using Proxy Authentication: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UseProxyAuth, &#xA;&quot;@#Are you using firewall?: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Areyouusingfirewall, &#xA;&quot;@#FireWall Description: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirewallServer, &#xA;&quot;@#Are you using FireWall Authentication?: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UseFirewallAuth, &#xA;&quot;@#FireWall Authentication Type: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirewallAuthenticationType, &#xA;&quot;@#Problem Category: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProblemCategory, &#xA;&quot;@#FTP Location: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FTPLocation, &#xA;&quot;@#User Type: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UserType, &#xA;&quot;@#&quot;,&#xA;&quot;@#Problem Description: &quot;,&#xA;&quot;@#Problem Description: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Description, &#xA;&quot;@#UserName Password: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FTPUserNamePassword, &#xA;&quot;@#Solution ID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SolutionID, &#xA;&quot;@#Did you search our Knowledge Based for a solution?: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:DidSearchDB, &#xA;&quot;@#Steps Taken to resolve: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:InitialTroubleshootingPerformed,&#xA;&quot;@Attachment: &quot;,tib:render-xml($CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment),&#xA;&quot;@#&quot;,&#xA;&quot;@#SPN Portal ID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SPNPortalID,&#xA;&quot;@#Seat Count: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SeatCount,&#xA;&quot;@#&quot;,&#xA;&quot;@#DateCreated : &quot;,tib:format-dateTime('MM/dd/yyyy HH:mm:ss', tib:current-dateTime-timezone(0, 0)))"/>
+                        </pfx2:psActyPrivateNotes>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx2:psActyPrivateNotes>
+                            <xsl:value-of select="concat(&#xA;&quot;PortalFields&quot;,&#xA;&quot;@#Entitlement Name : &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EntitlementName,&#xA;&quot;@#PortalSourceID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID,&#xA;&quot;@#OperatingSystem: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:OperatingSystem,&#xA;&quot;@#SerialNumber: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SerialNumber,&#xA;&quot;@#ActivationCode: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ActivationCode,&#xA;&quot;@#PatternFileNumber: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PatternFileNumber,&#xA;&quot;@#ScanEngineVersion: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ScanEngineVersion,&#xA;&quot;@#NumberofSeat: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:NumberofSeat,&#xA;&quot;@#UserType: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UserType,&#xA;&quot;@#ProblemCategory: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProblemCategory,&#xA;&quot;@#SubCategory: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubCategory,&#xA;&quot;@#Priority: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Priority,&#xA;&quot;@#Description: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Description,&#xA;&quot;@#InitialTroubleshootingPerformed: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:InitialTroubleshootingPerformed,&#xA;&quot;@#InternetConnections: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:InternetConnections,&#xA;&quot;@#Attachment:: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment,&#xA;&quot;@#EmailAddress: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:EmailAddress,&#xA;&quot;@#Salutation: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Salutation,&#xA;&quot;@#FirstName: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirstName,&#xA;&quot;@#LastName: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:LastName,&#xA;&quot;@#PhoneNumber: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PhoneNumber,&#xA;&quot;@#Country: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Country,&#xA;&quot;@#CompanyName: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:CompanyName,&#xA;&quot;@#AccountID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:AccountID,&#xA;&quot;@#AccountName: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:AccountName,&#xA;&quot;@#Areyouusingproxy: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Areyouusingproxy,&#xA;&quot;@#Areyouusingfirewall: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Areyouusingfirewall,&#xA;&quot;@#PreferredLanguage: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PreferredLanguage,&#xA;&quot;@#Wouldyouparticipateinasurvey: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Wouldyouparticipateinasurvey,&#xA;&quot;@#CDToutput: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:CDToutput,&#xA;&quot;@#Title: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Title,&#xA;&quot;@#BuildNumber: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:BuildNumber,&#xA;&quot;@#BetaProjectId: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:BetaProjectId,&#xA;&quot;@#ProductGIC: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductGIC,&#xA;&quot;@#SRType: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SRType,&#xA;&quot;@#SolutionID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SolutionID,&#xA;&quot;@#DidSearchDB: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:DidSearchDB,&#xA;&quot;@#SubSystem: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubSystem,&#xA;&quot;@#PortalSRTarget: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSRTarget,&#xA;&quot;@#CustExperience: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:CustExperience,&#xA;&quot;@#UseProxyAuth: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UseProxyAuth,&#xA;&quot;@#FirewallServer: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirewallServer,&#xA;&quot;@#UseFirewallAuth: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UseFirewallAuth,&#xA;&quot;@#FTPLocation: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FTPLocation,&#xA;&quot;@#FTPUserNamePassword: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FTPUserNamePassword,&#xA;&quot;@#UserType1: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:UserType1,&#xA;&quot;@#FirewallAuthenticationType: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:FirewallAuthenticationType,&#xA;&quot;@#SPN Portal ID: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SPNPortalID,&#xA;&quot;@#Seat Count: &quot;,$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SeatCount,&#xA;&quot;@#&quot;&#xA;)"/>
+                        </pfx2:psActyPrivateNotes>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <pfx2:psProductGIC>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductGIC"/>
+                </pfx2:psProductGIC>
+                <pfx2:psSRType>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SRType"/>
+                </pfx2:psSRType>
+                <pfx2:psTSProdLanguage>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ProductLanguage"/>
+                </pfx2:psTSProdLanguage>
+                <pfx2:psAccountRegistrationKey>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SerialNumber"/>
+                </pfx2:psAccountRegistrationKey>
+                <pfx2:psActySenderAdd>
+                    <xsl:value-of select="''"/>
+                </pfx2:psActySenderAdd>
+            </pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Neuron Sample Submission">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>660</pd:x>
+        <pd:y>417</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Neuron Sample Submission.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <path>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment/pfx:URL[1]"/>
+                </path>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse CorpSR">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>545</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Create-CorpSR/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render CorpCaseSR">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>324</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Envelope>
+                <pfx3:Body>
+                    <xsl:copy-of select="$Map-CorpCaseSR/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Input"/>
+                </pfx3:Body>
+            </pfx3:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render CorpSR">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>162</pd:x>
+        <pd:y>393</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="ns9:CreatePortalCaseMsgRq"/>
+        </config>
+        <pd:inputBindings>
+            <ns9:CreatePortalCaseMsgRq>
+                <ns9:RequestHeader>
+                    <ns10:MessageKey>
+                        <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                    </ns10:MessageKey>
+                    <ns10:ServiceName>
+                        <xsl:value-of select="'CreateGCCCorporateCase'"/>
+                    </ns10:ServiceName>
+                    <ns10:ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ns10:ServiceVersion>
+                    <ns10:SourceID>
+                        <xsl:value-of select="'EI_Resend'"/>
+                    </ns10:SourceID>
+                    <ns10:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns10:RqTimestamp>
+                </ns9:RequestHeader>
+                <ns9:RequestBody>
+                    <xsl:copy-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase"/>
+                </ns9:RequestBody>
+            </ns9:CreatePortalCaseMsgRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Siebel ERROR Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>692</pd:x>
+        <pd:y>178</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/*" element="pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_MSG"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="'Siebel-ERR'"/>
+                </msgCode>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Create Attachment">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>1005</pd:x>
+        <pd:y>417</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PortalService/EI_CreatePortalCase/V1.0/CreateCorpAttachment/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <RqTime>
+                        <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                    </RqTime>
+                    <FileSize>
+                        <xsl:value-of select="0"/>
+                    </FileSize>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="1"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$CreateAttachment-Info-Render-To-XML/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateAttachment Info Render To XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>841</pd:x>
+        <pd:y>416</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term>
+                <xsd:element name="Attachment">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="GUID" type="xsd:string"/>
+                            <xsd:element name="ActivityID" type="xsd:string"/>
+                            <xsd:element name="URLs">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="URL" type="xsd:string" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ToNeuron) and ($CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ToNeuron='Y')">
+                    <Attachment>
+                        <GUID>
+                            <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                        </GUID>
+                        <ActivityID>
+                            <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_INFO"/>
+                        </ActivityID>
+                        <URLs>
+                            <URL>
+                                <xsl:value-of select="$Neuron-Sample-Submission/NEURON/NEURON_SAMPLEPATH"/>
+                            </URL>
+                        </URLs>
+                    </Attachment>
+                </xsl:when>
+                <xsl:otherwise>
+                    <Attachment>
+                        <GUID>
+                            <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                        </GUID>
+                        <ActivityID>
+                            <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_INFO"/>
+                        </ActivityID>
+                        <URLs>
+                            <xsl:for-each select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment/pfx:URL">
+                                <URL>
+                                    <xsl:value-of select="."/>
+                                </URL>
+                            </xsl:for-each>
+                        </URLs>
+                    </Attachment>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Resend GCCCorporateCase">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>319</pd:x>
+        <pd:y>385</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination/>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Services/PortalService/WaittingQueue"/>
+                </destinationQueue>
+                <JMSExpiration>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Services/ResendWaitingSec"/>
+                </JMSExpiration>
+                <JMSProperties>
+                    <ns:JMSXGroupID>
+                        <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ESBBW/ProjectName"/>
+                    </ns:JMSXGroupID>
+                </JMSProperties>
+                <OtherProperties>
+                    <RqTime>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTime>
+                    <FileSize>
+                        <xsl:value-of select="0"/>
+                    </FileSize>
+                    <RedeliveredQueue>
+                        <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Services/PortalService/EI_CreatePortalCase/V1.0/GCC_CreateCorpCaseResend/DestinationQueue"/>
+                    </RedeliveredQueue>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="1"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                    <ResendCount>
+                        <xsl:value-of select="1"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-CorpSR/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateAttachment Info Render To XML no Neuron">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>746</pd:x>
+        <pd:y>311</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term>
+                <xsd:element name="Attachment">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="GUID" type="xsd:string"/>
+                            <xsd:element name="ActivityID" type="xsd:string"/>
+                            <xsd:element name="URLs">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="URL" type="xsd:string" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <Attachment>
+                <GUID>
+                    <xsl:value-of select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                </GUID>
+                <ActivityID>
+                    <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_INFO"/>
+                </ActivityID>
+                <URLs>
+                    <xsl:for-each select="$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment/pfx:URL">
+                        <URL>
+                            <xsl:value-of select="."/>
+                        </URL>
+                    </xsl:for-each>
+                </URLs>
+            </Attachment>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Create ProductSR Attachment">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>885</pd:x>
+        <pd:y>305</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PortalService/EI_CreatePortalCase/V1.0/CreateCorpAttachment/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <RqTime>
+                        <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                    </RqTime>
+                    <FileSize>
+                        <xsl:value-of select="0"/>
+                    </FileSize>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="1"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$CreateAttachment-Info-Render-To-XML-no-Neuron/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Map CorpCaseSR</pd:from>
+        <pd:to>Render CorpCaseSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render CorpCaseSR</pd:from>
+        <pd:to>Create CorpSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateGCCCorporateCase</pd:from>
+        <pd:to>Map CorpCaseSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create CorpSR</pd:from>
+        <pd:to>Parse CorpSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse CorpSR</pd:from>
+        <pd:to>Siebel ERROR Log</pd:to>
+        <pd:xpathDescription>Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3407872</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-CorpSR/pfx3:Envelope/pfx3:Body/pfx2:GCC_spcCommon_spcWS_CreateCorpCase_Output/pfx2:psRETURN_CODE='ERROR'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render CorpSR</pd:to>
+        <pd:xpathDescription>Retry</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($_error_Create-CorpSR/ActivityErrors) or exists($_error_Parse-CorpSR/ActivityErrors)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse CorpSR</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>No Attachment</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse CorpSR</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>CreateAttachment Info Render To XML no Neuron</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Siebel ERROR Log</pd:from>
+        <pd:to>Mail Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mail Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render CorpSR</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Resend GCCCorporateCase</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>Neuron Sample Submission</pd:to>
+        <pd:xpathDescription>Sent to Neuron</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateGCCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ToNeuron='Y'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Neuron Sample Submission</pd:from>
+        <pd:to>CreateAttachment Info Render To XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Create Attachment</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateAttachment Info Render To XML</pd:from>
+        <pd:to>Send Create Attachment</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Resend GCCCorporateCase</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateAttachment Info Render To XML no Neuron</pd:from>
+        <pd:to>Send Create ProductSR Attachment</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Create ProductSR Attachment</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

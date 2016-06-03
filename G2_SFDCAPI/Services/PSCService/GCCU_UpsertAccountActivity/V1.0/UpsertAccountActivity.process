@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:ns="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Account.xsd" xmlns:ns22="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns5="http://tempuri.org/" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns6="www.tibco.com/plugin/Sleep" xmlns:ns13="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRq" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="GCC_U_CORP_ACCOUNT_WS" xmlns:pfx2="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="GCC_U_CORP_ACCOUNT_WS" schemaLocation="/WSDL/Provider/GCC_U_CORP_ACCOUNT_WS_GCC_U_CORP_ACCOUNT_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateAccountActivityRq.xsd"/>
+    <pd:name>Services/PSCService/GCCU_UpsertAccountActivity/V1.0/UpsertAccountActivity.process</pd:name>
+    <pd:description>2012/3/15 Add Resend mechanism</pd:description>
+    <pd:startName>UpsertAccountActivity</pd:startName>
+    <pd:startType ref="pfx:PSC_CreateAccountActivityRq"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$Parse-XML/pfx2:Envelope/pfx2:Body/*" element="pfx3:GCC_spcAccount_spcScripts_Upsert_AccountActivity_Output" cardinality=""/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/pfx3:GCC_spcAccount_spcScripts_Upsert_AccountActivity_Output"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx3:GCC_spcAccount_spcScripts_Upsert_AccountActivity_Output"/>
+    <pd:endX>737</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1328780933811</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>160</pd:x>
+        <pd:y>306</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create AccountAct WS">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>499</pd:x>
+        <pd:y>73</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Generic_HTTP_SOAP_Client/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="'Upsert_AccountActivity'"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:SourceID">
+                        <SourceID>
+                            <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:SourceID"/>
+                        </SourceID>
+                    </xsl:if>
+                    <StatusCode>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:StatusCode"/>
+                    </StatusCode>
+                    <RqTimestamp>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:RqTimestamp"/>
+                    </RqTimestamp>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>323</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <processName>/Utilities/Resend/V1.0/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns13:DBLogger>
+                    <ns13:MessageHeader>
+                        <ns13:MessageKey>
+                            <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:MessageKey"/>
+                        </ns13:MessageKey>
+                        <ns13:ServiceName>
+                            <xsl:value-of select="'Upsert_AccountActivity'"/>
+                        </ns13:ServiceName>
+                        <ns13:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns13:ServiceVersion>
+                        <ns13:SourceID>
+                            <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:SourceID"/>
+                        </ns13:SourceID>
+                        <ns13:RqTimestamp>
+                            <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:RqTimestamp"/>
+                        </ns13:RqTimestamp>
+                        <ns13:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns13:RsTimestamp>
+                    </ns13:MessageHeader>
+                    <ns13:MessageBody>
+                        <xsl:copy-of select="$Catch/exceptiondata"/>
+                    </ns13:MessageBody>
+                    <ns22:Error>
+                        <ns22:error_code>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                        </ns22:error_code>
+                        <ns22:stack_trace>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                        </ns22:stack_trace>
+                        <ns22:process_stack>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                        </ns22:process_stack>
+                    </ns22:Error>
+                </ns13:DBLogger>
+                <message>
+                    <xsl:value-of select="concat(&quot;Failed-CreateAccAct. Original Message : &#xA;&quot;,&#xA;$Render-XML/xmlString,&#xA;&quot;&#xA; Error Message: &#xA;&quot;, tib:render-xml($Catch/exceptiondata))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'Failed-CreateAccAct'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>603</pd:x>
+        <pd:y>309</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Failed-CreateAccAct. Original Message : &#xA;&quot;,&#xA;$Render-XML/xmlString,&#xA;&quot;&#xA; Error Message: &#xA;&quot;, tib:render-xml($Catch/exceptiondata))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'Failed-CreateAccAct'"/>
+                </messageCode>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>260</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <element ref="pfx3:GCC_spcAccount_spcScripts_Upsert_AccountActivity_Input"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:GCC_spcAccount_spcScripts_Upsert_AccountActivity_Input>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:EndDate">
+                    <pfx3:EndDate>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:EndDate"/>
+                    </pfx3:EndDate>
+                </xsl:if>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:URL">
+                    <pfx3:URL>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:URL"/>
+                    </pfx3:URL>
+                </xsl:if>
+                <pfx3:Status>
+                    <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Status"/>
+                </pfx3:Status>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AnnouncementId">
+                    <pfx3:AnnouncementId>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AnnouncementId"/>
+                    </pfx3:AnnouncementId>
+                </xsl:if>
+                <pfx3:Title>
+                    <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Title"/>
+                </pfx3:Title>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountName">
+                    <pfx3:AccountName>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountName"/>
+                    </pfx3:AccountName>
+                </xsl:if>
+                <pfx3:ActivityId>
+                    <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ActivityId"/>
+                </pfx3:ActivityId>
+                <pfx3:Type>
+                    <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Type"/>
+                </pfx3:Type>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactLN">
+                    <pfx3:ContactLN>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactLN"/>
+                    </pfx3:ContactLN>
+                </xsl:if>
+                <pfx3:AccountId>
+                    <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountId"/>
+                </pfx3:AccountId>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:NeuronId">
+                    <pfx3:NeuronId>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:NeuronId"/>
+                    </pfx3:NeuronId>
+                </xsl:if>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactFN">
+                    <pfx3:ContactFN>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactFN"/>
+                    </pfx3:ContactFN>
+                </xsl:if>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactId">
+                    <pfx3:ContactId>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactId"/>
+                    </pfx3:ContactId>
+                </xsl:if>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountActivationCode">
+                    <pfx3:AccountActivationCode>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountActivationCode"/>
+                    </pfx3:AccountActivationCode>
+                </xsl:if>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:RelatedSR">
+                    <pfx3:RelatedSR>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:RelatedSR"/>
+                    </pfx3:RelatedSR>
+                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="exists($UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ArchiveName)">
+                        <pfx3:Description>
+                            <xsl:value-of select="concat(&quot;ArchiveName: &quot;,$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ArchiveName,&#xA;&quot;@# ArchiveSize: &quot;,$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ArchiveSize,&#xA;&quot;@# FileCount: &quot;,$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:FileCount,&#xA;&quot;@# Description: &quot;,$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Description)"/>
+                        </pfx3:Description>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx3:Description>
+                            <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Description"/>
+                        </pfx3:Description>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:StartDate">
+                    <pfx3:StartDate>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:StartDate"/>
+                    </pfx3:StartDate>
+                </xsl:if>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactEmail">
+                    <pfx3:ContactEmail>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactEmail"/>
+                    </pfx3:ContactEmail>
+                </xsl:if>
+                <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountRegistrationKey">
+                    <pfx3:AccountRegistrationKey>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountRegistrationKey"/>
+                    </pfx3:AccountRegistrationKey>
+                </xsl:if>
+            </pfx3:GCC_spcAccount_spcScripts_Upsert_AccountActivity_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>617</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx2:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Create-AccountAct-WS/ns12:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>372</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx2:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:Envelope>
+                <pfx2:Body>
+                    <xsl:copy-of select="$Map-Data/pfx3:GCC_spcAccount_spcScripts_Upsert_AccountActivity_Input"/>
+                </pfx2:Body>
+            </pfx2:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mail Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>455</pd:x>
+        <pd:y>309</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SubjectMessage xsi:type="xsd:string">
+                    <xsl:value-of select="concat(&quot;[&quot;,$_globalVariables/ns4:GlobalVariables/ESBBW/Environment,&quot; &quot;,$_globalVariables/ns4:GlobalVariables/ESBBW/Domain,&quot;] &quot;,&quot;UpsertAccountActivity Fail - Resend Up to Limit&quot;)"/>
+                </SubjectMessage>
+                <DetailStackTrace>
+                    <xsl:value-of select="tib:render-xml($Catch/exceptiondata)"/>
+                </DetailStackTrace>
+                <ns14:MailInfo>
+                    <ns14:MessageKey>
+                        <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:MessageKey"/>
+                    </ns14:MessageKey>
+                    <ns14:ServiceName>
+                        <xsl:value-of select="'GCCU_CreateAccountAvtivity'"/>
+                    </ns14:ServiceName>
+                    <ns14:ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ns14:ServiceVersion>
+                    <ns14:AttachFile>
+                        <ns14:AttachContent>
+                            <ns14:content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment; filename=&quot;, $UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:MessageKey,&quot;.xml&quot;)"/>
+                            </ns14:content-disposition>
+                            <ns14:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns14:content-type>
+                            <ns14:content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </ns14:content-transfer-encoding>
+                            <ns14:textContent>
+                                <xsl:value-of select="tib:render-xml($UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq)"/>
+                            </ns14:textContent>
+                        </ns14:AttachContent>
+                    </ns14:AttachFile>
+                </ns14:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Back PSC">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>670</pd:x>
+        <pd:y>194</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/Services/SharedOperations/PSC Call Back.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-XML/pfx2:Envelope/pfx2:Body/*" element="pfx3:GCC_spcAccount_spcScripts_Upsert_AccountActivity_Output" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns5:UpdateCallbackInfo>
+                <ns5:strMessageKey>
+                    <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader/ns1:MessageKey"/>
+                </ns5:strMessageKey>
+                <ns5:strInputXml>
+                    <xsl:value-of select="tib:render-xml($Parse-XML/pfx2:Envelope/pfx2:Body/pfx3:GCC_spcAccount_spcScripts_Upsert_AccountActivity_Output)"/>
+                </ns5:strInputXml>
+            </ns5:UpdateCallbackInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sleep">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>243</pd:x>
+        <pd:y>444</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns6:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/Services/ResendWaitingPeriod"/>
+                </IntervalInMillisec>
+            </ns6:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Resend XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>372</pd:x>
+        <pd:y>445</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx:PSC_CreateAccountActivityRq"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:PSC_CreateAccountActivityRq>
+                <xsl:copy-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestHeader"/>
+                <pfx:RequestBody>
+                    <ns:AccountActivity>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:EndDate">
+                            <ns:EndDate>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:EndDate"/>
+                            </ns:EndDate>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Status">
+                            <ns:Status>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Status"/>
+                            </ns:Status>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AnnouncementId">
+                            <ns:AnnouncementId>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AnnouncementId"/>
+                            </ns:AnnouncementId>
+                        </xsl:if>
+                        <ns:Title>
+                            <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Title"/>
+                        </ns:Title>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ActivityId">
+                            <ns:ActivityId>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ActivityId"/>
+                            </ns:ActivityId>
+                        </xsl:if>
+                        <ns:Type>
+                            <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Type"/>
+                        </ns:Type>
+                        <ns:AccountId>
+                            <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountId"/>
+                        </ns:AccountId>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:NeuronId">
+                            <ns:NeuronId>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:NeuronId"/>
+                            </ns:NeuronId>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactId">
+                            <ns:ContactId>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactId"/>
+                            </ns:ContactId>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:RelatedSR">
+                            <ns:RelatedSR>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:RelatedSR"/>
+                            </ns:RelatedSR>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Description">
+                            <ns:Description>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:Description"/>
+                            </ns:Description>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:StartDate">
+                            <ns:StartDate>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:StartDate"/>
+                            </ns:StartDate>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ArchiveName">
+                            <ns:ArchiveName>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ArchiveName"/>
+                            </ns:ArchiveName>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ArchiveSize">
+                            <ns:ArchiveSize>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ArchiveSize"/>
+                            </ns:ArchiveSize>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:FileCount">
+                            <ns:FileCount>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:FileCount"/>
+                            </ns:FileCount>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:URL">
+                            <ns:URL>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:URL"/>
+                            </ns:URL>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ResendCnt">
+                            <ns:ResendCnt>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ResendCnt+1"/>
+                            </ns:ResendCnt>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountActivationCode">
+                            <ns:AccountActivationCode>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountActivationCode"/>
+                            </ns:AccountActivationCode>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountRegistrationKey">
+                            <ns:AccountRegistrationKey>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountRegistrationKey"/>
+                            </ns:AccountRegistrationKey>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountName">
+                            <ns:AccountName>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:AccountName"/>
+                            </ns:AccountName>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactEmail">
+                            <ns:ContactEmail>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactEmail"/>
+                            </ns:ContactEmail>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactFN">
+                            <ns:ContactFN>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactFN"/>
+                            </ns:ContactFN>
+                        </xsl:if>
+                        <xsl:if test="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactLN">
+                            <ns:ContactLN>
+                                <xsl:value-of select="$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ContactLN"/>
+                            </ns:ContactLN>
+                        </xsl:if>
+                    </ns:AccountActivity>
+                </pfx:RequestBody>
+            </pfx:PSC_CreateAccountActivityRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>509</pd:x>
+        <pd:y>445</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/Services/PSCService/GCCU_UpsertAccountActivity/V1.0/DestinationQueue"/>
+                </destinationQueue>
+                <Body>
+                    <xsl:value-of select="$Render-Resend-XML/xmlString"/>
+                </Body>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>UpsertAccountActivity</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Create AccountAct WS</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create AccountAct WS</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mail Process</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Call Back PSC</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Back PSC</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep</pd:from>
+        <pd:to>Render Resend XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrLog</pd:from>
+        <pd:to>Mail Process</pd:to>
+        <pd:xpathDescription>Up to Limit</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrLog</pd:from>
+        <pd:to>Sleep</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$UpsertAccountActivity/pfx:PSC_CreateAccountActivityRq/pfx:RequestBody/ns:AccountActivity/ns:ResendCnt &lt;$_globalVariables/ns4:GlobalVariables/Services/ResendLimit</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Resend XML</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

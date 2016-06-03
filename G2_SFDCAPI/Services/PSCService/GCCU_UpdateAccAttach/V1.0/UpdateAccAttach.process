@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx12="http://www.trendmicro.com/PSC/PSC_UpdateAccountAttachmentRq" xmlns:pfx11="http://www.trendmicro.com/PSC/PSC_UpsertAccountAttachmentRq" xmlns:pfx10="GCC_U_CORP_ACCOUNT_WS" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="GCC Common WS" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Contact.xsd" xmlns:ns4="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Entitlement.xsd" xmlns:ns3="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Account.xsd" xmlns:pfx5="http://www.trendmicro.com/PSC/PSC_UpdateAccountRq" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.trendmicro.com/PSC/PSC_CommonResultRs" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/PSC/PSC_UpdateContactInfoRq" xmlns:pfx2="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx9="http://www.trendmicro.com/PSC/PSC_CreateSRActivityRq" xmlns:pfx8="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRq" xmlns:pfx7="http://www.trendmicro.com/PSC/PSC_DeleteAccountRq" xmlns:pfx6="http://www.trendmicro.com/PSC/PSC_UpdateEntitlementRq">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateContactInfoRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateContactInfoRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CommonResultRs" schemaLocation="/WSDL/Client/PSCXSD/PSC_CommonResultRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateAccountRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateAccountRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateEntitlementRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateEntitlementRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_DeleteAccountRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_DeleteAccountRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateSRActivityRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateSRActivityRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateAccountActivityRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateAccountActivityRq.xsd"/>
+    <xsd:import namespace="GCC_U_CORP_ACCOUNT_WS" schemaLocation="/WSDL/Provider/GCC_U_CORP_ACCOUNT_WS_GCC_U_CORP_ACCOUNT_WS.WSDL.wsdl"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateAccountAttachmentRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateAccountAttachmentRq.xsd"/>
+    <pd:name>Services/PSCService/GCCU_UpdateAccAttach/V1.0/UpdateAccAttach.process</pd:name>
+    <pd:startName>Update AccountAttachment Activity</pd:startName>
+    <pd:startType ref="pfx12:PSC_UpdateAccountAttachmentRq"/>
+    <pd:startX>104</pd:startX>
+    <pd:startY>89</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$Parse-XML/pfx2:Envelope/pfx2:Body/*" element="pfx:GCC_spcCommon_spcWS_AccountAtt_Output" cardinality=""/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <pfx:GCC_spcCommon_spcWS_AccountAtt_Output>
+            <pfx:Result>
+                <xsl:value-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/pfx:GCC_spcCommon_spcWS_AccountAtt_Output/pfx:Result"/>
+            </pfx:Result>
+            <xsl:if test="$Parse-XML/pfx2:Envelope/pfx2:Body/pfx:GCC_spcCommon_spcWS_AccountAtt_Output/pfx:ResultMsg">
+                <pfx:ResultMsg>
+                    <xsl:value-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/pfx:GCC_spcCommon_spcWS_AccountAtt_Output/pfx:ResultMsg"/>
+                </pfx:ResultMsg>
+            </xsl:if>
+        </pfx:GCC_spcCommon_spcWS_AccountAtt_Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:GCC_spcCommon_spcWS_AccountAtt_Output"/>
+    <pd:endX>719</pd:endX>
+    <pd:endY>72</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1319615428298</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>236</pd:x>
+        <pd:y>203</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create AccountAttach WS">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>493</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Generic_HTTP_SOAP_Client/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestHeader/ns2:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="'AccountAtt'"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <SourceID>
+                        <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestHeader/ns2:SourceID"/>
+                    </SourceID>
+                    <xsl:if test="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestHeader/ns2:StatusCode">
+                        <StatusCode>
+                            <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestHeader/ns2:StatusCode"/>
+                        </StatusCode>
+                    </xsl:if>
+                    <xsl:if test="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestHeader/ns2:RqTimestamp">
+                        <RqTimestamp>
+                            <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestHeader/ns2:RqTimestamp"/>
+                        </RqTimestamp>
+                    </xsl:if>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>485</pd:x>
+        <pd:y>203</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Failed-CreateAccAct:&#xA;&quot;,tib:render-xml($Catch/exceptiondata))"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'Failed-CreateAccAct'"/>
+                </messageCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>351</pd:x>
+        <pd:y>311</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Resend/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <MessageKey>
+                        <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestHeader/ns2:MessageKey"/>
+                    </MessageKey>
+                    <ServiceName>
+                        <xsl:value-of select="'Upsert_AccAttach'"/>
+                    </ServiceName>
+                    <ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ServiceVersion>
+                    <SourceID>
+                        <xsl:value-of select="&quot;TIBCO Resend&quot;"/>
+                    </SourceID>
+                    <xsl:if test="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestHeader/ns2:StatusCode">
+                        <StatusCode>
+                            <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestHeader/ns2:StatusCode"/>
+                        </StatusCode>
+                    </xsl:if>
+                    <RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </RqTimestamp>
+                    <ResendCount>
+                        <xsl:value-of select="0"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Account Attach">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>244</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <element ref="pfx:GCC_spcCommon_spcWS_AccountAtt_Input"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:GCC_spcCommon_spcWS_AccountAtt_Input>
+                <xsl:if test="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestBody/ns3:AccountAttachment/ns3:AttachmentName">
+                    <pfx:AttachmentName>
+                        <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestBody/ns3:AccountAttachment/ns3:AttachmentName"/>
+                    </pfx:AttachmentName>
+                </xsl:if>
+                <xsl:if test="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestBody/ns3:AccountAttachment/ns3:OriginalFileName">
+                    <pfx:OriginalFileName>
+                        <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestBody/ns3:AccountAttachment/ns3:OriginalFileName"/>
+                    </pfx:OriginalFileName>
+                </xsl:if>
+                <pfx:Process>
+                    <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestBody/ns3:AccountAttachment/ns3:Process"/>
+                </pfx:Process>
+                <xsl:if test="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestBody/ns3:AccountAttachment/ns3:AttachmentId">
+                    <pfx:AttachmentId>
+                        <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestBody/ns3:AccountAttachment/ns3:AttachmentId"/>
+                    </pfx:AttachmentId>
+                </xsl:if>
+                <xsl:if test="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestBody/ns3:AccountAttachment/ns3:Comment">
+                    <pfx:Comment>
+                        <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestBody/ns3:AccountAttachment/ns3:Comment"/>
+                    </pfx:Comment>
+                </xsl:if>
+                <pfx:AccountId>
+                    <xsl:value-of select="$Update-AccountAttachment-Activity/pfx12:PSC_UpdateAccountAttachmentRq/pfx12:RequestBody/ns3:AccountAttachment/ns3:AccountId"/>
+                </pfx:AccountId>
+            </pfx:GCC_spcCommon_spcWS_AccountAtt_Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>602</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx2:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Create-AccountAttach-WS/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>375</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx2:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:Envelope>
+                <pfx2:Body>
+                    <xsl:copy-of select="$Map-Account-Attach/pfx:GCC_spcCommon_spcWS_AccountAtt_Input"/>
+                </pfx2:Body>
+            </pfx2:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Update AccountAttachment Activity</pd:from>
+        <pd:to>Map Account Attach</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Account Attach</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Create AccountAttach WS</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create AccountAttach WS</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:description>exists($_error_Create-AccountAttach-WS/ActivityErrors)</pd:description>
+        <pd:from>Catch</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>1=2</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

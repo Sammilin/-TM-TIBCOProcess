@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns29="http://www.trendmicro.com/G2/G2_CreateSRCaseRq" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns25="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRq" xmlns:ns26="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRs" xmlns:ns27="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:ns28="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCase.xsd" xmlns:ns21="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:ns22="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRs" xmlns:ns23="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns24="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:ns20="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRs" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns16="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRs" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns17="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRq" xmlns:ns14="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRs" xmlns:ns15="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRq" xmlns:ns18="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRs" xmlns:ns19="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" xmlns:ns9="GCC Common WS" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:ns30="http://www.tibco.com/pe/DeployedVarsType" xmlns:alppTM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_QeuryCaseRq" xmlns:ns31="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_SRCase.xsd" xmlns:ns6="http://www.trendmicro.com/ESB/Services/OrderCreation/CommonRs" xmlns:ns13="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRq" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns7="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns10="http://www.trendmicro.com/ESB/Services/GCCIntegration/SRFRq" xmlns:ns11="http://www.trendmicro.com/ESB/Services/GCCIntegration/SRFRs" xmlns:ns8="http://www.trendmicro.com/ESB/Services/DealRegistration/GMT_InternalProductRq" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/Services/OrderCreation/OrderSubmissionRq" xmlns:ns1="http://siebel.com/asi/" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns3="http://www.trendmicro.com/ESB/Services/DealRegistration/DealRegistrationRq" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Services/G2Service/ShareProcess/ResendProcess.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ReDeliverQueue" type="xsd:string"/>
+                    <xsd:element name="DeliverBody" type="xsd:string"/>
+                    <xsd:element name="ResendCount" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1415089659654</pd:targetNamespace>
+    <pd:activity name="ReSend Process">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>299</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/G2Service/WaittingQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$_globalVariables/ns30:GlobalVariables/Services/G2Service/WaittingQueue"/>
+                </destinationQueue>
+                <JMSExpiration>
+                    <xsl:value-of select="$_globalVariables/ns30:GlobalVariables/Services/G2Service/WaittingSec"/>
+                </JMSExpiration>
+                <JMSProperties>
+                    <ns:JMSXGroupID>
+                        <xsl:value-of select="$_globalVariables/ns30:GlobalVariables/ESBBW/ProjectName"/>
+                    </ns:JMSXGroupID>
+                </JMSProperties>
+                <OtherProperties>
+                    <RqTime>
+                        <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                    </RqTime>
+                    <FileSize>
+                        <xsl:value-of select="0"/>
+                    </FileSize>
+                    <RedeliveredQueue>
+                        <xsl:value-of select="$Start/root/ReDeliverQueue"/>
+                    </RedeliveredQueue>
+                    <JMS_TIBCO_PRESERVE_UNDELIVERED>
+                        <xsl:value-of select="1"/>
+                    </JMS_TIBCO_PRESERVE_UNDELIVERED>
+                    <ResendCount>
+                        <xsl:value-of select="tib:if-absent($Start/root/ResendCount, 0) +1"/>
+                    </ResendCount>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Start/root/DeliverBody"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ReSend Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ReSend Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

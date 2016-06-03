@@ -1,0 +1,772 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/EscalationActivity.xsd" xmlns:pfx15="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AMTaskEscAct.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx14="http://www.trendmicro.com/PSC/PSC_AMTaskEscActRq" xmlns:pfx13="GCC_U_CORP_ACCOUNT_WS" xmlns:pfx12="http://www.trendmicro.com/PSC/PSC_UpSerProductProfileRq" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx11="http://www.trendmicro.com/PSC/PSC_UpdateConNotifPrefRq" xmlns:pfx10="http://www.trendmicro.com/PSC/PSC_QueryNotificationPrfRq" xmlns:ns22="http://www.siebel.com/xml/AMSS%20Task%20Attachment%20IO" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS" xmlns:pfx9="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/NotificationQuery.xsd" xmlns:pfx8="GCC_U_Corporate_Contact_Notif_Pref_Service" xmlns:pfx7="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" xmlns:pfx6="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.trendmicro.com/PSC/PSC_CreateEscalationActRq" xmlns:ns9="AMSS Task Common WS" xmlns:ns12="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:ns5="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/ProductProfile.xsd" xmlns:ns13="http://tempuri.org/" xmlns:ns6="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns7="www.tibco.com/plugin/Sleep" xmlns:pfx="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns10="http://www.siebel.com/xml/GCC-U%20Corporate%20SR%20AMSS%20Escalation%20Input" xmlns:ns11="http://www.tibco.com/pe/EngineTypes" xmlns:ns8="GCC-U_AMSS_Escalation_WS" xmlns:ns2="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns4="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/UpdateNotification.xsd" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" schemaLocation="/XSD/Portal/PortalSRCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" schemaLocation="/XSD/Portal/PortalSRCaseResult.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd" schemaLocation="/XSD/Portal/PortalSRAct.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" schemaLocation="/XSD/Portal/PortalSRActResult.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/NotificationQuery.xsd" schemaLocation="/XSD/PSC/NotificationQuery.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_QueryNotificationPrfRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_QueryNotificationPrfRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpdateConNotifPrefRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpdateConNotifPrefRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_UpSerProductProfileRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_UpSerProductProfileRq.xsd"/>
+    <xsd:import namespace="GCC_U_Corporate_Contact_Notif_Pref_Service" schemaLocation="/WSDL/Provider/GCC_U_Corporate_Contact_Notif_Pref_Service_GCC_U_Corporate_Contact_Notif_Pref_Service.WSDL.wsdl"/>
+    <xsd:import namespace="GCC_U_CORP_ACCOUNT_WS"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_AMTaskEscActRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_AMTaskEscActRq.xsd"/>
+    <wsdl:import namespace="GCC_U_Corporate_Contact_Notif_Pref_Service" location="/WSDL/Provider/GCC_U_Corporate_Contact_Notif_Pref_Service_GCC_U_Corporate_Contact_Notif_Pref_Service.WSDL.wsdl"/>
+    <wsdl:import namespace="GCC Common WS"/>
+    <pd:name>Services/PSCService/PSC_AMTaskEscAct/V1.0/AMTaskEscAct.process</pd:name>
+    <pd:startName>AMTaskEscAct</pd:startName>
+    <pd:startType ref="pfx14:PSC_AMTaskEscActRq"/>
+    <pd:startX>181</pd:startX>
+    <pd:startY>269</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$Parse-UpSerProductProf/pfx3:Envelope/pfx3:Body/*" element="pfx13:GCC_spcAccount_spcScripts_Upsert_AccProductProfile_Output" cardinality=""/>
+    </pd:returnCoercions>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>707</pd:endX>
+    <pd:endY>269</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1317276212736</pd:targetNamespace>
+    <pd:activity name="Call Error Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>320</pd:x>
+        <pd:y>533</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns1:DBLogger>
+                    <ns1:MessageHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:MessageKey"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:ServiceName"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:ServiceVersion"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:SourceID"/>
+                        </ns1:SourceID>
+                        <ns1:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RqTimestamp>
+                    </ns1:MessageHeader>
+                    <ns1:MessageBody>
+                        <xsl:copy-of select="$Catch/exceptiondata"/>
+                    </ns1:MessageBody>
+                </ns1:DBLogger>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Catch/exceptiondata)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;CrtAMTaskEscAct-Err&quot;"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>195</pd:x>
+        <pd:y>533</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create Task Attachment">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>452</pd:x>
+        <pd:y>409</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/CreateAMSSTaskAttachment.process</processName>
+        </config>
+        <pd:inputBindings>
+            <InboundFeedback>
+                <ns9:AMSS_spcTask_spcCommon_spcWS_CreateTaskAttachment_Input>
+                    <ns22:ListOfAmssTaskAttachmentIo>
+                        <ns22:AmssTask-Lite>
+                            <ns22:Id>
+                                <xsl:value-of select="$CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:TaskId"/>
+                            </ns22:Id>
+                            <ns22:ActivityId>
+                                <xsl:value-of select="$CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:TaskId"/>
+                            </ns22:ActivityId>
+                            <ns22:ActivityUID>
+                                <xsl:value-of select="$CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:TaskId"/>
+                            </ns22:ActivityUID>
+                            <ns22:ListOfActionAttachment>
+                                <ns22:ActionAttachment>
+                                    <ns22:Id>
+                                        <xsl:value-of select="$CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:TaskId"/>
+                                    </ns22:Id>
+                                    <ns22:ActivityId>
+                                        <xsl:value-of select="$CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:TaskId"/>
+                                    </ns22:ActivityId>
+                                    <ns22:ActivityFileExt>
+                                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMESAttach/pfx15:FileExt"/>
+                                    </ns22:ActivityFileExt>
+                                    <ns22:ActivityFileName>
+                                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMESAttach/pfx15:FileName"/>
+                                    </ns22:ActivityFileName>
+                                    <ns22:ActivityFileSrcPath>
+                                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMESAttach/pfx15:FilePath"/>
+                                    </ns22:ActivityFileSrcPath>
+                                    <ns22:ActivityFileSrcType>
+                                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMESAttach/pfx15:FileType"/>
+                                    </ns22:ActivityFileSrcType>
+                                    <ns22:ActivityFileBuffer>
+                                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMESAttach/pfx15:FileBinary"/>
+                                    </ns22:ActivityFileBuffer>
+                                </ns22:ActionAttachment>
+                            </ns22:ListOfActionAttachment>
+                        </ns22:AmssTask-Lite>
+                    </ns22:ListOfAmssTaskAttachmentIo>
+                </ns9:AMSS_spcTask_spcCommon_spcWS_CreateTaskAttachment_Input>
+                <SourceID>
+                    <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:SourceID"/>
+                </SourceID>
+                <MessageKey>
+                    <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:MessageKey"/>
+                </MessageKey>
+                <RequestSource>
+                    <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:RequestSource"/>
+                </RequestSource>
+            </InboundFeedback>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateAMTask">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>353</pd:x>
+        <pd:y>268</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/CreateAMSSInboundTask.process</processName>
+        </config>
+        <pd:inputBindings>
+            <CreateAMSSTask>
+                <ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Input>
+                    <ns9:SHA1>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:SHA1"/>
+                    </ns9:SHA1>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:SRNumber">
+                        <ns9:SRNumber>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:SRNumber"/>
+                        </ns9:SRNumber>
+                    </xsl:if>
+                    <ns9:FirstName>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:FirstName"/>
+                    </ns9:FirstName>
+                    <ns9:FTPLocation>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:FTPLocation"/>
+                    </ns9:FTPLocation>
+                    <xsl:if test="exists($AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:ParentTaskId)">
+                        <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:ParentTaskId">
+                            <ns9:ParentTaskId>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:ParentTaskId"/>
+                            </ns9:ParentTaskId>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:OriginalType">
+                        <ns9:OriginalType>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:OriginalType"/>
+                        </ns9:OriginalType>
+                    </xsl:if>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:TaskLabel">
+                        <ns9:TaskLabel>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:TaskLabel"/>
+                        </ns9:TaskLabel>
+                    </xsl:if>
+                    <ns9:SourceReferenceNumber>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:SourceReferenceNumber"/>
+                    </ns9:SourceReferenceNumber>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:SourceId">
+                        <ns9:SourceId>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:SourceId"/>
+                        </ns9:SourceId>
+                    </xsl:if>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:PanelType">
+                        <ns9:PanelType>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:PanelType"/>
+                        </ns9:PanelType>
+                    </xsl:if>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:IsAMEX">
+                        <ns9:IsAMEX>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:IsAMEX"/>
+                        </ns9:IsAMEX>
+                    </xsl:if>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:PatternVersion">
+                        <ns9:PatternVersion>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:PatternVersion"/>
+                        </ns9:PatternVersion>
+                    </xsl:if>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:ServiceLevel">
+                        <ns9:ServiceLevel>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:ServiceLevel"/>
+                        </ns9:ServiceLevel>
+                    </xsl:if>
+                    <ns9:Title>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Title"/>
+                    </ns9:Title>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:PatternBranch">
+                        <ns9:PatternBranch>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:PatternBranch"/>
+                        </ns9:PatternBranch>
+                    </xsl:if>
+                    <ns9:Type>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Type"/>
+                    </ns9:Type>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Country">
+                        <ns9:Country>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Country"/>
+                        </ns9:Country>
+                    </xsl:if>
+                    <ns9:FileName>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:FileName"/>
+                    </ns9:FileName>
+                    <ns9:LastName>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:LastName"/>
+                    </ns9:LastName>
+                    <ns9:OS>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:OS"/>
+                    </ns9:OS>
+                    <ns9:Entitlement>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Entitlement"/>
+                    </ns9:Entitlement>
+                    <xsl:if test="exists($AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:PatternFlag)">
+                        <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:PatternFlag">
+                            <ns9:PatternFlag>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:PatternFlag"/>
+                            </ns9:PatternFlag>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:TAMEmail">
+                        <ns9:TAMEmail>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:TAMEmail"/>
+                        </ns9:TAMEmail>
+                    </xsl:if>
+                    <ns9:Priority>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Priority"/>
+                    </ns9:Priority>
+                    <ns9:Source>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Source"/>
+                    </ns9:Source>
+                    <ns9:SubmitDate>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:SubmitDate"/>
+                    </ns9:SubmitDate>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Product">
+                        <ns9:Product>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Product"/>
+                        </ns9:Product>
+                    </xsl:if>
+                    <ns9:FileSize>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:FileSize"/>
+                    </ns9:FileSize>
+                    <ns9:Email>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Email"/>
+                    </ns9:Email>
+                    <ns9:Description>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Description"/>
+                    </ns9:Description>
+                    <ns9:Region>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:Region"/>
+                    </ns9:Region>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:MD5">
+                        <ns9:MD5>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:MD5"/>
+                        </ns9:MD5>
+                    </xsl:if>
+                </ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Input>
+                <RequestHeader>
+                    <ns3:MessageKey>
+                        <xsl:value-of select="concat($AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:MessageKey,&quot;;&quot;,$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:IntegrationSourceId)"/>
+                    </ns3:MessageKey>
+                    <ns3:ServiceName>
+                        <xsl:value-of select="'CreateAMSSInboundTask'"/>
+                    </ns3:ServiceName>
+                    <ns3:ServiceVersion>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:ServiceVersion"/>
+                    </ns3:ServiceVersion>
+                    <ns3:SourceID>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:SourceID"/>
+                    </ns3:SourceID>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:RqTimestamp">
+                        <ns3:RqTimestamp>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:RqTimestamp"/>
+                        </ns3:RqTimestamp>
+                    </xsl:if>
+                </RequestHeader>
+                <RequestSource>
+                    <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:RequestSource"/>
+                </RequestSource>
+                <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:NeuronId">
+                    <NeuronId>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:NeuronId"/>
+                    </NeuronId>
+                </xsl:if>
+            </CreateAMSSTask>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateEscActivity">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>578</pd:x>
+        <pd:y>269</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/CreateEscalationActByQueue.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns14:PSC_CreateEscalationActRq>
+                <ns14:RequestHeader>
+                    <ns3:MessageKey>
+                        <xsl:value-of select="concat($AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:MessageKey,&quot;;&quot;,$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:IntegrationSourceId)"/>
+                    </ns3:MessageKey>
+                    <ns3:ServiceName>
+                        <xsl:value-of select="'GCCU_CreateEscalationAct'"/>
+                    </ns3:ServiceName>
+                    <ns3:ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ns3:ServiceVersion>
+                    <ns3:SourceID>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:SourceID"/>
+                    </ns3:SourceID>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:StatusCode">
+                        <ns3:StatusCode>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:StatusCode"/>
+                        </ns3:StatusCode>
+                    </xsl:if>
+                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:RqTimestamp">
+                        <ns3:RqTimestamp>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:RqTimestamp"/>
+                        </ns3:RqTimestamp>
+                    </xsl:if>
+                </ns14:RequestHeader>
+                <ns14:RequestBody>
+                    <pfx16:RequestSource>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:RequestSource"/>
+                    </pfx16:RequestSource>
+                    <pfx16:ResendCount>
+                        <xsl:value-of select="0"/>
+                    </pfx16:ResendCount>
+                    <pfx16:EscalationAct>
+                        <pfx16:AMSSEscalation>
+                            <xsl:if test="$CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:TaskId">
+                                <pfx16:AMSSTaskId>
+                                    <xsl:value-of select="$CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:TaskId"/>
+                                </pfx16:AMSSTaskId>
+                            </xsl:if>
+                            <pfx16:AMSSTaskType>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:AMSSTaskType"/>
+                            </pfx16:AMSSTaskType>
+                            <pfx16:Description>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:Description"/>
+                            </pfx16:Description>
+                            <pfx16:FileLocation>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:FileLocation"/>
+                            </pfx16:FileLocation>
+                            <pfx16:IntegrationSourceId>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:IntegrationSourceId"/>
+                            </pfx16:IntegrationSourceId>
+                            <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:NeuronId">
+                                <pfx16:NeuronId>
+                                    <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:NeuronId"/>
+                                </pfx16:NeuronId>
+                            </xsl:if>
+                            <pfx16:OriinalFileName>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:OriginalFileName"/>
+                            </pfx16:OriinalFileName>
+                            <pfx16:SHA1>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:SHA1"/>
+                            </pfx16:SHA1>
+                            <pfx16:Source>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:Source"/>
+                            </pfx16:Source>
+                            <pfx16:Title>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:Title"/>
+                            </pfx16:Title>
+                            <pfx16:Type>
+                                <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:Type"/>
+                            </pfx16:Type>
+                            <xsl:choose>
+                                <xsl:when test="exists($AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:ParentTaskId)">
+                                    <xsl:if test="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:ParentTaskId">
+                                        <pfx16:AMSSParentTaskId>
+                                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask/pfx15:ParentTaskId"/>
+                                        </pfx16:AMSSParentTaskId>
+                                    </xsl:if>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:if test="$CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:TaskId">
+                                        <pfx16:AMSSParentTaskId>
+                                            <xsl:value-of select="$CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:TaskId"/>
+                                        </pfx16:AMSSParentTaskId>
+                                    </xsl:if>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </pfx16:AMSSEscalation>
+                        <pfx16:SRNumber>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:sSRNumber"/>
+                        </pfx16:SRNumber>
+                        <pfx16:IntegrationSource>
+                            <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct/pfx15:sIntegrationSource"/>
+                        </pfx16:IntegrationSource>
+                    </pfx16:EscalationAct>
+                </ns14:RequestBody>
+            </ns14:PSC_CreateEscalationActRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>746</pd:x>
+        <pd:y>533</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Catch/exceptiondata)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'PSC_AMTaskEscAct-ERR'"/>
+                </messageCode>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mail Limitation">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>514</pd:x>
+        <pd:y>533</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SubjectMessage>
+                    <xsl:value-of select="concat(&quot;[&quot;,$_globalVariables/ns6:GlobalVariables/ESBBW/Environment,&quot; &quot;,$_globalVariables/ns6:GlobalVariables/ESBBW/Domain,&quot;] &quot;,&quot;Create AMTask GCCU Esc Act Fail - Resend Up to Limit&quot;)"/>
+                </SubjectMessage>
+                <DetailStackTrace>
+                    <xsl:value-of select="tib:render-xml($Catch/exceptiondata)"/>
+                </DetailStackTrace>
+                <ns12:MailInfo>
+                    <ns12:MessageKey>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:MessageKey"/>
+                    </ns12:MessageKey>
+                    <ns12:ServiceName>
+                        <xsl:value-of select="'PSC_AMTaskEscAct'"/>
+                    </ns12:ServiceName>
+                    <ns12:ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ns12:ServiceVersion>
+                    <ns12:AttachFile>
+                        <ns12:AttachContent>
+                            <ns12:content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment; filename=&quot;, $AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:MessageKey,&quot;.xml&quot;)"/>
+                            </ns12:content-disposition>
+                            <ns12:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns12:content-type>
+                            <ns12:content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </ns12:content-transfer-encoding>
+                            <ns12:textContent>
+                                <xsl:value-of select="tib:render-xml($AMTaskEscAct/pfx14:PSC_AMTaskEscActRq)"/>
+                            </ns12:textContent>
+                        </ns12:AttachContent>
+                    </ns12:AttachFile>
+                </ns12:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>627</pd:x>
+        <pd:y>657</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx14:PSC_AMTaskEscActRq"/>
+        </config>
+        <pd:inputBindings>
+            <pfx14:PSC_AMTaskEscActRq>
+                <pfx14:RequestHeader>
+                    <ns3:MessageKey>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:MessageKey"/>
+                    </ns3:MessageKey>
+                    <ns3:ServiceName>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:ServiceName"/>
+                    </ns3:ServiceName>
+                    <ns3:ServiceVersion>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:ServiceVersion"/>
+                    </ns3:ServiceVersion>
+                    <ns3:SourceID>
+                        <xsl:value-of select="'BW-Resend'"/>
+                    </ns3:SourceID>
+                    <ns3:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns3:RqTimestamp>
+                </pfx14:RequestHeader>
+                <pfx14:RequestBody>
+                    <xsl:copy-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMSSTask"/>
+                    <xsl:copy-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:EscalationAct"/>
+                    <xsl:copy-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:UpdateMalwareTaskInput"/>
+                    <pfx15:RetryTime>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:RetryTime+1"/>
+                    </pfx15:RetryTime>
+                    <pfx15:RequestSource>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:RequestSource"/>
+                    </pfx15:RequestSource>
+                </pfx14:RequestBody>
+            </pfx14:PSC_AMTaskEscActRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML for Normal Resend">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>490</pd:x>
+        <pd:y>109</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx14:PSC_AMTaskEscActRq"/>
+        </config>
+        <pd:inputBindings>
+            <pfx14:PSC_AMTaskEscActRq>
+                <pfx14:RequestHeader>
+                    <ns3:MessageKey>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:MessageKey"/>
+                    </ns3:MessageKey>
+                    <ns3:ServiceName>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:ServiceName"/>
+                    </ns3:ServiceName>
+                    <ns3:ServiceVersion>
+                        <xsl:value-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestHeader/ns3:ServiceVersion"/>
+                    </ns3:ServiceVersion>
+                    <ns3:SourceID>
+                        <xsl:value-of select="&quot;BW-Resend&quot;"/>
+                    </ns3:SourceID>
+                    <ns3:RqTimestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ns3:RqTimestamp>
+                </pfx14:RequestHeader>
+                <xsl:copy-of select="$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody"/>
+            </pfx14:PSC_AMTaskEscActRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Resend to JMS">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>748</pd:x>
+        <pd:y>658</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PSCService/PSC_AMTaskEscAct/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sleep">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>413</pd:x>
+        <pd:y>657</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns7:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="$_globalVariables/ns6:GlobalVariables/Services/PSCService/PSC_AMTaskEscAct/WaitingPeriod"/>
+                </IntervalInMillisec>
+            </ns7:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sleep-1">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>353</pd:x>
+        <pd:y>100</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns7:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="$_globalVariables/ns6:GlobalVariables/Services/PSCService/PSC_AMTaskEscAct/WaitingPeriod"/>
+                </IntervalInMillisec>
+            </ns7:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>625</pd:x>
+        <pd:y>100</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PSCService/PSC_AMTaskEscAct/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Render-XML-for-Normal-Resend/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>AMTaskEscAct</pd:from>
+        <pd:to>CreateAMTask</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateAMTask</pd:from>
+        <pd:to>CreateEscActivity</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Call Error Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Error Log</pd:from>
+        <pd:to>Sleep</pd:to>
+        <pd:xpathDescription>Check Limit</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:RetryTime&lt;$_globalVariables/ns6:GlobalVariables/Utilities/Resend/ResendLimit</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Resend to JMS</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Resend to JMS</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Error Log</pd:from>
+        <pd:to>Mail Limitation</pd:to>
+        <pd:xpathDescription>Up to Limitation</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mail Limitation</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateAMTask</pd:from>
+        <pd:to>Create Task Attachment</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($AMTaskEscAct/pfx14:PSC_AMTaskEscActRq/pfx14:RequestBody/pfx15:AMESAttach)
+and ($CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:Status !="-1")</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create Task Attachment</pd:from>
+        <pd:to>CreateEscActivity</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateEscActivity</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateAMTask</pd:from>
+        <pd:to>Sleep-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>($CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:Status = "-1")
+and
+($CreateAMTask/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:AMSS_spcTask_spcCommon_spcWS_InboundTask_Output/ns9:Error="Referenced object has gone out of scope! The object handle you have is no longer valid because the object it referenced is not longer available.(SBL-EXL-00142)")</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep-1</pd:from>
+        <pd:to>Render XML for Normal Resend</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML for Normal Resend</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

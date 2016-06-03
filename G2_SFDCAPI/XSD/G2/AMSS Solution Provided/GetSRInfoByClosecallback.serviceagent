@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serviceResource xmlns:wsdl="http://xmlns.example.com/1427950994770">
+    <ns0:import xmlns:ns0="http://schemas.xmlsoap.org/wsdl/" namespace="http://xmlns.example.com/1427950994770" location="/XSD/G2/AMSS Solution Provided/JMSWSDL.wsdl"/>
+    <config>
+        <wsdl namespace="http://xmlns.example.com/1427951864507" embedWsdlComponents="true" embedSchemaComponents="true" embedJndiProperties="false"/>
+        <class>com.tibco.bw.service.serviceAgent.ServiceServiceAgent</class>
+        <implType>bw</implType>
+        <groups>
+            <row isDefault="true" groupName="Default"/>
+        </groups>
+        <serviceChange>Thu Apr 02 13:21:05 CST 2015</serviceChange>
+        <interfaceImpl>
+            <tab>
+                <tabName>PortType</tabName>
+                <tabType>bw</tabType>
+                <config>
+                    <wsdlDetail location="/XSD/G2/AMSS Solution Provided/JMSWSDL.wsdl" portType="PortType" ns="http://xmlns.example.com/1427950994770"/>
+                    <detail>
+                        <tab>
+                            <tabName>service.definition.impl.tab.label</tabName>
+                            <tabType>impl</tabType>
+                            <config>
+                                <operations>
+                                    <row opName="GetSRInfoByClosecallback" opImpl="/XSD/G2/AMSS Solution Provided/GetSRInfoByClosecallbackClient.process"/>
+                                </operations>
+                            </config>
+                        </tab>
+                        <tab>
+                            <tabName>service.definition.ep.tab.label</tabName>
+                            <tabType>ep</tabType>
+                            <config>
+                                <epBindings>
+                                    <row epName="PortTypeEndpoint1" epType="soap">
+                                        <config>
+                                            <epDetail>
+                                                <tab>
+                                                    <tabName>soap.service.transport.ui.transport.tab.label</tabName>
+                                                    <tabType>transport</tabType>
+                                                    <config>
+                                                        <sharedChannel>/Resources/JMS/JMS-Connection-JNDI.sharedjmscon</sharedChannel>
+                                                        <transport>
+                                                            <config>
+                                                                <JMSTo>queue.sample</JMSTo>
+                                                                <JMSDestinationType>queue</JMSDestinationType>
+                                                                <JMSMessageType>Bytes</JMSMessageType>
+                                                                <JMSAcknowledgementMode>1</JMSAcknowledgementMode>
+                                                                <ApplicationProperties/>
+                                                                <ApplicationPropertiesOutMessage/>
+                                                                <JMSMaxSessions/>
+                                                                <operations>
+                                                                    <operation name="GetSRInfoByClosecallback">
+                                                                        <general>
+                                                                            <config>
+                                                                                <JMSDurable>false</JMSDurable>
+                                                                                <JMSDurableName/>
+                                                                            </config>
+                                                                        </general>
+                                                                    </operation>
+                                                                </operations>
+                                                            </config>
+                                                        </transport>
+                                                    </config>
+                                                </tab>
+                                                <tab>
+                                                    <tabName>soap.service.transport.ui.details.tab.label</tabName>
+                                                    <tabType>details</tabType>
+                                                    <config>
+                                                        <operationStyle>document</operationStyle>
+                                                        <soapVersion>SOAP 1.1</soapVersion>
+                                                        <soap>
+                                                            <operation name="GetSRInfoByClosecallback">
+                                                                <general>
+                                                                    <config>
+                                                                        <soapAction>/XSD/G2/AMSS%2520Solution%2520Provided/Service.serviceagent/PortTypeEndpoint1/GetSRInfoByClosecallback</soapAction>
+                                                                        <operationStyle/>
+                                                                        <soapUse>literal</soapUse>
+                                                                        <inputNamespace/>
+                                                                        <outputNamespace/>
+                                                                        <faultNamespace/>
+                                                                        <portAddressPrefix/>
+                                                                    </config>
+                                                                </general>
+                                                            </operation>
+                                                        </soap>
+                                                    </config>
+                                                </tab>
+                                            </epDetail>
+                                        </config>
+                                    </row>
+                                </epBindings>
+                            </config>
+                        </tab>
+                    </detail>
+                </config>
+            </tab>
+        </interfaceImpl>
+    </config>
+</serviceResource>

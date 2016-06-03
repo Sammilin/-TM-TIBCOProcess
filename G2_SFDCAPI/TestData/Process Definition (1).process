@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx13="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCase.xsd" xmlns:pfx12="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRq" xmlns:pfx11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx10="GCC-U_AMSS_Escalation_WS" xmlns:B2BUtility="java://B2BUtility" xmlns:alppTM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="JP Common WS" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="GCC_U_CORP_ACCOUNT_WS" xmlns:pfx4="AMSS Task Common WS" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="GCC_U_Corporate_Contact_Notif_Pref_Service" xmlns:pfx2="GCC Common WS" xmlns:pfx9="http://www.trendmicro.com/PSC/PSC_UpdateAccountRq" xmlns:pfx8="GCC_U_Corporate_SR_AMSS_Escalation_Service" xmlns:pfx7="http://tempuri.org/" xmlns:pfx6="GCC_U_Corporate_SR_General_Operations_Service">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateSRCaseRq.xsd"/>
+    <wsdl:import namespace="JP Common WS"/>
+    <wsdl:import namespace="GCC_U_Corporate_Contact_Notif_Pref_Service" location="/WSDL/Provider/GCC_U_Corporate_Contact_Notif_Pref_Service_GCC_U_Corporate_Contact_Notif_Pref_Service.WSDL.wsdl"/>
+    <wsdl:import namespace="http://tempuri.org/"/>
+    <wsdl:import namespace="GCC Common WS"/>
+    <wsdl:import namespace="GCC_U_Corporate_SR_AMSS_Escalation_Service" location="/WSDL/Provider/GCC_U_Corporate_SR_AMSS_Escalation_Service_GCC_U_Corporate_SR_AMSS_Escalation_Service.WSDL.wsdl"/>
+    <wsdl:import namespace="GCC_U_CORP_ACCOUNT_WS" location="/WSDL/Provider/GCC_U_CORP_ACCOUNT_WS_GCC_U_CORP_ACCOUNT_WS.WSDL.wsdl"/>
+    <wsdl:import namespace="GCC-U_AMSS_Escalation_WS" location="/WSDL/Provider/GCC-U_AMSS_Escalation_WS_GCC-U_AMSS_Escalation_WS.WSDL.wsdl"/>
+    <wsdl:import namespace="GCC Common WS" location="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <wsdl:import namespace="GCC_U_Corporate_SR_General_Operations_Service" location="/WSDL/Provider/GCC_U_Corporate_SR_General_Operations_Service_GCC_U_Corporate_SR_General_Operations_Service.WSDL.wsdl"/>
+    <wsdl:import namespace="AMSS Task Common WS" location="/WSDL/Provider/AMSS Task Common WS_AMSS Task Common WS.WSDL.wsdl"/>
+    <pd:name>TestData/Process Definition (1).process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>160</pd:startX>
+    <pd:startY>120</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>655</pd:endX>
+    <pd:endY>120</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1307689873480</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>532</pd:x>
+        <pd:y>120</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PSCService/GCCU_CreateSRCase/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>408</pd:x>
+        <pd:y>121</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>UTF-8</textEncoding>
+            <term ref="pfx11:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx11:Envelope>
+                <pfx11:Body>
+                    <xsl:copy-of select="$Map-Data/pfx12:PSC_CreateSRCaseRq"/>
+                </pfx11:Body>
+            </pfx11:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>278</pd:x>
+        <pd:y>122</pd:y>
+        <config>
+            <element ref="pfx12:PSC_CreateSRCaseRq"/>
+        </config>
+        <pd:inputBindings>
+            <pfx12:PSC_CreateSRCaseRq>
+                <pfx12:RequestHeader>
+                    <ns2:MessageKey>
+                        <xsl:value-of select="'AzdXQG2cKU289C_IUlBEig'"/>
+                    </ns2:MessageKey>
+                    <ns2:ServiceName>
+                        <xsl:value-of select="'GCCU_CreateSRCase'"/>
+                    </ns2:ServiceName>
+                    <ns2:ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ns2:ServiceVersion>
+                    <ns2:SourceID>
+                        <xsl:value-of select="'Swift'"/>
+                    </ns2:SourceID>
+                </pfx12:RequestHeader>
+                <pfx12:RequestBody>
+                    <pfx13:SRCase>
+                        <pfx13:PortalSourceID>
+                            <xsl:value-of select="'AzdXQG2cKU289C_IUlBEig'"/>
+                        </pfx13:PortalSourceID>
+                        <pfx13:CaseID>
+                            <xsl:value-of select="'40573703-9c6d-4d29-bcf4-2f885250448a'"/>
+                        </pfx13:CaseID>
+                        <pfx13:ProductName>
+                            <xsl:value-of select="'OfficeScan'"/>
+                        </pfx13:ProductName>
+                        <pfx13:ProductVersion>
+                            <xsl:value-of select="'10.0'"/>
+                        </pfx13:ProductVersion>
+                        <pfx13:ProductLanguage>
+                            <xsl:value-of select="'English'"/>
+                        </pfx13:ProductLanguage>
+                        <pfx13:OperatingSystem>
+                            <xsl:value-of select="''"/>
+                        </pfx13:OperatingSystem>
+                        <pfx13:SerialNumber>
+                            <xsl:value-of select="''"/>
+                        </pfx13:SerialNumber>
+                        <pfx13:PatternFileNumber>
+                            <xsl:value-of select="''"/>
+                        </pfx13:PatternFileNumber>
+                        <pfx13:Description>
+                            <xsl:value-of select="'test'"/>
+                        </pfx13:Description>
+                        <pfx13:Attachment>
+                            <pfx13:File>
+                                <pfx13:FileExt>
+                                    <xsl:value-of select="'URL'"/>
+                                </pfx13:FileExt>
+                                <pfx13:FileName>
+                                    <xsl:value-of select="'aaaa'"/>
+                                </pfx13:FileName>
+                                <pfx13:FilePath>
+                                    <xsl:value-of select="'aaaa'"/>
+                                </pfx13:FilePath>
+                                <pfx13:FileType>
+                                    <xsl:value-of select="'aaaa'"/>
+                                </pfx13:FileType>
+                            </pfx13:File>
+                        </pfx13:Attachment>
+                        <pfx13:EmailAddress>
+                            <xsl:value-of select="'china_tsai@trend.com.tw'"/>
+                        </pfx13:EmailAddress>
+                        <pfx13:FirstName>
+                            <xsl:value-of select="'CHINA'"/>
+                        </pfx13:FirstName>
+                        <pfx13:LastName>
+                            <xsl:value-of select="'TSAI'"/>
+                        </pfx13:LastName>
+                        <pfx13:PhoneNumber>
+                            <xsl:value-of select="''"/>
+                        </pfx13:PhoneNumber>
+                        <pfx13:Country>
+                            <xsl:value-of select="'Ireland'"/>
+                        </pfx13:Country>
+                        <pfx13:AccountID>
+                            <xsl:value-of select="'1-8LBFID'"/>
+                        </pfx13:AccountID>
+                        <pfx13:Wouldyouparticipateinasurvey>
+                            <xsl:value-of select="''"/>
+                        </pfx13:Wouldyouparticipateinasurvey>
+                        <pfx13:Title>
+                            <xsl:value-of select="'Test'"/>
+                        </pfx13:Title>
+                        <pfx13:ProductGIC>
+                            <xsl:value-of select="'OSODWWEAX'"/>
+                        </pfx13:ProductGIC>
+                        <pfx13:SolutionID>
+                            <xsl:value-of select="''"/>
+                        </pfx13:SolutionID>
+                        <pfx13:DidSearchDB>
+                            <xsl:value-of select="''"/>
+                        </pfx13:DidSearchDB>
+                        <pfx13:SubmissionType>
+                            <xsl:value-of select="'Product Service Request'"/>
+                        </pfx13:SubmissionType>
+                        <pfx13:EntitlementID>
+                            <xsl:value-of select="'1-8OWIUI'"/>
+                        </pfx13:EntitlementID>
+                        <pfx13:ContactID>
+                            <xsl:value-of select="'1-8NPE63'"/>
+                        </pfx13:ContactID>
+                    </pfx13:SRCase>
+                </pfx12:RequestBody>
+            </pfx12:PSC_CreateSRCaseRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>393</pd:x>
+        <pd:y>329</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <service>pfx4:AMSS_spcTask_spcCommon_spcWS</service>
+            <servicePort>AMSS_spcTask_spcCommon_spcWS</servicePort>
+            <operation>InboundTask</operation>
+            <soapAction>document/AMSS Task Common WS:InboundTask</soapAction>
+            <endpointURL>http://gccu-stg.trendmicro.com/eai_enu/start.swe?SWEExtSource=WebService&amp;SWEExtCmd=Execute</endpointURL>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="JMS Queue Requestor">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>360</pd:x>
+        <pd:y>225</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>trend.esb.EIPlatform.GetAnalysisResult.V1.0</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/Neuron JMS Connection.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Start/root/param"/>
+                </Body>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map-Data-1">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>210</pd:x>
+        <pd:y>225</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="param" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <param>
+                    <xsl:value-of select="tib:parse-dateTime(&quot;yyyy/MM/dd HH:mm:ss&quot;,$Start/root/param)"/>
+                </param>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map-Data-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Requestor</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map-Data-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

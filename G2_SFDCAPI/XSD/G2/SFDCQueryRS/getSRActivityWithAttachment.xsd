@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/getSRActivityWithAttachment.xsd"
+	 xmlns:ns0="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/getSRActivity.xsd"
+	 xmlns:ns1="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/Attachment.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/getSRActivityWithAttachment.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/getSRActivity.xsd" schemaLocation="getSRActivity.xsd"/>
+	<xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/Attachment.xsd" schemaLocation="Attachment.xsd"/>
+	<xs:element name="result">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="records" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="ns0:SRActivity">
+								<xs:sequence>
+									<xs:element name="Attachments">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Attachment" type="ns1:AttachementType" minOccurs="0" maxOccurs="unbounded"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

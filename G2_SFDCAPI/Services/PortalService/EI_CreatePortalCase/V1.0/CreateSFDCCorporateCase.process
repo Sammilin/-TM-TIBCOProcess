@@ -1,0 +1,1172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx61="http://www.trendmicro.com/ESB/Services/DealRegistration/GMT_InternalProductRq" xmlns:pfx16="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRs" xmlns:pfx15="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" xmlns:pfx14="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRs" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx13="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRq" xmlns:pfx12="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRs" xmlns:pfx11="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRq" xmlns:pfx10="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRs" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns16="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCSRCaseResult.xsd" xmlns:ns17="http://www.trendmicro.com/G2/SFDC_CreateSRActivityRq.xsd" xmlns:pfx51="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns14="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_SRCase.xsd" xmlns:ns15="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRs.xsd" xmlns:ns18="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseActivity.xsd" xmlns:ns19="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRq" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns13="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRq.xsd" xmlns:ns10="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pfx="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns11="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx1="http://www.siebel.com/xml/RAEM%20Internal%20Product%20Interface" xmlns:pfx41="http://www.trendmicro.com/ESB/Services/DealRegistration/DealRegistrationRq" xmlns:ns21="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetSRInfoResult.xsd" xmlns:ns22="http://www.trendmicro.com/G2/SFDC_CommonResultRs" xmlns:ns23="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_Common_Type.xsd" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:ns20="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRs" xmlns:ns61="GCC_PH_CON_CHAT_WS" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx31="http://www.trendmicro.com/ESB/Services/OrderCreation/OrderSubmissionRq" xmlns:pfx4="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS" xmlns:pfx9="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRq" xmlns:pfx8="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_QeuryCaseRq" xmlns:pfx7="JP Common WS" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD/G2/SubmittingInput.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:ns81="http://www.trendmicro.com/ESB/ACS/schemas/SMF" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:alppTM="java://com.trendmicro.TMBWUtilities" xmlns:ns6="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:ns7="www.tibco.com/plugin/Sleep" xmlns:ns8="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:ns2="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns4="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment%20Script" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx22="http://www.trendmicro.com/ESB/ACS/schemas/SRFDispatch" xmlns:pfx21="http://siebel.com/asi/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" schemaLocation="/XSD/Portal/PortalSRCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" schemaLocation="/XSD/Portal/PortalSRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseActRq.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRq.xsd" schemaLocation="/WSDL/Client/G2XSD/SFDC_CreateSRCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_CreateSRActivityRq.xsd" schemaLocation="/WSDL/Client/G2XSD/SFDC_CreateSRActivityRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRq" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetSRInfoRq.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRs" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetSRInfoRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_CommonResultRs" schemaLocation="/WSDL/Client/G2XSD/SFDC_CommonResultRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/SFDC_CreateSRCaseRs.xsd" schemaLocation="/WSDL/Client/G2XSD/SFDC_CreateSRCaseRs.xsd"/>
+    <wsdl:import namespace="GCC Common WS" location="/WSDL/Provider/GCC Common WS_GCC Common WS.WSDL.wsdl"/>
+    <pd:name>Services/PortalService/EI_CreatePortalCase/V1.0/CreateSFDCCorporateCase.process</pd:name>
+    <pd:startName>CreateSFDCCorporateCase</pd:startName>
+    <pd:startType>
+        <xsd:element name="CorpCaseInput">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="PortalSRCase" type="pfx:PortalSRCaseType"/>
+                    <xsd:element name="Messagekey" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>62</pd:startX>
+    <pd:startY>79</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$CreateSRCaseActAtt/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/*" element="ns22:SFDC_CommonResultRs"/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <CorpResponse>
+            <pfx4:Activity_ID>
+                <xsl:value-of select="$CreateSRCaseActAtt/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns22:SFDC_CommonResultRs[1]/ns22:ResponseBody/ns22:Result/ns23:ActivityID"/>
+            </pfx4:Activity_ID>
+            <pfx4:SR_ID>
+                <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Result/ns16:SRID"/>
+            </pfx4:SR_ID>
+            <xsl:if test="$CreateSRCaseActAtt/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns22:SFDC_CommonResultRs[1]/ns22:ResponseBody/ns22:Result/ns23:Message">
+                <pfx4:Siebel_ERROR>
+                    <xsl:value-of select="$CreateSRCaseActAtt/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns22:SFDC_CommonResultRs[1]/ns22:ResponseBody/ns22:Result/ns23:Message"/>
+                </pfx4:Siebel_ERROR>
+            </xsl:if>
+            <pfx4:TIBCO_RETURN_CODE>
+                <xsl:value-of select="&quot;SUCCESS&quot;"/>
+            </pfx4:TIBCO_RETURN_CODE>
+        </CorpResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="CorpResponse" type="pfx4:PortalSRCaseType"/>
+    </pd:endType>
+    <pd:endX>980</pd:endX>
+    <pd:endY>470</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx51:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1317276212736</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>88</pd:x>
+        <pd:y>370</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Create CorpSR">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>369</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/G2Service/SFDC_CreateSRCase/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties/>
+                <Body>
+                    <xsl:value-of select="tib:render-xml($Map-CorpCaseSR/pfx3:Envelope, 1)"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>273</pd:x>
+        <pd:y>370</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($_error_Create-CorpSR/ActivityErrors) or exists($_error_Parse-CorpSR/ActivityErrors)">
+                    <pfx5:ActivityInput>
+                        <message>
+                            <xsl:value-of select="concat(&quot;Create Siebel Corp SR error \n&quot;,$_error/ns11:ErrorReport/StackTrace)"/>
+                        </message>
+                        <messageCode>
+                            <xsl:value-of select="'CrtSRErr'"/>
+                        </messageCode>
+                    </pfx5:ActivityInput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <pfx5:ActivityInput>
+                        <message>
+                            <xsl:value-of select="tib:render-xml($Catch/exceptiondata)"/>
+                        </message>
+                        <messageCode>
+                            <xsl:value-of select="'ERROR'"/>
+                        </messageCode>
+                    </pfx5:ActivityInput>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>606</pd:x>
+        <pd:y>331</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/*" element="ns15:SFDC_CreateSRCaseRs"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Log>
+                <ns1:DBLogger>
+                    <ns1:MessageHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="'SFDC_CreateSRCase'"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="'EI_ESB'"/>
+                        </ns1:SourceID>
+                        <ns1:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RqTimestamp>
+                        <ns1:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RsTimestamp>
+                    </ns1:MessageHeader>
+                    <ns1:MessageBody>
+                        <xsl:copy-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs/ns15:ResponseBody"/>
+                    </ns1:MessageBody>
+                </ns1:DBLogger>
+                <message>
+                    <xsl:value-of select="concat('SR created, SR Number: ',$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Result/ns16:SRID,&#xA;&quot;\PortalSourceID : &quot;,$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'CorpSR-Created'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mail Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>891</pd:x>
+        <pd:y>220</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ResponseCode>
+                    <xsl:value-of select="&quot;CrtCorpCaseErr&quot;"/>
+                </ResponseCode>
+                <DetailStackTrace>
+                    <xsl:value-of select="tib:render-xml($Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs/ns15:ResponseBody/ns16:Result/ns16:Message)"/>
+                </DetailStackTrace>
+                <ns6:MailInfo>
+                    <ns6:MessageKey>
+                        <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:PortalSourceID"/>
+                    </ns6:MessageKey>
+                    <ns6:ServiceName>
+                        <xsl:value-of select="'EI_CreatePortal'"/>
+                    </ns6:ServiceName>
+                    <ns6:ServiceVersion>
+                        <xsl:value-of select="'V1.0'"/>
+                    </ns6:ServiceVersion>
+                    <ns6:AttachFile>
+                        <ns6:AttachContent>
+                            <ns6:content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment; filename=&quot;, &quot;CorpCase.xml&quot;)"/>
+                            </ns6:content-disposition>
+                            <ns6:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns6:content-type>
+                            <ns6:content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </ns6:content-transfer-encoding>
+                            <ns6:textContent>
+                                <xsl:value-of select="tib:render-xml($CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase)"/>
+                            </ns6:textContent>
+                        </ns6:AttachContent>
+                    </ns6:AttachFile>
+                </ns6:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map SRF XML">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>151</pd:x>
+        <pd:y>164</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Neuron" type="pfx6:NEURONSRFType"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Neuron>
+                <DEFAULT_INFO>
+                    <SERVICE_CONSUMER>
+                        <xsl:value-of select="&quot;717CBC37-1D00-48D0-8FA5-DB0C9532E8A5&quot;"/>
+                    </SERVICE_CONSUMER>
+                    <UPLOAD_METHOD>
+                        <xsl:attribute name="type">
+                            <xsl:value-of select="&quot;UNC&quot;"/>
+                        </xsl:attribute>
+                        <INF>
+                            <xsl:attribute name="name">
+                                <xsl:value-of select="&quot;address&quot;"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </INF>
+                    </UPLOAD_METHOD>
+                    <AM_CASE_AUTO_SUBMIT>
+                        <xsl:attribute name="value">
+                            <xsl:value-of select="&quot;false&quot;"/>
+                        </xsl:attribute>
+                        <xsl:value-of select="0"/>
+                    </AM_CASE_AUTO_SUBMIT>
+                    <FILE_EXTRACT_TYPE>
+                        <xsl:attribute name="ChildWithPW">
+                            <xsl:value-of select="0"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="MultiFolder">
+                            <xsl:value-of select="1"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="Quarantined">
+                            <xsl:value-of select="1"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="LocId">
+                            <xsl:value-of select="0411"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="MaxTotalFilesIncluded">
+                            <xsl:value-of select="50"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="MaxExtractLevel">
+                            <xsl:value-of select="20"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="BypassExtraction">
+                            <xsl:value-of select="&quot;false&quot;"/>
+                        </xsl:attribute>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </FILE_EXTRACT_TYPE>
+                    <UPLOAD_ARCHIVE_TO_AM>
+                        <xsl:value-of select="&quot;False&quot;"/>
+                    </UPLOAD_ARCHIVE_TO_AM>
+                </DEFAULT_INFO>
+                <ADDITIONAL_INFO>
+                    <SRF_SOURCEID>
+                        <xsl:attribute name="NeedReturn">
+                            <xsl:value-of select="&quot;true&quot;"/>
+                        </xsl:attribute>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </SRF_SOURCEID>
+                    <SRF_SRTYPE>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </SRF_SRTYPE>
+                    <SRF_SRNO>
+                        <xsl:attribute name="NeedReturn">
+                            <xsl:value-of select="&quot;true&quot;"/>
+                        </xsl:attribute>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </SRF_SRNO>
+                    <SRF_ORIGINAL_File_Name>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </SRF_ORIGINAL_File_Name>
+                    <SRF_REGION>
+                        <xsl:value-of select="&quot;CORPORATE&quot;"/>
+                    </SRF_REGION>
+                    <xsl:for-each select="$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase">
+                        <SRF_FORM_VALUES>
+                            <PortalSourceID>
+                                <xsl:value-of select="pfx:PortalSourceID"/>
+                            </PortalSourceID>
+                            <ProductName>
+                                <xsl:value-of select="pfx:ProductName"/>
+                            </ProductName>
+                            <ProductVersion>
+                                <xsl:value-of select="pfx:ProductVersion"/>
+                            </ProductVersion>
+                            <ProductLanguage>
+                                <xsl:value-of select="pfx:ProductLanguage"/>
+                            </ProductLanguage>
+                            <OperatingSystem>
+                                <xsl:value-of select="pfx:OperatingSystem"/>
+                            </OperatingSystem>
+                            <SerialNumber>
+                                <xsl:value-of select="pfx:SerialNumber"/>
+                            </SerialNumber>
+                            <xsl:if test="pfx:ActivationCode">
+                                <ActivationCode>
+                                    <xsl:value-of select="pfx:ActivationCode"/>
+                                </ActivationCode>
+                            </xsl:if>
+                            <PatternFileNumber>
+                                <xsl:value-of select="pfx:PatternFileNumber"/>
+                            </PatternFileNumber>
+                            <xsl:if test="pfx:ScanEngineVersion">
+                                <ScanEngineVersion>
+                                    <xsl:value-of select="pfx:ScanEngineVersion"/>
+                                </ScanEngineVersion>
+                            </xsl:if>
+                            <xsl:if test="pfx:NumberofSeat">
+                                <NumberofSeat>
+                                    <xsl:value-of select="pfx:NumberofSeat"/>
+                                </NumberofSeat>
+                            </xsl:if>
+                            <xsl:if test="pfx:UserType">
+                                <UserType>
+                                    <xsl:value-of select="pfx:UserType"/>
+                                </UserType>
+                            </xsl:if>
+                            <xsl:if test="pfx:ProblemCategory">
+                                <ProblemCategory>
+                                    <xsl:value-of select="pfx:ProblemCategory"/>
+                                </ProblemCategory>
+                            </xsl:if>
+                            <xsl:if test="pfx:SubCategory">
+                                <SubCategory>
+                                    <xsl:value-of select="pfx:SubCategory"/>
+                                </SubCategory>
+                            </xsl:if>
+                            <xsl:if test="pfx:Priority">
+                                <Priority>
+                                    <xsl:value-of select="pfx:Priority"/>
+                                </Priority>
+                            </xsl:if>
+                            <Description>
+                                <xsl:value-of select="pfx:Description"/>
+                            </Description>
+                            <xsl:if test="pfx:InitialTroubleshootingPerformed">
+                                <InitialTroubleshootingPerformed>
+                                    <xsl:value-of select="pfx:InitialTroubleshootingPerformed"/>
+                                </InitialTroubleshootingPerformed>
+                            </xsl:if>
+                            <xsl:if test="pfx:InternetConnections">
+                                <InternetConnections>
+                                    <xsl:value-of select="pfx:InternetConnections"/>
+                                </InternetConnections>
+                            </xsl:if>
+                            <EmailAddress>
+                                <xsl:value-of select="pfx:EmailAddress"/>
+                            </EmailAddress>
+                            <xsl:if test="pfx:Salutation">
+                                <Salutation>
+                                    <xsl:value-of select="pfx:Salutation"/>
+                                </Salutation>
+                            </xsl:if>
+                            <FirstName>
+                                <xsl:value-of select="pfx:FirstName"/>
+                            </FirstName>
+                            <LastName>
+                                <xsl:value-of select="pfx:LastName"/>
+                            </LastName>
+                            <PhoneNumber>
+                                <xsl:value-of select="pfx:PhoneNumber"/>
+                            </PhoneNumber>
+                            <Country>
+                                <xsl:value-of select="pfx:Country"/>
+                            </Country>
+                            <xsl:if test="pfx:CompanyName">
+                                <CompanyName>
+                                    <xsl:value-of select="pfx:CompanyName"/>
+                                </CompanyName>
+                            </xsl:if>
+                            <xsl:if test="pfx:AccountID">
+                                <AccountID>
+                                    <xsl:value-of select="pfx:AccountID"/>
+                                </AccountID>
+                            </xsl:if>
+                            <xsl:if test="pfx:AccountName">
+                                <AccountName>
+                                    <xsl:value-of select="pfx:AccountName"/>
+                                </AccountName>
+                            </xsl:if>
+                            <xsl:if test="pfx:Areyouusingproxy">
+                                <Areyouusingproxy>
+                                    <xsl:value-of select="pfx:Areyouusingproxy"/>
+                                </Areyouusingproxy>
+                            </xsl:if>
+                            <xsl:if test="pfx:Areyouusingfirewall">
+                                <Areyouusingfirewall>
+                                    <xsl:value-of select="pfx:Areyouusingfirewall"/>
+                                </Areyouusingfirewall>
+                            </xsl:if>
+                            <xsl:if test="pfx:PreferredLanguage">
+                                <PreferredLanguage>
+                                    <xsl:value-of select="pfx:PreferredLanguage"/>
+                                </PreferredLanguage>
+                            </xsl:if>
+                            <Wouldyouparticipateinasurvey>
+                                <xsl:value-of select="pfx:Wouldyouparticipateinasurvey"/>
+                            </Wouldyouparticipateinasurvey>
+                            <xsl:if test="pfx:CDToutput">
+                                <CDToutput>
+                                    <xsl:value-of select="pfx:CDToutput"/>
+                                </CDToutput>
+                            </xsl:if>
+                            <Title>
+                                <xsl:value-of select="pfx:Title"/>
+                            </Title>
+                            <xsl:if test="pfx:BuildNumber">
+                                <BuildNumber>
+                                    <xsl:value-of select="pfx:BuildNumber"/>
+                                </BuildNumber>
+                            </xsl:if>
+                            <xsl:if test="pfx:BetaProjectId">
+                                <BetaProjectId>
+                                    <xsl:value-of select="pfx:BetaProjectId"/>
+                                </BetaProjectId>
+                            </xsl:if>
+                            <ProductGIC>
+                                <xsl:value-of select="pfx:ProductGIC"/>
+                            </ProductGIC>
+                            <SRType>
+                                <xsl:value-of select="pfx:SRType"/>
+                            </SRType>
+                            <xsl:if test="pfx:QueryType">
+                                <QueryType>
+                                    <xsl:value-of select="pfx:QueryType"/>
+                                </QueryType>
+                            </xsl:if>
+                            <SolutionID>
+                                <xsl:value-of select="pfx:SolutionID"/>
+                            </SolutionID>
+                            <DidSearchDB>
+                                <xsl:value-of select="pfx:DidSearchDB"/>
+                            </DidSearchDB>
+                            <xsl:if test="pfx:SubSystem">
+                                <SubSystem>
+                                    <xsl:value-of select="pfx:SubSystem"/>
+                                </SubSystem>
+                            </xsl:if>
+                            <PortalSRTarget>
+                                <xsl:value-of select="pfx:PortalSRTarget"/>
+                            </PortalSRTarget>
+                            <xsl:if test="pfx:CustExperience">
+                                <CustExperience>
+                                    <xsl:value-of select="pfx:CustExperience"/>
+                                </CustExperience>
+                            </xsl:if>
+                            <UseProxyAuth>
+                                <xsl:value-of select="pfx:UseProxyAuth"/>
+                            </UseProxyAuth>
+                            <FirewallServer>
+                                <xsl:value-of select="pfx:FirewallServer"/>
+                            </FirewallServer>
+                            <UseFirewallAuth>
+                                <xsl:value-of select="pfx:UseFirewallAuth"/>
+                            </UseFirewallAuth>
+                            <FTPLocation>
+                                <xsl:value-of select="pfx:FTPLocation"/>
+                            </FTPLocation>
+                            <FTPUserNamePassword>
+                                <xsl:value-of select="pfx:FTPUserNamePassword"/>
+                            </FTPUserNamePassword>
+                            <xsl:if test="pfx:UserType1">
+                                <UserType1>
+                                    <xsl:value-of select="pfx:UserType1"/>
+                                </UserType1>
+                            </xsl:if>
+                            <FirewallAuthenticationType>
+                                <xsl:value-of select="pfx:FirewallAuthenticationType"/>
+                            </FirewallAuthenticationType>
+                            <xsl:if test="pfx:EntitlementID">
+                                <EntitlementID>
+                                    <xsl:value-of select="pfx:EntitlementID"/>
+                                </EntitlementID>
+                            </xsl:if>
+                            <xsl:if test="pfx:SRSource">
+                                <SRSource>
+                                    <xsl:value-of select="pfx:SRSource"/>
+                                </SRSource>
+                            </xsl:if>
+                            <xsl:if test="pfx:TSProdId">
+                                <TSProdId>
+                                    <xsl:value-of select="pfx:TSProdId"/>
+                                </TSProdId>
+                            </xsl:if>
+                            <xsl:if test="pfx:ToNeuron">
+                                <ToNeuron>
+                                    <xsl:value-of select="pfx:ToNeuron"/>
+                                </ToNeuron>
+                            </xsl:if>
+                            <xsl:if test="pfx:EntitlementName">
+                                <EntitlementName>
+                                    <xsl:value-of select="pfx:EntitlementName"/>
+                                </EntitlementName>
+                            </xsl:if>
+                            <xsl:if test="pfx:Classification">
+                                <Classification>
+                                    <xsl:value-of select="pfx:Classification"/>
+                                </Classification>
+                            </xsl:if>
+                            <xsl:if test="pfx:PatternType">
+                                <PatternType>
+                                    <xsl:value-of select="pfx:PatternType"/>
+                                </PatternType>
+                            </xsl:if>
+                            <xsl:if test="pfx:SPNPortalID">
+                                <SPNPortalID>
+                                    <xsl:value-of select="pfx:SPNPortalID"/>
+                                </SPNPortalID>
+                            </xsl:if>
+                            <RequestType>
+                                <xsl:value-of select="&quot;DirectSubmission&quot;"/>
+                            </RequestType>
+                        </SRF_FORM_VALUES>
+                    </xsl:for-each>
+                </ADDITIONAL_INFO>
+                <PACKAGES>
+                    <PACKAGE>
+                        <xsl:attribute name="id">
+                            <xsl:value-of select="1"/>
+                        </xsl:attribute>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </PACKAGE>
+                </PACKAGES>
+            </Neuron>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Neuron Sample Submission">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>610</pd:x>
+        <pd:y>479</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Neuron Sample Submission.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <path>
+                    <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment/pfx:URL[1]"/>
+                </path>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Siebel ERROR Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>740</pd:x>
+        <pd:y>206</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/*" element="ns15:SFDC_CreateSRCaseRs" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs/ns15:ResponseBody/ns16:Result/ns16:Message"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="'Siebel-ERR'"/>
+                </msgCode>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>593</pd:x>
+        <pd:y>84</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="CreateSRCaseAct&amp;Att">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>787</pd:x>
+        <pd:y>470</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/G2Service/SFDC_CreateSRCaseAct/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <InDataxsdString ref="pfx3:Envelope"/>
+            <OutDataxsdString ref="pfx3:Envelope"/>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$GetSRNumber/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/*" element="ns20:SFDC_GetSRInfoRs"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <pfx3:Envelope>
+                        <pfx3:Body>
+                            <ns17:SFDC_CreateSRActivityRq>
+                                <ns17:RequestHeader>
+                                    <ns10:MessageKey>
+                                        <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/Messagekey"/>
+                                    </ns10:MessageKey>
+                                    <ns10:ServiceName>
+                                        <xsl:value-of select="&quot;SFDC_CreateSRCaseAct&quot;"/>
+                                    </ns10:ServiceName>
+                                    <ns10:ServiceVersion>
+                                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                                    </ns10:ServiceVersion>
+                                    <ns10:SourceID>
+                                        <xsl:value-of select="&quot;Portal&quot;"/>
+                                    </ns10:SourceID>
+                                    <ns10:RqTimestamp>
+                                        <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                                    </ns10:RqTimestamp>
+                                </ns17:RequestHeader>
+                                <ns17:RequestBody>
+                                    <ns18:SFDCSRCaseActivity>
+                                        <ns18:ActTitle>
+                                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Title"/>
+                                        </ns18:ActTitle>
+                                        <ns18:SRNumber>
+                                            <xsl:value-of select="$GetSRNumber/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns20:SFDC_GetSRInfoRs[1]/ns20:ResponseBody/ns20:Result/ns21:ResultSet1/ns21:Record1/ns21:SRNumber"/>
+                                        </ns18:SRNumber>
+                                        <ns18:ActBody>
+                                            <xsl:value-of select="&quot;online Submission Create Portal Attachemnt&quot;"/>
+                                        </ns18:ActBody>
+                                        <ns18:ActType>
+                                            <xsl:value-of select="$GetSRNumber/ns:ActivityOutput/Body/pfx3:Envelope/pfx3:Body/ns20:SFDC_GetSRInfoRs[1]/ns20:ResponseBody/ns20:Result/ns21:ResultSet1/ns21:Record1/ns21:SRStatus"/>
+                                        </ns18:ActType>
+                                        <ns18:SourceSystem>
+                                            <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:SubSystem"/>
+                                        </ns18:SourceSystem>
+                                        <ns18:SourceId>
+                                            <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Result/ns16:SRID"/>
+                                        </ns18:SourceId>
+                                        <xsl:choose>
+                                            <xsl:when test="$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ToNeuron=&quot;Y&quot;">
+                                                <ns18:Attachment>
+                                                    <ns18:File>
+                                                        <ns18:FileExt>
+                                                            <xsl:value-of select="&quot;&quot;"/>
+                                                        </ns18:FileExt>
+                                                        <ns18:FileName>
+                                                            <xsl:value-of select="$Neuron-Sample-Submission/NEURON/NEURON_SAMPLEPATH"/>
+                                                        </ns18:FileName>
+                                                        <ns18:FilePath>
+                                                            <xsl:value-of select="&quot;&quot;"/>
+                                                        </ns18:FilePath>
+                                                        <ns18:FileType>
+                                                            <xsl:value-of select="&quot;URL&quot;"/>
+                                                        </ns18:FileType>
+                                                    </ns18:File>
+                                                </ns18:Attachment>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ns18:Attachment>
+                                                    <xsl:for-each select="$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment/pfx:URL">
+                                                        <ns18:File>
+                                                            <ns18:FileExt>
+                                                                <xsl:value-of select="&quot;&quot;"/>
+                                                            </ns18:FileExt>
+                                                            <ns18:FileName>
+                                                                <xsl:value-of select="."/>
+                                                            </ns18:FileName>
+                                                            <ns18:FilePath>
+                                                                <xsl:value-of select="&quot;&quot;"/>
+                                                            </ns18:FilePath>
+                                                            <ns18:FileType>
+                                                                <xsl:value-of select="&quot;URL&quot;"/>
+                                                            </ns18:FileType>
+                                                        </ns18:File>
+                                                    </xsl:for-each>
+                                                </ns18:Attachment>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </ns18:SFDCSRCaseActivity>
+                                </ns17:RequestBody>
+                            </ns17:SFDC_CreateSRActivityRq>
+                        </pfx3:Body>
+                    </pfx3:Envelope>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map-CorpCaseSR">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>253</pd:x>
+        <pd:y>77</pd:y>
+        <config>
+            <element ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Envelope>
+                <pfx3:Body>
+                    <ns13:SFDC_CreateSRCaseRq>
+                        <ns13:RequestHeader>
+                            <ns10:MessageKey>
+                                <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/Messagekey"/>
+                            </ns10:MessageKey>
+                            <ns10:ServiceName>
+                                <xsl:value-of select="&quot;SFDC_CreateSRCase&quot;"/>
+                            </ns10:ServiceName>
+                            <ns10:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </ns10:ServiceVersion>
+                            <ns10:SourceID>
+                                <xsl:value-of select="&quot;Portal&quot;"/>
+                            </ns10:SourceID>
+                            <ns10:RqTimestamp>
+                                <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                            </ns10:RqTimestamp>
+                        </ns13:RequestHeader>
+                        <ns13:RequestBody>
+                            <xsl:for-each select="$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase">
+                                <ns14:SRCase>
+                                    <ns14:PortalSourceID>
+                                        <xsl:value-of select="pfx:PortalSourceID"/>
+                                    </ns14:PortalSourceID>
+                                    <ns14:ProductVersion>
+                                        <xsl:value-of select="pfx:ProductVersion"/>
+                                    </ns14:ProductVersion>
+                                    <ns14:OperatingSystem>
+                                        <xsl:value-of select="pfx:OperatingSystem"/>
+                                    </ns14:OperatingSystem>
+                                    <ns14:SerialNumber>
+                                        <xsl:value-of select="pfx:SerialNumber"/>
+                                    </ns14:SerialNumber>
+                                    <xsl:if test="pfx:ActivationCode">
+                                        <ns14:ActivationCode>
+                                            <xsl:value-of select="pfx:ActivationCode"/>
+                                        </ns14:ActivationCode>
+                                    </xsl:if>
+                                    <ns14:PatternFileNumber>
+                                        <xsl:value-of select="pfx:PatternFileNumber"/>
+                                    </ns14:PatternFileNumber>
+                                    <xsl:if test="pfx:PatternType">
+                                        <ns14:PatternType>
+                                            <xsl:value-of select="pfx:PatternType"/>
+                                        </ns14:PatternType>
+                                    </xsl:if>
+                                    <xsl:if test="pfx:ScanEngineVersion">
+                                        <ns14:ScanEngineVersion>
+                                            <xsl:value-of select="pfx:ScanEngineVersion"/>
+                                        </ns14:ScanEngineVersion>
+                                    </xsl:if>
+                                    <xsl:if test="pfx:NumberofSeat">
+                                        <ns14:NumberofSeat>
+                                            <xsl:value-of select="pfx:NumberofSeat"/>
+                                        </ns14:NumberofSeat>
+                                    </xsl:if>
+                                    <xsl:if test="pfx:SubCategory">
+                                        <ns14:SubCategory>
+                                            <xsl:value-of select="pfx:SubCategory"/>
+                                        </ns14:SubCategory>
+                                    </xsl:if>
+                                    <xsl:if test="pfx:Priority">
+                                        <ns14:Urgency>
+                                            <xsl:value-of select="pfx:Priority"/>
+                                        </ns14:Urgency>
+                                    </xsl:if>
+                                    <ns14:Description>
+                                        <xsl:value-of select="pfx:Description"/>
+                                    </ns14:Description>
+                                    <ns14:Attachment>
+                                        <xsl:for-each select="pfx:Attachment/pfx:URL">
+                                            <ns14:File>
+                                                <ns14:FileExt>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns14:FileExt>
+                                                <ns14:FileName>
+                                                    <xsl:value-of select="."/>
+                                                </ns14:FileName>
+                                                <ns14:FilePath>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns14:FilePath>
+                                                <ns14:FileType>
+                                                    <xsl:value-of select="&quot;URL&quot;"/>
+                                                </ns14:FileType>
+                                                <ns14:Comment2>
+                                                    <xsl:value-of select="&quot;&quot;"/>
+                                                </ns14:Comment2>
+                                            </ns14:File>
+                                        </xsl:for-each>
+                                    </ns14:Attachment>
+                                    <ns14:EmailAddress>
+                                        <xsl:value-of select="pfx:EmailAddress"/>
+                                    </ns14:EmailAddress>
+                                    <ns14:FirstName>
+                                        <xsl:value-of select="pfx:FirstName"/>
+                                    </ns14:FirstName>
+                                    <ns14:LastName>
+                                        <xsl:value-of select="pfx:LastName"/>
+                                    </ns14:LastName>
+                                    <ns14:Country>
+                                        <xsl:value-of select="pfx:Country"/>
+                                    </ns14:Country>
+                                    <xsl:if test="pfx:AccountID">
+                                        <ns14:AccountID>
+                                            <xsl:value-of select="pfx:AccountID"/>
+                                        </ns14:AccountID>
+                                    </xsl:if>
+                                    <xsl:if test="pfx:AccountName">
+                                        <ns14:AccountName>
+                                            <xsl:value-of select="pfx:AccountName"/>
+                                        </ns14:AccountName>
+                                    </xsl:if>
+                                    <xsl:if test="pfx:Areyouusingproxy">
+                                        <ns14:Areyouusingproxy>
+                                            <xsl:value-of select="pfx:Areyouusingproxy"/>
+                                        </ns14:Areyouusingproxy>
+                                    </xsl:if>
+                                    <xsl:if test="pfx:Areyouusingfirewall">
+                                        <ns14:Areyouusingfirewall>
+                                            <xsl:value-of select="pfx:Areyouusingfirewall"/>
+                                        </ns14:Areyouusingfirewall>
+                                    </xsl:if>
+                                    <xsl:if test="pfx:PreferredLanguage">
+                                        <ns14:PreferredLanguage>
+                                            <xsl:value-of select="pfx:PreferredLanguage"/>
+                                        </ns14:PreferredLanguage>
+                                    </xsl:if>
+                                    <ns14:Wouldyouparticipateinasurvey>
+                                        <xsl:value-of select="pfx:Wouldyouparticipateinasurvey"/>
+                                    </ns14:Wouldyouparticipateinasurvey>
+                                    <ns14:Title>
+                                        <xsl:value-of select="pfx:Title"/>
+                                    </ns14:Title>
+                                    <ns14:ProductGIC>
+                                        <xsl:value-of select="pfx:ProductGIC"/>
+                                    </ns14:ProductGIC>
+                                    <ns14:SolutionID>
+                                        <xsl:value-of select="pfx:SolutionID"/>
+                                    </ns14:SolutionID>
+                                    <ns14:DidSearchDB>
+                                        <xsl:value-of select="pfx:DidSearchDB"/>
+                                    </ns14:DidSearchDB>
+                                    <xsl:if test="pfx:SubSystem">
+                                        <ns14:SubSystem>
+                                            <xsl:value-of select="pfx:SubSystem"/>
+                                        </ns14:SubSystem>
+                                    </xsl:if>
+                                    <xsl:if test="pfx:EntitlementID">
+                                        <ns14:EntitlementID>
+                                            <xsl:value-of select="pfx:EntitlementID"/>
+                                        </ns14:EntitlementID>
+                                    </xsl:if>
+                                    <ns14:TSProdOS>
+                                        <xsl:value-of select="pfx:OperatingSystem"/>
+                                    </ns14:TSProdOS>
+                                    <ns14:TSProdLanguage>
+                                        <xsl:value-of select="pfx:ProductLanguage"/>
+                                    </ns14:TSProdLanguage>
+                                    <ns14:TSProdVersion>
+                                        <xsl:value-of select="pfx:ProductVersion"/>
+                                    </ns14:TSProdVersion>
+                                    <xsl:if test="pfx:TSProdId">
+                                        <ns14:TSProdId>
+                                            <xsl:value-of select="pfx:TSProdId"/>
+                                        </ns14:TSProdId>
+                                    </xsl:if>
+                                    <ns14:ProblemCat>
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </ns14:ProblemCat>
+                                    <xsl:if test="pfx:CustExperience">
+                                        <ns14:CustExperience>
+                                            <xsl:value-of select="pfx:CustExperience"/>
+                                        </ns14:CustExperience>
+                                    </xsl:if>
+                                    <ns14:CaseClassification>
+                                        <xsl:value-of select="pfx:Classification"/>
+                                    </ns14:CaseClassification>
+                                    <ns14:SRType>
+                                        <xsl:value-of select="pfx:SRType"/>
+                                    </ns14:SRType>
+                                    <ns14:PrivateNote>
+                                        <xsl:value-of select="concat(&quot;Online Submission Input:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Case Information:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;SR Type:&quot;,current()/pfx:SRType,&quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Request Type:&quot;,&quot;DirectSubmission&quot;,&quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Title:&quot;,current()/pfx:Title, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Description:&quot; ,current()/pfx:Description, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Pattern Branch:&quot; ,current()/pfx:PatternType, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Pattern Version:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Business Impact:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Problem Category:&quot; ,current()/pfx:ProblemCategory, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Sub-Category:&quot;,current()/pfx:SubCategory, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Customer Experience:&quot; ,current()/pfx:CustExperience, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Case Classification:&quot; ,current()/pfx:Classification, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Urgency:@#@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Product Information:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Product Profile:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Product GIC:&quot;,current()/pfx:ProductGIC, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Product:&quot;,current()/pfx:ProductName, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Product Version:&quot; ,current()/pfx:ProductVersion, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Product OS:&quot; ,current()/pfx:OperatingSystem, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Product Language:&quot; ,current()/pfx:ProductLanguage, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Scan Engine Version:&quot; ,current()/pfx:ScanEngineVersion, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Other Information:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Attachments:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;URL@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Emails to CC:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Request Bandage Pattern:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Neuron ID:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Case ID:@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;SeatCount:&quot; ,current()/pfx:SeatCount, &quot;@#&quot;, &quot;&#xD;&quot;, &#xA;&quot;Date Submitted (format:'yyyy/MM/dd HH:mm:ss.fff' in GMT+0):&quot; ,tib:format-dateTime('yyyy/MM/dd HH:mm:ss.SSS',tib:current-dateTime-timezone(0,0)), &quot;@#&quot;)"/>
+                                    </ns14:PrivateNote>
+                                    <ns14:ContactID>
+                                        <xsl:value-of select="&quot;&quot;"/>
+                                    </ns14:ContactID>
+                                </ns14:SRCase>
+                            </xsl:for-each>
+                        </ns13:RequestBody>
+                    </ns13:SFDC_CreateSRCaseRq>
+                </pfx3:Body>
+            </pfx3:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse CorpSR">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>490</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Create-CorpSR/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetSRNumber">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>601</pd:x>
+        <pd:y>217</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/G2Service/SFDC_Query/GetSRInfo/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx3:Envelope"/>
+            <OutDataxsdString ref="pfx3:Envelope"/>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/*" element="ns15:SFDC_CreateSRCaseRs"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <pfx3:Envelope>
+                        <pfx3:Body>
+                            <ns19:SFDC_GetSRInfoRq>
+                                <ns19:RequestHeader>
+                                    <ns10:MessageKey>
+                                        <xsl:value-of select="$CreateSFDCCorporateCase/CorpCaseInput/Messagekey"/>
+                                    </ns10:MessageKey>
+                                    <ns10:ServiceName>
+                                        <xsl:value-of select="&quot;SFDC_GetSRInfo&quot;"/>
+                                    </ns10:ServiceName>
+                                    <ns10:ServiceVersion>
+                                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                                    </ns10:ServiceVersion>
+                                    <ns10:SourceID>
+                                        <xsl:value-of select="&quot;Portal&quot;"/>
+                                    </ns10:SourceID>
+                                    <ns10:RqTimestamp>
+                                        <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                                    </ns10:RqTimestamp>
+                                </ns19:RequestHeader>
+                                <ns19:RequestBody>
+                                    <xsl:if test="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Result/ns16:SRID">
+                                        <ns19:CaseID>
+                                            <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Result/ns16:SRID"/>
+                                        </ns19:CaseID>
+                                    </xsl:if>
+                                </ns19:RequestBody>
+                            </ns19:SFDC_GetSRInfoRq>
+                        </pfx3:Body>
+                    </pfx3:Envelope>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreateSRFail">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>491</pd:x>
+        <pd:y>193</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/*" element="ns15:SFDC_CreateSRCaseRs"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <data>
+                    <pfx51:Error>
+                        <pfx51:error_code>
+                            <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Result/ns16:Status"/>
+                        </pfx51:error_code>
+                        <pfx51:stack_trace>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx51:stack_trace>
+                        <pfx51:process_stack>
+                            <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Result/ns16:Message"/>
+                        </pfx51:process_stack>
+                        <pfx51:error_message>
+                            <xsl:value-of select="$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Error/ns23:Message"/>
+                        </pfx51:error_message>
+                    </pfx51:Error>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Map SRF XML</pd:from>
+        <pd:to>Map-CorpCaseSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateSFDCCorporateCase</pd:from>
+        <pd:to>Map SRF XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create CorpSR</pd:from>
+        <pd:to>Parse CorpSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>CreateSRCaseAct&amp;Att</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Siebel ERROR Log</pd:from>
+        <pd:to>Mail Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mail Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>Neuron Sample Submission</pd:to>
+        <pd:xpathDescription>Sent to Neuron</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:ToNeuron='Y'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Neuron Sample Submission</pd:from>
+        <pd:to>CreateSRCaseAct&amp;Att</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Siebel ERROR Log</pd:to>
+        <pd:xpathDescription>Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Result/ns16:Status="FAIL" or
+$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Result/ns16:Status="ERROR"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>GetSRNumber</pd:to>
+        <pd:xpathDescription>Exists attachment</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($CreateSFDCCorporateCase/CorpCaseInput/PortalSRCase/pfx:PortalSRCase/pfx:Attachment)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>No Attachment</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateSRCaseAct&amp;Att</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map-CorpCaseSR</pd:from>
+        <pd:to>Create CorpSR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse CorpSR</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSRNumber</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse CorpSR</pd:from>
+        <pd:to>CreateSRFail</pd:to>
+        <pd:xpathDescription>Fail</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-6750208</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-CorpSR/pfx3:Envelope/pfx3:Body/ns15:SFDC_CreateSRCaseRs[1]/ns15:ResponseBody/ns16:Result/ns16:Status="FAIL"</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

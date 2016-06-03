@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="urn:sobject.enterprise.soap.sforce.com" xmlns:pfx="http://www.tibco.com/schemas/GCCPortal/XSD/G2/Schema.xsd" xmlns:ns2="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/getSRActivity.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="urn:enterprise.soap.sforce.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/Schema.xsd" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD/G2/SFDCQueryRS/TestQueryRs.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD/G2/SFDCQueryRs.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD/G2/TestQueryRs.xsd" xmlns:pfx8="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/Attachment.xsd" xmlns:pfx7="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/getSRActivityWithAttachment.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/TestQueryRs.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/G2/TestQueryRs.xsd" schemaLocation="/XSD/G2/TestQueryRs.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/G2/SFDCQueryRs.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/G2/SFDCQueryRS/TestQueryRs.xsd" schemaLocation="/XSD/G2/SFDCQueryRS/TestQueryRs.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/Schema.xsd" schemaLocation="/XSD/G2/SFDCQueryRS/Schema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/TestQueryRs.xsd" schemaLocation="/XSD/G2/SFDCQueryRS/TestQueryRs2.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCQueryRS/getSRActivityWithAttachment.xsd" schemaLocation="/XSD/G2/SFDCQueryRS/getSRActivityWithAttachment.xsd"/>
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <pd:name>TestData/SFDC Sample/Call Service.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <pfx6:result>
+            <xsl:copy-of select="$Map-Data/pfx6:result/pfx6:records"/>
+        </pfx6:result>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx6:result"/>
+    <pd:endX>687</pd:endX>
+    <pd:endY>71</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1413795146025</pd:targetNamespace>
+    <pd:activity name="Login">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>265</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/TestData/SFDC Sample/Login.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GetAccountProfile">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>385</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/TestData/SFDC Sample/Query.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Sessionid>
+                    <xsl:value-of select="$Login/root/SessionID"/>
+                </Sessionid>
+                <QueryString>
+                    <xsl:value-of select="$Start/root/param"/>
+                </QueryString>
+                <xsl:if test="$Login/root/ServerURL">
+                    <ServerURL>
+                        <xsl:value-of select="$Login/root/ServerURL"/>
+                    </ServerURL>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>526</pd:x>
+        <pd:y>131</pd:y>
+        <config>
+            <element ref="pfx7:result"/>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$GetAccountProfile/Output/ns1:queryAllResponse/ns1:result/ns1:records/ns:Attachments/ns1:records" type="ns:Attachment"/>
+            <pd:coercion xpath="$GetAccountProfile/Output/ns1:queryAllResponse/ns1:result/ns1:records" type="ns:Entitlement"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx7:result>
+                <xsl:for-each select="$GetAccountProfile/Output/ns1:queryAllResponse/ns1:result/ns1:records">
+                    <pfx7:records>
+                        <ns2:ID>
+                            <xsl:value-of select="ns:Id"/>
+                        </ns2:ID>
+                        <xsl:if test="ns:CreatedDate">
+                            <ns2:CreatedDate>
+                                <xsl:value-of select="ns:CreatedDate"/>
+                            </ns2:CreatedDate>
+                        </xsl:if>
+                        <xsl:for-each select="ns:Attachments">
+                            <pfx7:Attachments>
+                                <xsl:for-each select="ns1:records">
+                                    <pfx7:Attachment>
+                                        <pfx8:ID>
+                                            <xsl:value-of select="ns:Id"/>
+                                        </pfx8:ID>
+                                        <xsl:if test="ns:ParentId">
+                                            <pfx8:ParentId>
+                                                <xsl:value-of select="ns:ParentId"/>
+                                            </pfx8:ParentId>
+                                        </xsl:if>
+                                        <xsl:if test="ns:Name">
+                                            <pfx8:Name>
+                                                <xsl:value-of select="ns:Name"/>
+                                            </pfx8:Name>
+                                        </xsl:if>
+                                        <xsl:if test="ns:BodyLength">
+                                            <pfx8:BodyLength>
+                                                <xsl:value-of select="ns:BodyLength"/>
+                                            </pfx8:BodyLength>
+                                        </xsl:if>
+                                        <xsl:if test="ns:ContentType">
+                                            <pfx8:ContentType>
+                                                <xsl:value-of select="ns:ContentType"/>
+                                            </pfx8:ContentType>
+                                        </xsl:if>
+                                        <xsl:if test="ns:LastModifiedDate">
+                                            <pfx8:LastModifiedDate>
+                                                <xsl:value-of select="ns:LastModifiedDate"/>
+                                            </pfx8:LastModifiedDate>
+                                        </xsl:if>
+                                        <xsl:if test="ns:CreatedDate">
+                                            <pfx8:CreatedDate>
+                                                <xsl:value-of select="ns:CreatedDate"/>
+                                            </pfx8:CreatedDate>
+                                        </xsl:if>
+                                    </pfx7:Attachment>
+                                </xsl:for-each>
+                            </pfx7:Attachments>
+                        </xsl:for-each>
+                    </pfx7:records>
+                </xsl:for-each>
+            </pfx7:result>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Login</pd:from>
+        <pd:to>GetAccountProfile</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetAccountProfile</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>1=2</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetAccountProfile</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

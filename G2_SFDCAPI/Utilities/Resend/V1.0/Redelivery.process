@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+    <pd:name>Utilities/Resend/V1.0/Redelivery.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>133</pd:x>
+        <pd:y>73</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>$sys.undelivered</destination>
+                <selector>JMSXGroupID='%%ESBBW/ProjectName%%'</selector>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>484</pd:endX>
+    <pd:endY>68</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Global_Var>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Messagekey" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Global_Var>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1407732886965</pd:targetNamespace>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>309</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/JMS Application Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/RedeliveredQueue">
+                    <destinationQueue>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/RedeliveredQueue"/>
+                    </destinationQueue>
+                </xsl:if>
+                <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties"/>
+                <Body>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>196</pd:x>
+        <pd:y>199</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>600</pd:x>
+        <pd:y>201</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx:ActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="EmailNotifyService">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>450</pd:x>
+        <pd:y>200</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SubjectMessage>
+                    <xsl:value-of select="concat(&quot;[&quot;,$_globalVariables/ns4:GlobalVariables/ESBBW/Environment,&quot; &quot;,$_globalVariables/ns4:GlobalVariables/ESBBW/Domain,&quot;] &quot;,&quot;Redelivery Fail&quot;)"/>
+                </SubjectMessage>
+                <DetailStackTrace>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                </DetailStackTrace>
+                <ns3:MailInfo>
+                    <ns3:MessageKey>
+                        <xsl:value-of select="$Global_Var/root/Messagekey"/>
+                    </ns3:MessageKey>
+                    <ns3:ServiceName>
+                        <xsl:value-of select="&quot;Redelivery&quot;"/>
+                    </ns3:ServiceName>
+                    <ns3:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns3:ServiceVersion>
+                    <ns3:AttachFile>
+                        <ns3:AttachContent>
+                            <ns3:content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment; filename=&quot;, $Global_Var/root/Messagekey,&quot;.xml&quot;)"/>
+                            </ns3:content-disposition>
+                            <ns3:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns3:content-type>
+                            <ns3:content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </ns3:content-transfer-encoding>
+                            <ns3:textContent>
+                                <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns:ActivityOutput,1)"/>
+                            </ns3:textContent>
+                        </ns3:AttachContent>
+                    </ns3:AttachFile>
+                </ns3:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>318</pd:x>
+        <pd:y>198</pd:y>
+        <config>
+            <processName>/Utilities/Resend/V1.0/Log Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns2:DBLogger>
+                    <ns2:MessageHeader>
+                        <ns2:MessageKey>
+                            <xsl:value-of select="$Global_Var/root/Messagekey"/>
+                        </ns2:MessageKey>
+                        <ns2:ServiceName>
+                            <xsl:value-of select="&quot;Redelivery&quot;"/>
+                        </ns2:ServiceName>
+                        <ns2:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns2:ServiceVersion>
+                        <ns2:SourceID>
+                            <xsl:value-of select="&quot;TIBCOBW&quot;"/>
+                        </ns2:SourceID>
+                        <ns2:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns2:RqTimestamp>
+                    </ns2:MessageHeader>
+                    <ns2:MessageBody>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput"/>
+                    </ns2:MessageBody>
+                    <pfx2:Error>
+                        <pfx2:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx2:error_code>
+                        <pfx2:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx2:stack_trace>
+                        <pfx2:process_stack>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx2:process_stack>
+                    </pfx2:Error>
+                </ns2:DBLogger>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>292</pd:y>
+        <config>
+            <variableName>Global_Var</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Messagekey>
+                    <xsl:value-of select="TM:getGUID()"/>
+                </Messagekey>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>EmailNotifyService</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>EmailNotifyService</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/XSD/G2/SFDCQueryRS/GetTAMContactList"
+	 targetNamespace="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/XSD/G2/SFDCQueryRS/GetTAMContactList"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="AccountTeamMember">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Id" type="xs:string"/>
+				<xs:element name="AcocountID" type="xs:string"/>
+				<xs:element name="TeamMemberRole" type="xs:string"/>
+				<xs:element name="User">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Email" type="xs:string"/>
+							<xs:element name="FirstName" type="xs:string"/>
+							<xs:element name="LastName" type="xs:string"/>
+							<xs:element name="Phone" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="UserId" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="results">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="AccountTeamMember" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

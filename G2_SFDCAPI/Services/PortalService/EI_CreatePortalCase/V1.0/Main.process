@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns25="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns26="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:ns27="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns21="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:ns22="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRs" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:ns23="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns24="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:ns20="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRs" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns16="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRs" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns17="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRq" xmlns:ns14="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRs" xmlns:ns15="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRq" xmlns:ns18="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRs" xmlns:ns19="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" xmlns:ns9="GCC Common WS" xmlns:alppTM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_QeuryCaseRq" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:ns6="http://www.trendmicro.com/ESB/Services/OrderCreation/CommonRs" xmlns:ns13="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRq" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns7="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns10="http://www.trendmicro.com/ESB/Services/GCCIntegration/SRFRq" xmlns:ns8="http://www.trendmicro.com/ESB/Services/DealRegistration/GMT_InternalProductRq" xmlns:ns11="http://www.trendmicro.com/ESB/Services/GCCIntegration/SRFRs" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.trendmicro.com/ESB/Services/OrderCreation/OrderSubmissionRq" xmlns:ns1="http://siebel.com/asi/" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns3="http://www.trendmicro.com/ESB/Services/DealRegistration/DealRegistrationRq" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://siebel.com/asi/" schemaLocation="/WSDL/http___siebel.com_asi__RAEM_Internal_Product_WS_-_TIBCO.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCCIntegration/SRFRs" schemaLocation="/WSDL/Client/SRF/SRFRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCCIntegration/SRFRq" schemaLocation="/WSDL/Client/SRF/SRFRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/EI_JP_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/EI_JP_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/OrderCreation/CommonRs"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/JPXSD/EI_JP_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_JP_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/JPXSD/EI_JP_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRq" schemaLocation="/WSDL/Client/ENXSD/EI_EN_CreateConsumerCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_EN_CreateConsumerCaseRs" schemaLocation="/WSDL/Client/ENXSD/EI_EN_CreateConsumerCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Chat_RC/EI_QeuryCaseRq"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" schemaLocation="/WSDL/Client/CorporateXSD/EI_GCC_CreateCorporateCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRs" schemaLocation="/WSDL/Client/CorporateXSD/EI_GCC_CreateCorporateCaseRs.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRs" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/PortalService/EI_CreatePortalCase/V1.0/Main.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:value-of select=""/>
+        </root>
+    </pd:returnBindings>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>86</pd:x>
+        <pd:y>52</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/PortalService/EI_CreatePortalCase/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>878</pd:endX>
+    <pd:endY>53</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1302247535834</pd:targetNamespace>
+    <pd:activity name="Call Request Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>305</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <processName>/Services/PortalService/EI_CreatePortalCase/V1.0/ExecuteRequest.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-XML/pfx:Envelope/pfx:Body/*" element="ns21:CreatePortalCaseMsgRq" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>282</pd:x>
+        <pd:y>208</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>193</pd:x>
+        <pd:y>52</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render ERR XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>402</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx:Envelope"/>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-XML/pfx:Envelope/pfx:Body/*" element="ns21:CreatePortalCaseMsgRq" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx:Envelope>
+                <pfx:Body>
+                    <ns22:CreatePortalCaseMsgRs>
+                        <xsl:choose>
+                            <xsl:when test="exists($_error_Parse-XML/ActivityErrors)">
+                                <ns22:ResponseHeader>
+                                    <ns7:MessageKey>
+                                        <xsl:value-of select="TM:getGUID()"/>
+                                    </ns7:MessageKey>
+                                    <ns7:ServiceName>
+                                        <xsl:value-of select="&quot;EI_CreatePortalCase&quot;"/>
+                                    </ns7:ServiceName>
+                                    <ns7:ServiceVersion>
+                                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                                    </ns7:ServiceVersion>
+                                    <ns7:SourceID>
+                                        <xsl:value-of select="&quot;BW&quot;"/>
+                                    </ns7:SourceID>
+                                    <ns7:RqTimestamp>
+                                        <xsl:value-of select="current-dateTime()"/>
+                                    </ns7:RqTimestamp>
+                                    <ns7:RsTimestamp>
+                                        <xsl:value-of select="current-dateTime()"/>
+                                    </ns7:RsTimestamp>
+                                </ns22:ResponseHeader>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <ns22:ResponseHeader>
+                                    <ns7:MessageKey>
+                                        <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:MessageKey"/>
+                                    </ns7:MessageKey>
+                                    <ns7:ServiceName>
+                                        <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:ServiceName"/>
+                                    </ns7:ServiceName>
+                                    <ns7:ServiceVersion>
+                                        <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:ServiceVersion"/>
+                                    </ns7:ServiceVersion>
+                                    <ns7:SourceID>
+                                        <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:SourceID"/>
+                                    </ns7:SourceID>
+                                    <xsl:if test="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:StatusCode">
+                                        <ns7:StatusCode>
+                                            <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:StatusCode"/>
+                                        </ns7:StatusCode>
+                                    </xsl:if>
+                                    <xsl:if test="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:RqTimestamp">
+                                        <ns7:RqTimestamp>
+                                            <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:RqTimestamp"/>
+                                        </ns7:RqTimestamp>
+                                    </xsl:if>
+                                    <ns7:RsTimestamp>
+                                        <xsl:value-of select="current-dateTime()"/>
+                                    </ns7:RsTimestamp>
+                                </ns22:ResponseHeader>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <ns22:ResponseBody>
+                            <ns24:TIBCO_RETURN_CODE>
+                                <xsl:value-of select="tib:render-xml($Catch/exceptiondata)"/>
+                            </ns24:TIBCO_RETURN_CODE>
+                        </ns22:ResponseBody>
+                    </ns22:CreatePortalCaseMsgRs>
+                </pfx:Body>
+            </pfx:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>457</pd:x>
+        <pd:y>52</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:Envelope>
+                <pfx:Body>
+                    <ns22:CreatePortalCaseMsgRs>
+                        <ns22:ResponseHeader>
+                            <ns7:MessageKey>
+                                <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:MessageKey"/>
+                            </ns7:MessageKey>
+                            <ns7:ServiceName>
+                                <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:ServiceName"/>
+                            </ns7:ServiceName>
+                            <ns7:ServiceVersion>
+                                <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:ServiceVersion"/>
+                            </ns7:ServiceVersion>
+                            <ns7:SourceID>
+                                <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:SourceID"/>
+                            </ns7:SourceID>
+                            <ns7:RqTimestamp>
+                                <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader/ns7:RqTimestamp"/>
+                            </ns7:RqTimestamp>
+                            <ns7:RsTimestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns7:RsTimestamp>
+                        </ns22:ResponseHeader>
+                        <ns22:ResponseBody>
+                            <xsl:copy-of select="$Call-Request-Process/Response/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$Call-Request-Process/Response/@*"/>
+                            <xsl:copy-of select="$Call-Request-Process/Response/node()"/>
+                        </ns22:ResponseBody>
+                    </ns22:CreatePortalCaseMsgRs>
+                </pfx:Body>
+            </pfx:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply ERR">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>801</pd:x>
+        <pd:y>211</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties>
+                    <ns:JMSXGroupID>
+                        <xsl:value-of select="'UTF-8'"/>
+                    </ns:JMSXGroupID>
+                </JMSProperties>
+                <Body>
+                    <xsl:value-of select="$Render-ERR-XML/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>580</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties>
+                    <ns:JMSXGroupID>
+                        <xsl:value-of select="'UTF-8'"/>
+                    </ns:JMSXGroupID>
+                </JMSProperties>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="EmailNotifyService">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>648</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-XML/pfx:Envelope/pfx:Body/*" element="ns21:CreatePortalCaseMsgRq"/>
+            <pd:coercion xpath="$_error/ns5:ErrorReport/Data/*" element="ns25:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <root>
+                <SubjectMessage>
+                    <xsl:value-of select="&quot;EI_CreatePortalCase Firsttime Fail&quot;"/>
+                </SubjectMessage>
+                <xsl:choose>
+                    <xsl:when test="tib:trim($_error/ns5:ErrorReport/Data/ns25:Error/ns25:stack_trace) !=&quot;&quot;">
+                        <DetailStackTrace>
+                            <xsl:value-of select="$_error/ns5:ErrorReport/Data/ns25:Error/ns25:stack_trace"/>
+                        </DetailStackTrace>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <DetailStackTrace>
+                            <xsl:value-of select="$_error/ns5:ErrorReport/StackTrace"/>
+                        </DetailStackTrace>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <ns26:MailInfo>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq[1]/ns21:RequestBody/ns23:PortalSRCase/ns23:PortalSourceID) !=''">
+                            <xsl:if test="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq[1]/ns21:RequestBody/ns23:PortalSRCase/ns23:PortalSourceID">
+                                <ns26:MessageKey>
+                                    <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq[1]/ns21:RequestBody/ns23:PortalSRCase/ns23:PortalSourceID"/>
+                                </ns26:MessageKey>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns26:MessageKey>
+                                <xsl:value-of select="TM:getGUID()"/>
+                            </ns26:MessageKey>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:if test="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq[1]/ns21:RequestHeader/ns7:ServiceName">
+                        <ns26:ServiceName>
+                            <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq[1]/ns21:RequestHeader/ns7:ServiceName"/>
+                        </ns26:ServiceName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq[1]/ns21:RequestHeader/ns7:ServiceVersion">
+                        <ns26:ServiceVersion>
+                            <xsl:value-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq[1]/ns21:RequestHeader/ns7:ServiceVersion"/>
+                        </ns26:ServiceVersion>
+                    </xsl:if>
+                    <ns26:AttachFile>
+                        <ns26:AttachContent>
+                            <ns26:content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment; filename=&quot;,$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq[1]/ns21:RequestBody/ns23:PortalSRCase/ns23:PortalSourceID,&quot;.xml&quot;)"/>
+                            </ns26:content-disposition>
+                            <ns26:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns26:content-type>
+                            <ns26:content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </ns26:content-transfer-encoding>
+                            <ns26:textContent>
+                                <xsl:value-of select="concat(&quot;Input:&quot;,$JMS-Queue-Receiver/ns:ActivityOutput/Body,&quot;\n Output:&quot;,$Render-XML/xmlString)"/>
+                            </ns26:textContent>
+                        </ns26:AttachContent>
+                    </ns26:AttachFile>
+                </ns26:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>524</pd:x>
+        <pd:y>209</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns5:ErrorReport/Data/*" element="ns25:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Log>
+                <ns27:DBLogger>
+                    <xsl:for-each select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestHeader">
+                        <ns27:MessageHeader>
+                            <ns27:MessageKey>
+                                <xsl:value-of select="ns7:MessageKey"/>
+                            </ns27:MessageKey>
+                            <ns27:ServiceName>
+                                <xsl:value-of select="ns7:ServiceName"/>
+                            </ns27:ServiceName>
+                            <ns27:ServiceVersion>
+                                <xsl:value-of select="ns7:ServiceVersion"/>
+                            </ns27:ServiceVersion>
+                            <ns27:SourceID>
+                                <xsl:value-of select="ns7:SourceID"/>
+                            </ns27:SourceID>
+                            <xsl:if test="ns7:RqTimestamp">
+                                <ns27:RqTimestamp>
+                                    <xsl:value-of select="ns7:RqTimestamp"/>
+                                </ns27:RqTimestamp>
+                            </xsl:if>
+                            <ns27:RsTimestamp>
+                                <xsl:value-of select="current-dateTime()"/>
+                            </ns27:RsTimestamp>
+                        </ns27:MessageHeader>
+                    </xsl:for-each>
+                    <ns27:MessageBody>
+                        <xsl:copy-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestBody/ancestor-or-self::*/namespace::node()"/>
+                        <xsl:copy-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestBody/@*"/>
+                        <xsl:copy-of select="$Parse-XML/pfx:Envelope/pfx:Body/ns21:CreatePortalCaseMsgRq/ns21:RequestBody/node()"/>
+                    </ns27:MessageBody>
+                    <xsl:choose>
+                        <xsl:when test="tib:trim($_error/ns5:ErrorReport/Data/ns25:Error/ns25:error_message) !=''">
+                            <ns4:Error>
+                                <ns4:error_code>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/Data/ns25:Error/ns25:error_message"/>
+                                </ns4:error_code>
+                                <ns4:stack_trace>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/Data/ns25:Error/ns25:stack_trace"/>
+                                </ns4:stack_trace>
+                                <ns4:process_stack>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/Data/ns25:Error/ns25:src"/>
+                                </ns4:process_stack>
+                            </ns4:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns4:Error>
+                                <ns4:error_code>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/Msg"/>
+                                </ns4:error_code>
+                                <ns4:stack_trace>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/StackTrace"/>
+                                </ns4:stack_trace>
+                                <ns4:process_stack>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/ProcessStack"/>
+                                </ns4:process_stack>
+                            </ns4:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns27:DBLogger>
+                <message>
+                    <xsl:value-of select="$_error/ns5:ErrorReport/Msg"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="$_error/ns5:ErrorReport/MsgCode"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Reply to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Call Request Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Request Process</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render ERR XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply ERR</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>EmailNotifyService</pd:from>
+        <pd:to>Reply ERR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render ERR XML</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>EmailNotifyService</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

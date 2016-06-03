@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/error" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/WSDL/Client/AMSS Solution Provided XSD/Schema.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal_For_G2_V1.0/WSDL/Client/AMSS Solution Provided XSD/Schema.xsd" schemaLocation="/XSD/G2/AMSS Solution Provided/GetSRInfoByClosecallback.xsd"/>
+    <pd:name>Services/G2Service/AMSS Solution Provided/GetSRInfoByClosecallback/V1.0/Main.process</pd:name>
+    <pd:description>Direct JMS Invoke</pd:description>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>126</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/G2Service/AMSSSolutionProvided/GetSRInfoByClosecallback/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx:GetSRInfoByClosecallbackRq"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>627</pd:endX>
+    <pd:endY>62</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1427948971047</pd:targetNamespace>
+    <pd:activity name="Get Main Info From SFDC">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>306</pd:x>
+        <pd:y>73</pd:y>
+        <config>
+            <processName>/Services/G2Service/AMSS Solution Provided/SendSolnForMultiTasks/V1.0/Get Main Info From SFDC.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CaseNumber>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestBody/pfx:SRNumber"/>
+                </CaseNumber>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>469</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+            <InDataxsdString ref="pfx:GetSRInfoByClosecallbackRs"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <pfx:GetSRInfoByClosecallbackRs>
+                        <pfx:RequestHeader>
+                            <ns1:MessageKey>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:MessageKey"/>
+                            </ns1:MessageKey>
+                            <ns1:ServiceName>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:ServiceName"/>
+                            </ns1:ServiceName>
+                            <ns1:ServiceVersion>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:ServiceVersion"/>
+                            </ns1:ServiceVersion>
+                            <ns1:SourceID>
+                                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:SourceID"/>
+                            </ns1:SourceID>
+                            <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:StatusCode">
+                                <ns1:StatusCode>
+                                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:StatusCode"/>
+                                </ns1:StatusCode>
+                            </xsl:if>
+                            <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:RqTimestamp">
+                                <ns1:RqTimestamp>
+                                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:RqTimestamp"/>
+                                </ns1:RqTimestamp>
+                            </xsl:if>
+                            <ns1:RsTimestamp>
+                                <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                            </ns1:RsTimestamp>
+                        </pfx:RequestHeader>
+                        <xsl:for-each select="$Get-Main-Info-From-SFDC/CaseMainInfo">
+                            <pfx:RequestBody>
+                                <xsl:if test="Id">
+                                    <pfx:Id>
+                                        <xsl:value-of select="Id"/>
+                                    </pfx:Id>
+                                </xsl:if>
+                                <xsl:if test="CC_Receipts">
+                                    <pfx:CC_Receipts>
+                                        <xsl:value-of select="CC_Receipts"/>
+                                    </pfx:CC_Receipts>
+                                </xsl:if>
+                                <xsl:if test="Receipts">
+                                    <pfx:Receipts>
+                                        <xsl:value-of select="Receipts"/>
+                                    </pfx:Receipts>
+                                </xsl:if>
+                                <xsl:if test="ContactFirstName">
+                                    <pfx:ContactFirstName>
+                                        <xsl:value-of select="ContactFirstName"/>
+                                    </pfx:ContactFirstName>
+                                </xsl:if>
+                                <xsl:if test="ContactLastName">
+                                    <pfx:ContactLastName>
+                                        <xsl:value-of select="ContactLastName"/>
+                                    </pfx:ContactLastName>
+                                </xsl:if>
+                                <xsl:if test="SRType">
+                                    <pfx:SRType>
+                                        <xsl:value-of select="SRType"/>
+                                    </pfx:SRType>
+                                </xsl:if>
+                                <xsl:if test="SRTitle">
+                                    <pfx:SRTitle>
+                                        <xsl:value-of select="SRTitle"/>
+                                    </pfx:SRTitle>
+                                </xsl:if>
+                                <pfx:IsThreatService>
+                                    <xsl:value-of select="IsThreatService"/>
+                                </pfx:IsThreatService>
+                                <xsl:if test="TS_Case_Thread_Id">
+                                    <pfx:TS_Case_Thread_Id>
+                                        <xsl:value-of select="TS_Case_Thread_Id"/>
+                                    </pfx:TS_Case_Thread_Id>
+                                </xsl:if>
+                                <xsl:if test="CaseOwner">
+                                    <pfx:CaseOwner>
+                                        <xsl:value-of select="CaseOwner"/>
+                                    </pfx:CaseOwner>
+                                </xsl:if>
+                                <xsl:if test="Status">
+                                    <pfx:Status>
+                                        <xsl:value-of select="Status"/>
+                                    </pfx:Status>
+                                </xsl:if>
+                            </pfx:RequestBody>
+                        </xsl:for-each>
+                    </pfx:GetSRInfoByClosecallbackRs>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply-to-JMS-Message-1">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>592</pd:x>
+        <pd:y>203</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$ErrorHandling/root/ErrXml"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>345</pd:x>
+        <pd:y>208</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ErrorHandling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>463</pd:x>
+        <pd:y>205</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/ErrorHandling.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns2:ErrorReport/Data/*" element="ns3:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <root>
+                <isResend>
+                    <xsl:value-of select="0"/>
+                </isResend>
+                <isReply>
+                    <xsl:value-of select="0"/>
+                </isReply>
+                <ns4:DBLogger>
+                    <xsl:for-each select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader">
+                        <ns4:MessageHeader>
+                            <ns4:MessageKey>
+                                <xsl:value-of select="ns1:MessageKey"/>
+                            </ns4:MessageKey>
+                            <ns4:ServiceName>
+                                <xsl:value-of select="ns1:ServiceName"/>
+                            </ns4:ServiceName>
+                            <ns4:ServiceVersion>
+                                <xsl:value-of select="ns1:ServiceVersion"/>
+                            </ns4:ServiceVersion>
+                            <ns4:SourceID>
+                                <xsl:value-of select="ns1:SourceID"/>
+                            </ns4:SourceID>
+                            <xsl:if test="ns1:RqTimestamp">
+                                <ns4:RqTimestamp>
+                                    <xsl:value-of select="ns1:RqTimestamp"/>
+                                </ns4:RqTimestamp>
+                            </xsl:if>
+                            <xsl:if test="ns1:RsTimestamp">
+                                <ns4:RsTimestamp>
+                                    <xsl:value-of select="ns1:RsTimestamp"/>
+                                </ns4:RsTimestamp>
+                            </xsl:if>
+                        </ns4:MessageHeader>
+                    </xsl:for-each>
+                    <ns4:MessageBody>
+                        <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestBody"/>
+                    </ns4:MessageBody>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns2:ErrorReport/Data/ns3:Error)">
+                            <xsl:for-each select="$_error/ns2:ErrorReport/Data/ns3:Error">
+                                <pfx2:Error>
+                                    <pfx2:error_code>
+                                        <xsl:value-of select="ns3:error_code"/>
+                                    </pfx2:error_code>
+                                    <pfx2:stack_trace>
+                                        <xsl:value-of select="ns3:stack_trace"/>
+                                    </pfx2:stack_trace>
+                                    <pfx2:process_stack>
+                                        <xsl:value-of select="ns3:src"/>
+                                    </pfx2:process_stack>
+                                    <pfx2:error_message>
+                                        <xsl:value-of select="ns3:error_message"/>
+                                    </pfx2:error_message>
+                                </pfx2:Error>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                                <pfx2:process_stack>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </pfx2:process_stack>
+                                <xsl:if test="$_error/ns2:ErrorReport/Msg">
+                                    <pfx2:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                    </pfx2:error_message>
+                                </xsl:if>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns4:DBLogger>
+                <resend/>
+                <ErrReply>
+                    <pfx3:Envelope>
+                        <pfx3:Body>
+                            <pfx:GetSRInfoByClosecallbackRs>
+                                <pfx:RequestHeader>
+                                    <ns1:MessageKey>
+                                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:MessageKey"/>
+                                    </ns1:MessageKey>
+                                    <ns1:ServiceName>
+                                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:ServiceName"/>
+                                    </ns1:ServiceName>
+                                    <ns1:ServiceVersion>
+                                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:ServiceVersion"/>
+                                    </ns1:ServiceVersion>
+                                    <ns1:SourceID>
+                                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:SourceID"/>
+                                    </ns1:SourceID>
+                                    <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:RqTimestamp">
+                                        <ns1:RqTimestamp>
+                                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:GetSRInfoByClosecallbackRq/pfx:RequestHeader/ns1:RqTimestamp"/>
+                                        </ns1:RqTimestamp>
+                                    </xsl:if>
+                                    <ns1:RsTimestamp>
+                                        <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                                    </ns1:RsTimestamp>
+                                </pfx:RequestHeader>
+                                <pfx:RequestBody>
+                                    <pfx:IsThreatService>
+                                        <xsl:value-of select="0"/>
+                                    </pfx:IsThreatService>
+                                    <pfx:Status>
+                                        <xsl:value-of select="&quot;FAIL&quot;"/>
+                                    </pfx:Status>
+                                </pfx:RequestBody>
+                            </pfx:GetSRInfoByClosecallbackRs>
+                        </pfx3:Body>
+                    </pfx3:Envelope>
+                </ErrReply>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Get Main Info From SFDC</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Main Info From SFDC</pd:from>
+        <pd:to>Reply to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrorHandling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorHandling</pd:from>
+        <pd:to>Reply-to-JMS-Message-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply-to-JMS-Message-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

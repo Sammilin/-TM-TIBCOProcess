@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCSRCaseResult.xsd" xmlns:pfx15="urn:enterprise.soap.sforce.com" xmlns:pfx14="urn:sobject.enterprise.soap.sforce.com" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx13="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_SRCase.xsd" xmlns:pfx12="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_CreateSRCase.xsd" xmlns:pfx11="http://www.tibco.com/schemas/GCCPortal/XSD/G2/Schema.xsd" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pfx10="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/AttScript.xsd" xmlns:pfx19="http://www.trendmicro.com/SFDC/SFDC_GetSRListRq" xmlns:pfx18="http://www.trendmicro.com/ESB/Services/GCC/EI_GCC_CreateCorporateCaseRq" xmlns:pfx17="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx4="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pfx2="GCC Common WS" xmlns:pfx9="http://tempuri.org/" xmlns:pfx8="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" xmlns:pfx7="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/SRCaseCategory.xsd" xmlns:pfx6="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCase.xsd" xmlns:ns16="http://www.trendmicro.com/G2/G2_CreateSRCaseRq" xmlns:ns17="http://www.trendmicro.com/SFDC/SFDC_GetSRInfoRq" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.trendmicro.com/PSC/PSC_CreateMultiPrivXMLActRq" xmlns:ns15="http://www.trendmicro.com/ESB/ACS/schemas/2.1SubProcesses/SubprocessesRQ" xmlns:ns18="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetSRInfoResult.xsd" xmlns:ns9="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:alppTM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/EngineTypes" xmlns:ns13="http://www.trendmicro.com/PSC/PSC_CreateAttScriptRq" xmlns:ns6="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:pfx="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:ns7="www.tibco.com/plugin/Sleep" xmlns:ns10="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns11="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRq" xmlns:ns8="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:ns2="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns4="http://www.siebel.com/xml/GCC%20IO%20Action%20Attachment%20Script" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="http://tibco.com/namespaces/tnt/plugins/soap" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx20="http://www.tibco.com/schemas/GCCProtal/XSD/G2/SFDC_SRCase.xsd" xmlns:pfx21="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" schemaLocation="/XSD/Portal/PortalSRCase.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" schemaLocation="/XSD/Portal/PortalSRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseActRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" schemaLocation="/WSDL/Client/PortalXSD/EI_CreatePortalCaseRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/SRCaseCategory.xsd" schemaLocation="/XSD/PSC/SRCaseCategory.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PSC/PSC_CreateSRCaseRq" schemaLocation="/WSDL/Client/PSCXSD/PSC_CreateSRCaseRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseResult.xsd" schemaLocation="/XSD/PSC/GCCSRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCase.xsd" schemaLocation="/XSD/PSC/GCCSRCase.xsd"/>
+    <xsd:import namespace="GCC Common WS" schemaLocation="/WSDL/Provider/GCC_Common_WS_GCC_Common_WS.WSDL.wsdl"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCSRCaseResult.xsd" schemaLocation="/XSD/G2/SFDC_SRCaseResult.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/G2/G2_CreateSRCaseRq" schemaLocation="/WSDL/Client/G2XSD/G2_CreateSRCaseRq.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_SRCase.xsd" schemaLocation="/XSD/G2/SFDC_SRCaseType.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_SRCase.xsd"/>
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <wsdl:import namespace="GCC Common WS" location="/WSDL/Provider/GCC Common WS_GCC Common WS.WSDL.wsdl"/>
+    <wsdl:import namespace="urn:enterprise.soap.sforce.com" location="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <pd:name>Services/G2Service/SFDC_CreateSRCase/V1.0/CreateCaseComment.process</pd:name>
+    <pd:description/>
+    <pd:startName>CreateSFDCCaseCaseComment</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="PortalSourceID" type="xsd:string"/>
+                    <xsd:element name="CaseID" type="xsd:string"/>
+                    <xsd:element name="PrivateNotes" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>73</pd:startX>
+    <pd:startY>166</pd:startY>
+    <pd:returnBindings>
+        <CorpResponse>
+            <pfx16:Result>
+                <pfx16:SRID>
+                    <xsl:value-of select="$SFDCCreateCaseComment/outputMessage/pfx15:createResponse/pfx15:result[1]/pfx15:id"/>
+                </pfx16:SRID>
+                <pfx16:ActivityID>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </pfx16:ActivityID>
+                <pfx16:Status>
+                    <xsl:value-of select="&quot;SUCCESS&quot;"/>
+                </pfx16:Status>
+                <pfx16:Message>
+                    <xsl:value-of select="concat(&quot;CaseCommandID=&quot;,$SFDCCreateCaseComment/outputMessage/pfx15:createResponse/pfx15:result[1]/pfx15:id)"/>
+                </pfx16:Message>
+            </pfx16:Result>
+        </CorpResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="CorpResponse" type="pfx16:SFDCSRCaseResultType"/>
+    </pd:endType>
+    <pd:endX>973</pd:endX>
+    <pd:endY>182</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx17:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1317276212736</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>291</pd:x>
+        <pd:y>373</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>561</pd:x>
+        <pd:y>376</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns12:ErrorReport/Data/*" element="pfx17:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx5:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_SFDC-Object-Generate-Error/pfx17:Error)">
+                            <pfx17:Error>
+                                <pfx17:error_code>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/MsgCode"/>
+                                </pfx17:error_code>
+                                <pfx17:stack_trace>
+                                    <xsl:value-of select="concat(&quot;SOAP Response Message:&lt;br> &lt;![CDATA[&quot;,$_error_SFDC-Object-Generate-Error/pfx17:Error/pfx17:error_message,&quot;]]> &lt;br>&quot;,$_error/ns12:ErrorReport/StackTrace)"/>
+                                </pfx17:stack_trace>
+                                <pfx17:process_stack>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/ProcessStack"/>
+                                </pfx17:process_stack>
+                                <pfx17:error_message>
+                                    <xsl:value-of select="$_error_SFDC-Object-Generate-Error/pfx17:Error/pfx17:error_message"/>
+                                </pfx17:error_message>
+                            </pfx17:Error>
+                        </xsl:when>
+                        <xsl:when test="exists($_error_SFDCCreateCaseComment/ActivityErrors)">
+                            <pfx17:Error>
+                                <pfx17:error_code>
+                                    <xsl:value-of select="'CreateSRCommandFail'"/>
+                                </pfx17:error_code>
+                                <pfx17:stack_trace>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/StackTrace"/>
+                                </pfx17:stack_trace>
+                                <pfx17:process_stack>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/ProcessStack"/>
+                                </pfx17:process_stack>
+                                <xsl:if test="$_error/ns12:ErrorReport/Msg">
+                                    <pfx17:error_message>
+                                        <xsl:value-of select="$_error/ns12:ErrorReport/Msg"/>
+                                    </pfx17:error_message>
+                                </xsl:if>
+                            </pfx17:Error>
+                        </xsl:when>
+                        <xsl:when test="exists($_error/ns12:ErrorReport/Data/pfx17:Error)">
+                            <xsl:copy-of select="$_error/ns12:ErrorReport/Data/pfx17:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx17:Error>
+                                <pfx17:error_code>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/MsgCode"/>
+                                </pfx17:error_code>
+                                <pfx17:stack_trace>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/StackTrace"/>
+                                </pfx17:stack_trace>
+                                <pfx17:process_stack>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/ProcessStack"/>
+                                </pfx17:process_stack>
+                                <xsl:if test="$_error/ns12:ErrorReport/Msg">
+                                    <pfx17:error_message>
+                                        <xsl:value-of select="$_error/ns12:ErrorReport/Msg"/>
+                                    </pfx17:error_message>
+                                </xsl:if>
+                            </pfx17:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>852</pd:x>
+        <pd:y>183</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <Log>
+                <ns1:DBLogger>
+                    <ns1:MessageHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="$CreateSFDCCaseCaseComment/root/PortalSourceID"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="'SFDC_CreateSRCaseCommand'"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="&quot;BW&quot;"/>
+                        </ns1:SourceID>
+                        <ns1:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RqTimestamp>
+                        <ns1:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RsTimestamp>
+                    </ns1:MessageHeader>
+                    <ns1:MessageBody>
+                        <xsl:copy-of select="$SFDCCreateCaseComment/outputMessage/pfx15:createResponse/pfx15:result"/>
+                    </ns1:MessageBody>
+                </ns1:DBLogger>
+                <message>
+                    <xsl:value-of select="concat('SR Comment created, SR Number: ',$SFDCCreateCaseComment/outputMessage/pfx15:createResponse/pfx15:result[1]/pfx15:id,&#xA;&quot;\n PortalSourceID : &quot;,$CreateSFDCCaseCaseComment/root/PortalSourceID)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'SFDC_CreateSRCaseCommentRS'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFDCLogin">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>201</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/Login.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>301</pd:x>
+        <pd:y>14</pd:y>
+        <pd:width>363</pd:width>
+        <pd:height>315</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>totoalComment</pd:outSlot>
+            <pd:activityOutputName>SFDCCreateCaseComment</pd:activityOutputName>
+            <pd:repeatCondition>$i &gt; $_globalVariables/ns5:GlobalVariables/Services/G2Service/SFDC_CreateSRCase/V1.0/retryTimes or exists($SFDCCreateCaseComment/outputMessage/pfx15:createResponse/pfx15:result)</pd:repeatCondition>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SFDCCreateCaseComment</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SFDCCreateCaseComment</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SFDCCreateCaseComment</pd:from>
+            <pd:to>SFDC Object Generate Error</pd:to>
+            <pd:xpathDescription>success=false</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-6750157</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$SFDCCreateCaseComment/outputMessage/pfx15:createResponse/pfx15:result/pfx15:success="false" or 
+$SFDCCreateCaseComment/outputMessage/pfx15:createResponse/pfx15:result/pfx15:success=0</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SFDCCreateCaseComment</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i &lt; $_globalVariables/ns5:GlobalVariables/Services/G2Service/SFDC_CreateSRCase/V1.0/retryTimes and exists($_error_SFDCCreateCaseComment/ActivityErrors/pfx21:ActivityTimedOutException)</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>SFDC CreateComment Fail</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-6750157</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="SFDCCreateCaseComment">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>394</pd:x>
+            <pd:y>75</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx15:SforceService</service>
+                <servicePort>Soap</servicePort>
+                <operation>create</operation>
+                <soapAction/>
+                <endpointURL>%%Services/G2Service/EndpointURL%%</endpointURL>
+                <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                    <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                    <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+                </ns0:ssl>
+                <useProxy>true</useProxy>
+                <proxyName>/Resources/HTTP/Proxy Configuration.httpProxy</proxyName>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <headers>
+                        <Header.SessionHeader>
+                            <pfx15:SessionHeader>
+                                <pfx15:sessionId>
+                                    <xsl:value-of select="$SFDCLogin/root/SessionID"/>
+                                </pfx15:sessionId>
+                            </pfx15:SessionHeader>
+                        </Header.SessionHeader>
+                        <Header.AssignmentRuleHeader/>
+                        <Header.MruHeader/>
+                        <Header.AllowFieldTruncationHeader/>
+                        <Header.DisableFeedTrackingHeader/>
+                        <Header.StreamingEnabledHeader/>
+                        <Header.AllOrNoneHeader/>
+                        <Header.DuplicateRuleHeader/>
+                        <Header.LocaleOptions/>
+                        <Header.DebuggingHeader/>
+                        <Header.PackageVersionHeader/>
+                        <Header.EmailHeader/>
+                    </headers>
+                    <pfx15:create>
+                        <pfx15:sObjects xsi:type="pfx14:CaseComment">
+                            <pfx14:Id xsi:nil="true"/>
+                            <pfx14:CommentBody>
+                                <xsl:value-of select="$CreateSFDCCaseCaseComment/root/PrivateNotes"/>
+                            </pfx14:CommentBody>
+                            <pfx14:ParentId>
+                                <xsl:value-of select="$CreateSFDCCaseCaseComment/root/CaseID"/>
+                            </pfx14:ParentId>
+                        </pfx15:sObjects>
+                    </pfx15:create>
+                    <ns0:_configData>
+                        <endpointURL>
+                            <xsl:value-of select="$SFDCLogin/root/ServerURL"/>
+                        </endpointURL>
+                    </ns0:_configData>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="SFDC Object Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>577</pd:x>
+            <pd:y>84</pd:y>
+            <config>
+                <faultName>errorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <pfx5:ActivityInput>
+                    <data>
+                        <pfx17:Error>
+                            <pfx17:error_code>
+                                <xsl:value-of select="&quot;CreateSRCommandFail&quot;"/>
+                            </pfx17:error_code>
+                            <pfx17:stack_trace>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </pfx17:stack_trace>
+                            <pfx17:process_stack>
+                                <xsl:value-of select="tib:render-xml($_processContext/ns12:ProcessContext/TrackingInfo[1], 1)"/>
+                            </pfx17:process_stack>
+                            <pfx17:error_message>
+                                <xsl:value-of select="tib:render-xml($SFDCCreateCaseComment/outputMessage/pfx15:createResponse, 1)"/>
+                            </pfx17:error_message>
+                        </pfx17:Error>
+                    </data>
+                </pfx5:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>559</pd:x>
+            <pd:y>197</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns7:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Services/G2Service/SFDC_CreateSRCase/V1.0/sleepms"/>
+                    </IntervalInMillisec>
+                </ns7:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>400</pd:x>
+            <pd:y>196</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="SFDC CreateComment Fail">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>501</pd:x>
+            <pd:y>261</pd:y>
+            <config>
+                <faultName>errorReport</faultName>
+            </config>
+            <pd:inputBindings>
+                <pfx5:ActivityInput>
+                    <data>
+                        <pfx17:Error>
+                            <pfx17:error_code>
+                                <xsl:value-of select="$_error/ns12:ErrorReport/MsgCode"/>
+                            </pfx17:error_code>
+                            <pfx17:stack_trace>
+                                <xsl:value-of select="$_error/ns12:ErrorReport/StackTrace"/>
+                            </pfx17:stack_trace>
+                            <pfx17:process_stack>
+                                <xsl:value-of select="$_error/ns12:ErrorReport/ProcessStack"/>
+                            </pfx17:process_stack>
+                            <pfx17:error_message>
+                                <xsl:value-of select="$_error/ns12:ErrorReport/Msg"/>
+                            </pfx17:error_message>
+                        </pfx17:Error>
+                    </data>
+                </pfx5:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Fail Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>416</pd:x>
+        <pd:y>374</pd:y>
+        <config>
+            <processName>/Services/SharedOperations/Log Process.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns12:ErrorReport/Data/*" element="pfx17:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Log>
+                <ns1:DBLogger>
+                    <ns1:MessageHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="$CreateSFDCCaseCaseComment/root/PortalSourceID"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="'SFDC_CreateSRCaseCommand'"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="&quot;BW&quot;"/>
+                        </ns1:SourceID>
+                        <ns1:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RqTimestamp>
+                        <ns1:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns1:RsTimestamp>
+                    </ns1:MessageHeader>
+                    <ns1:MessageBody>
+                        <xsl:copy-of select="$CreateSFDCCaseCaseComment/root"/>
+                    </ns1:MessageBody>
+                    <xsl:choose>
+                        <xsl:when test="$_error/ns12:ErrorReport/Data/pfx17:Error/pfx17:error_message !=&quot;&quot;">
+                            <xsl:copy-of select="$_error/ns12:ErrorReport/Data/pfx17:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx17:Error>
+                                <pfx17:error_code>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/MsgCode"/>
+                                </pfx17:error_code>
+                                <pfx17:stack_trace>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/StackTrace"/>
+                                </pfx17:stack_trace>
+                                <pfx17:process_stack>
+                                    <xsl:value-of select="$_error/ns12:ErrorReport/ProcessStack"/>
+                                </pfx17:process_stack>
+                                <xsl:if test="$_error/ns12:ErrorReport/Msg">
+                                    <pfx17:error_message>
+                                        <xsl:value-of select="$_error/ns12:ErrorReport/Msg"/>
+                                    </pfx17:error_message>
+                                </xsl:if>
+                            </pfx17:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns1:DBLogger>
+                <message>
+                    <xsl:value-of select="concat('SR Comment created, SR Number: ',$SFDCCreateCaseComment/outputMessage/pfx15:createResponse/pfx15:result[1]/pfx15:id,&#xA;&quot;\n PortalSourceID : &quot;,$CreateSFDCCaseCaseComment/root/PortalSourceID)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="'SFDC_CreateSRCaseComment Fail'"/>
+                </messageCode>
+            </Log>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>730</pd:x>
+        <pd:y>182</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Result Count&quot;, count($totoalComment/AccumulatedOutput/outputMessage),&quot; , Result=&quot;,tib:render-xml($totoalComment/AccumulatedOutput, 1))"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="&quot;toatl Comment&quot;"/>
+                </msgCode>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Log Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Fail Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFDCLogin</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateSFDCCaseCaseComment</pd:from>
+        <pd:to>SFDCLogin</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Fail Log</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Log Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

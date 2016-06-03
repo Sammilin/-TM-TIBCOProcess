@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/schemas/GCCPortal/XSD/G2/AMSS Solution Provided/SendSolnForMultiTasks.xsd" xmlns:ns22="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/GCCSRCaseActivity.xsd" xmlns:ns5="http://www.trendmicro.com/G2/SFDC_CreateMalwareEmailNotificationRq" xmlns:ns6="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_TSSupportEmail.xsd" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns42="www.tibco.com/plugin/Sleep" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns0="http://www.trendmicro.com/G2/SFDC_CreateSRActivityRq.xsd" xmlns:pfx5="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDCSRCaseResult.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/pe/DeployedVarsType" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/schemas/GCCPortal/WSDL/Client/AMSS Solution Provided/SendSolnForMultiTasksRq.xsd" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pfx7="http://www.tibco.com/schemas/GCCPortal/XSD/PSC/Result.xsd" xmlns:pfx6="http://schemas.xmlsoap.org/soap/envelope/">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/GCCPortal/WSDL/Client/AMSS Solution Provided/SendSolnForMultiTasksRq.xsd" schemaLocation="/WSDL/Client/AMSS Solution Provided XSD/SendSolnForMultiTasksRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader" schemaLocation="/XSD/Common/messageheader.xsd"/>
+    <pd:name>Services/G2Service/ShareProcess/SendMailNotificationToSFDC.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="SRNumber" type="xsd:string"/>
+                    <xsd:element name="TaskIDs" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="SHA1" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="RequestHeader" type="ns1:RequestHeader"/>
+                    <xsd:element name="SolutionInfo">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Description" type="xsd:string"/>
+                                <xsd:element name="Source" type="xsd:string"/>
+                                <xsd:element name="Type" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>60</pd:startX>
+    <pd:startY>80</pd:startY>
+    <pd:returnBindings>
+        <reuslt>
+            <xsl:choose>
+                <xsl:when test="if ($Get-Main-Info-From-SFDC/CaseMainInfo/IsThreatService=&quot;true&quot; or  &#xA;(exists($CreateMalwareEmailNotification/Response/pfx7:Result/pfx7:Status)  and $CreateMalwareEmailNotification/Response/pfx7:Result/pfx7:Status ='SUCCESS'))  then&#xA;true()&#xA;else&#xA;false()">
+                    <isSuccess>
+                        <xsl:value-of select="1"/>
+                    </isSuccess>
+                </xsl:when>
+                <xsl:otherwise>
+                    <isSuccess>
+                        <xsl:value-of select="1"/>
+                    </isSuccess>
+                </xsl:otherwise>
+            </xsl:choose>
+            <SRNumber>
+                <xsl:value-of select="$Start/input/SRNumber"/>
+            </SRNumber>
+            <ActivityID>
+                <xsl:value-of select="$CreateMalwareEmailNotification/Response/pfx7:Result/pfx7:ID"/>
+            </ActivityID>
+        </reuslt>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="reuslt">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="isSuccess" type="xsd:boolean"/>
+                    <xsd:element name="SRNumber" type="xsd:string"/>
+                    <xsd:element name="Activity-TaskIdList" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="ActivityID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1177</pd:endX>
+    <pd:endY>79</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessege ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1419909256900</pd:targetNamespace>
+    <pd:activity name="Get Main Info From SFDC">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>317</pd:x>
+        <pd:y>92</pd:y>
+        <config>
+            <processName>/Services/G2Service/AMSS Solution Provided/SendSolnForMultiTasks/V1.0/Get Main Info From SFDC.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CaseNumber>
+                    <xsl:value-of select="$Start/input/SRNumber"/>
+                </CaseNumber>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InsertAMSSEILog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>184</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/SP/InsertAMSSEILog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <MessageKey>
+                    <xsl:value-of select="$Start/input/RequestHeader/ns1:MessageKey"/>
+                </MessageKey>
+                <FileSHA1>
+                    <xsl:value-of select="$Start/input/SHA1"/>
+                </FileSHA1>
+                <Status>
+                    <xsl:value-of select="&quot;Start&quot;"/>
+                </Status>
+                <EI_InputXML>
+                    <xsl:value-of select="tib:render-xml($Start/input, 1)"/>
+                </EI_InputXML>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InsertAMSSEILog End">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>894</pd:x>
+        <pd:y>89</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/SP/InsertAMSSEILog.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <MessageKey>
+                    <xsl:value-of select="$Start/input/RequestHeader/ns1:MessageKey"/>
+                </MessageKey>
+                <FileSHA1>
+                    <xsl:value-of select="$Start/input/SHA1"/>
+                </FileSHA1>
+                <Status>
+                    <xsl:value-of select="&quot;End&quot;"/>
+                </Status>
+                <EI_InputXML>
+                    <xsl:value-of select="tib:render-xml($Start/input, 1)"/>
+                </EI_InputXML>
+                <xsl:choose>
+                    <xsl:when test="$Get-Main-Info-From-SFDC/CaseMainInfo/IsThreatService=&quot;false&quot;">
+                        <EI_OutputXML>
+                            <xsl:value-of select="tib:render-xml($CreateMalwareEmailNotification/Response, 1)"/>
+                        </EI_OutputXML>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <EI_OutputXML>
+                            <xsl:value-of select="concat(&quot;isThreatSerivce, SRNubmer=&quot;, $Start/input/SRNumber)"/>
+                        </EI_OutputXML>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetTQAMailTemplate">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>317</pd:x>
+        <pd:y>271</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/GetTQAMailTemplate.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <MessageKey>
+                    <xsl:value-of select="$Start/input/RequestHeader/ns1:MessageKey"/>
+                </MessageKey>
+                <JsonData>
+                    <xsl:value-of select="concat(&#xA;'{&quot;ContactFirstName&quot;:&quot;',$Get-Main-Info-From-SFDC/CaseMainInfo/ContactFirstName&#xA;,'&quot;,&quot;ContactLastName&quot;:&quot;',$Get-Main-Info-From-SFDC/CaseMainInfo/ContactLastName&#xA;,'&quot;,&quot;SRType&quot;:&quot;',$Get-Main-Info-From-SFDC/CaseMainInfo/SRType&#xA;,'&quot;,&quot;SRNumber&quot;:&quot;',$Start/input/SRNumber&#xA;,'&quot;,&quot;Title&quot;:&quot;',$Get-Main-Info-From-SFDC/CaseMainInfo/SRTitle&#xA;,'&quot;,&quot;AMSSCommunicationBody&quot;:&quot;',$Start/input/SolutionInfo/Description&#xA;,'&quot;}'&#xA;)"/>
+                </JsonData>
+                <TmpType>
+                    <xsl:value-of select="49"/>
+                </TmpType>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="CreateMalwareEmailNotification With Retry">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>458</pd:x>
+        <pd:y>94</pd:y>
+        <pd:width>313</pd:width>
+        <pd:height>331</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>CreateRetryCount</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>false() or exists($CreateMalwareEmailNotification/Response/pfx7:Result)</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>CreateMalwareEmailNotification</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CreateMalwareEmailNotification</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep-1</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null-1</pd:from>
+            <pd:to>Sleep-1</pd:to>
+            <pd:xpathDescription>Retry</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null-1</pd:from>
+            <pd:to>Generate-Error-1</pd:to>
+            <pd:xpathDescription>Reach the limit</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$CreateRetryCount &gt; $_globalVariables/pfx4:GlobalVariables/Services/G2Service/AMSSSolutionProvided/SendSolnForMultiTasks/V1.0/RetryTimes</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CreateMalwareEmailNotification</pd:from>
+            <pd:to>Null-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65434</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Null-1">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>536</pd:x>
+            <pd:y>275</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep-1">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>698</pd:x>
+            <pd:y>275</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns42:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="1000 * $_globalVariables/pfx4:GlobalVariables/Services/G2Service/AMSSSolutionProvided/SendSolnForMultiTasks/V1.0/WaittingSec"/>
+                    </IntervalInMillisec>
+                </ns42:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate-Error-1">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>648</pd:x>
+            <pd:y>367</pd:y>
+            <config>
+                <faultName>ErrorMessege</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns4:ActivityInput>
+                    <data>
+                        <xsl:copy-of select="$_error_CreateMalwareEmailNotification/pfx2:Error"/>
+                    </data>
+                </ns4:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="CreateMalwareEmailNotification">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>619</pd:x>
+            <pd:y>173</pd:y>
+            <config>
+                <processName>/Services/G2Service/SFDC_CreateMalwareEmailNotification/V1.0/ExecuteRequest.process</processName>
+            </config>
+            <pd:inputBindings>
+                <ns5:SFDC_CreateMalwareEmailNotificationRq>
+                    <ns5:RequestHeader>
+                        <ns1:MessageKey>
+                            <xsl:value-of select="$Start/input/RequestHeader/ns1:MessageKey"/>
+                        </ns1:MessageKey>
+                        <ns1:ServiceName>
+                            <xsl:value-of select="&quot;SFDC_CreateMalwareEmailNotification&quot;"/>
+                        </ns1:ServiceName>
+                        <ns1:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns1:ServiceVersion>
+                        <ns1:SourceID>
+                            <xsl:value-of select="$Start/input/RequestHeader/ns1:SourceID"/>
+                        </ns1:SourceID>
+                        <xsl:if test="$Start/input/RequestHeader/ns1:RqTimestamp">
+                            <ns1:RqTimestamp>
+                                <xsl:value-of select="$Start/input/RequestHeader/ns1:RqTimestamp"/>
+                            </ns1:RqTimestamp>
+                        </xsl:if>
+                    </ns5:RequestHeader>
+                    <ns5:RequestBody>
+                        <ns6:Scenario>
+                            <xsl:value-of select="6"/>
+                        </ns6:Scenario>
+                        <ns6:NotificationName>
+                            <xsl:value-of select="&quot;AMSS Task Solution Provided&quot;"/>
+                        </ns6:NotificationName>
+                        <ns6:ThreatService>
+                            <xsl:value-of select="''"/>
+                        </ns6:ThreatService>
+                        <ns6:CaseNumber>
+                            <xsl:value-of select="$Get-Main-Info-From-SFDC/CaseMainInfo/Id"/>
+                        </ns6:CaseNumber>
+                        <ns6:Type>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns6:Type>
+                        <ns6:Message>
+                            <xsl:value-of select="$GetTQAMailTemplate/root/Template"/>
+                        </ns6:Message>
+                    </ns5:RequestBody>
+                </ns5:SFDC_CreateMalwareEmailNotificationRq>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1032</pd:x>
+        <pd:y>252</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+            <fault>localname=Error namespace=http://www.trendmicro.com/ESB/schemas/error</fault>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ErrorHandling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1180</pd:x>
+        <pd:y>253</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/ErrorHandling.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns2:ErrorReport/Data/*" element="pfx2:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <root>
+                <isResend>
+                    <xsl:value-of select="0"/>
+                </isResend>
+                <isReply>
+                    <xsl:value-of select="0"/>
+                </isReply>
+                <ns3:DBLogger>
+                    <xsl:for-each select="$Start/input/RequestHeader">
+                        <ns3:MessageHeader>
+                            <ns3:MessageKey>
+                                <xsl:value-of select="ns1:MessageKey"/>
+                            </ns3:MessageKey>
+                            <ns3:ServiceName>
+                                <xsl:value-of select="ns1:ServiceName"/>
+                            </ns3:ServiceName>
+                            <ns3:ServiceVersion>
+                                <xsl:value-of select="ns1:ServiceVersion"/>
+                            </ns3:ServiceVersion>
+                            <ns3:SourceID>
+                                <xsl:value-of select="ns1:SourceID"/>
+                            </ns3:SourceID>
+                            <xsl:if test="ns1:RqTimestamp">
+                                <ns3:RqTimestamp>
+                                    <xsl:value-of select="ns1:RqTimestamp"/>
+                                </ns3:RqTimestamp>
+                            </xsl:if>
+                            <xsl:if test="ns1:RsTimestamp">
+                                <ns3:RsTimestamp>
+                                    <xsl:value-of select="ns1:RsTimestamp"/>
+                                </ns3:RsTimestamp>
+                            </xsl:if>
+                        </ns3:MessageHeader>
+                    </xsl:for-each>
+                    <ns3:MessageBody>
+                        <xsl:copy-of select="$Start/input"/>
+                    </ns3:MessageBody>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Get-Main-Info-From-SFDC/pfx2:Error)">
+                            <xsl:copy-of select="$_error_Get-Main-Info-From-SFDC/pfx2:Error"/>
+                        </xsl:when>
+                        <xsl:when test="exists($_error_GetTQAMailTemplate/pfx:Error)">
+                            <xsl:for-each select="$_error_GetTQAMailTemplate/pfx:Error">
+                                <pfx2:Error>
+                                    <pfx2:error_code>
+                                        <xsl:value-of select="pfx:error_code"/>
+                                    </pfx2:error_code>
+                                    <pfx2:stack_trace>
+                                        <xsl:value-of select="pfx:stack_trace"/>
+                                    </pfx2:stack_trace>
+                                    <pfx2:process_stack>
+                                        <xsl:value-of select="pfx:src"/>
+                                    </pfx2:process_stack>
+                                    <pfx2:error_message>
+                                        <xsl:value-of select="pfx:error_message"/>
+                                    </pfx2:error_message>
+                                </pfx2:Error>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:when test="exists($_error/ns2:ErrorReport/Data/pfx2:Error)">
+                            <xsl:copy-of select="$_error/ns2:ErrorReport/Data/pfx2:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                                <pfx2:process_stack>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </pfx2:process_stack>
+                                <xsl:if test="$_error/ns2:ErrorReport/Msg">
+                                    <pfx2:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                    </pfx2:error_message>
+                                </xsl:if>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns3:DBLogger>
+                <resend>
+                    <resendDestination>
+                        <xsl:value-of select="''"/>
+                    </resendDestination>
+                    <resendcount>
+                        <xsl:value-of select="''"/>
+                    </resendcount>
+                </resend>
+                <ErrReply>
+                    <pfx6:Envelope>
+                        <pfx6:Body>
+                            <xsl:copy-of select="$Catch/exceptiondata"/>
+                        </pfx6:Body>
+                    </pfx6:Envelope>
+                </ErrReply>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>InsertAMSSEILog</pd:from>
+        <pd:to>Get Main Info From SFDC</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InsertAMSSEILog End</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrorHandling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorHandling</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>InsertAMSSEILog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Main Info From SFDC</pd:from>
+        <pd:to>GetTQAMailTemplate</pd:to>
+        <pd:xpathDescription>IsThreatService="false"</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-Main-Info-From-SFDC/CaseMainInfo/IsThreatService="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetTQAMailTemplate</pd:from>
+        <pd:to>CreateMalwareEmailNotification With Retry</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreateMalwareEmailNotification With Retry</pd:from>
+        <pd:to>InsertAMSSEILog End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Main Info From SFDC</pd:from>
+        <pd:to>InsertAMSSEILog End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

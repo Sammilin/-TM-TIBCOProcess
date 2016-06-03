@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Services/G2Service/ShareProcess/CheckTaskConsumer.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="consumer_name" type="xsd:string"/>
+                    <xsd:element name="taskId" type="xsd:string"/>
+                    <xsd:element name="SRNumber" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <resultSet>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <Record>
+                    <xsl:if test="not((column[name='HasRecord']/value/@xsi:nil=(&quot;true&quot;)) or (column[name='HasRecord']/value/@xsi:nil=(&quot;1&quot;)))">
+                        <HasRecord>
+                            <xsl:value-of select="column[name='HasRecord']/value"/>
+                        </HasRecord>
+                    </xsl:if>
+                </Record>
+            </xsl:for-each>
+        </resultSet>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="resultSet">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Record" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="HasRecord" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1446524114913</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>281</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/DBconnect/JDBC Connection NeuronDB.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;select 1 as HasRecord from ACS.TBL_SERVICE_CONSUMER_MAIN (nolock) a&quot;,&#xA;&quot; inner join ACS.TBL_NEURON_SERVICE_MAIN (nolock) b on b.[ServiceId] = a.ServiceID&quot;,&#xA;&quot; inner join ACS.TBL_APP_CONSUMER (nolock) c on c.[APP_CONSUMER_ID] = b.[ServiceConsumerID] and c.[APP_CONSUMER_NAME] = '&quot;,$Start/root/consumer_name,&quot;'&quot;,&#xA;&quot; where sourcecaseid &lt;> '' and sourcecaseid = '&quot;,$Start/root/SRNumber,&quot;'&quot;,&#xA;&quot; union &quot;,&#xA;&quot; select 2 as HasRecord &quot;,&#xA;&quot; from [ACS].[TBL_AMSS_INFO] (nolock) a&quot;,&#xA;&quot; inner join ACS.TBL_NEURON_SERVICE_MAIN (nolock) b on b.[ServiceId] = a.ServiceID&quot;,&#xA;&quot; inner join ACS.TBL_APP_CONSUMER (nolock) c on c.[APP_CONSUMER_ID] = b.[ServiceConsumerID] and c.[APP_CONSUMER_NAME] = '&quot;,$Start/root/consumer_name,&quot;'&quot;,&#xA;&quot; where a.TaskId &lt;> '' and a.TaskId='&quot;,$Start/root/taskId,&quot;'&quot;,&#xA;&quot; union&quot;,&#xA;&quot; select 3 as HasRecord&quot;,&#xA;&quot; from [ACS].[TBL_FILE_AMSS_INFO] (nolock) a&quot;,&#xA;&quot; inner join ACS.TBL_NEURON_SERVICE_MAIN (nolock) b on b.[ServiceId] = a.ServiceID&quot;,&#xA;&quot; inner join ACS.TBL_APP_CONSUMER (nolock) c on c.[APP_CONSUMER_ID] = b.[ServiceConsumerID] and c.[APP_CONSUMER_NAME] = '&quot;,$Start/root/consumer_name,&quot;'&quot;,&#xA;&quot; where a.TaskId &lt;> '' and a.TaskId='&quot;,$Start/root/taskId,&quot;'&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

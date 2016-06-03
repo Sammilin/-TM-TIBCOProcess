@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="urn:sobject.enterprise.soap.sforce.com" xmlns:ns="urn:enterprise.soap.sforce.com" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="urn:sobject.enterprise.soap.sforce.com" schemaLocation="/WSDL/Provider/TSSalesforceWSDL.wsdl"/>
+    <pd:name>Services/G2Service/AMSS Solution Provided/SendSolnForMultiTasks/V1.0/Get Main Info From SFDC.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CaseNumber" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnCoercions>
+        <pd:coercion xpath="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records" type="ns1:Case"/>
+    </pd:returnCoercions>
+    <pd:returnBindings>
+        <xsl:choose>
+            <xsl:when test="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:size =0">
+                <CaseMainInfo>
+                    <IsThreatService>
+                        <xsl:value-of select="1"/>
+                    </IsThreatService>
+                </CaseMainInfo>
+            </xsl:when>
+            <xsl:otherwise>
+                <CaseMainInfo>
+                    <xsl:if test="not(($GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Id/@xsi:nil=(&quot;true&quot;)) or ($GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Id/@xsi:nil=(&quot;1&quot;)))">
+                        <Id>
+                            <xsl:value-of select="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Id"/>
+                        </Id>
+                    </xsl:if>
+                    <CC_Receipts>
+                        <xsl:value-of select="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:TS_Email_CC_Recipients__c"/>
+                    </CC_Receipts>
+                    <Receipts>
+                        <xsl:value-of select="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Contact/ns1:Email"/>
+                    </Receipts>
+                    <ContactFirstName>
+                        <xsl:value-of select="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Contact/ns1:FirstName"/>
+                    </ContactFirstName>
+                    <ContactLastName>
+                        <xsl:value-of select="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Contact/ns1:LastName"/>
+                    </ContactLastName>
+                    <SRType>
+                        <xsl:value-of select="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:TS_Issue_Category__c"/>
+                    </SRType>
+                    <SRTitle>
+                        <xsl:value-of select="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Subject"/>
+                    </SRTitle>
+                    <IsThreatService>
+                        <xsl:value-of select="0"/>
+                    </IsThreatService>
+                    <xsl:if test="not(($GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:TS_Case_Thread_Id__c/@xsi:nil=(&quot;true&quot;)) or ($GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:TS_Case_Thread_Id__c/@xsi:nil=(&quot;1&quot;)))">
+                        <TS_Case_Thread_Id>
+                            <xsl:value-of select="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:TS_Case_Thread_Id__c"/>
+                        </TS_Case_Thread_Id>
+                    </xsl:if>
+                    <CaseOwner>
+                        <xsl:value-of select="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Owner/ns1:Email"/>
+                    </CaseOwner>
+                    <xsl:if test="not(($GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Status/@xsi:nil=(&quot;true&quot;)) or ($GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Status/@xsi:nil=(&quot;1&quot;)))">
+                        <Status>
+                            <xsl:value-of select="$GetCaseInfo/Output/ns:queryAllResponse/ns:result/ns:records[1]/ns1:Status"/>
+                        </Status>
+                    </xsl:if>
+                </CaseMainInfo>
+            </xsl:otherwise>
+        </xsl:choose>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="CaseMainInfo">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Id" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="CC_Receipts" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Receipts" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="ContactFirstName" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="ContactLastName" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="SRType" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="SRTitle" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="IsThreatService" type="xsd:boolean"/>
+                    <xsd:element name="TS_Case_Thread_Id" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="CaseOwner" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Status" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>632</pd:endX>
+    <pd:endY>66</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessege ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1419584381733</pd:targetNamespace>
+    <pd:activity name="Login">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>311</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/Login.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GetCaseInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>433</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/Query.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Sessionid>
+                    <xsl:value-of select="$Login/root/SessionID"/>
+                </Sessionid>
+                <QueryString>
+                    <xsl:value-of select="concat(&quot;select Id,TS_Email_CC_Recipients__c,Contact.Email,Contact.FirstName,Contact.LastName,TS_Issue_category__c,Subject,TS_Case_Thread_Id__c,owner.email,Status from Case where CaseNumber='&quot;,$Start/root/CaseNumber,&quot;'&quot;)"/>
+                </QueryString>
+                <ServerURL>
+                    <xsl:value-of select="$Login/root/ServerURL"/>
+                </ServerURL>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>315</pd:x>
+        <pd:y>224</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>496</pd:x>
+        <pd:y>223</pd:y>
+        <config>
+            <faultName>ErrorMessege</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Login/pfx:Error)">
+                            <xsl:copy-of select="$_error_Login/pfx:Error"/>
+                        </xsl:when>
+                        <xsl:when test="exists($_error_GetCaseInfo/pfx:Error)">
+                            <xsl:copy-of select="$_error_GetCaseInfo/pfx:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx:Error>
+                                <pfx:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                </pfx:error_code>
+                                <pfx:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </pfx:stack_trace>
+                                <pfx:process_stack>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </pfx:process_stack>
+                                <xsl:if test="$_error/ns2:ErrorReport/Msg">
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                    </pfx:error_message>
+                                </xsl:if>
+                            </pfx:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Login</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Login</pd:from>
+        <pd:to>GetCaseInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetCaseInfo</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>SR Exists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

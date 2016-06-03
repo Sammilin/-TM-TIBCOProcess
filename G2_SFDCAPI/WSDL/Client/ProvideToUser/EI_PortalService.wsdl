@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:ns2="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:ns1="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRs" xmlns:ns4="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd" xmlns:ns3="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRs" xmlns:tns="http://xmlns.example.com/1316598840510" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns0="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns5="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:ns6="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" xmlns:ns7="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns8="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" name="Untitled" targetNamespace="http://xmlns.example.com/1316598840510">
+    <wsdl:types>
+        <xs:schema xmlns="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:complexType name="PortalSRActType">
+                <xs:sequence>
+                    <xs:element name="ActBody" type="xs:string"/>
+                    <xs:element name="ActOwner" type="xs:string" minOccurs="0"/>
+                    <xs:element name="ActTitle" type="xs:string" minOccurs="0"/>
+                    <xs:element name="ActType" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Email" type="xs:string"/>
+                    <xs:element name="SRNumber" type="xs:string"/>
+                    <xs:element name="PortalSourceId" type="xs:string"/>
+                    <xs:element name="SourceSystem" type="xs:string"/>
+                    <xs:element name="Attachment" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="URL" type="xs:string" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ToNeuron" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:complexType name="PortalSRCaseType">
+                <xs:sequence>
+                    <xs:element name="Activity_ID" type="xs:string" minOccurs="0"/>
+                    <xs:element name="SR_ID" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Siebel_ERROR" type="xs:string" minOccurs="0"/>
+                    <xs:element name="TIBCO_RETURN_CODE" type="xs:string"/>
+                    <xs:element name="TIBCO_GUID" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRs" xmlns:ns1="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRs" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader"/>
+            <xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd"/>
+            <xs:element name="EI_CreatePortalCaseActRs">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ResponseHeader" type="ns0:RequestHeader"/>
+                        <xs:element name="ResponseBody" type="ns1:PortalSRActResultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRs" xmlns:ns1="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRs" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader"/>
+            <xs:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCaseResult.xsd"/>
+            <xs:element name="CreatePortalCaseMsgRs">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ResponseHeader" type="ns0:RequestHeader"/>
+                        <xs:element name="ResponseBody" type="ns1:PortalSRCaseType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRActResult.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:complexType name="PortalSRActResultType">
+                <xs:sequence>
+                    <xs:element name="ActivityID" type="xs:string" minOccurs="0"/>
+                    <xs:element name="CreateActMsg" type="xs:string" minOccurs="0"/>
+                    <xs:element name="CreateActResult" type="xs:string" minOccurs="0"/>
+                    <xs:element name="TIBCO_RETURN_CODE" type="xs:string"/>
+                    <xs:element name="TIBCO_GUID" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns0="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseRq" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd"/>
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader"/>
+            <xs:element name="CreatePortalCaseMsgRq">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="RequestHeader" type="ns1:RequestHeader"/>
+                        <xs:element name="RequestBody" type="ns0:PortalSRCaseType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xsd:schema xmlns="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.trendmicro.com/ESB/schemas/messageHeader" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xsd:complexType name="RequestHeader">
+                <xsd:sequence>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element name="ServiceName" type="xsd:string"/>
+                    <xsd:element name="ServiceVersion" type="xsd:string"/>
+                    <xsd:element name="SourceID" type="xsd:string"/>
+                    <xsd:element name="StatusCode" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="RqTimestamp" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="RsTimestamp" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="Message">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="RequestHeader" type="ns7:RequestHeader"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+        <xs:schema xmlns="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/GCCPortal/Portal/XSD/PortalSRCase.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:complexType name="PortalSRCaseType">
+                <xs:sequence>
+                    <xs:element name="PortalSRCase">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="PortalSourceID" type="xs:string"/>
+                                <xs:element name="ProductName" type="xs:string"/>
+                                <xs:element name="ProductVersion" type="xs:string"/>
+                                <xs:element name="ProductLanguage" type="xs:string"/>
+                                <xs:element name="OperatingSystem" type="xs:string"/>
+                                <xs:element name="SerialNumber" type="xs:string"/>
+                                <xs:element name="ActivationCode" type="xs:string" minOccurs="0"/>
+                                <xs:element name="PatternFileNumber" type="xs:string"/>
+                                <xs:element name="ScanEngineVersion" type="xs:string" minOccurs="0"/>
+                                <xs:element name="NumberofSeat" type="xs:string" minOccurs="0"/>
+                                <xs:element name="UserType" type="xs:string" minOccurs="0"/>
+                                <xs:element name="ProblemCategory" type="xs:string" minOccurs="0"/>
+                                <xs:element name="SubCategory" type="xs:string" minOccurs="0"/>
+                                <xs:element name="Priority" type="xs:string" minOccurs="0"/>
+                                <xs:element name="Description" type="xs:string"/>
+                                <xs:element name="InitialTroubleshootingPerformed" type="xs:string" minOccurs="0"/>
+                                <xs:element name="InternetConnections" type="xs:string" minOccurs="0"/>
+                                <xs:element name="Attachment" minOccurs="0">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element name="URL" type="xs:string" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                                <xs:element name="EmailAddress" type="xs:string"/>
+                                <xs:element name="Salutation" type="xs:string" minOccurs="0"/>
+                                <xs:element name="FirstName" type="xs:string"/>
+                                <xs:element name="LastName" type="xs:string"/>
+                                <xs:element name="PhoneNumber" type="xs:string"/>
+                                <xs:element name="Country" type="xs:string"/>
+                                <xs:element name="CompanyName" type="xs:string" minOccurs="0"/>
+                                <xs:element name="AccountID" type="xs:string" minOccurs="0"/>
+                                <xs:element name="AccountName" type="xs:string" minOccurs="0"/>
+                                <xs:element name="Areyouusingproxy" type="xs:string" minOccurs="0"/>
+                                <xs:element name="Areyouusingfirewall" type="xs:string" minOccurs="0"/>
+                                <xs:element name="PreferredLanguage" type="xs:string" minOccurs="0"/>
+                                <xs:element name="Wouldyouparticipateinasurvey" type="xs:string"/>
+                                <xs:element name="CDToutput" type="xs:string" minOccurs="0"/>
+                                <xs:element name="Title" type="xs:string"/>
+                                <xs:element name="BuildNumber" type="xs:string" minOccurs="0"/>
+                                <xs:element name="BetaProjectId" type="xs:string" minOccurs="0"/>
+                                <xs:element name="ProductGIC" type="xs:string"/>
+                                <xs:element name="SRType" type="xs:string"/>
+                                <xs:element name="QueryType" type="xs:string" minOccurs="0"/>
+                                <xs:element name="SolutionID" type="xs:string"/>
+                                <xs:element name="DidSearchDB" type="xs:string"/>
+                                <xs:element name="SubSystem" type="xs:string" minOccurs="0"/>
+                                <xs:element name="PortalSRTarget" type="xs:string"/>
+                                <xs:element name="CustExperience" type="xs:string" minOccurs="0"/>
+                                <xs:element name="UseProxyAuth" type="xs:string"/>
+                                <xs:element name="FirewallServer" type="xs:string"/>
+                                <xs:element name="UseFirewallAuth" type="xs:string"/>
+                                <xs:element name="FTPLocation" type="xs:string"/>
+                                <xs:element name="FTPUserNamePassword" type="xs:string"/>
+                                <xs:element name="UserType1" type="xs:string" minOccurs="0"/>
+                                <xs:element name="FirewallAuthenticationType" type="xs:string"/>
+                                <xs:element name="EntitlementID" type="xs:string" minOccurs="0"/>
+                                <xs:element name="SRSource" type="xs:string" minOccurs="0"/>
+                                <xs:element name="TIBCO_GUID" type="xs:string" minOccurs="0"/>
+                                <xs:element name="TSProdId" type="xs:string" minOccurs="0"/>
+                                <xs:element name="ToNeuron" type="xs:string" minOccurs="0"/>
+                                <xs:element name="EntitlementName" type="xs:string" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" xmlns:ns1="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd" xmlns:ns0="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.trendmicro.com/ESB/Services/Portal/EI_CreatePortalCaseActRq" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader"/>
+            <xs:import namespace="http://www.tibco.com/schemas/GCCPortal/XSD/Portal/PortalSRAct.xsd"/>
+            <xs:element name="EI_CreatePortalCaseActRq">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="RequestHeader" type="ns0:RequestHeader"/>
+                        <xs:element name="RequestBody" type="ns1:PortalSRActType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:service name="EI_GCC_Service">
+        <wsdl:port name="EI_GCCEndpoint1" binding="tns:EI_GCCEndpoint1Binding">
+            <soap:address location="http://localhost:50002/WSDL/Client/EI_GCC_Service.serviceagent/EI_GCCEndpoint1"/>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="EI_GCC">
+        <wsdl:operation name="EI_CreatePortalCaseAct">
+            <wsdl:input message="tns:EI_CreatePortalCaseActRq"/>
+            <wsdl:output message="tns:EI_CreatePortalCaseActRs"/>
+        </wsdl:operation>
+        <wsdl:operation name="EI_CreatePortalCase">
+            <wsdl:input message="tns:EI_CreatePortalCaseRq"/>
+            <wsdl:output message="tns:EI_CreatePortalCaseRs"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="EI_GCCEndpoint1Binding" type="tns:EI_GCC">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="EI_CreatePortalCaseAct">
+            <soap:operation style="document" soapAction="/WSDL/Client/EI_GCC_Service.serviceagent/EI_GCCEndpoint1/EI_CreatePortalCaseAct"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="EI_CreatePortalCaseActRqMsg"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="EI_CreatePortalCaseActRsMsg"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="EI_CreatePortalCase">
+            <soap:operation style="document" soapAction="/WSDL/Client/EI_GCC_Service.serviceagent/EI_GCCEndpoint1/EI_CreatePortalCase"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="EI_CreatePortalCaseRqMsg"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="EI_CreatePortalCaseRsMsg"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:message name="EI_CreatePortalCaseActRq">
+        <wsdl:part name="EI_CreatePortalCaseActRqMsg" element="ns0:EI_CreatePortalCaseActRq"/>
+    </wsdl:message>
+    <wsdl:message name="EI_CreatePortalCaseActRs">
+        <wsdl:part name="EI_CreatePortalCaseActRsMsg" element="ns1:EI_CreatePortalCaseActRs"/>
+    </wsdl:message>
+    <wsdl:message name="EI_CreatePortalCaseRq">
+        <wsdl:part name="EI_CreatePortalCaseRqMsg" element="ns2:CreatePortalCaseMsgRq"/>
+    </wsdl:message>
+    <wsdl:message name="EI_CreatePortalCaseRs">
+        <wsdl:part name="EI_CreatePortalCaseRsMsg" element="ns3:CreatePortalCaseMsgRs"/>
+    </wsdl:message>
+</wsdl:definitions>

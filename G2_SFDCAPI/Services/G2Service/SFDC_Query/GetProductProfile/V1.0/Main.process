@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:ns5="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileRq" xmlns:ns6="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileRs" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileListRq" xmlns:ns8="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileListRs" xmlns:ns4="http://www.tibco.com/schemas/GCCPortal/XSD/G2/GetProductProfileResult.xsd" xmlns:ns3="http://www.tibco.com/schemas/GCCPortal/XSD/GetProductProfileListResults.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/schemas/GCCPortal/XSD/G2/SFDC_Common_Type.xsd" xmlns:pfx2="http://schemas.xmlsoap.org/soap/envelope/">
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileListRq" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetProductProfileListRq.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileListRs" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetProductProfileListRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader" schemaLocation="/XSD/Common/messageheader.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileRs" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetProductProfileRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/SFDC/SFDC_GetProductProfileRq" schemaLocation="/WSDL/Client/G2XSD/SFDC_GetProductProfileRq.xsd"/>
+    <pd:name>Services/G2Service/SFDC_Query/GetProductProfile/V1.0/Main.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>94</pd:x>
+        <pd:y>76</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/G2Service/SFDC_Query/GetProductProfile/V1.0/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>712</pd:endX>
+    <pd:endY>238</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <MessageHeader ref="ns2:Message"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1423559491026</pd:targetNamespace>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>231</pd:x>
+        <pd:y>239</pd:y>
+        <config>
+            <variableName>MessageHeader</variableName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-XML/pfx2:Envelope/pfx2:Body/*" element="ns5:SFDC_GetProductProfileRq"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($_error_Render-XML/ActivityErrors)">
+                    <ns2:Message>
+                        <ns2:RequestHeader>
+                            <ns2:MessageKey>
+                                <xsl:value-of select="TM:getGUID()"/>
+                            </ns2:MessageKey>
+                            <ns2:ServiceName>
+                                <xsl:value-of select="&quot;getProductProfile&quot;"/>
+                            </ns2:ServiceName>
+                            <ns2:ServiceVersion>
+                                <xsl:value-of select="&quot;V1.0&quot;"/>
+                            </ns2:ServiceVersion>
+                            <ns2:SourceID>
+                                <xsl:value-of select="&quot;ParsingFail&quot;"/>
+                            </ns2:SourceID>
+                            <ns2:RqTimestamp>
+                                <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss zzz&quot;,current-dateTime())"/>
+                            </ns2:RqTimestamp>
+                            <ns2:RsTimestamp>
+                                <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss zzz&quot;,current-dateTime())"/>
+                            </ns2:RsTimestamp>
+                        </ns2:RequestHeader>
+                    </ns2:Message>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ns2:Message>
+                        <ns2:RequestHeader>
+                            <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestHeader/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestHeader/@*"/>
+                            <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestHeader/node()"/>
+                        </ns2:RequestHeader>
+                    </ns2:Message>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>365</pd:x>
+        <pd:y>77</pd:y>
+        <config>
+            <processName>/Services/G2Service/SFDC_Query/GetProductProfile/V1.0/ExecuteRequest.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-XML/pfx2:Envelope/pfx2:Body/*" element="ns5:SFDC_GetProductProfileRq"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns5:SFDC_GetProductProfileRq>
+                <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestHeader"/>
+                <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestBody"/>
+            </ns5:SFDC_GetProductProfileRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>100</pd:x>
+        <pd:y>238</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ErrorHandling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>394</pd:x>
+        <pd:y>239</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/ErrorHandling.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns7:ErrorReport/Data/*" element="ns8:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <root>
+                <isResend>
+                    <xsl:value-of select="0"/>
+                </isResend>
+                <isReply>
+                    <xsl:value-of select="1"/>
+                </isReply>
+                <SubjectMessage>
+                    <xsl:value-of select="&quot;[G2 Service]GetProductProfile Fail&quot;"/>
+                </SubjectMessage>
+                <ns9:DBLogger>
+                    <xsl:for-each select="$MessageHeader/ns2:Message/ns2:RequestHeader">
+                        <ns9:MessageHeader>
+                            <ns9:MessageKey>
+                                <xsl:value-of select="ns2:MessageKey"/>
+                            </ns9:MessageKey>
+                            <ns9:ServiceName>
+                                <xsl:value-of select="ns2:ServiceName"/>
+                            </ns9:ServiceName>
+                            <ns9:ServiceVersion>
+                                <xsl:value-of select="ns2:ServiceVersion"/>
+                            </ns9:ServiceVersion>
+                            <ns9:SourceID>
+                                <xsl:value-of select="ns2:SourceID"/>
+                            </ns9:SourceID>
+                            <xsl:if test="ns2:RqTimestamp">
+                                <ns9:RqTimestamp>
+                                    <xsl:value-of select="ns2:RqTimestamp"/>
+                                </ns9:RqTimestamp>
+                            </xsl:if>
+                            <xsl:if test="ns2:RsTimestamp">
+                                <ns9:RsTimestamp>
+                                    <xsl:value-of select="ns2:RsTimestamp"/>
+                                </ns9:RsTimestamp>
+                            </xsl:if>
+                        </ns9:MessageHeader>
+                    </xsl:for-each>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Parse-XML/ActivityErrors)">
+                            <xsl:for-each select="$JMS-Queue-Receiver/ns:ActivityOutput/Body">
+                                <ns9:MessageBody/>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns9:MessageBody>
+                                <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestBody/ancestor-or-self::*/namespace::node()"/>
+                                <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestBody/@*"/>
+                                <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestBody/node()"/>
+                            </ns9:MessageBody>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns7:ErrorReport/Data/ns8:Error)">
+                            <xsl:copy-of select="$_error/ns7:ErrorReport/Data/ns8:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns8:Error>
+                                <ns8:error_code>
+                                    <xsl:value-of select="$_error/ns7:ErrorReport/MsgCode"/>
+                                </ns8:error_code>
+                                <ns8:stack_trace>
+                                    <xsl:value-of select="$_error/ns7:ErrorReport/StackTrace"/>
+                                </ns8:stack_trace>
+                                <ns8:process_stack>
+                                    <xsl:value-of select="$_error/ns7:ErrorReport/ProcessStack"/>
+                                </ns8:process_stack>
+                                <xsl:if test="$_error/ns7:ErrorReport/Msg">
+                                    <ns8:error_message>
+                                        <xsl:value-of select="$_error/ns7:ErrorReport/Msg"/>
+                                    </ns8:error_message>
+                                </xsl:if>
+                            </ns8:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns9:DBLogger>
+                <resend>
+                    <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/ResendCount">
+                        <resendcount>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/ResendCount"/>
+                        </resendcount>
+                    </xsl:if>
+                </resend>
+                <ErrReply>
+                    <pfx2:Envelope>
+                        <pfx2:Body>
+                            <ns6:SFDC_GetProductProfileRs>
+                                <ns6:ResponseHeader>
+                                    <xsl:copy-of select="$MessageHeader/ns2:Message/ns2:RequestHeader/ancestor-or-self::*/namespace::node()"/>
+                                    <xsl:copy-of select="$MessageHeader/ns2:Message/ns2:RequestHeader/@*"/>
+                                    <xsl:copy-of select="$MessageHeader/ns2:Message/ns2:RequestHeader/node()"/>
+                                </ns6:ResponseHeader>
+                                <ns6:ResponseBody>
+                                    <ns6:Error>
+                                        <pfx3:Status>
+                                            <xsl:value-of select="&quot;ERROR&quot;"/>
+                                        </pfx3:Status>
+                                        <pfx3:Message>
+                                            <xsl:value-of select="tib:render-xml($Catch/exceptiondata,1)"/>
+                                        </pfx3:Message>
+                                        <pfx3:ID>
+                                            <xsl:value-of select="$MessageHeader/ns2:Message/ns2:RequestHeader/ns2:MessageKey"/>
+                                        </pfx3:ID>
+                                    </ns6:Error>
+                                </ns6:ResponseBody>
+                            </ns6:SFDC_GetProductProfileRs>
+                        </pfx2:Body>
+                    </pfx2:Envelope>
+                </ErrReply>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>230</pd:x>
+        <pd:y>76</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx2:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>509</pd:x>
+        <pd:y>76</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx2:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:Envelope>
+                <pfx2:Body>
+                    <ns6:SFDC_GetProductProfileRs>
+                        <ns6:ResponseHeader>
+                            <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestHeader/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestHeader/@*"/>
+                            <xsl:copy-of select="$Parse-XML/pfx2:Envelope/pfx2:Body/ns5:SFDC_GetProductProfileRq/ns5:RequestHeader/node()"/>
+                        </ns6:ResponseHeader>
+                        <ns6:ResponseBody>
+                            <ns6:Result>
+                                <ns4:ResultSet1>
+                                    <xsl:copy-of select="$Call-Process/root/param/ns4:ResultSet1/ns4:Record1"/>
+                                </ns4:ResultSet1>
+                            </ns6:Result>
+                        </ns6:ResponseBody>
+                    </ns6:SFDC_GetProductProfileRs>
+                </pfx2:Body>
+            </pfx2:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply ERR">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>561</pd:x>
+        <pd:y>237</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <JMSProperties>
+                    <ns:JMSXGroupID>
+                        <xsl:value-of select="'UTF-8'"/>
+                    </ns:JMSXGroupID>
+                </JMSProperties>
+                <Body>
+                    <xsl:value-of select="$ErrorHandling/root/ErrXml"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>707</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:value-of select="$Render-XML/xmlString"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Process</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Call Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Reply to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>ErrorHandling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorHandling</pd:from>
+        <pd:to>Reply ERR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply ERR</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

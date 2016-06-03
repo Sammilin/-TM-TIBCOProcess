@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.trendmicro.com/SFDC/SFDC_GetEntitlementListRq"
+	 xmlns:ns0="http://www.trendmicro.com/ESB/schemas/messageHeader"
+	 targetNamespace="http://www.trendmicro.com/SFDC/SFDC_GetEntitlementListRq"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader" schemaLocation="../../../XSD/Common/messageheader.xsd"/>
+	<xs:element name="SFDC_GetEntitlementListRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RequestHeader" type="ns0:RequestHeader"/>
+				<xs:element name="RequestBody">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AccountID" type="xs:string" minOccurs="0"/>
+							<xs:element name="IncludeNotActive" type="xs:boolean" default="true"/>
+							<xs:element name="IncludeActive" type="xs:boolean" default="true"/>
+							<xs:element name="IncludeExpired" type="xs:boolean" default="false"/>
+							<xs:element name="RowStart" type="xs:int"/>
+							<xs:element name="RowEnd" type="xs:int"/>
+							<xs:element name="ContactID" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

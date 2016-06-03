@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/schemas/error" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/errorReport">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <pd:name>Services/G2Service/AMSS Solution Provided/SendSolnForMultiTasks/V1.0/Get SR Receipts.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="MessageKey" type="xsd:string"/>
+                    <xsd:element name="TaskIds" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>107</pd:startX>
+    <pd:startY>96</pd:startY>
+    <pd:returnBindings>
+        <Result>
+            <xsl:for-each select="$GetSRNumberByTaskId-From-Neuron/Resultsets/ResultSet1/Record1">
+                <group>
+                    <SRNumber>
+                        <xsl:value-of select="SRNumber"/>
+                    </SRNumber>
+                    <TaskID>
+                        <xsl:value-of select="TaskId"/>
+                    </TaskID>
+                </group>
+            </xsl:for-each>
+            <xsl:for-each select="$GetSRNumberByTaskId-From-PSC/Resultsets/ResultSet1/Record1">
+                <group>
+                    <SRNumber>
+                        <xsl:value-of select="SRNumber"/>
+                    </SRNumber>
+                    <TaskID>
+                        <xsl:value-of select="TaskId"/>
+                    </TaskID>
+                </group>
+            </xsl:for-each>
+        </Result>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Result">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="group" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="SRNumber" type="xsd:string"/>
+                                <xsd:element name="TaskID" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>706</pd:endX>
+    <pd:endY>97</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessege ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1418892956385</pd:targetNamespace>
+    <pd:activity name="GetSRNumberByTaskId From Neuron">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>303</pd:x>
+        <pd:y>106</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/SP/GetSRNumberByTaskId From Neuron.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Start/Input"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetSRNumberByTaskId From PSC">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>486</pd:x>
+        <pd:y>104</pd:y>
+        <config>
+            <processName>/Services/G2Service/ShareProcess/SP/GetSRNumberByTaskId From PSC.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Start/Input"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>284</pd:x>
+        <pd:y>283</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <fault>localname=Error namespace=http://www.trendmicro.com/ESB/schemas/error</fault>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>514</pd:x>
+        <pd:y>284</pd:y>
+        <config>
+            <faultName>ErrorMessege</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_GetSRNumberByTaskId-From-Neuron/ns:Error)">
+                            <xsl:for-each select="$_error_GetSRNumberByTaskId-From-Neuron/ns:Error">
+                                <pfx:Error>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="ns:error_code"/>
+                                    </pfx:error_code>
+                                    <pfx:stack_trace>
+                                        <xsl:value-of select="ns:stack_trace"/>
+                                    </pfx:stack_trace>
+                                    <pfx:process_stack>
+                                        <xsl:value-of select="ns:src"/>
+                                    </pfx:process_stack>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="ns:error_message"/>
+                                    </pfx:error_message>
+                                </pfx:Error>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:when test="exists($_error_GetSRNumberByTaskId-From-PSC/ns:Error)">
+                            <xsl:for-each select="$_error_GetSRNumberByTaskId-From-PSC/ns:Error">
+                                <pfx:Error>
+                                    <pfx:error_code>
+                                        <xsl:value-of select="ns:error_code"/>
+                                    </pfx:error_code>
+                                    <pfx:stack_trace>
+                                        <xsl:value-of select="ns:stack_trace"/>
+                                    </pfx:stack_trace>
+                                    <pfx:process_stack>
+                                        <xsl:value-of select="ns:src"/>
+                                    </pfx:process_stack>
+                                    <pfx:error_message>
+                                        <xsl:value-of select="ns:error_message"/>
+                                    </pfx:error_message>
+                                </pfx:Error>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx:Error>
+                                <pfx:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx:error_code>
+                                <pfx:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx:stack_trace>
+                                <pfx:process_stack>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx:process_stack>
+                                <xsl:if test="$_error/ns1:ErrorReport/Msg">
+                                    <pfx:error_message>
+                                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                    </pfx:error_message>
+                                </xsl:if>
+                            </pfx:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>GetSRNumberByTaskId From Neuron</pd:from>
+        <pd:to>GetSRNumberByTaskId From PSC</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetSRNumberByTaskId From Neuron</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetSRNumberByTaskId From PSC</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
