@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://xmlns.tibco.com/2003/5/bw/plugins/tcp" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:ns12="www.tibco.com/plugin/java/JavaMethodActivityInput" xmlns:ns13="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns6="www.tibco.com/plugin/Sleep" xmlns:ns7="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/hcs-inqaccno-req.xsd" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="www.tibco.com/plugin/java/JavaMethodActivityOutput" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://xmlns.oracle.com/Enterprise/Tools/schemas/M608224.V1" xmlns:pfx4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:SOAUtility="java://SOAUtility" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/hcs-inqaccno-res.xsd" xmlns:pfx6="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/hcs-inqaccno-res.xsd" schemaLocation="/Resources/Schema/hcs-inqaccno-res.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/hcs-inqaccno-req.xsd" schemaLocation="/Resources/Schema/hcs-inqaccno-req.xsd"/>
+    <xsd:import namespace="http://xmlns.oracle.com/Enterprise/Tools/schemas/M608224.V1" schemaLocation="/XSD/M608224.V1.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Adpaters/HTTP-SOAPListener/V2.0/Processes/ExecuteOperation.process</pd:name>
+    <pd:description/>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="DestinationQueue" type="xsd:string"/>
+                    <xsd:element name="Request" type="xsd:string"/>
+                    <xsd:element name="SourceIP" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="BWTraceID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="TenantID" type="xsd:string"/>
+                    <xsd:element name="URI" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="PartnerName" type="xsd:string"/>
+                    <xsd:element name="HttpMethod" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="ContentType" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="QueryString" type="xsd:string"/>
+                    <xsd:element name="x-access-token" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="x-posix-time" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="x-signature" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="x-system" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="x-source" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="x-traceid" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>63</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <JMS_Response>
+                <xsl:value-of select="$JMS-Queue-Requestor/ns7:ActivityOutput/Body"/>
+            </JMS_Response>
+            <xsl:choose>
+                <xsl:when test="exists($JMS-Queue-Requestor/ns7:ActivityOutput/JMSProperties/ns7:JMSXGroupID)">
+                    <xsl:if test="$JMS-Queue-Requestor/ns7:ActivityOutput/JMSProperties/ns7:JMSXGroupID">
+                        <Charset>
+                            <xsl:value-of select="$JMS-Queue-Requestor/ns7:ActivityOutput/JMSProperties/ns7:JMSXGroupID"/>
+                        </Charset>
+                    </xsl:if>
+                </xsl:when>
+                <xsl:otherwise/>
+            </xsl:choose>
+            <xsl:choose>
+                <xsl:when test="exists($JMS-Queue-Requestor/ns7:ActivityOutput/OtherProperties/HTTPStatus) and  tib:trim($JMS-Queue-Requestor/ns7:ActivityOutput/OtherProperties/HTTPStatus) !=&quot;&quot;">
+                    <HTTPStatusCode>
+                        <xsl:value-of select="$JMS-Queue-Requestor/ns7:ActivityOutput/OtherProperties/HTTPStatus"/>
+                    </HTTPStatusCode>
+                </xsl:when>
+                <xsl:otherwise>
+                    <HTTPStatusCode>
+                        <xsl:value-of select="&quot;200&quot;"/>
+                    </HTTPStatusCode>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="$JMS-Queue-Requestor/ns7:ActivityOutput/OtherProperties/ContentType">
+                <ContentType>
+                    <xsl:value-of select="$JMS-Queue-Requestor/ns7:ActivityOutput/OtherProperties/ContentType"/>
+                </ContentType>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endDescription>Return BS response.</pd:endDescription>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="JMS_Response" type="xsd:string"/>
+                    <xsd:element name="Charset" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="HTTPStatusCode" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="ContentType" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>410</pd:endX>
+    <pd:endY>66</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx6:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1259825079567</pd:targetNamespace>
+    <pd:activity name="JMS Queue Requestor">
+        <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
+        <pd:x>186</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns7:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$Start/root/DestinationQueue"/>
+                </destinationQueue>
+                <requestTimeout>
+                    <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/Adpaters/HTTP-SOAPListener/V2.0/ListenerTimeout"/>
+                </requestTimeout>
+                <OtherProperties>
+                    <SourceIP>
+                        <xsl:value-of select="$Start/root/SourceIP"/>
+                    </SourceIP>
+                    <xsl:if test="$Start/root/BWTraceID">
+                        <BWTraceID>
+                            <xsl:value-of select="$Start/root/BWTraceID"/>
+                        </BWTraceID>
+                    </xsl:if>
+                    <TenantID>
+                        <xsl:value-of select="$Start/root/TenantID"/>
+                    </TenantID>
+                    <xsl:if test="$Start/root/URI">
+                        <URI>
+                            <xsl:value-of select="$Start/root/URI"/>
+                        </URI>
+                    </xsl:if>
+                    <PartnerName>
+                        <xsl:value-of select="$Start/root/PartnerName"/>
+                    </PartnerName>
+                    <HttpMethod>
+                        <xsl:value-of select="$Start/root/HttpMethod"/>
+                    </HttpMethod>
+                    <xsl:if test="$Start/root/ContentType">
+                        <ContentType>
+                            <xsl:value-of select="$Start/root/ContentType"/>
+                        </ContentType>
+                    </xsl:if>
+                    <QueryString>
+                        <xsl:value-of select="$Start/root/QueryString"/>
+                    </QueryString>
+                    <x-accesstoken>
+                        <xsl:value-of select="$Start/root/x-access-token"/>
+                    </x-accesstoken>
+                    <xsl:if test="$Start/root/x-posix-time">
+                        <x-posix-time>
+                            <xsl:value-of select="$Start/root/x-posix-time"/>
+                        </x-posix-time>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/x-signature">
+                        <x-signature>
+                            <xsl:value-of select="$Start/root/x-signature"/>
+                        </x-signature>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/x-system">
+                        <x-system>
+                            <xsl:value-of select="$Start/root/x-system"/>
+                        </x-system>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/x-traceid">
+                        <x-traceid>
+                            <xsl:value-of select="$Start/root/x-traceid"/>
+                        </x-traceid>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/x-source">
+                        <x-source>
+                            <xsl:value-of select="$Start/root/x-source"/>
+                        </x-source>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/x-access-token">
+                        <x-access-token>
+                            <xsl:value-of select="$Start/root/x-access-token"/>
+                        </x-access-token>
+                    </xsl:if>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="$Start/root/Request"/>
+                </Body>
+            </ns7:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>284</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx4:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns5:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns5:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns5:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+            </pfx4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JMS Queue Requestor</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Requestor</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Requestor</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

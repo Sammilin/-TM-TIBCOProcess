@@ -1,0 +1,1296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:TM1="java://com.trendmicro.TMBWUtilities" xmlns:TM="java://com.trendmicro.DynamicXMLValidator" xmlns:pfx5="http://www.trendmicro.com/ESB/FRS/schemas/DBLogger" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/PeopleSoft/schemas/DBLogger" xmlns:pfx3="http://www.trendmicro.com/ESB/PeopleSoft/schemas/messageHeader" xmlns:pfx2="http://www.trendmicro.com/ESB/PeopleSoft/schemas/getEmployeeProfileRq" xmlns:SOAUtility="java://SOAUtility" xmlns:pfx6="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns16="http://service.globalsaas.com/soap/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.tibco.com/schemas/PLSService/XSD/Common/Schema.xsd" xmlns:ns15="http://www.tibco.com/schemas/PLSService/XSD/PartnerAPI/Schema.xsd2" xmlns:ns9="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:ns5="http://www.trendmicro.com/ESB/Services/OrderCreation/OrderSubmissionRs" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns13="http://xmlns.tibco.com/2003/5/bw/plugins/tcp" xmlns:ns6="http://xmlns.tibco.com/bw/activity/xml/render/bytesEnvelope/2003/05" xmlns:ns10="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:pfx="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns7="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns8="http://www.trendmicro.com/ESB/Services/OrderCreation/CommonRs" xmlns:ns11="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://xmlns.tibco.com/encodings/mime" xmlns:ns3="http://xmlns.tibco.com/bw/plugin-api/messages/context" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/PeopleSoft/schemas/messageHeader" schemaLocation="/XSD/Common/messageheader.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/PeopleSoft/schemas/getEmployeeProfileRq"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/DBLogger" schemaLocation="/XSD/Common/logger.xsd"/>
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="/XSD/Common/soap.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/OrderCreation/OrderSubmissionRs" schemaLocation="/WSDL/Client/OrderSubmissionRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/Services/OrderCreation/CommonRs" schemaLocation="/WSDL/Client/CommonRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/Common/errorReport.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/PartnerAPI/Schema.xsd2" schemaLocation="/XSD/PartnerAPI/StatusLine.xsd"/>
+    <xsd:import namespace="http://service.globalsaas.com/soap/" schemaLocation="/WSDL/Client/SSOServicePort.wsdl"/>
+    <pd:name>Adpaters/HTTP-SOAPListener/V2.0/Processes/Main.process</pd:name>
+    <pd:description/>
+    <pd:startName>HTTP Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="HTTP Receiver">
+        <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
+        <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
+        <pd:x>69</pd:x>
+        <pd:y>107</pd:y>
+        <config>
+            <outputMode>String</outputMode>
+            <defaultEncoding>UTF8</defaultEncoding>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <sharedChannel>/Adpaters/HTTP-SOAPListener/V2.0/Connections/HTTP/HTTP Connection.sharedhttp</sharedChannel>
+            <useHTTPAuthentication>false</useHTTPAuthentication>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="soapaction" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Connection" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="x-access-token" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="x-posix-time" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="x-signature" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="x-system" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="x-source" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="x-traceid" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>592</pd:endX>
+    <pd:endY>508</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1259824970633</pd:targetNamespace>
+    <pd:activity name="Call LogRequest Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>298</pd:x>
+        <pd:y>348</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="false()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="false()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <pfx6:DBLogger>
+                    <pfx6:MessageHeader>
+                        <pfx6:MessageKey>
+                            <xsl:value-of select="$SetJobVariables/group/MessageKey"/>
+                        </pfx6:MessageKey>
+                        <pfx6:ServiceName>
+                            <xsl:value-of select="$SetJobVariables/group/ServiceName"/>
+                        </pfx6:ServiceName>
+                        <pfx6:ServiceVersion>
+                            <xsl:value-of select="$SetJobVariables/group/ServiceVersion"/>
+                        </pfx6:ServiceVersion>
+                        <pfx6:SourceID>
+                            <xsl:value-of select="$SetJobVariables/group/SourceID"/>
+                        </pfx6:SourceID>
+                        <pfx6:SourceIP>
+                            <xsl:value-of select="$SetJobVariables/group/SourceIP"/>
+                        </pfx6:SourceIP>
+                        <pfx6:RqTimestamp>
+                            <xsl:value-of select="$SetJobVariables/group/RqTimestamp"/>
+                        </pfx6:RqTimestamp>
+                        <pfx6:RsTimestamp>
+                            <xsl:value-of select="$SetJobVariables/group/RsTimestamp"/>
+                        </pfx6:RsTimestamp>
+                    </pfx6:MessageHeader>
+                    <pfx6:MessageBody>
+                        <pfx6:Content>
+                            <xsl:value-of select="tib:render-xml($HTTP-Receiver/ProcessStarterOutput)"/>
+                        </pfx6:Content>
+                    </pfx6:MessageBody>
+                </pfx6:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call LogResponse Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>541</pd:x>
+        <pd:y>382</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="false()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="false()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <pfx6:DBLogger>
+                    <pfx6:MessageHeader>
+                        <pfx6:MessageKey>
+                            <xsl:value-of select="$SetJobVariables/group/MessageKey"/>
+                        </pfx6:MessageKey>
+                        <pfx6:ServiceName>
+                            <xsl:value-of select="$SetJobVariables/group/ServiceName"/>
+                        </pfx6:ServiceName>
+                        <pfx6:ServiceVersion>
+                            <xsl:value-of select="$SetJobVariables/group/ServiceVersion"/>
+                        </pfx6:ServiceVersion>
+                        <pfx6:SourceID>
+                            <xsl:value-of select="$SetJobVariables/group/SourceID"/>
+                        </pfx6:SourceID>
+                        <pfx6:SourceIP>
+                            <xsl:value-of select="$SetJobVariables/group/SourceIP"/>
+                        </pfx6:SourceIP>
+                        <pfx6:RqTimestamp>
+                            <xsl:value-of select="$SetJobVariables/group/RqTimestamp"/>
+                        </pfx6:RqTimestamp>
+                        <pfx6:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </pfx6:RsTimestamp>
+                    </pfx6:MessageHeader>
+                    <pfx6:MessageBody>
+                        <pfx6:Content>
+                            <xsl:value-of select="$ExecuteRequest/root/JMS_Response"/>
+                        </pfx6:Content>
+                    </pfx6:MessageBody>
+                </pfx6:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>998</pd:x>
+        <pd:y>382</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="CheckACL">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>127</pd:x>
+        <pd:y>508</pd:y>
+        <config>
+            <processName>/Adpaters/ACLProcess/Check ACL.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <URI>
+                    <xsl:value-of select="$SetJobVariables/group/URI"/>
+                </URI>
+                <SoapAction>
+                    <xsl:value-of select="$SetJobVariables/group/SoapAction"/>
+                </SoapAction>
+                <SourceIP>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/ns3:Context/RemoteAddress"/>
+                </SourceIP>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:description/>
+        <pd:x>834</pd:x>
+        <pd:y>172</pd:y>
+        <config>
+            <role/>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns2:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ExecuteRequest">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:description/>
+        <pd:x>518</pd:x>
+        <pd:y>214</pd:y>
+        <config>
+            <processName>/Adpaters/HTTP-SOAPListener/V2.0/Processes/ExecuteRequest.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <DestinationQueue>
+                    <xsl:value-of select="$Look-up-destination/group/DestinationQueue"/>
+                </DestinationQueue>
+                <Request>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/PostData"/>
+                </Request>
+                <SourceIP>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/ns3:Context/RemoteAddress"/>
+                </SourceIP>
+                <BWTraceID>
+                    <xsl:value-of select="$SetJobVariables/group/MessageKey"/>
+                </BWTraceID>
+                <TenantID>
+                    <xsl:value-of select="$SetJobVariables/group/TenantID"/>
+                </TenantID>
+                <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/Command">
+                    <URI>
+                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Command"/>
+                    </URI>
+                </xsl:if>
+                <PartnerName>
+                    <xsl:value-of select="substring-before($SetJobVariables/group/URI, '/')"/>
+                </PartnerName>
+                <HttpMethod>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Method"/>
+                </HttpMethod>
+                <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/Headers/Content-Type">
+                    <ContentType>
+                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Headers/Content-Type"/>
+                    </ContentType>
+                </xsl:if>
+                <QueryString>
+                    <xsl:value-of select="$SetJobVariables/group/QueryString"/>
+                </QueryString>
+                <xsl:if test="$SetJobVariables/group/x-access-token">
+                    <x-access-token>
+                        <xsl:value-of select="$SetJobVariables/group/x-access-token"/>
+                    </x-access-token>
+                </xsl:if>
+                <xsl:if test="$SetJobVariables/group/x-posix-time">
+                    <x-posix-time>
+                        <xsl:value-of select="$SetJobVariables/group/x-posix-time"/>
+                    </x-posix-time>
+                </xsl:if>
+                <xsl:if test="$SetJobVariables/group/x-signature">
+                    <x-signature>
+                        <xsl:value-of select="$SetJobVariables/group/x-signature"/>
+                    </x-signature>
+                </xsl:if>
+                <xsl:if test="$SetJobVariables/group/x-system">
+                    <x-system>
+                        <xsl:value-of select="$SetJobVariables/group/x-system"/>
+                    </x-system>
+                </xsl:if>
+                <xsl:if test="$SetJobVariables/group/x-source">
+                    <x-source>
+                        <xsl:value-of select="$SetJobVariables/group/x-source"/>
+                    </x-source>
+                </xsl:if>
+                <xsl:if test="$SetJobVariables/group/x-traceid">
+                    <x-traceid>
+                        <xsl:value-of select="$SetJobVariables/group/x-traceid"/>
+                    </x-traceid>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GenErrorMSG1">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>859</pd:x>
+        <pd:y>450</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="tib:trim($SetJobVariables/group/SoapAction)=''">
+                    <ResponseActivityInput>
+                        <asciiContent>
+                            <xsl:value-of select="'Internal Server Error'"/>
+                        </asciiContent>
+                        <Headers>
+                            <StatusLine>
+                                <xsl:value-of select="&quot;HTTP/1.1 500&quot;"/>
+                            </StatusLine>
+                        </Headers>
+                    </ResponseActivityInput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ResponseActivityInput>
+                        <asciiContent>
+                            <xsl:value-of select="tib:render-xml($Map-Data/pfx:Envelope, 1, 1)"/>
+                        </asciiContent>
+                        <Headers>
+                            <StatusLine>
+                                <xsl:value-of select="&quot;HTTP/1.1 200&quot;"/>
+                            </StatusLine>
+                            <Content-Type>
+                                <xsl:value-of select="'text/xml'"/>
+                            </Content-Type>
+                        </Headers>
+                    </ResponseActivityInput>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GenErrorMSG-403">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>411</pd:x>
+        <pd:y>507</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="&quot;Forbidden. Not allowed to access this service.&quot;"/>
+                </asciiContent>
+                <Headers>
+                    <StatusLine>
+                        <xsl:value-of select="&quot;HTTP/1.1 403&quot;"/>
+                    </StatusLine>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Heart Response">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>535</pd:x>
+        <pd:y>97</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="'&lt;HTML>OK&lt;/HTML>'"/>
+                </asciiContent>
+                <Headers>
+                    <StatusLine>
+                        <xsl:value-of select="&quot;HTTP/1.1 200&quot;"/>
+                    </StatusLine>
+                    <Content-Type>
+                        <xsl:value-of select="'text/xml'"/>
+                    </Content-Type>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="HTTPResponse">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>649</pd:x>
+        <pd:y>190</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="$ExecuteRequest/root/JMS_Response"/>
+                </asciiContent>
+                <Headers>
+                    <xsl:choose>
+                        <xsl:when test="string-length($ExecuteRequest/root/HTTPStatusCode) > 0">
+                            <StatusLine>
+                                <xsl:value-of select="concat(&quot;HTTP/1.1 &quot;,$ExecuteRequest/root/HTTPStatusCode)"/>
+                            </StatusLine>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <StatusLine>
+                                <xsl:value-of select="&quot;HTTP/1.1 200&quot;"/>
+                            </StatusLine>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="$SetJobVariables/group/SoapAction=&quot;&quot;">
+                            <xsl:choose>
+                                <xsl:when test="exists($ExecuteRequest/root/Charset)">
+                                    <Content-Type>
+                                        <xsl:value-of select="concat('text/html; charset=', $ExecuteRequest/root/Charset)"/>
+                                    </Content-Type>
+                                </xsl:when>
+                                <xsl:when test="exists($ExecuteRequest/root/ContentType)">
+                                    <Content-Type>
+                                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Headers/Content-Type"/>
+                                    </Content-Type>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Content-Type>
+                                        <xsl:value-of select="'text/html'"/>
+                                    </Content-Type>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="exists($ExecuteRequest/root/Charset)">
+                                    <Content-Type>
+                                        <xsl:value-of select="concat('text/xml; charset=', $ExecuteRequest/root/Charset)"/>
+                                    </Content-Type>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <Content-Type>
+                                        <xsl:value-of select="'text/xml'"/>
+                                    </Content-Type>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Look up destination">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>409</pd:x>
+        <pd:y>238</pd:y>
+        <config>
+            <element>
+                <xsd:element name="group">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="DestinationQueue" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <DestinationQueue>
+                    <xsl:value-of select="$GetRoutingConfig/ns14:RoutingConfig/ns14:Routing&#xA;[(TM1:isMatchRegEx(lower-case($SetJobVariables/group/URI), lower-case(ns14:URL))=&quot;true&quot; &#xA;or lower-case(ns14:URL)=lower-case($SetJobVariables/group/URI))&#xA;and lower-case(ns14:SOAP_Action)=lower-case($SetJobVariables/group/SoapAction)]/ns14:Destination"/>
+                </DestinationQueue>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="NotAllowed">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:description/>
+        <pd:x>275</pd:x>
+        <pd:y>510</pd:y>
+        <config>
+            <role/>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&#xA;&quot;Authorization Deny! &quot;, &#xA;&quot;[ServiceName]: &quot;, $SetJobVariables/group/ServiceName, &quot;, &quot;, &#xA;&quot;[ServiceVersion]: &quot;, $SetJobVariables/group/ServiceVersion, &quot;, &quot;, &#xA;&quot;[SourceIP]: &quot;, $SetJobVariables/group/SourceIP, &quot;, &quot;, &#xA;&quot;[URI]: &quot;, $SetJobVariables/group/URI, &quot;, &quot;, &#xA;&quot;[SoapAction]: &quot;, $SetJobVariables/group/SoapAction, &quot;, &quot;, &#xA;&quot;[RqTimestamp]: &quot;, $SetJobVariables/group/RqTimestamp, &quot;, &quot;, &#xA;&quot;[SourceIP]: &quot;, $SetJobVariables/group/SourceIP&#xA;)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1197</pd:x>
+        <pd:y>512</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Null-1">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>220</pd:x>
+        <pd:y>183</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="RenderRs">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>1007</pd:x>
+        <pd:y>276</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <term ref="pfx:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:Envelope>
+                <pfx:Body>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_ExecuteRequest/ns11:Error)">
+                            <ns11:Error>
+                                <ns11:src>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </ns11:src>
+                                <ns11:error_code>
+                                    <xsl:value-of select="$_error_ExecuteRequest/ns11:Error/ns11:error_code"/>
+                                </ns11:error_code>
+                                <ns11:error_message>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                </ns11:error_message>
+                                <ns11:stack_trace>
+                                    <xsl:value-of select="$_error_ExecuteRequest/ns11:Error/ns11:stack_trace"/>
+                                </ns11:stack_trace>
+                            </ns11:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns11:Error>
+                                <ns11:src>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </ns11:src>
+                                <ns11:error_code>
+                                    <xsl:value-of select="'E99'"/>
+                                </ns11:error_code>
+                                <ns11:error_message>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                </ns11:error_message>
+                                <ns11:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </ns11:stack_trace>
+                            </ns11:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </pfx:Body>
+            </pfx:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ResponseError">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:description/>
+        <pd:x>714</pd:x>
+        <pd:y>325</pd:y>
+        <config>
+            <role/>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SetJobVariables">
+        <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+        <pd:x>115</pd:x>
+        <pd:y>233</pd:y>
+        <config>
+            <variableConfig>/Adpaters/HTTP-SOAPListener/V2.0/Variables/ServiceJobVariables.jobsharedvariable</variableConfig>
+            <showResult>true</showResult>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <TenantID>
+                    <xsl:value-of select="substring-before(substring-after(substring-after($HTTP-Receiver/ProcessStarterOutput/RequestURI,'/'), '/'), '/')"/>
+                </TenantID>
+                <ServiceName>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Adpaters/HTTP-SOAPListener/V2.0/ServiceName"/>
+                </ServiceName>
+                <ServiceVersion>
+                    <xsl:value-of select="&quot;v1.0&quot;"/>
+                </ServiceVersion>
+                <xsl:choose>
+                    <xsl:when test="$HTTP-Receiver/ProcessStarterOutput/Headers/x-traceid !=&quot;&quot;">
+                        <MessageKey>
+                            <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Headers/x-traceid"/>
+                        </MessageKey>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <MessageKey>
+                            <xsl:value-of select="concat(substring-before(substring-after($HTTP-Receiver/ProcessStarterOutput/Command, '/'), '/'),tib:format-dateTime('yyyyMMddHHmmssSSS', current-dateTime()))"/>
+                        </MessageKey>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <SourceID>
+                    <xsl:value-of select="substring-before(substring-after(substring-after($HTTP-Receiver/ProcessStarterOutput/RequestURI,'/'), '/'), '/')"/>
+                </SourceID>
+                <SourceIP>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/ns3:Context/RemoteAddress"/>
+                </SourceIP>
+                <RqTimestamp>
+                    <xsl:value-of select="current-dateTime()"/>
+                </RqTimestamp>
+                <RsTimestamp>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </RsTimestamp>
+                <SoapAction>
+                    <xsl:value-of select="tib:substring-after-last(tib:substring-before-last($HTTP-Receiver/ProcessStarterOutput/Headers/soapaction, '&quot;'), &quot;#&quot;)"/>
+                </SoapAction>
+                <URI>
+                    <xsl:value-of select="substring-after($HTTP-Receiver/ProcessStarterOutput/Command, '/')"/>
+                </URI>
+                <QueryString>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/QueryString"/>
+                </QueryString>
+                <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/Headers/x-access-token">
+                    <x-access-token>
+                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Headers/x-access-token"/>
+                    </x-access-token>
+                </xsl:if>
+                <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/Headers/x-posix-time">
+                    <x-posix-time>
+                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Headers/x-posix-time"/>
+                    </x-posix-time>
+                </xsl:if>
+                <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/Headers/x-signature">
+                    <x-signature>
+                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Headers/x-signature"/>
+                    </x-signature>
+                </xsl:if>
+                <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/Headers/x-system">
+                    <x-system>
+                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Headers/x-system"/>
+                    </x-system>
+                </xsl:if>
+                <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/Headers/x-source">
+                    <x-source>
+                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Headers/x-source"/>
+                    </x-source>
+                </xsl:if>
+                <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/Headers/x-traceid">
+                    <x-traceid>
+                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Headers/x-traceid"/>
+                    </x-traceid>
+                </xsl:if>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null-2">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>56</pd:x>
+        <pd:y>623</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Send HTTP Response">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>358</pd:x>
+        <pd:y>646</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <Headers>
+                    <StatusLine>
+                        <xsl:value-of select="&quot;HTTP/1.1 200&quot;"/>
+                    </StatusLine>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetRoutingConfig">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>325</pd:x>
+        <pd:y>145</pd:y>
+        <config>
+            <variableConfig>/Adpaters/RoutingProcess/Shared Variable/RoutingConfigVar.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GenErrorMSG-404">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>375</pd:x>
+        <pd:y>436</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="&quot;Not Found&quot;"/>
+                </asciiContent>
+                <Headers>
+                    <StatusLine>
+                        <xsl:value-of select="&quot;HTTP/1.1 404&quot;"/>
+                    </StatusLine>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>908</pd:x>
+        <pd:y>288</pd:y>
+        <config>
+            <element ref="pfx:Envelope"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:Envelope>
+                <pfx:Body>
+                    <ns16:InternalException>
+                        <ns16:message>
+                            <xsl:value-of select="'Returned when un unhandled error occurs on the server'"/>
+                        </ns16:message>
+                    </ns16:InternalException>
+                </pfx:Body>
+            </pfx:Envelope>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call LogResponse Process 500">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>782</pd:x>
+        <pd:y>388</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="false()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="false()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <pfx6:DBLogger>
+                    <pfx6:MessageHeader>
+                        <pfx6:MessageKey>
+                            <xsl:value-of select="$SetJobVariables/group/MessageKey"/>
+                        </pfx6:MessageKey>
+                        <pfx6:ServiceName>
+                            <xsl:value-of select="$SetJobVariables/group/ServiceName"/>
+                        </pfx6:ServiceName>
+                        <pfx6:ServiceVersion>
+                            <xsl:value-of select="$SetJobVariables/group/ServiceVersion"/>
+                        </pfx6:ServiceVersion>
+                        <pfx6:SourceID>
+                            <xsl:value-of select="$SetJobVariables/group/SourceID"/>
+                        </pfx6:SourceID>
+                        <pfx6:SourceIP>
+                            <xsl:value-of select="$SetJobVariables/group/SourceIP"/>
+                        </pfx6:SourceIP>
+                        <pfx6:RqTimestamp>
+                            <xsl:value-of select="$SetJobVariables/group/RqTimestamp"/>
+                        </pfx6:RqTimestamp>
+                        <pfx6:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </pfx6:RsTimestamp>
+                    </pfx6:MessageHeader>
+                    <pfx6:MessageBody>
+                        <xsl:choose>
+                            <xsl:when test="tib:trim($SetJobVariables/group/SoapAction)=''">
+                                <pfx6:Content>
+                                    <xsl:value-of select="tib:render-xml($Map-Data/pfx:Envelope, 1, 1)"/>
+                                </pfx6:Content>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx6:Content>
+                                    <xsl:value-of select="'500 Internal Server Error'"/>
+                                </pfx6:Content>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </pfx6:MessageBody>
+                </pfx6:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Caught Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>991</pd:x>
+        <pd:y>175</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="false()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="true()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <MailSubject>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/ESBBW/Environment,'-',&quot;HTTPListener Caught Error&quot;)"/>
+                </MailSubject>
+                <pfx6:DBLogger>
+                    <pfx6:MessageHeader>
+                        <pfx6:MessageKey>
+                            <xsl:value-of select="$SetJobVariables/group/MessageKey"/>
+                        </pfx6:MessageKey>
+                        <pfx6:ServiceName>
+                            <xsl:value-of select="'HTTPListener'"/>
+                        </pfx6:ServiceName>
+                        <pfx6:ServiceVersion>
+                            <xsl:value-of select="$SetJobVariables/group/ServiceVersion"/>
+                        </pfx6:ServiceVersion>
+                        <pfx6:SourceID>
+                            <xsl:value-of select="$SetJobVariables/group/SourceID"/>
+                        </pfx6:SourceID>
+                        <pfx6:SourceIP>
+                            <xsl:value-of select="$SetJobVariables/group/SourceIP"/>
+                        </pfx6:SourceIP>
+                        <pfx6:RqTimestamp>
+                            <xsl:value-of select="$SetJobVariables/group/RqTimestamp"/>
+                        </pfx6:RqTimestamp>
+                        <pfx6:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </pfx6:RsTimestamp>
+                    </pfx6:MessageHeader>
+                    <pfx6:MessageBody>
+                        <pfx6:Content>
+                            <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/PostData"/>
+                        </pfx6:Content>
+                    </pfx6:MessageBody>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_ExecuteRequest/ns11:Error)">
+                            <ns11:Error>
+                                <ns11:src>
+                                    <xsl:value-of select="$_error_ExecuteRequest/ns11:Error/ns11:src"/>
+                                </ns11:src>
+                                <ns11:error_code>
+                                    <xsl:value-of select="$_error_ExecuteRequest/ns11:Error/ns11:error_code"/>
+                                </ns11:error_code>
+                                <ns11:error_message>
+                                    <xsl:value-of select="$_error_ExecuteRequest/ns11:Error/ns11:error_message"/>
+                                </ns11:error_message>
+                                <ns11:stack_trace>
+                                    <xsl:value-of select="$_error_ExecuteRequest/ns11:Error/ns11:stack_trace"/>
+                                </ns11:stack_trace>
+                            </ns11:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns11:Error>
+                                <ns11:src>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </ns11:src>
+                                <ns11:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                </ns11:error_code>
+                                <ns11:error_message>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                </ns11:error_message>
+                                <ns11:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </ns11:stack_trace>
+                            </ns11:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </pfx6:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call LogResponse 404">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>447</pd:x>
+        <pd:y>346</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="false()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="false()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <pfx6:DBLogger>
+                    <pfx6:MessageHeader>
+                        <pfx6:MessageKey>
+                            <xsl:value-of select="$SetJobVariables/group/MessageKey"/>
+                        </pfx6:MessageKey>
+                        <pfx6:ServiceName>
+                            <xsl:value-of select="$SetJobVariables/group/ServiceName"/>
+                        </pfx6:ServiceName>
+                        <pfx6:ServiceVersion>
+                            <xsl:value-of select="$SetJobVariables/group/ServiceVersion"/>
+                        </pfx6:ServiceVersion>
+                        <pfx6:SourceID>
+                            <xsl:value-of select="$SetJobVariables/group/SourceID"/>
+                        </pfx6:SourceID>
+                        <pfx6:SourceIP>
+                            <xsl:value-of select="$SetJobVariables/group/SourceIP"/>
+                        </pfx6:SourceIP>
+                        <pfx6:RqTimestamp>
+                            <xsl:value-of select="$SetJobVariables/group/RqTimestamp"/>
+                        </pfx6:RqTimestamp>
+                        <pfx6:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </pfx6:RsTimestamp>
+                    </pfx6:MessageHeader>
+                    <pfx6:MessageBody>
+                        <pfx6:Content>
+                            <xsl:value-of select="'404 Not Found'"/>
+                        </pfx6:Content>
+                    </pfx6:MessageBody>
+                </pfx6:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>ResponseError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>NotAllowed</pd:from>
+        <pd:to>GenErrorMSG-403</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTPResponse</pd:from>
+        <pd:to>ResponseError</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-3407872</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GenErrorMSG-403</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExecuteRequest</pd:from>
+        <pd:to>Call LogResponse Process</pd:to>
+        <pd:xpathDescription>Log Response</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns1:GlobalVariables/Adpaters/HTTP-SOAPListener/V2.0/LogRs="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GenErrorMSG1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetJobVariables</pd:from>
+        <pd:to>CheckACL</pd:to>
+        <pd:xpathDescription>AuthEnable</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns1:GlobalVariables/Adpaters/HTTP-SOAPListener/V2.0/EnableACL="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExecuteRequest</pd:from>
+        <pd:to>HTTPResponse</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTPResponse</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>SetJobVariables</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RenderRs</pd:from>
+        <pd:to>Log Caught Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>RenderRs</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CheckACL</pd:from>
+        <pd:to>Null-1</pd:to>
+        <pd:xpathDescription>Allow</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-13408513</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$CheckACL/result="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CheckACL</pd:from>
+        <pd:to>NotAllowed</pd:to>
+        <pd:xpathDescription>Deny</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>Heart Response</pd:to>
+        <pd:xpathDescription>Heart Beat Check</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$HTTP-Receiver/ProcessStarterOutput/RequestURI = $_globalVariables/ns1:GlobalVariables/Adpaters/HTTP-SOAPListener/V2.0/HeartBeatRequestURI</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Heart Response</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetJobVariables</pd:from>
+        <pd:to>Null-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call LogResponse Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null-1</pd:from>
+        <pd:to>Call LogRequest Process</pd:to>
+        <pd:xpathDescription>Log Request</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns1:GlobalVariables/Adpaters/HTTP-SOAPListener/V2.0/LogRq="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Look up destination</pd:from>
+        <pd:to>ExecuteRequest</pd:to>
+        <pd:xpathDescription>has desination</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Look-up-destination/group/DestinationQueue!=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null-1</pd:from>
+        <pd:to>GetRoutingConfig</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call LogRequest Process</pd:from>
+        <pd:to>GetRoutingConfig</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>Null-2</pd:to>
+        <pd:xpathDescription>Check command </pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$HTTP-Receiver/ProcessStarterOutput/Command ="/favicon.ico"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null-2</pd:from>
+        <pd:to>Send HTTP Response</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send HTTP Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetRoutingConfig</pd:from>
+        <pd:to>Look up destination</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Look up destination</pd:from>
+        <pd:to>Call LogResponse 404</pd:to>
+        <pd:xpathDescription>no destination found</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GenErrorMSG-404</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>GenErrorMSG1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Call LogResponse Process 500</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call LogResponse Process 500</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call LogResponse 404</pd:from>
+        <pd:to>GenErrorMSG-404</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Caught Error</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/xmlns/ae2xsd/2002/05/ae/ADB/ACLConfiguration" xmlns:ns1="http://www.tibco.com/schemas/PLSService/XSD/Common/Schema.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/xmlns/ae2xsd/2002/05/ae/ADB/RoutingConfiguration" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Adpaters/ACLProcess/UpdateACLConfig.process</pd:name>
+    <pd:startName>Adapter Subscriber</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Adapter Subscriber">
+        <pd:type>com.tibco.plugin.ae.AESubscriberActivity</pd:type>
+        <pd:resourceType>ae.aepalette.aeSubscription</pd:resourceType>
+        <pd:x>125</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <ae.aepalette.sharedProperties.transportChoice>default</ae.aepalette.sharedProperties.transportChoice>
+            <ae.aepalette.sharedProperties.useRequestReply>false</ae.aepalette.sharedProperties.useRequestReply>
+            <ae.aepalette.sharedProperties.adapterService>/Adpaters/ADB/V1.0/ACLConfiguration.adb#adapterService.ACLConfigPublisher</ae.aepalette.sharedProperties.adapterService>
+            <tpPluginEndpointName>ACLConfigPublisher</tpPluginEndpointName>
+            <ae.aepalette.sharedProperties.transportType>jmsTopic</ae.aepalette.sharedProperties.transportType>
+            <ae.aepalette.sharedProperties.jmsTopicSessionTopic>trend.pls.PartnerInt.ACL_Notification</ae.aepalette.sharedProperties.jmsTopicSessionTopic>
+            <ae.aepalette.sharedProperties.jmsTopicSessionConnectionFactory>TopicConnectionFactory</ae.aepalette.sharedProperties.jmsTopicSessionConnectionFactory>
+            <ae.aepalette.sharedProperties.jmsSessionUsername>%%Resources/JMS/EMSSERVER01/ID%%</ae.aepalette.sharedProperties.jmsSessionUsername>
+            <ae.aepalette.sharedProperties.jmsSessionProviderURL>%%Resources/JMS/EMSSERVER01/SERVER%%</ae.aepalette.sharedProperties.jmsSessionProviderURL>
+            <ae.aepalette.sharedProperties.jmsSessionPassword>%%Resources/JMS/EMSSERVER01/PWD%%</ae.aepalette.sharedProperties.jmsSessionPassword>
+            <ae.aepalette.sharedProperties.outputMeta>
+                <aeMeta>/AESchemas/ae/ADB/ACLConfiguration.aeschema#class.P_ACL_Config</aeMeta>
+            </ae.aepalette.sharedProperties.outputMeta>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>549</pd:endX>
+    <pd:endY>85</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1336545899067</pd:targetNamespace>
+    <pd:activity name="Call Email Notify Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>444</pd:x>
+        <pd:y>218</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+            <spawn>false</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SubjectMessage>
+                    <xsl:value-of select="&quot;Updating ACL Config Error&quot;"/>
+                </SubjectMessage>
+                <DetailStackTrace>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                </DetailStackTrace>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>332</pd:x>
+        <pd:y>217</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.CriticalSectionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>224</pd:x>
+        <pd:y>10</pd:y>
+        <pd:width>243</pd:width>
+        <pd:height>143</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>criticalSection</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:scope>single</pd:scope>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetVariable</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SetVariable</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetVariable</pd:from>
+            <pd:to>SetVariable</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="GetVariable">
+            <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+            <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+            <pd:x>297</pd:x>
+            <pd:y>73</pd:y>
+            <config>
+                <variableConfig>/Adpaters/ACLProcess/Shared Variable/ACLConfigVar.sharedvariable</variableConfig>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="SetVariable">
+            <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+            <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+            <pd:x>384</pd:x>
+            <pd:y>73</pd:y>
+            <config>
+                <variableConfig>/Adpaters/ACLProcess/Shared Variable/ACLConfigVar.sharedvariable</variableConfig>
+                <showResult>true</showResult>
+            </config>
+            <pd:inputBindings>
+                <xsl:choose>
+                    <xsl:when test="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/ADB__OPCODE=1 and $Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/Enable=1">
+                        <ns1:ACLConfig>
+                            <ns1:ACL>
+                                <ns1:URI>
+                                    <xsl:value-of select="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/URI"/>
+                                </ns1:URI>
+                                <ns1:SOAPAction>
+                                    <xsl:value-of select="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/SOAPAction"/>
+                                </ns1:SOAPAction>
+                                <ns1:SourceIP>
+                                    <xsl:value-of select="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/SourceIP"/>
+                                </ns1:SourceIP>
+                                <ns1:Allow>
+                                    <xsl:value-of select="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/Allow"/>
+                                </ns1:Allow>
+                            </ns1:ACL>
+                            <xsl:copy-of select="$GetVariable/ns1:ACLConfig/ns1:ACL"/>
+                        </ns1:ACLConfig>
+                    </xsl:when>
+                    <xsl:when test="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/ADB__OPCODE=2 and $Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/Enable=1">
+                        <ns1:ACLConfig>
+                            <xsl:copy-of select="$GetVariable/ns1:ACLConfig/ns1:ACL[not($Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/URI=ns1:URI and $Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/SOAPAction=ns1:SOAPAction)]"/>
+                            <ns1:ACL>
+                                <ns1:URI>
+                                    <xsl:value-of select="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/URI"/>
+                                </ns1:URI>
+                                <ns1:SOAPAction>
+                                    <xsl:value-of select="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/SOAPAction"/>
+                                </ns1:SOAPAction>
+                                <ns1:SourceIP>
+                                    <xsl:value-of select="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/SourceIP"/>
+                                </ns1:SourceIP>
+                                <ns1:Allow>
+                                    <xsl:value-of select="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/Allow"/>
+                                </ns1:Allow>
+                            </ns1:ACL>
+                        </ns1:ACLConfig>
+                    </xsl:when>
+                    <xsl:when test="$Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/ADB__OPCODE=3">
+                        <ns1:ACLConfig>
+                            <xsl:copy-of select="$GetVariable/ns1:ACLConfig/ns1:ACL[not($Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/URI=ns1:URI and $Adapter-Subscriber/ProcessStarterOutput/body/ns2:P__ACL__Config/SOAPAction=ns1:SOAPAction)]"/>
+                        </ns1:ACLConfig>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns1:ACLConfig>
+                            <xsl:copy-of select="$GetVariable/ns1:ACLConfig/ns1:ACL"/>
+                        </ns1:ACLConfig>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Call Email Notify Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Email Notify Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Adapter Subscriber</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
