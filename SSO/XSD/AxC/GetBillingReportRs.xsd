@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/PLSService/XSD/AxC/Schema.xsd5"
+	 targetNamespace="http://www.tibco.com/schemas/PLSService/XSD/AxC/Schema.xsd5"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="GetBillingReportRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="DivisionBillingReport" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="Error" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DivisionBillingReport">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Division" type="xs:string"/>
+				<xs:element ref="BillingReport" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BillingReport">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PartnerCompany" type="xs:string"/>
+				<xs:element name="PartnerCompanyID" type="xs:string"/>
+				<xs:element name="BillingReportID" type="xs:string"/>
+				<xs:element name="ReportCycleStartDate" type="xs:dateTime"/>
+				<xs:element name="ReportCycleEndDate" type="xs:dateTime"/>
+				<xs:element name="TotalAmount" type="xs:decimal"/>
+				<xs:element name="Currency" type="xs:string"/>
+				<xs:element ref="LineItem" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LineItem">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="ProductName" type="xs:string" minOccurs="0"/>
+				<xs:element name="RPIC" type="xs:string" minOccurs="0"/>
+				<xs:element name="SKU" type="xs:string" minOccurs="0"/>
+				<xs:element name="Unit" type="xs:string" minOccurs="0"/>
+				<xs:element name="UnitPrice" type="xs:string" minOccurs="0"/>
+				<xs:element name="Qty" type="xs:string" minOccurs="0"/>
+				<xs:element name="Discount" type="xs:string" minOccurs="0"/>
+				<xs:element name="TotalPrice" type="xs:string" minOccurs="0"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Error">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ErrorCode" type="xs:string"/>
+				<xs:element name="ErrorMsg" type="xs:string"/>
+				<xs:element name="Detail" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

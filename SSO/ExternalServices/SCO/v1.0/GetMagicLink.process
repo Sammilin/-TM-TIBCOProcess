@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD/SCOAPI/Accounts.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/SCOAPI/Accounts.xsd" schemaLocation="/XSD/SCOAPI/Accounts.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/SCO/v1.0/GetMagicLink.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element name="queryParam">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="account_ids" type="xsd:string"/>
+                                <xsd:element name="bu" type="xsd:string"/>
+                                <xsd:element name="tenantid" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>82</pd:startX>
+    <pd:startY>68</pd:startY>
+    <pd:returnBindings>
+        <xsl:for-each select="$Parse-Response/accounts">
+            <accounts>
+                <xsl:if test="account_id">
+                    <account_id>
+                        <xsl:value-of select="account_id"/>
+                    </account_id>
+                </xsl:if>
+                <xsl:if test="magic_link">
+                    <magic_link>
+                        <xsl:value-of select="magic_link"/>
+                    </magic_link>
+                </xsl:if>
+                <xsl:if test="activation_code">
+                    <activation_code>
+                        <xsl:value-of select="activation_code"/>
+                    </activation_code>
+                </xsl:if>
+            </accounts>
+        </xsl:for-each>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:accounts"/>
+    <pd:endX>597</pd:endX>
+    <pd:endY>68</pd:endY>
+    <pd:errorSchemas>
+        <error ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1366269428843</pd:targetNamespace>
+    <pd:activity name="MapResourcePath">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>202</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <element>
+                <xsd:element name="fullResourcePath" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <fullResourcePath>
+                <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/ExternalServices/SCO/GetMagicLink/ResourcePath,&quot;?account_ids=&quot;,$Start/root/queryParam/account_ids,&quot;&amp;bu=&quot;,$Start/root/queryParam/bu,&quot;&amp;tenant_id=&quot;,$Start/root/queryParam/tenantid)"/>
+            </fullResourcePath>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CallSCOAPI">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>322</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <processName>/ExternalServices/SCO/v1.0/CallSCOAPI.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <BWTraceID>
+                    <xsl:value-of select="$Start/root/BWTraceID"/>
+                </BWTraceID>
+                <Method>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/SCO/GetMagicLink/HttpMethod"/>
+                </Method>
+                <ResourcePath>
+                    <xsl:value-of select="$MapResourcePath/fullResourcePath"/>
+                </ResourcePath>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse Response">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>460</pd:x>
+        <pd:y>67</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx:accounts"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="TM:parseJSONtoXML($CallSCOAPI/root/responseData, 1)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>257</pd:x>
+        <pd:y>172</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>383</pd:x>
+        <pd:y>171</pd:y>
+        <config>
+            <faultName>error</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_CallSCOAPI/pfx2:Error)">
+                            <xsl:copy-of select="$_error_CallSCOAPI/pfx2:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>MapResourcePath</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MapResourcePath</pd:from>
+        <pd:to>CallSCOAPI</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CallSCOAPI</pd:from>
+        <pd:to>Parse Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

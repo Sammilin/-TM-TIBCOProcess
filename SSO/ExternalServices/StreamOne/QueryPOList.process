@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx="http://www.tibco.com/schemas/PLSService/XSD/TechData/Schema.xsd" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PLSService/XSD/TechData/StreamOneResponse" xmlns:pfx4="http://www.tibco.com/schemas/PLSService/XSD/TechData/Schema.xsd2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD/TechData/StreamOneResponse.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/TechData/Schema.xsd" schemaLocation="/XSD/TechData/BillingRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/TechData/StreamOneResponse.xsd" schemaLocation="/XSD/TechData/StreamOneResponse.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/StreamOne/QueryPOList.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="begin_date" type="xsd:string"/>
+                    <xsd:element name="end_date" type="xsd:string"/>
+                    <xsd:element name="TraceID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="TanentID" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>64</pd:startX>
+    <pd:startY>59</pd:startY>
+    <pd:returnBindings>
+        <StreamOneResponse>
+            <list_vendor_po>
+                <xsl:for-each select="$Parse-XML/message">
+                    <message>
+                        <return>
+                            <xsl:value-of select="return"/>
+                        </return>
+                        <count>
+                            <xsl:value-of select="count"/>
+                        </count>
+                        <xsl:for-each select="items">
+                            <items>
+                                <xsl:for-each select="item">
+                                    <item>
+                                        <po_number>
+                                            <xsl:value-of select="po_number"/>
+                                        </po_number>
+                                        <sales_order_number>
+                                            <xsl:value-of select="sales_order_number"/>
+                                        </sales_order_number>
+                                        <order_total>
+                                            <xsl:value-of select="order_total"/>
+                                        </order_total>
+                                        <po_due_date>
+                                            <xsl:value-of select="po_due_date"/>
+                                        </po_due_date>
+                                        <marketplace_country>
+                                            <xsl:value-of select="marketplace_country"/>
+                                        </marketplace_country>
+                                        <reseller_id>
+                                            <xsl:value-of select="reseller_id"/>
+                                        </reseller_id>
+                                        <external_reseller_id>
+                                            <xsl:value-of select="external_reseller_id"/>
+                                        </external_reseller_id>
+                                        <TestRecord>
+                                            <xsl:value-of select="TestRecord"/>
+                                        </TestRecord>
+                                        <xsl:for-each select="lineitems">
+                                            <lineitems>
+                                                <xsl:for-each select="lineitem">
+                                                    <lineitem>
+                                                        <effective_date>
+                                                            <xsl:value-of select="effective_date"/>
+                                                        </effective_date>
+                                                        <external_id>
+                                                            <xsl:value-of select="external_id"/>
+                                                        </external_id>
+                                                        <item_id>
+                                                            <xsl:value-of select="item_id"/>
+                                                        </item_id>
+                                                        <item_description>
+                                                            <xsl:value-of select="item_description"/>
+                                                        </item_description>
+                                                        <product_sku>
+                                                            <xsl:value-of select="product_sku"/>
+                                                        </product_sku>
+                                                        <qty>
+                                                            <xsl:value-of select="qty"/>
+                                                        </qty>
+                                                        <xsl:if test="item_amount">
+                                                            <item_amount>
+                                                                <xsl:value-of select="item_amount"/>
+                                                            </item_amount>
+                                                        </xsl:if>
+                                                        <item_total>
+                                                            <xsl:value-of select="item_total"/>
+                                                        </item_total>
+                                                        <currency>
+                                                            <xsl:value-of select="currency"/>
+                                                        </currency>
+                                                        <xsl:if test="discount">
+                                                            <discount>
+                                                                <xsl:value-of select="discount"/>
+                                                            </discount>
+                                                        </xsl:if>
+                                                        <order_date>
+                                                            <xsl:value-of select="order_date"/>
+                                                        </order_date>
+                                                        <item_status>
+                                                            <xsl:value-of select="item_status"/>
+                                                        </item_status>
+                                                        <customer_id>
+                                                            <xsl:value-of select="customer_id"/>
+                                                        </customer_id>
+                                                        <first_name>
+                                                            <xsl:value-of select="first_name"/>
+                                                        </first_name>
+                                                        <last_name>
+                                                            <xsl:value-of select="last_name"/>
+                                                        </last_name>
+                                                        <email>
+                                                            <xsl:value-of select="email"/>
+                                                        </email>
+                                                        <address1>
+                                                            <xsl:value-of select="address1"/>
+                                                        </address1>
+                                                        <address2>
+                                                            <xsl:value-of select="address2"/>
+                                                        </address2>
+                                                        <city>
+                                                            <xsl:value-of select="city"/>
+                                                        </city>
+                                                        <state>
+                                                            <xsl:value-of select="state"/>
+                                                        </state>
+                                                        <zip>
+                                                            <xsl:value-of select="zip"/>
+                                                        </zip>
+                                                        <country>
+                                                            <xsl:value-of select="country"/>
+                                                        </country>
+                                                    </lineitem>
+                                                </xsl:for-each>
+                                            </lineitems>
+                                        </xsl:for-each>
+                                    </item>
+                                </xsl:for-each>
+                            </items>
+                        </xsl:for-each>
+                    </message>
+                </xsl:for-each>
+            </list_vendor_po>
+        </StreamOneResponse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx6:StreamOneResponse"/>
+    <pd:endX>661</pd:endX>
+    <pd:endY>60</pd:endY>
+    <pd:errorSchemas>
+        <error ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <HTTPInfo>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="status" type="xsd:boolean" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </HTTPInfo>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1343635378907</pd:targetNamespace>
+    <pd:activity name="Assign Request Values">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>201</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <element>
+                <xsd:element name="group">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="data" type="pfx:PORequestType"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <data>
+                    <pfx:partner_id>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/TechData/V1.0/Partner_ID"/>
+                    </pfx:partner_id>
+                    <pfx:pw>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/TechData/V1.0/Partner_PW"/>
+                    </pfx:pw>
+                    <pfx:action>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/StreamOne/getPO_action"/>
+                    </pfx:action>
+                    <pfx:begin_date>
+                        <xsl:value-of select="$Start/root/begin_date"/>
+                    </pfx:begin_date>
+                    <pfx:end_date>
+                        <xsl:value-of select="$Start/root/end_date"/>
+                    </pfx:end_date>
+                </data>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>447</pd:x>
+        <pd:y>272</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>617</pd:x>
+        <pd:y>271</pd:y>
+        <config>
+            <faultName>error</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx2:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <xsl:if test="$_error/ns1:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_StreamOne-WebService-output-Error/pfx2:Error)">
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error_StreamOne-WebService-output-Error/pfx2:Error/pfx2:error_message"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:when>
+                        <xsl:when test="exists($_error/ns1:ErrorReport/Data)">
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx2:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>520</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="message" type="pfx6:POResponseType"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="TM:stringReplace($SendHttpRequest/RequestActivityOutput/asciiContent, 'Test Record','TestRecord')"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="StreamOne WebService output Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>503</pd:x>
+        <pd:y>194</pd:y>
+        <config>
+            <faultName>error</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <data>
+                    <pfx2:Error>
+                        <pfx2:src>
+                            <xsl:value-of select="$_processContext/ns1:ProcessContext/ProjectName"/>
+                        </pfx2:src>
+                        <pfx2:error_code>
+                            <xsl:value-of select="&quot;StreamOne WebService output Error&quot;"/>
+                        </pfx2:error_code>
+                        <pfx2:error_message>
+                            <xsl:value-of select="$SendHttpRequest/RequestActivityOutput/asciiContent"/>
+                        </pfx2:error_message>
+                        <pfx2:stack_trace>
+                            <xsl:value-of select="&quot;ExternalSErvice/StreamOne/QueryPOList.process/StreamOne WebService output Error&quot;"/>
+                        </pfx2:stack_trace>
+                    </pfx2:Error>
+                </data>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Set-StreamOneAPI-Response-Log-1">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>358</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="true()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="false()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <ns12:DBLogger>
+                    <ns12:MessageHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$Start/root/TraceID"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="$_processContext/ns1:ProcessContext/ProjectName"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="&quot;TechData&quot;"/>
+                        </ns12:SourceID>
+                        <ns12:SourceIP>
+                            <xsl:value-of select="TM:getIPAddress()"/>
+                        </ns12:SourceIP>
+                        <ns12:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns12:RqTimestamp>
+                        <ns12:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns12:RsTimestamp>
+                    </ns12:MessageHeader>
+                    <ns12:MessageBody>
+                        <ns12:Content>
+                            <xsl:value-of select="tib:render-xml($Assign-Request-Values/group, 1)"/>
+                        </ns12:Content>
+                    </ns12:MessageBody>
+                </ns12:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SendHttpRequest">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>354</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <processName>/ExternalServices/StreamOne/SendHttpRequest.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <TraceID>
+                    <xsl:value-of select="$Start/root/TraceID"/>
+                </TraceID>
+                <XMLPostData>
+                    <xsl:value-of select="tib:render-xml($Assign-Request-Values/group/data,1)"/>
+                </XMLPostData>
+                <ServiceName>
+                    <xsl:value-of select="$_processContext/ns1:ProcessContext/ProjectName"/>
+                </ServiceName>
+                <xsl:if test="$Start/root/TanentID">
+                    <TenantID>
+                        <xsl:value-of select="$Start/root/TanentID"/>
+                    </TenantID>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Assign Request Values</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign Request Values</pd:from>
+        <pd:to>SendHttpRequest</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Set-StreamOneAPI-Response-Log-1</pd:from>
+        <pd:to>StreamOne WebService output Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendHttpRequest</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:xpathDescription>statusCode=200</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$SendHttpRequest/RequestActivityOutput/statusCode=200 and tib:index-of(upper-case($SendHttpRequest/RequestActivityOutput/asciiContent), 'ERROR') =-1</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendHttpRequest</pd:from>
+        <pd:to>Set-StreamOneAPI-Response-Log-1</pd:to>
+        <pd:xpathDescription>API Return Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

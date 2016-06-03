@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:include schemaLocation="Company.xsd"/>
+	<xs:include schemaLocation="Account.xsd"/>
+	<xs:element name="CreateCustomerCompanyRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CompanyName" type="xs:string"/>
+				<xs:element name="Address">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CountryCode" type="xs:string"/>
+							<xs:element name="AddressCity" type="xs:string"/>
+							<xs:element name="AddressPostalCode" type="xs:string" minOccurs="0"/>
+							<xs:element name="AddressState" type="xs:string"/>
+							<xs:element name="AddressStreet" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Account">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="LoginName" type="xs:string"/>
+							<xs:element name="Password" type="xs:string" minOccurs="0"/>
+							<xs:element name="ContactEmail" type="xs:string"/>
+							<xs:element name="FirstName" type="xs:string"/>
+							<xs:element name="LastName" type="xs:string"/>
+							<xs:element name="TimeZone" type="xs:string"/>
+							<xs:element name="Language" type="xs:string"/>
+							<xs:element name="PhoneAreaCode" type="xs:string" minOccurs="0"/>
+							<xs:element name="PhoneNumber" type="xs:string" minOccurs="0"/>
+							<xs:element name="PhoneExtension" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RequestAccountID" type="xs:string"/>
+				<xs:element name="Note" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateCustomerCompanyRqRs">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="CreateCustomerCompanyRq"/>
+				<xs:element ref="CreateCustomerCompanyRs"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateCustomerCompanyRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Company" type="Company"/>
+				<xs:element name="Account" type="Account"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/SubscriptionReq.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PLSSERVICE/XSD/LiberalAP/UpdateSubscriptionRes.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/AddSeatReq.xsd" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx2="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/SubscriptionRes.xsd" xmlns:pfx8="http://www.tibco.com/schemas/PLSSERVICE/XSD/LiberalAP/ChangeServiceRes.xsd" xmlns:pfx7="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/ChangeServicePlan.xsd" xmlns:pfx6="http://www.tibco.com/schemas/PLSSERVICE/XSD/LiberalAP/UpdateSubscriptionReq.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/AddSeatReq.xsd" schemaLocation="/XSD/ArrowSphere/AddSeatReq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSSERVICE/XSD/LiberalAP/UpdateSubscriptionRes.xsd" schemaLocation="/XSD/LiberalAPI/UpdateSubscriptionRes.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSSERVICE/XSD/LiberalAP/UpdateSubscriptionReq.xsd" schemaLocation="/XSD/LiberalAPI/UpdateSubscriptionReq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSSERVICE/XSD/LiberalAP/ChangeServiceRes.xsd" schemaLocation="/XSD/LiberalAPI/ChangeServicePlanRes.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/ChangeServicePlan.xsd" schemaLocation="/XSD/LiberalAPI/ChangeServicePlanRq.xsd"/>
+    <pd:name>ExternalServices/LiberalAPI/v1.0/ChangeServicePlan.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="tenantID" type="xsd:string"/>
+                    <xsd:element name="BWTraceId" type="xsd:string"/>
+                    <xsd:element ref="pfx7:ChangeServicePlanRq"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>87</pd:startX>
+    <pd:startY>125</pd:startY>
+    <pd:returnBindings>
+        <xsl:for-each select="$Parse-XML/pfx8:ChangeServicePlanRes">
+            <pfx8:ChangeServicePlanRes>
+                <pfx8:SubscriptionID>
+                    <xsl:value-of select="pfx8:SubscriptionID"/>
+                </pfx8:SubscriptionID>
+                <pfx8:OwnerCompanyID>
+                    <xsl:value-of select="pfx8:OwnerCompanyID"/>
+                </pfx8:OwnerCompanyID>
+                <pfx8:ServiceID>
+                    <xsl:value-of select="pfx8:ServiceID"/>
+                </pfx8:ServiceID>
+                <pfx8:DCCode>
+                    <xsl:value-of select="pfx8:DCCode"/>
+                </pfx8:DCCode>
+                <pfx8:ServicePlanName>
+                    <xsl:value-of select="pfx8:ServicePlanName"/>
+                </pfx8:ServicePlanName>
+                <pfx8:LicensePeriodMonth>
+                    <xsl:value-of select="pfx8:LicensePeriodMonth"/>
+                </pfx8:LicensePeriodMonth>
+                <pfx8:ExpNotification>
+                    <xsl:value-of select="pfx8:ExpNotification"/>
+                </pfx8:ExpNotification>
+                <pfx8:AutoExtensionMonth>
+                    <xsl:value-of select="pfx8:AutoExtensionMonth"/>
+                </pfx8:AutoExtensionMonth>
+                <pfx8:IsAutoReNew>
+                    <xsl:value-of select="pfx8:IsAutoReNew"/>
+                </pfx8:IsAutoReNew>
+                <pfx8:ActivationType>
+                    <xsl:value-of select="pfx8:ActivationType"/>
+                </pfx8:ActivationType>
+                <pfx8:Enable>
+                    <xsl:value-of select="pfx8:Enable"/>
+                </pfx8:Enable>
+                <pfx8:ContractType>
+                    <xsl:value-of select="pfx8:ContractType"/>
+                </pfx8:ContractType>
+                <pfx8:PriceType>
+                    <xsl:value-of select="pfx8:PriceType"/>
+                </pfx8:PriceType>
+                <pfx8:ChargeableMnth>
+                    <xsl:value-of select="pfx8:ChargeableMnth"/>
+                </pfx8:ChargeableMnth>
+                <pfx8:IsDelegation>
+                    <xsl:value-of select="pfx8:IsDelegation"/>
+                </pfx8:IsDelegation>
+                <pfx8:ChannelID>
+                    <xsl:value-of select="pfx8:ChannelID"/>
+                </pfx8:ChannelID>
+                <pfx8:SalesType>
+                    <xsl:value-of select="pfx8:SalesType"/>
+                </pfx8:SalesType>
+                <xsl:for-each select="pfx8:LicenseKey">
+                    <pfx8:LicenseKey>
+                        <pfx8:ActCode>
+                            <xsl:value-of select="pfx8:ActCode"/>
+                        </pfx8:ActCode>
+                        <pfx8:Enabled>
+                            <xsl:value-of select="pfx8:Enabled"/>
+                        </pfx8:Enabled>
+                        <pfx8:PID>
+                            <xsl:value-of select="pfx8:PID"/>
+                        </pfx8:PID>
+                        <pfx8:BuCode>
+                            <xsl:value-of select="pfx8:BuCode"/>
+                        </pfx8:BuCode>
+                        <pfx8:VersionType>
+                            <xsl:value-of select="pfx8:VersionType"/>
+                        </pfx8:VersionType>
+                        <pfx8:PriceType>
+                            <xsl:value-of select="pfx8:PriceType"/>
+                        </pfx8:PriceType>
+                        <pfx8:SalesType>
+                            <xsl:value-of select="pfx8:SalesType"/>
+                        </pfx8:SalesType>
+                        <pfx8:Volume>
+                            <xsl:value-of select="pfx8:Volume"/>
+                        </pfx8:Volume>
+                        <pfx8:LicenseStartDate>
+                            <xsl:value-of select="pfx8:LicenseStartDate"/>
+                        </pfx8:LicenseStartDate>
+                        <pfx8:StartChargeDate>
+                            <xsl:value-of select="pfx8:StartChargeDate"/>
+                        </pfx8:StartChargeDate>
+                        <pfx8:LicenseEndDate>
+                            <xsl:value-of select="pfx8:LicenseEndDate"/>
+                        </pfx8:LicenseEndDate>
+                        <pfx8:GracePeriod>
+                            <xsl:value-of select="pfx8:GracePeriod"/>
+                        </pfx8:GracePeriod>
+                        <pfx8:LastModifyDate>
+                            <xsl:value-of select="pfx8:LastModifyDate"/>
+                        </pfx8:LastModifyDate>
+                    </pfx8:LicenseKey>
+                </xsl:for-each>
+            </pfx8:ChangeServicePlanRes>
+        </xsl:for-each>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx8:ChangeServicePlanRes"/>
+    <pd:endX>888</pd:endX>
+    <pd:endY>121</pd:endY>
+    <pd:errorSchemas>
+        <errorMessage ref="pfx3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1363835239933</pd:targetNamespace>
+    <pd:activity name="Map Json Request Body">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>233</pd:x>
+        <pd:y>134</pd:y>
+        <config>
+            <element>
+                <xsd:element name="RequestBody" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <RequestBody>
+                <xsl:value-of select="tib:substring-before-last(substring-after(TM:parseXMLtoJSON(tib:render-xml($Start/root/pfx7:ChangeServicePlanRq),0), ':'), '}')"/>
+            </RequestBody>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Liberal Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>382</pd:x>
+        <pd:y>135</pd:y>
+        <config>
+            <processName>/ExternalServices/LiberalAPI/v1.0/Call LiberalAPI Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <tenantID>
+                    <xsl:value-of select="$Start/root/tenantID"/>
+                </tenantID>
+                <BWTraceID>
+                    <xsl:value-of select="$Start/root/BWTraceId"/>
+                </BWTraceID>
+                <LiberalAPIURI>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/ChangeServicePlan/RequestURI"/>
+                </LiberalAPIURI>
+                <jsonMessage>
+                    <xsl:value-of select="$Map-Json-Request-Body/RequestBody"/>
+                </jsonMessage>
+                <HttpMethod>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/ChangeServicePlan/HttpMethod"/>
+                </HttpMethod>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>520</pd:x>
+        <pd:y>125</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="TM:stringReplace(tib:substring-before-last(substring-after($Call-Liberal-Process/root/outputJson, '{&quot;Message&quot;:&quot;'), '&quot;,&quot;Version&quot;:&quot;&quot;}'), '\\\&quot;' ,'\&quot;')"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JsonToXmlString">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>643</pd:x>
+        <pd:y>125</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="concat('&lt;ChangeServicePlanRes xmlns=&quot;http://www.tibco.com/schemas/PLSSERVICE/XSD/LiberalAP/ChangeServiceRes.xsd&quot;>', TM:parseJSONtoXML($Map-Data/root, 1),'&lt;/ChangeServicePlanRes>')"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>764</pd:x>
+        <pd:y>123</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx8:ChangeServicePlanRes"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JsonToXmlString/root"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>261</pd:x>
+        <pd:y>266</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>463</pd:x>
+        <pd:y>266</pd:y>
+        <config>
+            <faultName>errorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Call-Liberal-Process/pfx3:Error)">
+                            <pfx3:Error>
+                                <pfx3:src>
+                                    <xsl:value-of select="$_error_Call-Liberal-Process/pfx3:Error/pfx3:src"/>
+                                </pfx3:src>
+                                <pfx3:error_code>
+                                    <xsl:value-of select="$_error_Call-Liberal-Process/pfx3:Error/pfx3:error_code"/>
+                                </pfx3:error_code>
+                                <pfx3:error_message>
+                                    <xsl:value-of select="$_error_Call-Liberal-Process/pfx3:Error/pfx3:error_message"/>
+                                </pfx3:error_message>
+                                <pfx3:stack_trace>
+                                    <xsl:value-of select="$_error_Call-Liberal-Process/pfx3:Error/pfx3:stack_trace"/>
+                                </pfx3:stack_trace>
+                            </pfx3:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx3:Error>
+                                <pfx3:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx3:src>
+                                <pfx3:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx3:error_code>
+                                <pfx3:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx3:error_message>
+                                <pfx3:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx3:stack_trace>
+                            </pfx3:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Json Request Body</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Json Request Body</pd:from>
+        <pd:to>Call Liberal Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Liberal Process</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>JsonToXmlString</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JsonToXmlString</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

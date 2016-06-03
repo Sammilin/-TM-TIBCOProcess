@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD/PIS/QueryTenantByChannelOrCompanyNameRqRs.xsd" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.tibco.com/schemas/PLS_AxC/XSD/PIS/Schema.xsd2">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/PIS/QueryTenantByChannelOrCompanyNameRqRs.xsd" schemaLocation="/XSD/PIS/QueryTenantByChannelOrCompanyNameRqRs.xsd"/>
+    <pd:name>ExternalServices/PIS/QueryTenantByChannelOrCompanyName.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="TenantID" type="xsd:string"/>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element ref="pfx3:QueryTenantByChannelOrCompanyNameRq"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <QueryTenantByChannelOrCompanyNameRs>
+            <TenantID>
+                <xsl:value-of select="$Parse-XML/QueryTenantByChannelOrCompanyNameRs/TenantID"/>
+            </TenantID>
+        </QueryTenantByChannelOrCompanyNameRs>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx3:QueryTenantByChannelOrCompanyNameRs"/>
+    <pd:endX>582</pd:endX>
+    <pd:endY>63</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1413277151782</pd:targetNamespace>
+    <pd:activity name="XML 2 JSON">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>239</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <element>
+                <xsd:element name="JSONString" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <JSONString>
+                <xsl:value-of select="tib:substring-before-last(substring-after(TM:parseXMLtoJSON(tib:render-xml($Start/root/QueryTenantByChannelOrCompanyNameRq, 0),0), ':'), '}')"/>
+            </JSONString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call PIS API">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>346</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <processName>/ExternalServices/PIS/Call PIS API.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <HTTPMethod>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/PIS/QueryTenantByChannelOrCompanyName/HttpMethod"/>
+                </HTTPMethod>
+                <RequestURI>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/ExternalServices/PIS/uriPrefix, $_globalVariables/ns:GlobalVariables/ExternalServices/PIS/QueryTenantByChannelOrCompanyName/RequestURI)"/>
+                </RequestURI>
+                <TraceID>
+                    <xsl:value-of select="$Start/root/BWTraceID"/>
+                </TraceID>
+                <PostBody>
+                    <xsl:value-of select="$XML-2-JSON/JSONString"/>
+                </PostBody>
+                <TenantID>
+                    <xsl:value-of select="$Start/root/TenantID"/>
+                </TenantID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JSON 2 XML">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>410</pd:x>
+        <pd:y>165</pd:y>
+        <config>
+            <element>
+                <xsd:element name="XMLString" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <XMLString>
+                <xsl:value-of select="concat( '&lt;QueryTenantByChannelOrCompanyNameRs>',TM:parseJSONtoXML($Call-PIS-API/root/outputJSON, 1), '&lt;/QueryTenantByChannelOrCompanyNameRs>')"/>
+            </XMLString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>482</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx3:QueryTenantByChannelOrCompanyNameRs"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JSON-2-XML/XMLString"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>643</pd:x>
+        <pd:y>194</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx2:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns1:ErrorReport/Data/pfx2:Error)">
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx2:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>511</pd:x>
+        <pd:y>195</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>XML 2 JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>XML 2 JSON</pd:from>
+        <pd:to>Call PIS API</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call PIS API</pd:from>
+        <pd:to>JSON 2 XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JSON 2 XML</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

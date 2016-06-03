@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://www.tibco.com/schemas/PLSService_SVN/XSD/PartnerAPI/Schema.xsd" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/schemas/PLS_ingram/XSD/LMPI/V2.0/ServiceHeader.xsd" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService_SVN/XSD/PartnerAPI/Schema.xsd" schemaLocation="/XSD/PartnerAPI/IsValidRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLS_ingram/XSD/LMPI/V2.0/ServiceHeader.xsd" schemaLocation="/XSD/LMPI/V2.0/ServiceHeader.xsd"/>
+    <pd:name>ExternalServices/LMPI/Call LMPI_API SSL.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element name="LMPIAPIURI" type="xsd:string"/>
+                    <xsd:element name="jsonMessage" type="xsd:string"/>
+                    <xsd:element name="jsonMessageForLog" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="HttpMethod" type="xsd:string"/>
+                    <xsd:element name="TimeStamp" type="xsd:string"/>
+                    <xsd:element ref="pfx3:Header"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>60</pd:startX>
+    <pd:startY>200</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <statusLine>
+                <xsl:value-of select="tib:render-xml($Send-HTTP-Request--SSL/RequestActivityOutput/statusLine,1)"/>
+            </statusLine>
+            <outputContent>
+                <xsl:value-of select="$Send-HTTP-Request--SSL/RequestActivityOutput/asciiContent"/>
+            </outputContent>
+            <headerContentType>
+                <xsl:value-of select="$Send-HTTP-Request--SSL/RequestActivityOutput/Headers/Content-Type"/>
+            </headerContentType>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="statusLine" type="xsd:string"/>
+                    <xsd:element name="outputContent" type="xsd:string"/>
+                    <xsd:element name="headerContentType" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>773</pd:endX>
+    <pd:endY>194</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334304367576</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>453</pd:x>
+        <pd:y>406</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>281</pd:x>
+        <pd:y>28</pd:y>
+        <pd:width>384</pd:width>
+        <pd:height>319</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$Send-HTTP-Request--SSL/RequestActivityOutput/statusLine/statusCode=200 or $i &gt;5</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Send HTTP Request -SSL</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send HTTP Request -SSL</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:xpathDescription>Retry(not 490)</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i&lt;$_globalVariables/ns1:GlobalVariables/ExternalServices/LMPI/V2.0/errRetryNumber and tib:index-of($_error/ns:ErrorReport/Msg,'4XX') = -1</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Map-Data-2-1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map-Data-2-1</pd:from>
+            <pd:to>Generate-Error-2</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send HTTP Request -SSL</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-3407872</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>363</pd:x>
+            <pd:y>205</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>514</pd:x>
+            <pd:y>203</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/LMPI/V2.0/SleepInterval"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate-Error-2">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>570</pd:x>
+            <pd:y>270</pd:y>
+            <config>
+                <faultName>ErrorMessage</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns2:ActivityInput>
+                    <data>
+                        <pfx2:Error>
+                            <pfx2:src>
+                                <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                            </pfx2:src>
+                            <pfx2:error_code>
+                                <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                            </pfx2:error_code>
+                            <pfx2:error_message>
+                                <xsl:value-of select="$Map-Data-2-1/root/binaryMessage"/>
+                            </pfx2:error_message>
+                            <pfx2:stack_trace>
+                                <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                            </pfx2:stack_trace>
+                        </pfx2:Error>
+                    </data>
+                </ns2:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map-Data-2-1">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>460</pd:x>
+            <pd:y>265</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="statusCode" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="binaryMessage" type="xsd:string" minOccurs="0"/>
+                                <xsd:element ref="pfx2:Error"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <statusCode>
+                        <xsl:value-of select="substring-before(substring-after(tib:render-xml($_error/ns:ErrorReport/Data),&quot;&lt;statusCode>&quot;), &quot;&lt;/statusCode>&quot;)"/>
+                    </statusCode>
+                    <binaryMessage>
+                        <xsl:value-of select="substring-before(substring-after(tib:render-xml($_error/ns:ErrorReport/Data),&quot;&lt;binaryContent>&quot;), &quot;&lt;/binaryContent>&quot;)"/>
+                    </binaryMessage>
+                    <pfx2:Error>
+                        <pfx2:src>
+                            <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                        </pfx2:src>
+                        <pfx2:error_code>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </pfx2:error_code>
+                        <pfx2:error_message>
+                            <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                        </pfx2:error_message>
+                        <pfx2:stack_trace>
+                            <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                        </pfx2:stack_trace>
+                    </pfx2:Error>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Send HTTP Request -SSL">
+            <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+            <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+            <pd:x>359</pd:x>
+            <pd:y>95</pd:y>
+            <config>
+                <inputOutputVersion>5.3.0</inputOutputVersion>
+                <newMimeSupport>true</newMimeSupport>
+                <serverhost>%%ExternalServices/LMPI/V2.0/host%%</serverhost>
+                <useSsl>true</useSsl>
+                <requireBasicAuth>false</requireBasicAuth>
+                <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                    <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                    <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+                </ns0:ssl>
+                <proxyConnection/>
+                <InputHeaders>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="x-traceid" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="x-access-token" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="x-posix-time" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="x-signature" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </InputHeaders>
+                <OutputHeaders>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </OutputHeaders>
+            </config>
+            <pd:inputBindings>
+                <RequestActivityInput>
+                    <Method>
+                        <xsl:value-of select="$Start/root/HttpMethod"/>
+                    </Method>
+                    <RequestURI>
+                        <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/ExternalServices/LMPI/V2.0/uriPrefix,$Start/root/LMPIAPIURI)"/>
+                    </RequestURI>
+                    <xsl:choose>
+                        <xsl:when test="upper-case($Start/root/HttpMethod)!=&quot;GET&quot;">
+                            <PostData>
+                                <xsl:value-of select="$Start/root/jsonMessage"/>
+                            </PostData>
+                        </xsl:when>
+                        <xsl:otherwise/>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="upper-case($Start/root/HttpMethod)=&quot;GET&quot;">
+                            <QueryString>
+                                <xsl:value-of select="$Start/root/jsonMessage"/>
+                            </QueryString>
+                        </xsl:when>
+                        <xsl:otherwise/>
+                    </xsl:choose>
+                    <Headers>
+                        <Content-Type>
+                            <xsl:value-of select="$Start/root/pfx3:Header/pfx3:content_type"/>
+                        </Content-Type>
+                        <x-traceid>
+                            <xsl:value-of select="$Start/root/pfx3:Header/pfx3:x_traceid"/>
+                        </x-traceid>
+                        <x-access-token>
+                            <xsl:value-of select="$Start/root/pfx3:Header/pfx3:x_access_token"/>
+                        </x-access-token>
+                        <x-posix-time>
+                            <xsl:value-of select="$Start/root/pfx3:Header/pfx3:x_posix_time"/>
+                        </x-posix-time>
+                        <x-signature>
+                            <xsl:value-of select="$Start/root/pfx3:Header/pfx3:x_signature"/>
+                        </x-signature>
+                        <Date>
+                            <xsl:value-of select="$Start/root/pfx3:Header/pfx3:Date"/>
+                        </Date>
+                    </Headers>
+                </RequestActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>596</pd:x>
+        <pd:y>411</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:when test="exists($_error_Generate-Error-2/pfx2:Error)">
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$Map-Data-2-1/root/pfx2:Error/pfx2:src"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$Map-Data-2-1/root/statusCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error_Generate-Error-2/pfx2:Error/pfx2:error_message"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$Map-Data-2-1/root/pfx2:Error/pfx2:stack_trace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

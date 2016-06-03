@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://tempuri.org/" xmlns:ns2="http://www.trendmicro.com/ESB/schemas/errorReport" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:ns3="http://xmlns.tibco.com/bw/activity/xml/render/bytesEnvelope/2003/05" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/error" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://TrendMicro.TrendEOrders.BTSMessage.IA1IF1MG1" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx2="http://bpm.trendmicro.com/adapters/mobileportal" xmlns:pfx7="http://TrendMicro.TrendEOrders.BTSMessage.QuerySKUResponse" xmlns:pfx6="http://TrendMicro.TrendEOrders.BTSMessage.QuerySKURequest">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/errorReport" schemaLocation="/XSD/errorReport.xsd"/>
+    <xsd:import namespace="http://bpm.trendmicro.com/adapters/mobileportal"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://TrendMicro.TrendEOrders.BTSMessage.QuerySKUResponse" schemaLocation="/Services/eFusion/EMEA Adapter/QueryPrice/V1.0/XSD/QuerySKUResponse.xsd"/>
+    <xsd:import namespace="http://TrendMicro.TrendEOrders.BTSMessage.QuerySKURequest" schemaLocation="/Services/eFusion/EMEA Adapter/QueryPrice/V1.0/XSD/QuerySKURequest.xsd"/>
+    <wsdl:import namespace="http://tempuri.org/" location="/WSDL/Server/GetSkuData WSDL.wsdl"/>
+    <pd:name>ExternalServices/TeO/EMEA/GetSkuData.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx6:TrendMicro"/>
+    <pd:startX>54</pd:startX>
+    <pd:startY>183</pd:startY>
+    <pd:returnBindings>
+        <Resonse>
+            <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx:GetPriceXMLResponse/pfx:GetPriceXMLResult"/>
+        </Resonse>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Resonse" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>733</pd:endX>
+    <pd:endY>183</pd:endY>
+    <pd:errorSchemas>
+        <ErrSchema ref="pfx5:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <Variable0>
+            <xsd:element name="ErrorStackTrace" type="xsd:string"/>
+        </Variable0>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1334308615617</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>236</pd:x>
+        <pd:y>46</pd:y>
+        <pd:width>347</pd:width>
+        <pd:height>260</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:errorCondition>$i = $_globalVariables/pfx3:GlobalVariables/ExternalServices/TeO/EMEA/GetSkuData/RetryTimes</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>SOAPRequestReply</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:xpathDescription>Reach to Limit</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$i = $_globalVariables/pfx3:GlobalVariables/ExternalServices/TeO/EMEA/GetSkuData/RetryTimes</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>Assign</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-52429</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>282</pd:x>
+            <pd:y>208</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns1:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/pfx3:GlobalVariables/ExternalServices/TeO/EMEA/GetSkuData/RetryInterval_Sec * 1000"/>
+                    </IntervalInMillisec>
+                </ns1:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>493</pd:x>
+            <pd:y>229</pd:y>
+            <config>
+                <faultName>ErrSchema</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns12:ActivityInput>
+                    <data>
+                        <pfx5:Error>
+                            <pfx5:src>
+                                <xsl:value-of select="''"/>
+                            </pfx5:src>
+                            <pfx5:error_code>
+                                <xsl:value-of select="''"/>
+                            </pfx5:error_code>
+                            <pfx5:error_message>
+                                <xsl:value-of select="''"/>
+                            </pfx5:error_message>
+                            <pfx5:stack_trace>
+                                <xsl:value-of select="''"/>
+                            </pfx5:stack_trace>
+                        </pfx5:Error>
+                    </data>
+                </ns12:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="SOAPRequestReply">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>391</pd:x>
+            <pd:y>122</pd:y>
+            <config>
+                <timeout>%%ExternalServices/TeO/EMEA/GetSkuData/Timeout_Sec%%</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <service>pfx:GetSkuData</service>
+                <servicePort>GetSkuDataSoap12</servicePort>
+                <operation>GetPriceXML</operation>
+                <soapAction>http://tempuri.org/GetPriceXML</soapAction>
+                <endpointURL>%%ExternalServices/TeO/EMEA/GetSkuData/Endpoint%%</endpointURL>
+                <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                    <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                    <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+                </ns0:ssl>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <pfx:GetPriceXML>
+                        <pfx:xml>
+                            <xsl:value-of select="TM:stringReplace(TM:stringReplace($Render-XML/xmlString, 'ns0:', ''), ':ns0', '')"/>
+                        </pfx:xml>
+                    </pfx:GetPriceXML>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>390</pd:x>
+            <pd:y>230</pd:y>
+            <config>
+                <variableName>Variable0</variableName>
+            </config>
+            <pd:inputBindings>
+                <ErrorStackTrace>
+                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                </ErrorStackTrace>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Generate Log Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>404</pd:x>
+        <pd:y>406</pd:y>
+        <config>
+            <faultName>ErrSchema</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <data>
+                    <pfx5:Error>
+                        <pfx5:src>
+                            <xsl:value-of select="'InternalServerError'"/>
+                        </pfx5:src>
+                        <pfx5:error_code>
+                            <xsl:value-of select="'0000'"/>
+                        </pfx5:error_code>
+                        <pfx5:error_message>
+                            <xsl:value-of select="'Error Calling TeO Web Service'"/>
+                        </pfx5:error_message>
+                        <pfx5:stack_trace>
+                            <xsl:value-of select="$Variable0/ErrorStackTrace"/>
+                        </pfx5:stack_trace>
+                    </pfx5:Error>
+                </data>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>161</pd:x>
+        <pd:y>183</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <renderDefaultPrefix>false</renderDefaultPrefix>
+            <term ref="pfx6:TrendMicro"/>
+        </config>
+        <pd:inputBindings>
+            <xsl:for-each select="$Start/pfx6:TrendMicro">
+                <pfx6:TrendMicro>
+                    <pfx6:Source>
+                        <xsl:value-of select="pfx6:Source"/>
+                    </pfx6:Source>
+                    <pfx6:DistiID>
+                        <xsl:value-of select="pfx6:DistiID"/>
+                    </pfx6:DistiID>
+                    <pfx6:ResellerID>
+                        <xsl:value-of select="pfx6:ResellerID"/>
+                    </pfx6:ResellerID>
+                    <pfx6:ResellerName>
+                        <xsl:value-of select="pfx6:ResellerName"/>
+                    </pfx6:ResellerName>
+                    <pfx6:ResellerAddress>
+                        <xsl:value-of select="pfx6:ResellerAddress"/>
+                    </pfx6:ResellerAddress>
+                    <pfx6:ResellerCountryCode>
+                        <xsl:value-of select="pfx6:ResellerCountryCode"/>
+                    </pfx6:ResellerCountryCode>
+                    <xsl:for-each select="pfx6:OrderLines">
+                        <pfx6:OrderLines>
+                            <pfx6:LineNumber>
+                                <xsl:value-of select="pfx6:LineNumber"/>
+                            </pfx6:LineNumber>
+                            <pfx6:RPIC>
+                                <xsl:value-of select="pfx6:RPIC"/>
+                            </pfx6:RPIC>
+                            <pfx6:SeatSize>
+                                <xsl:value-of select="pfx6:SeatSize"/>
+                            </pfx6:SeatSize>
+                            <pfx6:Duration>
+                                <xsl:value-of select="pfx6:Duration"/>
+                            </pfx6:Duration>
+                            <pfx6:OrderType>
+                                <xsl:value-of select="pfx6:OrderType"/>
+                            </pfx6:OrderType>
+                            <pfx6:SalesType>
+                                <xsl:value-of select="pfx6:SalesType"/>
+                            </pfx6:SalesType>
+                            <pfx6:DiscountType>
+                                <xsl:value-of select="pfx6:DiscountType"/>
+                            </pfx6:DiscountType>
+                        </pfx6:OrderLines>
+                    </xsl:for-each>
+                </pfx6:TrendMicro>
+            </xsl:for-each>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Generate Log Error</pd:to>
+        <pd:xpathDescription>Retry n Times</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-52480</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$i = $_globalVariables/pfx3:GlobalVariables/ExternalServices/TeO/EMEA/GetSkuData/RetryTimes</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

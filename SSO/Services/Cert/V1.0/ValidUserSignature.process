@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/Cert/V1.0/ValidUserSignature.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="accesstoken" type="xsd:string"/>
+                    <xsd:element name="httpmethod" type="xsd:string"/>
+                    <xsd:element name="requestURI" type="xsd:string"/>
+                    <xsd:element name="posix-time" type="xsd:string"/>
+                    <xsd:element name="signature" type="xsd:string"/>
+                    <xsd:element name="content" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>160</pd:startX>
+    <pd:startY>60</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <SignatureVerifyFlag>
+                <xsl:value-of select="$ValidateResult/root/SignatureVerifyFlag"/>
+            </SignatureVerifyFlag>
+            <xsl:if test="$ValidateResult/root/ErrorMessage">
+                <ErrorMsg>
+                    <xsl:value-of select="$ValidateResult/root/ErrorMessage"/>
+                </ErrorMsg>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="SignatureVerifyFlag" type="xsd:string"/>
+                    <xsd:element name="ErrorMsg" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>468</pd:endX>
+    <pd:endY>289</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <ValidateResult>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="SignatureVerifyFlag" type="xsd:boolean"/>
+                        <xsd:element name="ErrorMessage" type="xsd:string" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </ValidateResult>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1363317296874</pd:targetNamespace>
+    <pd:activity name="genSignature">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>645</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <fileName>ValidUserSignaturegenSignature</fileName>
+            <packageName>Services.Cert.V1_0.ValidUserSignature</packageName>
+            <fullsource>package Services.Cert.V1_0.ValidUserSignature;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+import java.io.*;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Base64;
+public class ValidUserSignaturegenSignature{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String secretkey = "";
+	protected String httpmethod = "";
+	protected String requestURI = "";
+	protected long post_time = 0;
+	protected String signature = "";
+	protected String content = "";
+	protected boolean verifyflag = false;
+	protected String ErrorMessage = "";
+	public String getsecretkey() {
+		return secretkey;
+	}
+	public void setsecretkey(String val) {
+		secretkey = val;
+	}
+	public String gethttpmethod() {
+		return httpmethod;
+	}
+	public void sethttpmethod(String val) {
+		httpmethod = val;
+	}
+	public String getrequestURI() {
+		return requestURI;
+	}
+	public void setrequestURI(String val) {
+		requestURI = val;
+	}
+	public long getpost_time() {
+		return post_time;
+	}
+	public void setpost_time(long val) {
+		post_time = val;
+	}
+	public String getsignature() {
+		return signature;
+	}
+	public void setsignature(String val) {
+		signature = val;
+	}
+	public String getcontent() {
+		return content;
+	}
+	public void setcontent(String val) {
+		content = val;
+	}
+	public boolean getverifyflag() {
+		return verifyflag;
+	}
+	public void setverifyflag(boolean val) {
+		verifyflag = val;
+	}
+	public String getErrorMessage() {
+		return ErrorMessage;
+	}
+	public void setErrorMessage(String val) {
+		ErrorMessage = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ValidUserSignaturegenSignature() {
+	}
+	
+	/**
+	 * Verify that if the given x-posix-time header attribute is within given minute range of server time (before &amp; after)
+	 * @param serverTime the current server time
+	 * @param posix the x-posix-time header attribute as string
+	 * @param timeRangeInMinutes the minute range that is treated as valid 
+	 * @return boolean value of whether the given posix-time value is within the given range of serverTime parameter.
+	 */
+	public static boolean VerifyPosixTime(Date serverTime, long posix, int timeRangeInMinutes){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(serverTime);
+		Date server = cal.getTime();
+		
+		int interval = (60 * timeRangeInMinutes);
+		
+		cal.add(Calendar.SECOND, interval);
+		Date endDate = cal.getTime();
+		
+		cal.setTime(serverTime);
+		
+		cal.add(Calendar.SECOND, -interval);
+		Date startDate = cal.getTime();
+		
+		return server.after(startDate) &amp;&amp; server.before(endDate);
+	}
+	
+	/**
+	 * Generate a x-signature header value that is required to invoke LMPI
+	 * @param secret The secret key assigned by Trend Micro
+	 * @param unixTimestamp The x-posix-time attribute specified in header, it is suppose to the request time in unix timestamp format. 
+	 * @param method The HTTP method that is used to invoke LMPI
+	 * @param uri The absolute uri being requested. The url should url-encoded that is similar to something like:
+	 *  /customers?name=some%20customer%20name
+	 * @param content The HTTP content that is to be hashed, pass null if there's no content to be hashed. 
+	 * @return a SHA-256 hashed digest in Base64 string.
+	 */
+	public static String GenerateSignature(String secret, long unixTimestamp, 
+			String method, String uri, String content)
+	{
+		MessageDigest md = null;
+		
+		String posix = String.valueOf(unixTimestamp);
+		String payload = posix + method.toUpperCase() + uri;
+		
+		// Create a MD5 hash of content if not null.
+		if(content != null){
+			try {
+				md = MessageDigest.getInstance("MD5");
+				md.update(content.getBytes("UTF-8"));
+				content = new Base64().encodeAsString(md.digest());
+			} catch (Exception e) {
+				ValidUserSignaturegenSignature vs = new ValidUserSignaturegenSignature();
+				vs.setErrorMessage(e.getMessage());
+				return e.getMessage();
+			}
+			payload += content;
+			//setpayload(payload);
+		}
+		
+		try{
+			Mac hmac = Mac.getInstance("HmacSHA256");
+			SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes("UTF-8"), "HmacSHA256");
+			hmac.init(secret_key);
+			
+			byte[] hashed = hmac.doFinal(payload.getBytes("UTF-8"));
+			return new Base64().encodeAsString(hashed);
+			
+		}catch(Exception ex){
+			//System.out.println("unable to create message hash." + ex.toString());
+			//setErrorMessage("unable to create message hash." + ex.toString());
+			ValidUserSignaturegenSignature vs = new ValidUserSignaturegenSignature();
+			vs.setErrorMessage(ex.getMessage());
+			return "unable to create message hash." + ex.toString();
+			
+		}
+		//return null;
+	}
+	
+	/**
+	 * Generate a x-signature header value that is required to invoke LMPI
+	 * @param secret The secret key assigned by Trend Micro
+	 * @param unixTimestamp The x-posix-time attribute specified in header, it is suppose to the request time in unix timestamp format. 
+	 * @param method The HTTP method that is used to invoke LMPI
+	 * @param uri The absolute uri being requested. The url should url-encoded that is similar to something like:
+	 *  /customers?name=some%20customer%20name
+	 * @param content The HTTP content that is to be hashed, pass null if there's no content to be hashed. 
+	 * @return a SHA-256 hashed digest in Base64 string.
+	 */
+	public static String GenerateSignature(String secret, long unixTimestamp, 
+			String method, String uri, byte[] content)
+	{
+		MessageDigest md = null;
+		
+		String posix = String.valueOf(unixTimestamp);
+		String payload = posix + method.toUpperCase() + uri;
+		String contentSTR ="";
+		// Create a MD5 hash of content if not null.
+		if( content != null){
+			try {
+				md = MessageDigest.getInstance("MD5");
+				md.update(content);
+				contentSTR = new Base64().encodeBase64String(md.digest());
+				
+			} catch (Exception e) {
+				ValidUserSignaturegenSignature vs = new ValidUserSignaturegenSignature();
+				vs.setErrorMessage(e.getMessage());
+				return e.getMessage();
+			}
+			payload += contentSTR;
+			
+			
+			
+		}
+		//System.out.println("payload="+payload);
+		try{
+			Mac hmac = Mac.getInstance("HmacSHA256");
+			SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes("UTF-8"), "HmacSHA256");
+			hmac.init(secret_key);
+			
+			byte[] hashed = hmac.doFinal(payload.getBytes("UTF-8"));
+			return new Base64().encodeAsString(hashed);
+			
+		}catch(Exception ex){
+			//System.out.println("unable to create message hash." + ex.toString());
+			//setErrorMessage("unable to create message hash." + ex.toString());
+			return "fail,unable to create message hash." + ex.toString();
+			
+		}
+		//return null;
+	}
+	
+	
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String secretkey
+	In  : String httpmethod
+	In  : String requestURI
+	In  : long post_time
+	In  : String signature
+	In  : String content
+	Out : boolean verifyflag
+	Out : String ErrorMessage
+* Available Variables: DO NOT MODIFY *****/
+		Calendar cal = Calendar.getInstance();		 
+		Date serverTime = cal.getTime();
+		boolean PosixTimeflag = VerifyPosixTime(serverTime, post_time, 15);
+		
+		try{
+			if (!PosixTimeflag){
+				setErrorMessage("Verify PostixTime Fail");
+			}else{
+				
+				URL url = new URL(new URL("http://localhost"), requestURI);
+		        url = new URI("http", "localhost", url.getPath(), url.getQuery(), "").toURL();
+		        String uri = url.getPath();
+		        if(requestURI.indexOf('?') &gt;= 0) uri += "?" + url.getQuery();
+		        
+		        MessageDigest md = null;
+		        md = MessageDigest.getInstance("MD5");
+				byte[] binaryContent = content.getBytes("UTF-8");
+				
+				String reGen = GenerateSignature(secretkey,  post_time,  httpmethod,  uri,  binaryContent);
+		        
+			//return reGen.equals(signature);
+				
+				if (reGen.equals(signature)){
+					setverifyflag(true);
+				}else{
+					if ("fail".equals(reGen.substring(0, 4))){
+						setErrorMessage(reGen);
+					}else{
+						setErrorMessage("Key was time out!!"+reGen);
+					}
+					
+				}
+				
+				//boolean flag = VerifySignature( secretkey,  post_time,  httpmethod,  uri,  binaryContent,  signature);
+				//setverifyflag(flag);
+			
+				
+			}
+		}catch(Exception e) {
+			setErrorMessage(e.getMessage());
+		}
+}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>secretkey</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>httpmethod</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>requestURI</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>post_time</fieldName>
+                    <fieldType>long</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>signature</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>content</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>verifyflag</fieldName>
+                    <fieldType>boolean</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>ErrorMessage</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>ValidUserSignaturegenSignature</name>
+                    <byteCode>yv66vgAAADIA9QkAIQB8CQAhAH0JACEAfgkAIQB/CQAhAIAJACEAgQkAIQCCCQAhAIMKAEQAhAgAhQoAhgCHCgCGAIgKAIYAiQoAhgCKCgCLAIwKAIsAjQoAjgCPBwCQCgASAIQKABIAkQoAjgCSCgASAJMIAJQKAJUAlggAlwoAjgCYCgCVAJkHAJoKABwAhAoAlQCbCgAcAJwHAJ0HAJ4KACEAhAoAIACfCgAhAKAIAKEKAKIAowcApAoAJwClCgCiAKYKAKIApwgAqAoAIACTCgAcAKkIAKoKACEAqwgArAcArQgArgoAMQCvCgAxALAHALEIALIIALMKADEAtAoAMQC1CgA1ALYKADUAtwoAjgC4CAC5CgAhALoKAI4AuwoAIQC8CAC9CgCOAL4IAL8HAMABAAlzZWNyZXRrZXkBABJMamF2YS9sYW5nL1N0cmluZzsBAApodHRwbWV0aG9kAQAKcmVxdWVzdFVSSQEACXBvc3RfdGltZQEAAUoBAAlzaWduYXR1cmUBAAdjb250ZW50AQAKdmVyaWZ5ZmxhZwEAAVoBAAxFcnJvck1lc3NhZ2UBAAxnZXRzZWNyZXRrZXkBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAAxzZXRzZWNyZXRrZXkBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAA1nZXRodHRwbWV0aG9kAQANc2V0aHR0cG1ldGhvZAEADWdldHJlcXVlc3RVUkkBAA1zZXRyZXF1ZXN0VVJJAQAMZ2V0cG9zdF90aW1lAQADKClKAQAMc2V0cG9zdF90aW1lAQAEKEopVgEADGdldHNpZ25hdHVyZQEADHNldHNpZ25hdHVyZQEACmdldGNvbnRlbnQBAApzZXRjb250ZW50AQANZ2V0dmVyaWZ5ZmxhZwEAAygpWgEADXNldHZlcmlmeWZsYWcBAAQoWilWAQAPZ2V0RXJyb3JNZXNzYWdlAQAPc2V0RXJyb3JNZXNzYWdlAQAGPGluaXQ+AQADKClWAQAPVmVyaWZ5UG9zaXhUaW1lAQAVKExqYXZhL3V0aWwvRGF0ZTtKSSlaAQANU3RhY2tNYXBUYWJsZQcAwQcAwgEAEUdlbmVyYXRlU2lnbmF0dXJlAQBdKExqYXZhL2xhbmcvU3RyaW5nO0pMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmc7BwDDBwDEBwCdAQBNKExqYXZhL2xhbmcvU3RyaW5nO0pMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztbQilMamF2YS9sYW5nL1N0cmluZzsHAMUBAAZpbnZva2UHAK0HAJ4BAApFeGNlcHRpb25zAQAKU291cmNlRmlsZQEAI1ZhbGlkVXNlclNpZ25hdHVyZWdlblNpZ25hdHVyZS5qYXZhDABFAEYMAEcARgwASABGDABJAEoMAEsARgwATABGDABNAE4MAE8ARgwAaABpAQAABwDCDADGAMcMAMgAyQwAygDLDADMAM0HAMEMAM4AzwwA0ADPBwDDDADRANIBABdqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcgwA0wDUDADVAFEMANYAUQEAA01ENQcAxAwAxgDXAQAFVVRGLTgMANgA2QwA2gDbAQAmb3JnL2FwYWNoZS9jb21tb25zL2NvZGVjL2JpbmFyeS9CYXNlNjQMANwA3QwA3gDfAQATamF2YS9sYW5nL0V4Y2VwdGlvbgEARFNlcnZpY2VzL0NlcnQvVjFfMC9WYWxpZFVzZXJTaWduYXR1cmUvVmFsaWRVc2VyU2lnbmF0dXJlZ2VuU2lnbmF0dXJlDADgAFEMAGcAVQEACkhtYWNTSEEyNTYHAOEMAMYA4gEAH2phdmF4L2NyeXB0by9zcGVjL1NlY3JldEtleVNwZWMMAGgA4wwA5ADlDADmAOcBAB51bmFibGUgdG8gY3JlYXRlIG1lc3NhZ2UgaGFzaC4MAOgA3wEAI2ZhaWwsdW5hYmxlIHRvIGNyZWF0ZSBtZXNzYWdlIGhhc2guDABqAGsBABZWZXJpZnkgUG9zdGl4VGltZSBGYWlsAQAMamF2YS9uZXQvVVJMAQAQaHR0cDovL2xvY2FsaG9zdAwAaABVDABoAOkBAAxqYXZhL25ldC9VUkkBAARodHRwAQAJbG9jYWxob3N0DADqAFEMAOsAUQwAaADsDADtAO4MAO8A8AEAAT8MAG8AdAwA8QDyDABkAGUBAARmYWlsDADzAPQBABJLZXkgd2FzIHRpbWUgb3V0ISEBABBqYXZhL2xhbmcvT2JqZWN0AQAOamF2YS91dGlsL0RhdGUBABJqYXZhL3V0aWwvQ2FsZW5kYXIBABBqYXZhL2xhbmcvU3RyaW5nAQAbamF2YS9zZWN1cml0eS9NZXNzYWdlRGlnZXN0AQACW0IBAAtnZXRJbnN0YW5jZQEAFigpTGphdmEvdXRpbC9DYWxlbmRhcjsBAAdzZXRUaW1lAQATKExqYXZhL3V0aWwvRGF0ZTspVgEAB2dldFRpbWUBABIoKUxqYXZhL3V0aWwvRGF0ZTsBAANhZGQBAAUoSUkpVgEABWFmdGVyAQATKExqYXZhL3V0aWwvRGF0ZTspWgEABmJlZm9yZQEAB3ZhbHVlT2YBABUoSilMamF2YS9sYW5nL1N0cmluZzsBAAZhcHBlbmQBAC0oTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAAt0b1VwcGVyQ2FzZQEACHRvU3RyaW5nAQAxKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9zZWN1cml0eS9NZXNzYWdlRGlnZXN0OwEACGdldEJ5dGVzAQAWKExqYXZhL2xhbmcvU3RyaW5nOylbQgEABnVwZGF0ZQEABShbQilWAQAGZGlnZXN0AQAEKClbQgEADmVuY29kZUFzU3RyaW5nAQAWKFtCKUxqYXZhL2xhbmcvU3RyaW5nOwEACmdldE1lc3NhZ2UBABBqYXZheC9jcnlwdG8vTWFjAQAmKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YXgvY3J5cHRvL01hYzsBABcoW0JMamF2YS9sYW5nL1N0cmluZzspVgEABGluaXQBABYoTGphdmEvc2VjdXJpdHkvS2V5OylWAQAHZG9GaW5hbAEABihbQilbQgEAEmVuY29kZUJhc2U2NFN0cmluZwEAIyhMamF2YS9uZXQvVVJMO0xqYXZhL2xhbmcvU3RyaW5nOylWAQAHZ2V0UGF0aAEACGdldFF1ZXJ5AQBdKExqYXZhL2xhbmcvU3RyaW5nO0xqYXZhL2xhbmcvU3RyaW5nO0xqYXZhL2xhbmcvU3RyaW5nO0xqYXZhL2xhbmcvU3RyaW5nO0xqYXZhL2xhbmcvU3RyaW5nOylWAQAFdG9VUkwBABAoKUxqYXZhL25ldC9VUkw7AQAH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</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <secretkey>
+                    <xsl:value-of select="$Map-Data/root/secretKey"/>
+                </secretkey>
+                <httpmethod>
+                    <xsl:value-of select="$Start/root/httpmethod"/>
+                </httpmethod>
+                <requestURI>
+                    <xsl:value-of select="$Start/root/requestURI"/>
+                </requestURI>
+                <post_time>
+                    <xsl:value-of select="$Start/root/posix-time"/>
+                </post_time>
+                <signature>
+                    <xsl:value-of select="$Start/root/signature"/>
+                </signature>
+                <content>
+                    <xsl:value-of select="$Start/root/content"/>
+                </content>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>281</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="secretKey" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:choose>
+                    <xsl:when test="$Start/root/accesstoken=$_globalVariables/ns:GlobalVariables/Services/ArrowSphere/V1.0/Auth/accesstoken">
+                        <secretKey>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/ArrowSphere/V1.0/Auth/secret_key"/>
+                        </secretKey>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <secretKey>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </secretKey>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Posix-Time check">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>464</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <element>
+                <xsd:element name="group">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="currentTimestamp" type="xsd:int"/>
+                            <xsd:element name="userTimestamp" type="xsd:int"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <currentTimestamp>
+                    <xsl:value-of select="number(substring(tib:timestamp(), 1,10))"/>
+                </currentTimestamp>
+                <userTimestamp>
+                    <xsl:value-of select="number($Start/root/posix-time)"/>
+                </userTimestamp>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AssignErroResult-Token">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>317</pd:x>
+        <pd:y>173</pd:y>
+        <config>
+            <variableName>ValidateResult</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SignatureVerifyFlag>
+                    <xsl:value-of select="false()"/>
+                </SignatureVerifyFlag>
+                <ErrorMessage>
+                    <xsl:value-of select="'Auth-Token Invalid'"/>
+                </ErrorMessage>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AssignErrResult-Time">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>469</pd:x>
+        <pd:y>176</pd:y>
+        <config>
+            <variableName>ValidateResult</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SignatureVerifyFlag>
+                    <xsl:value-of select="false()"/>
+                </SignatureVerifyFlag>
+                <ErrorMessage>
+                    <xsl:value-of select="'Posix-Time invalid.'"/>
+                </ErrorMessage>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AssignSigResult">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>618</pd:x>
+        <pd:y>177</pd:y>
+        <config>
+            <variableName>ValidateResult</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SignatureVerifyFlag>
+                    <xsl:value-of select="$genSignature/javaCodeActivityOutput/verifyflag"/>
+                </SignatureVerifyFlag>
+                <xsl:if test="$genSignature/javaCodeActivityOutput/ErrorMessage !=&quot;&quot;">
+                    <ErrorMessage>
+                        <xsl:value-of select="'Fail to validate the signature.'"/>
+                    </ErrorMessage>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>genSignature</pd:from>
+        <pd:to>AssignSigResult</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Posix-Time check</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>AssignErroResult-Token</pd:to>
+        <pd:xpathDescription>Token Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Map-Data/root/secretKey=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Posix-Time check</pd:from>
+        <pd:to>genSignature</pd:to>
+        <pd:xpathDescription>posixTime in 15 mins</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>($Posix-Time-check/group/userTimestamp &lt; $Posix-Time-check/group/currentTimestamp + 60*15) and 
+($Posix-Time-check/group/userTimestamp &gt; $Posix-Time-check/group/currentTimestamp - 60*15)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Posix-Time check</pd:from>
+        <pd:to>AssignErrResult-Time</pd:to>
+        <pd:xpathDescription>posix time error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-6750157</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AssignErroResult-Token</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AssignErrResult-Time</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AssignSigResult</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

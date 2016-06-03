@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/error" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD/PIS/GetBillingInfo.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD/AxC/GetBillingReport.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/AxC/GetBillingReport.xsd" schemaLocation="/XSD/AxC/GetBillingReport.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/PIS/GetBillingInfo.xsd" schemaLocation="/XSD/PIS/GetBillingInfo.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/PIS/GetBillingInformation.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element name="TenantID" type="xsd:string"/>
+                    <xsd:element name="QueryString" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings>
+        <xsl:choose>
+            <xsl:when test="$Call-PIS-API/root/outputJSON='{}'">
+                <GetBillingInfoRs>
+                    <PartnerCompany>
+                        <xsl:value-of select="''"/>
+                    </PartnerCompany>
+                    <PartnerCompanyID>
+                        <xsl:value-of select="''"/>
+                    </PartnerCompanyID>
+                    <BillingReportID>
+                        <xsl:value-of select="''"/>
+                    </BillingReportID>
+                    <ReportCycleStartDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ReportCycleStartDate>
+                    <ReportCycleEndDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ReportCycleEndDate>
+                    <TotalAmount>
+                        <xsl:value-of select="0.0"/>
+                    </TotalAmount>
+                    <Currency>
+                        <xsl:value-of select="''"/>
+                    </Currency>
+                    <ProductProfiles>
+                        <ProductProfile>
+                            <ProductName>
+                                <xsl:value-of select="''"/>
+                            </ProductName>
+                            <RPIC>
+                                <xsl:value-of select="''"/>
+                            </RPIC>
+                            <SKU>
+                                <xsl:value-of select="''"/>
+                            </SKU>
+                            <Unit>
+                                <xsl:value-of select="''"/>
+                            </Unit>
+                            <UnitPrice>
+                                <xsl:value-of select="''"/>
+                            </UnitPrice>
+                            <Qty>
+                                <xsl:value-of select="''"/>
+                            </Qty>
+                            <Discount>
+                                <xsl:value-of select="''"/>
+                            </Discount>
+                            <TotalPrice>
+                                <xsl:value-of select="''"/>
+                            </TotalPrice>
+                        </ProductProfile>
+                    </ProductProfiles>
+                </GetBillingInfoRs>
+            </xsl:when>
+            <xsl:otherwise>
+                <GetBillingInfoRs>
+                    <PartnerCompany>
+                        <xsl:value-of select="$Parse-XML/GetBillingInfoRs/PartnerCompany"/>
+                    </PartnerCompany>
+                    <PartnerCompanyID>
+                        <xsl:value-of select="$Parse-XML/GetBillingInfoRs/PartnerCompanyID"/>
+                    </PartnerCompanyID>
+                    <BillingReportID>
+                        <xsl:value-of select="$Parse-XML/GetBillingInfoRs/BillingReportID"/>
+                    </BillingReportID>
+                    <ReportCycleStartDate>
+                        <xsl:value-of select="$Parse-XML/GetBillingInfoRs/ReportCycleStartDate"/>
+                    </ReportCycleStartDate>
+                    <ReportCycleEndDate>
+                        <xsl:value-of select="$Parse-XML/GetBillingInfoRs/ReportCycleEndDate"/>
+                    </ReportCycleEndDate>
+                    <TotalAmount>
+                        <xsl:value-of select="$Parse-XML/GetBillingInfoRs/TotalAmount"/>
+                    </TotalAmount>
+                    <Currency>
+                        <xsl:value-of select="$Parse-XML/GetBillingInfoRs/Currency"/>
+                    </Currency>
+                    <xsl:for-each select="$Parse-XML/GetBillingInfoRs/ProductProfiles">
+                        <ProductProfiles>
+                            <xsl:for-each select="ProductProfile">
+                                <ProductProfile>
+                                    <xsl:if test="ProductName">
+                                        <ProductName>
+                                            <xsl:value-of select="ProductName"/>
+                                        </ProductName>
+                                    </xsl:if>
+                                    <xsl:if test="RPIC">
+                                        <RPIC>
+                                            <xsl:value-of select="RPIC"/>
+                                        </RPIC>
+                                    </xsl:if>
+                                    <xsl:if test="SKU">
+                                        <SKU>
+                                            <xsl:value-of select="SKU"/>
+                                        </SKU>
+                                    </xsl:if>
+                                    <xsl:if test="Unit">
+                                        <Unit>
+                                            <xsl:value-of select="Unit"/>
+                                        </Unit>
+                                    </xsl:if>
+                                    <xsl:if test="UnitPrice">
+                                        <UnitPrice>
+                                            <xsl:value-of select="UnitPrice"/>
+                                        </UnitPrice>
+                                    </xsl:if>
+                                    <xsl:if test="Qty">
+                                        <Qty>
+                                            <xsl:value-of select="Qty"/>
+                                        </Qty>
+                                    </xsl:if>
+                                    <xsl:if test="Discount">
+                                        <Discount>
+                                            <xsl:value-of select="Discount"/>
+                                        </Discount>
+                                    </xsl:if>
+                                    <xsl:if test="TotalPrice">
+                                        <TotalPrice>
+                                            <xsl:value-of select="TotalPrice"/>
+                                        </TotalPrice>
+                                    </xsl:if>
+                                </ProductProfile>
+                            </xsl:for-each>
+                        </ProductProfiles>
+                    </xsl:for-each>
+                </GetBillingInfoRs>
+            </xsl:otherwise>
+        </xsl:choose>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:GetBillingInfoRs"/>
+    <pd:endX>625</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas>
+        <errorMsg ref="pfx3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1421757952207</pd:targetNamespace>
+    <pd:activity name="Call PIS API">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>273</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <processName>/ExternalServices/PIS/Call PIS API.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <HTTPMethod>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/PIS/GetBillingInformation/HttpMethod"/>
+                </HTTPMethod>
+                <RequestURI>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/ExternalServices/PIS/uriPrefix, $_globalVariables/ns:GlobalVariables/ExternalServices/PIS/GetBillingInformation/RequestURI)"/>
+                </RequestURI>
+                <TraceID>
+                    <xsl:value-of select="$Start/root/BWTraceID"/>
+                </TraceID>
+                <QueryString>
+                    <xsl:value-of select="$Start/root/QueryString"/>
+                </QueryString>
+                <TenantID>
+                    <xsl:value-of select="$Start/root/TenantID"/>
+                </TenantID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>361</pd:x>
+        <pd:y>250</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>513</pd:x>
+        <pd:y>250</pd:y>
+        <config>
+            <faultName>errorMsg</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx3:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns1:ErrorReport/Data/pfx3:Error)">
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx3:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx3:Error>
+                                <pfx3:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx3:src>
+                                <pfx3:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx3:error_code>
+                                <pfx3:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx3:error_message>
+                                <pfx3:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx3:stack_trace>
+                            </pfx3:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>505</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx2:GetBillingInfoRs"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="TM:parseJSONtoXML($Replace-Rs-Msg/root/result, 1)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Replace Rs Msg">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>395</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="result" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <result>
+                    <xsl:value-of select="concat('{&quot;GetBillingInfoRs&quot;:',TM:stringReplace(TM:stringReplace($Call-PIS-API/root/outputJSON, '&quot;ProductProfiles&quot;:','&quot;ProductProfiles&quot;:{ProductProfile:'), '}],', '}]},'), '}')"/>
+                </result>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>436</pd:x>
+        <pd:y>186</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call PIS API</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call PIS API</pd:from>
+        <pd:to>Replace Rs Msg</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Replace Rs Msg</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call PIS API</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:xpathDescription>no billing report</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Call-PIS-API/root/outputJSON='{}'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

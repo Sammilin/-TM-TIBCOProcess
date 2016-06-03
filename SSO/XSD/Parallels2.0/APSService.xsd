@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="APSService">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="ProvisionEndCustomer">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="ProvisionEndCustomerRq"/>
+							<xs:element name="ProvisionEndCustomerRs" type="APSServiceResponeType"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PartnerSubscribe">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="PartnerSubscribeRq"/>
+							<xs:element name="PartnerSubscribeRs" type="APSServiceResponeType"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="APSServiceResponeType">
+		<xs:sequence>
+			<xs:element name="RsMessage" type="xs:string"/>
+			<xs:element name="Error" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TraceID" type="xs:string"/>
+						<xs:element name="LiberalCode" type="xs:string"/>
+						<xs:element name="LiberalMessge" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ProvisionEndCustomerRq">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="aps" type="APSSourceApsType"/>
+				<xs:element name="account" type="APSSourceAccountType"/>
+				<xs:element name="globals" type="APSSourceGlobalType"/>
+				<xs:element name="subscription" type="APSSourceSubscriptionType"/>
+				<xs:element name="wfbss" type="APSSourceWfbssType"/>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="isTier2Customer" type="xs:boolean" minOccurs="0"/>
+							<xs:element name="tier2TenentId" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PartnerSubscribeRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="aps" type="APSSourceApsType"/>
+				<xs:element name="account" type="APSSourceAccountType"/>
+				<xs:element name="globals" type="APSSourceGlobalType"/>
+				<xs:element name="subscription" type="APSSourceSubscriptionType"/>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="accountRole" type="xs:string"/>
+							<xs:element name="accountInfo" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="APSSourceAccountType">
+		<xs:all>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="id" type="xs:string"/>
+			<xs:element name="companyName" type="xs:string"/>
+			<xs:element name="addressPostal" type="APSSourceAddressPortalType"/>
+			<xs:element name="users" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceApsType">
+		<xs:all>
+			<xs:element name="type" type="xs:string"/>
+			<xs:element name="id" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceGlobalType">
+		<xs:all>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="environment" type="xs:string"/>
+			<xs:element name="access_token" type="xs:string"/>
+			<xs:element name="secret_key" type="xs:string"/>
+			<xs:element name="tenant_id" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceSubscriptionType">
+		<xs:all>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="subscriptionId" type="xs:string"/>
+			<xs:element name="trial" type="xs:boolean"/>
+			<xs:element name="disabled" type="xs:boolean"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceWfbssType">
+		<xs:all>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="service_plan_id" type="xs:string"/>
+			<xs:element name="user" type="APSSourceUserType"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceUserType">
+		<xs:all>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="subscriptionId" type="xs:string"/>
+			<xs:element name="userId" type="xs:string"/>
+			<xs:element name="login" type="xs:string"/>
+			<xs:element name="password" type="xs:string"/>
+			<xs:element name="email" type="xs:string"/>
+			<xs:element name="givenName" type="xs:string"/>
+			<xs:element name="additionalName" type="xs:string"/>
+			<xs:element name="familyName" type="xs:string"/>
+			<xs:element name="fullName" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element name="organizationName" type="xs:string"/>
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="addressPostal" type="APSSourceAddressPortalType"/>
+			<xs:element name="telVoice" type="xs:string"/>
+			<xs:element name="telHome" type="xs:string"/>
+			<xs:element name="telWork" type="xs:string"/>
+			<xs:element name="telCell" type="xs:string"/>
+			<xs:element name="telFax" type="xs:string"/>
+			<xs:element name="telPager" type="xs:string"/>
+			<xs:element name="tz" type="xs:string"/>
+			<xs:element name="note" type="xs:string"/>
+			<xs:element name="url" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceAddressPortalType">
+		<xs:all>
+			<xs:element name="postOfficeBox" type="xs:string"/>
+			<xs:element name="extendedAddress" type="xs:string"/>
+			<xs:element name="streetAddress" type="xs:string"/>
+			<xs:element name="locality" type="xs:string"/>
+			<xs:element name="region" type="xs:string"/>
+			<xs:element name="postalCode" type="xs:string"/>
+			<xs:element name="countryName" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

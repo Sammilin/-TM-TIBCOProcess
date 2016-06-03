@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:TM2="java://com.trendmicro.getTIBCOGlobalVariable" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/Cert/V1.0/GetSignature.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="EnKey" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>107</pd:startX>
+    <pd:startY>88</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Result>
+                <xsl:value-of select="$Java-Code/javaCodeActivityOutput/result"/>
+            </Result>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Result" type="xsd:base64Binary"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>532</pd:endX>
+    <pd:endY>90</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334659505583</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>351</pd:x>
+        <pd:y>90</pd:y>
+        <config>
+            <fileName>GetSignatureJavaCode</fileName>
+            <packageName>Services.Cert.V1_0.GetSignature</packageName>
+            <fullsource>package Services.Cert.V1_0.GetSignature;
+import java.io.*;
+import java.security.*;
+import java.security.cert.X509Certificate;
+import java.security.cert.CertificateFactory;
+import javax.crypto.Cipher;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+public class GetSignatureJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String enKey = "";
+	protected byte[] privateKey = null;
+	protected String password = "";
+	protected byte[] result = null;
+	protected String exception = "";
+	public String getenKey() {
+		return enKey;
+	}
+	public void setenKey(String val) {
+		enKey = val;
+	}
+	public byte[] getprivateKey() {
+		return privateKey;
+	}
+	public void setprivateKey(byte[] val) {
+		privateKey = val;
+	}
+	public String getpassword() {
+		return password;
+	}
+	public void setpassword(String val) {
+		password = val;
+	}
+	public byte[] getresult() {
+		return result;
+	}
+	public void setresult(byte[] val) {
+		result = val;
+	}
+	public String getexception() {
+		return exception;
+	}
+	public void setexception(String val) {
+		exception = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public GetSignatureJavaCode() {
+			
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String enKey
+	In  : byte[] privateKey
+	In  : String password
+	Out : byte[] result
+	Out : String exception
+* Available Variables: DO NOT MODIFY *****/
+		try{
+		//ByteArrayInputStream inStream = new ByteArrayInputStream(Binaryfile);
+		//CertificateFactory cf = CertificateFactory.getInstance("X.509");
+		//X509Certificate cert = (X509Certificate)cf.generateCertificate(inStream);
+		//inStream.close();
+		//PublicKey pk = cert.getPublicKey();
+		//String password = "TIBCO-BW";
+		ByteArrayInputStream is = new ByteArrayInputStream(privateKey);
+		KeyStore ks = KeyStore.getInstance("JKS");
+		ks.load(is, password.toCharArray());
+		is.close();
+		PrivateKey privateKey = (PrivateKey) ks.getKey("1",password.toCharArray());
+
+		/*
+		byte[] data = enKey.getBytes();
+		Cipher cipher = Cipher.getInstance("RSA");
+		cipher.init(Cipher.ENCRYPT_MODE, pk);
+		byte[] cipherData = cipher.doFinal(data);
+		*/
+
+		//Content transfer hashbyte
+		/*MessageDigest digest = MessageDigest.getInstance("SHA1");  
+        	digest.update(enKey.getBytes("UTF-16LE"));
+        	byte[] hash = digest.digest(); 
+		*/
+
+      		//signature with SHA1
+	    	Signature signature = Signature.getInstance("SHA1withRSA");
+	    	signature.initSign(privateKey);
+	    	signature.update(enKey.getBytes("UTF-8"));
+	    	byte[] cipherData = signature.sign();
+		
+		BASE64Encoder base64encoder;
+		base64encoder = new BASE64Encoder();
+		base64encoder.encode(cipherData);
+		setresult(cipherData);
+		//return encrypted;
+	}
+	catch(Exception e) {
+		 setexception(e.getMessage());
+	}
+	
+}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>result</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>exception</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>enKey</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>privateKey</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>password</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>GetSignatureJavaCode</name>
+                    <byteCode>yv66vgAAADIAegkAIABBCQAgAEIJACAAQwkAIABECQAgAEUKACEARggARwcASAoACABJCABKCgBLAEwKAE0ATgoASwBPCgAIAFAIAFEKAEsAUgcAUwgAVAoAVQBWCgBVAFcIAFgKAE0AWQoAVQBaCgBVAFsHAFwKABkARgoAGQBdCgAgAF4HAF8KAB0AYAoAIABhBwBiBwBjAQAFZW5LZXkBABJMamF2YS9sYW5nL1N0cmluZzsBAApwcml2YXRlS2V5AQACW0IBAAhwYXNzd29yZAEABnJlc3VsdAEACWV4Y2VwdGlvbgEACGdldGVuS2V5AQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAIc2V0ZW5LZXkBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAA1nZXRwcml2YXRlS2V5AQAEKClbQgEADXNldHByaXZhdGVLZXkBAAUoW0IpVgEAC2dldHBhc3N3b3JkAQALc2V0cGFzc3dvcmQBAAlnZXRyZXN1bHQBAAlzZXRyZXN1bHQBAAxnZXRleGNlcHRpb24BAAxzZXRleGNlcHRpb24BAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAA1TdGFja01hcFRhYmxlBwBfAQAKRXhjZXB0aW9ucwEAClNvdXJjZUZpbGUBABlHZXRTaWduYXR1cmVKYXZhQ29kZS5qYXZhDAAiACMMACQAJQwAJgAjDAAnACUMACgAIwwAOQA6AQAAAQAcamF2YS9pby9CeXRlQXJyYXlJbnB1dFN0cmVhbQwAOQAyAQADSktTBwBkDABlAGYHAGcMAGgAaQwAagBrDABsADoBAAExDABtAG4BABhqYXZhL3NlY3VyaXR5L1ByaXZhdGVLZXkBAAtTSEExd2l0aFJTQQcAbwwAZQBwDABxAHIBAAVVVEYtOAwAcwB0DAB1ADIMAHYAMAEAFnN1bi9taXNjL0JBU0U2NEVuY29kZXIMAHcAeAwANgAyAQATamF2YS9sYW5nL0V4Y2VwdGlvbgwAeQAqDAA4AC4BADRTZXJ2aWNlcy9DZXJ0L1YxXzAvR2V0U2lnbmF0dXJlL0dldFNpZ25hdHVyZUphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAFmphdmEvc2VjdXJpdHkvS2V5U3RvcmUBAAtnZXRJbnN0YW5jZQEALChMamF2YS9sYW5nL1N0cmluZzspTGphdmEvc2VjdXJpdHkvS2V5U3RvcmU7AQAQamF2YS9sYW5nL1N0cmluZwEAC3RvQ2hhckFycmF5AQAEKClbQwEABGxvYWQBABooTGphdmEvaW8vSW5wdXRTdHJlYW07W0MpVgEABWNsb3NlAQAGZ2V0S2V5AQApKExqYXZhL2xhbmcvU3RyaW5nO1tDKUxqYXZhL3NlY3VyaXR5L0tleTsBABdqYXZhL3NlY3VyaXR5L1NpZ25hdHVyZQEALShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvc2VjdXJpdHkvU2lnbmF0dXJlOwEACGluaXRTaWduAQAdKExqYXZhL3NlY3VyaXR5L1ByaXZhdGVLZXk7KVYBAAhnZXRCeXRlcwEAFihMamF2YS9sYW5nL1N0cmluZzspW0IBAAZ1cGRhdGUBAARzaWduAQAGZW5jb2RlAQAWKFtCKUxqYXZhL2xhbmcvU3RyaW5nOwEACmdldE1lc3NhZ2UAIQAgACEAAAAFAAQAIgAjAAAABAAkACUAAAAEACYAIwAAAAQAJwAlAAAABAAoACMAAAAMAAEAKQAqAAEAKwAAAB0AAQABAAAABSq0AAGwAAAAAQAsAAAABgABAAAAEwABAC0ALgABACsAAAAiAAIAAgAAAAYqK7UAAbEAAAABACwAAAAKAAIAAAAWAAUAFwABAC8AMAABACsAAAAdAAEAAQAAAAUqtAACsAAAAAEALAAAAAYAAQAAABkAAQAxADIAAQArAAAAIgACAAIAAAAGKiu1AAKxAAAAAQAsAAAACgACAAAAHAAFAB0AAQAzACoAAQArAAAAHQABAAEAAAAFKrQAA7AAAAABACwAAAAGAAEAAAAfAAEANAAuAAEAKwAAACIAAgACAAAABiortQADsQAAAAEALAAAAAoAAgAAACIABQAjAAEANQAwAAEAKwAAAB0AAQABAAAABSq0AASwAAAAAQAsAAAABgABAAAAJQABADYAMgABACsAAAAiAAIAAgAAAAYqK7UABLEAAAABACwAAAAKAAIAAAAoAAUAKQABADcAKgABACsAAAAdAAEAAQAAAAUqtAAFsAAAAAEALAAAAAYAAQAAACsAAQA4AC4AAQArAAAAIgACAAIAAAAGKiu1AAWxAAAAAQAsAAAACgACAAAALgAFAC8AAQA5ADoAAQArAAAAUQACAAEAAAAhKrcABioSB7UAASoBtQACKhIHtQADKgG1AAQqEge1AAWxAAAAAQAsAAAAHgAHAAAAMQAEAA0ACgAOAA8ADwAVABAAGgARACAAMwABADsAOgACACsAAADkAAMABwAAAHm7AAhZKrQAArcACUwSCrgAC00sKyq0AAO2AAy2AA0rtgAOLBIPKrQAA7YADLYAEMAAEU4SErgAEzoEGQQttgAUGQQqtAABEhW2ABa2ABcZBLYAGDoFuwAZWbcAGjoGGQYZBbYAG1cqGQW2ABynAAxMKiu2AB62AB+xAAEAAABsAG8AHQACACwAAABCABAAAABDAAwARAASAEUAHgBGACIARwAzAFcAOgBYAEAAWQBOAFoAVQBdAF4AXgBmAF8AbABkAG8AYgBwAGMAeABmADwAAAAJAAL3AG8HAD0IAD4AAAAEAAEAHQABAD8AAAACAEA=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <enKey>
+                    <xsl:value-of select="$Start/root/EnKey"/>
+                </enKey>
+                <privateKey>
+                    <xsl:value-of select="$GetCertVariable/Key/PrivateKey"/>
+                </privateKey>
+                <password>
+                    <xsl:value-of select="TM2:getGlobalVar(&quot;tibco.clientVar.Key/Password&quot;)"/>
+                </password>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetCertVariable">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>225</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <variableConfig>/Services/Cert/V1.0/Shared Variable/AuthConfigVar.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>475</pd:x>
+        <pd:y>217</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx:ActivityInput>
+                <xsl:if test="$Java-Code/javaCodeActivityOutput/exception">
+                    <message>
+                        <xsl:value-of select="$Java-Code/javaCodeActivityOutput/exception"/>
+                    </message>
+                </xsl:if>
+                <messageCode>
+                    <xsl:value-of select="&quot;java exception&quot;"/>
+                </messageCode>
+                <data>
+                    <pfx2:Error>
+                        <pfx2:src>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx2:src>
+                        <pfx2:error_code>
+                            <xsl:value-of select="&quot;java exception&quot;"/>
+                        </pfx2:error_code>
+                        <pfx2:error_message>
+                            <xsl:value-of select="$Java-Code/javaCodeActivityOutput/exception"/>
+                        </pfx2:error_message>
+                        <pfx2:stack_trace>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx2:stack_trace>
+                    </pfx2:Error>
+                </data>
+            </pfx:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetCertVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>Exist Exception</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Java-Code/javaCodeActivityOutput/exception) !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetCertVariable</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

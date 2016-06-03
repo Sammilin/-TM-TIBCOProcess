@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/CheckpointSchema" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/error" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/messageHeader">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader" schemaLocation="/XSD/Common/messageheader.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/LiberalAPI/v1.0/LiberalAPI 490 Handling.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="tenantID" type="xsd:string"/>
+                    <xsd:element name="MessageHeader" type="pfx:RequestHeader"/>
+                    <xsd:element name="Liberal490Err">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="LiberalErrorCode" type="xsd:string"/>
+                                <xsd:element name="LiberalErrorMsg" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>135</pd:startX>
+    <pd:startY>151</pd:startY>
+    <pd:returnBindings>
+        <group>
+            <Liberal490Err>
+                <LiberalErrCode>
+                    <xsl:value-of select="$Start/root/Liberal490Err/LiberalErrorCode"/>
+                </LiberalErrCode>
+                <LiberalErrMsg>
+                    <xsl:value-of select="$Start/root/Liberal490Err/LiberalErrorMsg"/>
+                </LiberalErrMsg>
+            </Liberal490Err>
+        </group>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Liberal490Err">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="LiberalErrCode" type="xsd:string"/>
+                                <xsd:element name="LiberalErrMsg" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>533</pd:endX>
+    <pd:endY>155</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="ns3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1336029364003</pd:targetNamespace>
+    <pd:activity name="Partner-Rs-Logging-1">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>393</pd:x>
+        <pd:y>158</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="true()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="false()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <ns1:DBLogger>
+                    <xsl:for-each select="$Start/root/MessageHeader">
+                        <ns1:MessageHeader>
+                            <ns1:MessageKey>
+                                <xsl:value-of select="pfx:MessageKey"/>
+                            </ns1:MessageKey>
+                            <ns1:ServiceName>
+                                <xsl:value-of select="pfx:ServiceName"/>
+                            </ns1:ServiceName>
+                            <ns1:ServiceVersion>
+                                <xsl:value-of select="pfx:ServiceVersion"/>
+                            </ns1:ServiceVersion>
+                            <ns1:SourceID>
+                                <xsl:value-of select="pfx:SourceID"/>
+                            </ns1:SourceID>
+                            <xsl:if test="pfx:RqTimestamp">
+                                <ns1:RqTimestamp>
+                                    <xsl:value-of select="pfx:RqTimestamp"/>
+                                </ns1:RqTimestamp>
+                            </xsl:if>
+                            <xsl:if test="pfx:RsTimestamp">
+                                <ns1:RsTimestamp>
+                                    <xsl:value-of select="pfx:RsTimestamp"/>
+                                </ns1:RsTimestamp>
+                            </xsl:if>
+                        </ns1:MessageHeader>
+                    </xsl:for-each>
+                    <ns1:MessageBody>
+                        <ns1:Content>
+                            <xsl:value-of select="$Map-Data/root/LiberalErrorContent"/>
+                        </ns1:Content>
+                    </ns1:MessageBody>
+                </ns1:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>466</pd:x>
+        <pd:y>383</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns2:ErrorReport/Data/*" element="ns3:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <pfx2:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Returned when un unhandled error occurs on the server&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="&quot;InternalException&quot;"/>
+                </messageCode>
+                <data>
+                    <xsl:copy-of select="$_error/ns2:ErrorReport/Data/ns3:Error"/>
+                </data>
+            </pfx2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>309</pd:x>
+        <pd:y>384</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>259</pd:x>
+        <pd:y>153</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="LiberalErrorContent" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <LiberalErrorContent>
+                    <xsl:value-of select="concat('ErrorCode',$Start/root/Liberal490Err/LiberalErrorCode,',ErrorMessage',$Start/root/Liberal490Err/LiberalErrorMsg)"/>
+                </LiberalErrorContent>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Partner-Rs-Logging-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Partner-Rs-Logging-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

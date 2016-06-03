@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/PLSService/XSD/Parallels/APSService.xsd3"
+	 xmlns:ns0="http://www.tibco.com/schemas/PLSService/XSD/Parallels/APSType,xsd"
+	 targetNamespace="http://www.tibco.com/schemas/PLSService/XSD/Parallels/APSService.xsd3"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/PLSService/XSD/Parallels/APSType,xsd" schemaLocation="APSSourceType.xsd"/>
+	<xs:element name="APSService">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="ProvisionEndCustomer">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="ProvisionEndCustomerRq"/>
+							<xs:element name="ProvisionEndCustomerRs" type="APSServiceResponeType"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PartnerSubscribe">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="PartnerSubscribeRq"/>
+							<xs:element name="PartnerSubscribeRs" type="APSServiceResponeType"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="APSServiceResponeType">
+		<xs:sequence>
+			<xs:element name="RsMessage" type="xs:string"/>
+			<xs:element name="Error" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TraceID" type="xs:string"/>
+						<xs:element name="LiberalCode" type="xs:string"/>
+						<xs:element name="LiberalMessge" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ProvisionEndCustomerRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="aps" type="ns0:APSSourceApsType"/>
+				<xs:element name="account" type="ns0:APSSourceAccountType"/>
+				<xs:element name="globals" type="ns0:APSSourceGlobalType"/>
+				<xs:element name="subscription" type="ns0:APSSourceSubscriptionType"/>
+				<xs:element name="wfbss" type="ns0:APSSourceWfbssType"/>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="isTier2Customer" type="xs:boolean" minOccurs="0"/>
+							<xs:element name="tier2TenentId" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PartnerSubscribeRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="aps" type="ns0:APSSourceApsType"/>
+				<xs:element name="account" type="ns0:APSSourceAccountType"/>
+				<xs:element name="globals" type="ns0:APSSourceGlobalType"/>
+				<xs:element name="subscription" type="ns0:APSSourceSubscriptionType"/>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="accountRole" type="xs:string"/>
+							<xs:element name="accountInfo" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

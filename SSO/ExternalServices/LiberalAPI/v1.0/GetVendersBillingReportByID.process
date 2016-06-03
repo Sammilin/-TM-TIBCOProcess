@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/GetVendersBillingReportByIDRs.xsd" xmlns:pfx="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd6">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/GetVendersBillingReportByIDRs.xsd" schemaLocation="/XSD/LiberalAPI/GetVendersBillingReportByIDRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/LiberalAPI/v1.0/GetVendersBillingReportByID.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="TenantID" type="xsd:string"/>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element name="BillingID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>90</pd:startX>
+    <pd:startY>71</pd:startY>
+    <pd:returnBindings>
+        <xsl:for-each select="$Parse-XML/GetVendersBillingReportByIDRs">
+            <GetVendersBillingReportByIDRs>
+                <xsl:if test="BillingReportID">
+                    <BillingReportID>
+                        <xsl:value-of select="BillingReportID"/>
+                    </BillingReportID>
+                </xsl:if>
+                <xsl:if test="ChannelID">
+                    <ChannelID>
+                        <xsl:value-of select="ChannelID"/>
+                    </ChannelID>
+                </xsl:if>
+                <xsl:if test="VendorCompanyID">
+                    <VendorCompanyID>
+                        <xsl:value-of select="VendorCompanyID"/>
+                    </VendorCompanyID>
+                </xsl:if>
+                <xsl:if test="Tier1CompanyID">
+                    <Tier1CompanyID>
+                        <xsl:value-of select="Tier1CompanyID"/>
+                    </Tier1CompanyID>
+                </xsl:if>
+                <xsl:if test="ReportCycleStartDate">
+                    <ReportCycleStartDate>
+                        <xsl:value-of select="ReportCycleStartDate"/>
+                    </ReportCycleStartDate>
+                </xsl:if>
+                <xsl:if test="ReportCycleEndDate">
+                    <ReportCycleEndDate>
+                        <xsl:value-of select="ReportCycleEndDate"/>
+                    </ReportCycleEndDate>
+                </xsl:if>
+                <xsl:if test="UsageReportID">
+                    <UsageReportID>
+                        <xsl:value-of select="UsageReportID"/>
+                    </UsageReportID>
+                </xsl:if>
+                <xsl:if test="ReportStatus">
+                    <ReportStatus>
+                        <xsl:value-of select="ReportStatus"/>
+                    </ReportStatus>
+                </xsl:if>
+                <xsl:if test="SubmitDueDate">
+                    <SubmitDueDate>
+                        <xsl:value-of select="SubmitDueDate"/>
+                    </SubmitDueDate>
+                </xsl:if>
+                <xsl:if test="PONumber">
+                    <PONumber>
+                        <xsl:value-of select="PONumber"/>
+                    </PONumber>
+                </xsl:if>
+                <Currency>
+                    <xsl:value-of select="Currency"/>
+                </Currency>
+                <xsl:if test="IsFrozen">
+                    <IsFrozen>
+                        <xsl:value-of select="IsFrozen"/>
+                    </IsFrozen>
+                </xsl:if>
+                <xsl:if test="CreateBy">
+                    <CreateBy>
+                        <xsl:value-of select="CreateBy"/>
+                    </CreateBy>
+                </xsl:if>
+                <xsl:if test="CreateTime">
+                    <CreateTime>
+                        <xsl:value-of select="CreateTime"/>
+                    </CreateTime>
+                </xsl:if>
+                <xsl:if test="ModifyBy">
+                    <ModifyBy>
+                        <xsl:value-of select="ModifyBy"/>
+                    </ModifyBy>
+                </xsl:if>
+                <xsl:if test="ModifyTime">
+                    <ModifyTime>
+                        <xsl:value-of select="ModifyTime"/>
+                    </ModifyTime>
+                </xsl:if>
+                <xsl:for-each select="BillingReportDetail">
+                    <BillingReportDetail>
+                        <xsl:if test="DetailID">
+                            <DetailID>
+                                <xsl:value-of select="DetailID"/>
+                            </DetailID>
+                        </xsl:if>
+                        <xsl:if test="ReportID">
+                            <ReportID>
+                                <xsl:value-of select="ReportID"/>
+                            </ReportID>
+                        </xsl:if>
+                        <xsl:if test="UsageReportDetailID">
+                            <UsageReportDetailID>
+                                <xsl:value-of select="UsageReportDetailID"/>
+                            </UsageReportDetailID>
+                        </xsl:if>
+                        <xsl:if test="ServiceID">
+                            <ServiceID>
+                                <xsl:value-of select="ServiceID"/>
+                            </ServiceID>
+                        </xsl:if>
+                        <xsl:if test="ChargedUnits">
+                            <ChargedUnits>
+                                <xsl:value-of select="ChargedUnits"/>
+                            </ChargedUnits>
+                        </xsl:if>
+                        <xsl:if test="RPIC">
+                            <RPIC>
+                                <xsl:value-of select="RPIC"/>
+                            </RPIC>
+                        </xsl:if>
+                        <xsl:if test="SKU">
+                            <SKU>
+                                <xsl:value-of select="SKU"/>
+                            </SKU>
+                        </xsl:if>
+                        <xsl:if test="UnitPrice">
+                            <UnitPrice>
+                                <xsl:value-of select="UnitPrice"/>
+                            </UnitPrice>
+                        </xsl:if>
+                        <xsl:if test="ChannelMargin">
+                            <ChannelMargin>
+                                <xsl:value-of select="ChannelMargin"/>
+                            </ChannelMargin>
+                        </xsl:if>
+                        <xsl:if test="BidDeskNumber">
+                            <BidDeskNumber>
+                                <xsl:value-of select="BidDeskNumber"/>
+                            </BidDeskNumber>
+                        </xsl:if>
+                        <xsl:if test="CreateBy">
+                            <CreateBy>
+                                <xsl:value-of select="CreateBy"/>
+                            </CreateBy>
+                        </xsl:if>
+                        <xsl:if test="CreateTime">
+                            <CreateTime>
+                                <xsl:value-of select="CreateTime"/>
+                            </CreateTime>
+                        </xsl:if>
+                        <xsl:if test="ModifyBy">
+                            <ModifyBy>
+                                <xsl:value-of select="ModifyBy"/>
+                            </ModifyBy>
+                        </xsl:if>
+                        <xsl:if test="ModifyTime">
+                            <ModifyTime>
+                                <xsl:value-of select="ModifyTime"/>
+                            </ModifyTime>
+                        </xsl:if>
+                    </BillingReportDetail>
+                </xsl:for-each>
+            </GetVendersBillingReportByIDRs>
+        </xsl:for-each>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:GetVendersBillingReportByIDRs"/>
+    <pd:endX>635</pd:endX>
+    <pd:endY>73</pd:endY>
+    <pd:errorSchemas>
+        <ErrorReport ref="pfx3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1370251486244</pd:targetNamespace>
+    <pd:activity name="Call LiberalAPI Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>218</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <processName>/ExternalServices/LiberalAPI/v1.0/Call LiberalAPI Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <tenantID>
+                    <xsl:value-of select="$Start/root/TenantID"/>
+                </tenantID>
+                <BWTraceID>
+                    <xsl:value-of select="$Start/root/BWTraceID"/>
+                </BWTraceID>
+                <LiberalAPIURI>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/GetVendersBillingReportByID/ResourceURI, $Start/root/BillingID)"/>
+                </LiberalAPIURI>
+                <jsonMessage>
+                    <xsl:value-of select="''"/>
+                </jsonMessage>
+                <HttpMethod>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/GetVendersBillingReportByID/HttpMethod"/>
+                </HttpMethod>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Replace JSON Header">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>354</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <element>
+                <xsd:element name="JSONString" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <JSONString>
+                <xsl:value-of select="TM:stringReplace(tib:substring-before-last(substring-after($Call-LiberalAPI-Process/root/outputJson, '{&quot;Message&quot;:&quot;'),  '&quot;,&quot;Version&quot;:&quot;&quot;}'), '\\\&quot;' ,'\&quot;')"/>
+            </JSONString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>492</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx2:GetVendersBillingReportByIDRs"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Append-XML-root-element/XMLString"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Append XML root element">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>431</pd:x>
+        <pd:y>191</pd:y>
+        <config>
+            <element>
+                <xsd:element name="XMLString" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <XMLString>
+                <xsl:value-of select="concat('&lt;GetVendersBillingReportByIDRs>', TM:parseJSONtoXML($Replace-JSON-Header/JSONString, 1),'&lt;/GetVendersBillingReportByIDRs>')"/>
+            </XMLString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>578</pd:x>
+        <pd:y>235</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>740</pd:x>
+        <pd:y>235</pd:y>
+        <config>
+            <faultName>ErrorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Call-LiberalAPI-Process/pfx3:Error)">
+                            <pfx3:Error>
+                                <pfx3:src>
+                                    <xsl:value-of select="$_error_Call-LiberalAPI-Process/pfx3:Error/pfx3:src"/>
+                                </pfx3:src>
+                                <pfx3:error_code>
+                                    <xsl:value-of select="$_error_Call-LiberalAPI-Process/pfx3:Error/pfx3:error_code"/>
+                                </pfx3:error_code>
+                                <pfx3:error_message>
+                                    <xsl:value-of select="$_error_Call-LiberalAPI-Process/pfx3:Error/pfx3:error_message"/>
+                                </pfx3:error_message>
+                                <pfx3:stack_trace>
+                                    <xsl:value-of select="$_error_Call-LiberalAPI-Process/pfx3:Error/pfx3:stack_trace"/>
+                                </pfx3:stack_trace>
+                            </pfx3:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx3:Error>
+                                <pfx3:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx3:src>
+                                <pfx3:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx3:error_code>
+                                <pfx3:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx3:error_message>
+                                <pfx3:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx3:stack_trace>
+                            </pfx3:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call LiberalAPI Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call LiberalAPI Process</pd:from>
+        <pd:to>Replace JSON Header</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Replace JSON Header</pd:from>
+        <pd:to>Append XML root element</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Append XML root element</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

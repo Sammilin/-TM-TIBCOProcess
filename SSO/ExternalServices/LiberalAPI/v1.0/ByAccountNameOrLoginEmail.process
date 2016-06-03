@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx12="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/ByAccountNameOrLoginEmailRs.xsd" xmlns:pfx11="http://www.tibco.com/schemas/PLS_Parallels/XSD/LiberalAPI/Schema.xsd" xmlns:pfx10="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd3" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/SubscriptionReq.xsd" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd4" xmlns:pfx4="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx2="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/SubscriptionRes.xsd" xmlns:pfx9="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/UpdateCustomerCompanyRs.xsd" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/UpdatePartnerCompanyRs.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/RenewRs.xsd" xmlns:pfx6="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Renew.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/SubscriptionReq.xsd" schemaLocation="/XSD/LiberalAPI/SubscriptionReq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/SubscriptionRes.xsd" schemaLocation="/XSD/LiberalAPI/SubscriptionRes.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd4" schemaLocation="/XSD/ArrowSphere/RenewRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Renew.xsd" schemaLocation="/XSD/LiberalAPI/RenewRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/RenewRs.xsd" schemaLocation="/XSD/LiberalAPI/RenewRs.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/UpdatePartnerCompanyRs.xsd" schemaLocation="/XSD/LiberalAPI/UpdatePartnerCompanyRs.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/UpdateCustomerCompanyRs.xsd" schemaLocation="/XSD/LiberalAPI/UpdateCustomerCompanyRs.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd3" schemaLocation="/XSD/LiberalAPI/UpdateCustomerCompanyRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLS_Parallels/XSD/LiberalAPI/Schema.xsd" schemaLocation="/XSD/LiberalAPI/ByAccountNameOrLoginEmailRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/ByAccountNameOrLoginEmailRs.xsd" schemaLocation="/XSD/LiberalAPI/ByAccountNameOrLoginEmailRs.xsd"/>
+    <pd:name>ExternalServices/LiberalAPI/v1.0/ByAccountNameOrLoginEmail.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="tenantID" type="xsd:string"/>
+                    <xsd:element name="BWTraceId" type="xsd:string"/>
+                    <xsd:element ref="pfx11:ByAccountNameOrLoginEmailRq"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>105</pd:startX>
+    <pd:startY>130</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Parse-XML/ByAccountNameOrLoginEmailRs"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx12:ByAccountNameOrLoginEmailRs"/>
+    <pd:endX>880</pd:endX>
+    <pd:endY>135</pd:endY>
+    <pd:errorSchemas>
+        <errorMessage ref="pfx3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1363835239933</pd:targetNamespace>
+    <pd:activity name="Map Json Request Body">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>258</pd:x>
+        <pd:y>139</pd:y>
+        <config>
+            <element>
+                <xsd:element name="RequestBody" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <RequestBody>
+                <xsl:value-of select="tib:substring-before-last(substring-after(TM:parseXMLtoJSON(tib:render-xml($Start/root/pfx11:ByAccountNameOrLoginEmailRq),0), &quot;:&quot;), &quot;}&quot;)"/>
+            </RequestBody>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Liberal Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>392</pd:x>
+        <pd:y>136</pd:y>
+        <config>
+            <processName>/ExternalServices/LiberalAPI/v1.0/Call LiberalAPI Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <tenantID>
+                    <xsl:value-of select="$Start/root/tenantID"/>
+                </tenantID>
+                <BWTraceID>
+                    <xsl:value-of select="$Start/root/BWTraceId"/>
+                </BWTraceID>
+                <LiberalAPIURI>
+                    <xsl:value-of select="TM:stringReplace($_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/GetAccountInfo/ByAccountNameOrLoginEmail/RequestURI, '#VERSION#', $_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/GetAccountInfo/ByAccountNameOrLoginEmail/Version)"/>
+                </LiberalAPIURI>
+                <jsonMessage>
+                    <xsl:value-of select="$Map-Json-Request-Body/RequestBody"/>
+                </jsonMessage>
+                <HttpMethod>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/GetAccountInfo/ByAccountNameOrLoginEmail/HttpMethod"/>
+                </HttpMethod>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>517</pd:x>
+        <pd:y>130</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="tib:substring-before-last(TM:stringReplace(tib:substring-before-last(substring-after($Call-Liberal-Process/root/outputJson, '{&quot;Message&quot;:&quot;'), '&quot;Version&quot;:'), '\\\&quot;' ,'\&quot;'), '&quot;,')"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JsonToXmlString">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>645</pd:x>
+        <pd:y>129</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="concat('&lt;ByAccountNameOrLoginEmailRs>', TM:parseJSONtoXML($Map-Data/root, 1),'&lt;/ByAccountNameOrLoginEmailRs>')"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>771</pd:x>
+        <pd:y>130</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx12:ByAccountNameOrLoginEmailRs"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JsonToXmlString/root"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>270</pd:x>
+        <pd:y>315</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>448</pd:x>
+        <pd:y>318</pd:y>
+        <config>
+            <faultName>errorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Call-Liberal-Process/pfx3:Error)">
+                            <xsl:copy-of select="$_error_Call-Liberal-Process/pfx3:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx3:Error>
+                                <pfx3:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx3:src>
+                                <pfx3:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx3:error_code>
+                                <pfx3:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx3:error_message>
+                                <pfx3:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx3:stack_trace>
+                            </pfx3:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Json Request Body</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Json Request Body</pd:from>
+        <pd:to>Call Liberal Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Liberal Process</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>JsonToXmlString</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JsonToXmlString</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

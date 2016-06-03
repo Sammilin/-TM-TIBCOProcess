@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx12="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:pfx11="http://www.tibco.com/schemas/APACB2B/XSD/Common/MailInfoSchema.xsd" xmlns:pfx10="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/Mail Schema1.2.xsd" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/resources/Schema/Mail Schema1.1.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.1.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.0.xsd" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx9="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.3.xsd" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.2.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.1.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.1.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns9="http://www.trendmicro.com/PLSService/schemas/MailProperties.xsd" xmlns:ns5="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns6="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://xmlns.tibco.com/encodings/mime" xmlns:ns7="http://www.tibco.com/schemas/APACB2B/XSD/Common/MailProperties.xsd" xmlns:ns8="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailProperties.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns3="http://xmlns.tibco.com/body" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.1.xsd" schemaLocation="/Configuration/Schema/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resources/Schema/Mail Schema1.1.xsd" schemaLocation="/resources/Schema/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.1.xsd" schemaLocation="/resource/Schema/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.2.xsd" schemaLocation="/resource/Schema/Mail Schema1.2.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.3.xsd" schemaLocation="/resource/Schema/Mail Schema1.3.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/Mail Schema1.2.xsd" schemaLocation="/XSD/Common/Mail Schema1.2.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" schemaLocation="/XSD/Common/MailInfoSchema.xsd"/>
+    <pd:name>Utilities/MailNotify/EmailNotifyService.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:choice>
+                        <xsd:element name="ResponseCode" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="SubjectMessage" type="xsd:string" minOccurs="0"/>
+                    </xsd:choice>
+                    <xsd:element name="DetailStackTrace" type="xsd:string"/>
+                    <xsd:element ref="pfx12:MailInfo" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>55</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>618</pd:endX>
+    <pd:endY>65</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1242200652794</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>253</pd:x>
+        <pd:y>330</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>484</pd:x>
+        <pd:y>330</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns6:ActivityInput>
+                <xsl:if test="$_error/ns1:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+            </ns6:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Error System Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>618</pd:x>
+        <pd:y>246</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(current-dateTime() , &quot; &quot;,$Start/root/pfx12:MailInfo/pfx12:MessageKey,&quot; Send Notify Mail Failed!!!&quot;,&quot;  &quot;,&#xA;$_error/ns1:ErrorReport/MsgCode,&quot;,   &quot;,$_error/ns1:ErrorReport/Msg)"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </pfx2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sender to Mail Queue">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>383</pd:x>
+        <pd:y>243</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/MailNotify/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx10:mail"/>
+        </config>
+        <pd:inputBindings>
+            <ns5:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/DestinationQueue"/>
+                </destinationQueue>
+                <JMSProperties>
+                    <ns5:JMSXGroupID>
+                        <xsl:value-of select="'Normal Mail'"/>
+                    </ns5:JMSXGroupID>
+                </JMSProperties>
+                <xsl:choose>
+                    <xsl:when test="exists($Start/root/ResponseCode)">
+                        <Body>
+                            <mail>
+                                <to>
+                                    <xsl:value-of select="tib:concat-sequence-format($MapMailList/root/MailGroup/Email, &quot;;&quot;, true())"/>
+                                </to>
+                                <subject>
+                                    <xsl:value-of select="concat(&#xA;&quot;[&quot;, $_globalVariables/ns:GlobalVariables/ESBBW/Environment,&quot;-&quot;, $_globalVariables/ns:GlobalVariables/ESBBW/ProjectName, &quot; BW] &quot;,$MapMailGroup/root/MailPair[1]/Description&#xA;)"/>
+                                </subject>
+                                <MailBody>
+                                    <xsl:value-of select="concat(&#xA;&quot;&lt;font color = '#0174DF'>This is an automated e-mail notification&lt;/font>&quot;, &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;Dear System Administrator, &quot;,  &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;System raises an exception when processing message. The detailed information as below:&quot;,  &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;MessageKey: &quot;, $Start/root/pfx12:MailInfo/pfx12:MessageKey,  &quot;&lt;BR>&quot;, &#xA;&quot;Service Name: &quot;, $Start/root/pfx12:MailInfo/pfx12:ServiceName,  &quot;&lt;BR>&quot;, &#xA;&quot;Service Version: &quot;, $Start/root/pfx12:MailInfo/pfx12:ServiceVersion,  &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;Error Description:&lt;BR>&quot;,&#xA;&quot;&lt;font color = '#FF0000'> &quot;, $Start/root/DetailStackTrace,  &quot;&lt;/font>&lt;BR>&quot;, &#xA; &quot;&lt;BR>&quot;, &#xA;&quot;Regards,&quot;,  &quot;&lt;BR>&quot;, &#xA;&quot;Trend Micro&quot;, &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;TREND MICRO EMAIL NOTICE&quot;, &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;&lt;font size = 2>&quot;, &#xA;&quot;The information contained in this email and any attachments is confidential and may be subject to copyright or other intellectual property protection. If you are not the intended recipient, you are not authorized to use or disclose this information, and we request that you notify us by reply mail or telephone and delete the original message from your mail system.&quot;, &#xA;&quot;&lt;/font>&quot;&#xA;)"/>
+                                </MailBody>
+                                <xsl:for-each select="$Start/root/pfx12:MailInfo/pfx12:AttachFile">
+                                    <AttachFile>
+                                        <xsl:for-each select="pfx12:AttachContent">
+                                            <AttachContent>
+                                                <content-disposition>
+                                                    <xsl:value-of select="pfx12:content-disposition"/>
+                                                </content-disposition>
+                                                <content-type>
+                                                    <xsl:value-of select="pfx12:content-type"/>
+                                                </content-type>
+                                                <xsl:if test="pfx12:content-transfer-encoding">
+                                                    <content-transfer-encoding>
+                                                        <xsl:value-of select="pfx12:content-transfer-encoding"/>
+                                                    </content-transfer-encoding>
+                                                </xsl:if>
+                                                <xsl:if test="pfx12:binaryContent">
+                                                    <binaryContent>
+                                                        <xsl:value-of select="pfx12:binaryContent"/>
+                                                    </binaryContent>
+                                                </xsl:if>
+                                                <xsl:if test="pfx12:textContent">
+                                                    <textContent>
+                                                        <xsl:value-of select="pfx12:textContent"/>
+                                                    </textContent>
+                                                </xsl:if>
+                                                <xsl:if test="pfx12:fileName">
+                                                    <fileName>
+                                                        <xsl:value-of select="pfx12:fileName"/>
+                                                    </fileName>
+                                                </xsl:if>
+                                            </AttachContent>
+                                        </xsl:for-each>
+                                    </AttachFile>
+                                </xsl:for-each>
+                            </mail>
+                        </Body>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <Body>
+                            <mail>
+                                <to>
+                                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/to"/>
+                                </to>
+                                <cc>
+                                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/cc"/>
+                                </cc>
+                                <subject>
+                                    <xsl:value-of select="concat(&#xA;&quot;[&quot;, $_globalVariables/ns:GlobalVariables/ESBBW/Environment,&quot;-&quot;, $_globalVariables/ns:GlobalVariables/ESBBW/ProjectName, &quot; BW] &quot;,$Start/root/SubjectMessage&#xA;)"/>
+                                </subject>
+                                <MailBody>
+                                    <xsl:value-of select="concat(&#xA;&quot;&lt;font color = '#0174DF'>This is an automated e-mail notification&lt;/font>&quot;, &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;Dear System Administrator, &quot;,  &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;System raises an exception when processing message. The detailed information as below:&quot;,  &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;MessageKey: &quot;, $Start/root/pfx12:MailInfo/pfx12:MessageKey,  &quot;&lt;BR>&quot;, &#xA;&quot;Service Name: &quot;, $Start/root/pfx12:MailInfo/pfx12:ServiceName,  &quot;&lt;BR>&quot;, &#xA;&quot;Service Version: &quot;, $Start/root/pfx12:MailInfo/pfx12:ServiceVersion,  &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;Error Description:&lt;BR>&quot;,&#xA;&quot;&lt;font color = '#FF0000'> &quot;, $Start/root/DetailStackTrace,  &quot;&lt;/font>&lt;BR>&quot;, &#xA; &quot;&lt;BR>&quot;, &#xA;&quot;Regards,&quot;,  &quot;&lt;BR>&quot;, &#xA;&quot;Trend Micro&quot;, &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;TREND MICRO EMAIL NOTICE&quot;, &quot;&lt;BR>&quot;, &#xA;&quot;&lt;BR>&quot;, &#xA;&quot;&lt;font size = 2>&quot;, &#xA;&quot;The information contained in this email and any attachments is confidential and may be subject to copyright or other intellectual property protection. If you are not the intended recipient, you are not authorized to use or disclose this information, and we request that you notify us by reply mail or telephone and delete the original message from your mail system.&quot;, &#xA;&quot;&lt;/font>&quot;&#xA;)"/>
+                                </MailBody>
+                                <xsl:for-each select="$Start/root/pfx12:MailInfo/pfx12:AttachFile">
+                                    <AttachFile>
+                                        <xsl:for-each select="pfx12:AttachContent">
+                                            <AttachContent>
+                                                <content-disposition>
+                                                    <xsl:value-of select="pfx12:content-disposition"/>
+                                                </content-disposition>
+                                                <content-type>
+                                                    <xsl:value-of select="pfx12:content-type"/>
+                                                </content-type>
+                                                <xsl:if test="pfx12:content-transfer-encoding">
+                                                    <content-transfer-encoding>
+                                                        <xsl:value-of select="pfx12:content-transfer-encoding"/>
+                                                    </content-transfer-encoding>
+                                                </xsl:if>
+                                                <xsl:if test="pfx12:binaryContent">
+                                                    <binaryContent>
+                                                        <xsl:value-of select="pfx12:binaryContent"/>
+                                                    </binaryContent>
+                                                </xsl:if>
+                                                <xsl:if test="pfx12:textContent">
+                                                    <textContent>
+                                                        <xsl:value-of select="pfx12:textContent"/>
+                                                    </textContent>
+                                                </xsl:if>
+                                                <xsl:if test="pfx12:fileName">
+                                                    <fileName>
+                                                        <xsl:value-of select="pfx12:fileName"/>
+                                                    </fileName>
+                                                </xsl:if>
+                                            </AttachContent>
+                                        </xsl:for-each>
+                                    </AttachFile>
+                                </xsl:for-each>
+                            </mail>
+                        </Body>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </ns5:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Write System Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>384</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat($Start/root/pfx12:MailInfo/pfx12:MessageKey,'MailSend')"/>
+                </message>
+            </pfx2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetVariable">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>56</pd:x>
+        <pd:y>216</pd:y>
+        <config>
+            <variableConfig>/Utilities/MailNotify/SharedVars/MailPropertiesVar.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="MapMailGroup">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>189</pd:x>
+        <pd:y>119</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="MailPair" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Description" type="xsd:string"/>
+                                        <xsd:element name="Group" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:variable name="var" select="$Start/root/ResponseCode"/>
+                <xsl:for-each select="$GetVariable/ns9:Properties/ns9:MailPair[ns9:ErrorCode=$var]">
+                    <MailPair>
+                        <Description>
+                            <xsl:value-of select="ns9:Description"/>
+                        </Description>
+                        <xsl:for-each select="ns9:Group">
+                            <Group>
+                                <xsl:value-of select="."/>
+                            </Group>
+                        </xsl:for-each>
+                    </MailPair>
+                </xsl:for-each>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MapMailList">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>254</pd:x>
+        <pd:y>235</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="MailGroup" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Email" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:for-each select="$GetVariable/ns9:Properties/ns9:MailGroup[$MapMailGroup/root/MailPair/Group=ns9:Key]">
+                    <MailGroup>
+                        <xsl:for-each select="ns9:Email">
+                            <Email>
+                                <xsl:value-of select="."/>
+                            </Email>
+                        </xsl:for-each>
+                    </MailGroup>
+                </xsl:for-each>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Write System Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write System Log</pd:from>
+        <pd:to>Sender to Mail Queue</pd:to>
+        <pd:xpathDescription>SendMailOn</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/SendMailOn = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Error System Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write System Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>SendMailOff</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sender to Mail Queue</pd:from>
+        <pd:to>Send Error System Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sender to Mail Queue</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetVariable</pd:to>
+        <pd:xpathDescription>exists ResponseCode</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/root/ResponseCode)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetVariable</pd:from>
+        <pd:to>MapMailGroup</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MapMailGroup</pd:from>
+        <pd:to>MapMailList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MapMailList</pd:from>
+        <pd:to>Write System Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

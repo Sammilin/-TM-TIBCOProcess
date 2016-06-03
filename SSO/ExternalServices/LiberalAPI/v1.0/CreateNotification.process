@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd8" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/CreateNotificationRs.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd9" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/CreateNotificationRq.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/CreateNotificationRq.xsd" schemaLocation="/XSD/LiberalAPI/CreateNotificationRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/CreateNotificationRs.xsd" schemaLocation="/XSD/LiberalAPI/CreateNotificationRs.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/LiberalAPI/v1.0/CreateNotification.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="TenantID" type="xsd:string"/>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element ref="pfx2:CreateNotificationRq"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>100</pd:startX>
+    <pd:startY>59</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Parse-XML/CreateNotificationRs"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx4:CreateNotificationRs"/>
+    <pd:endX>712</pd:endX>
+    <pd:endY>59</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMsg ref="pfx5:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1405913570100</pd:targetNamespace>
+    <pd:activity name="Call LiberalAPI Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>340</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <processName>/ExternalServices/LiberalAPI/v1.0/Call LiberalAPI Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <tenantID>
+                    <xsl:value-of select="$Start/root/TenantID"/>
+                </tenantID>
+                <BWTraceID>
+                    <xsl:value-of select="$Start/root/BWTraceID"/>
+                </BWTraceID>
+                <LiberalAPIURI>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/CreateNotification/RequestURI"/>
+                </LiberalAPIURI>
+                <xsl:choose>
+                    <xsl:when test="count($Start/root/CreateNotificationRq/Recipient)>1">
+                        <jsonMessage>
+                            <xsl:value-of select="$Map-Data/JSONRequest"/>
+                        </jsonMessage>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <jsonMessage>
+                            <xsl:value-of select="$Map-JSON-Rq/JSONRq"/>
+                        </jsonMessage>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <HttpMethod>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/CreateNotification/HttpMethod"/>
+                </HttpMethod>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>369</pd:x>
+        <pd:y>340</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>540</pd:x>
+        <pd:y>340</pd:y>
+        <config>
+            <faultName>ErrorMsg</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx5:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Call-LiberalAPI-Process/pfx5:Error)">
+                            <pfx5:Error>
+                                <pfx5:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Data/pfx5:Error/pfx5:src"/>
+                                </pfx5:src>
+                                <pfx5:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Data/pfx5:Error/pfx5:error_code"/>
+                                </pfx5:error_code>
+                                <pfx5:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Data/pfx5:Error/pfx5:error_message"/>
+                                </pfx5:error_message>
+                                <pfx5:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Data/pfx5:Error/pfx5:stack_trace"/>
+                                </pfx5:stack_trace>
+                            </pfx5:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx5:Error>
+                                <pfx5:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx5:src>
+                                <pfx5:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx5:error_code>
+                                <pfx5:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx5:error_message>
+                                <pfx5:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx5:stack_trace>
+                            </pfx5:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JSON 2 XML">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>522</pd:x>
+        <pd:y>188</pd:y>
+        <config>
+            <element>
+                <xsd:element name="XMLString" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <XMLString>
+                <xsl:value-of select="concat('&lt;CreateNotificationRs>',TM:parseJSONtoXML($Replace-JSON-Header/JSONString, 1), '&lt;/CreateNotificationRs>')"/>
+            </XMLString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>217</pd:x>
+        <pd:y>59</pd:y>
+        <config>
+            <element>
+                <xsd:element name="JSONRequest" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <JSONRequest>
+                <xsl:value-of select="tib:substring-before-last(substring-after(TM:parseXMLtoJSON(tib:render-xml($Start/root/CreateNotificationRq), 0),':'), '}')"/>
+            </JSONRequest>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map JSON Rq">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>343</pd:x>
+        <pd:y>200</pd:y>
+        <config>
+            <element>
+                <xsd:element name="JSONRq" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <JSONRq>
+                <xsl:value-of select="TM:stringReplace(substring-after($Parse-other-element-2-JSON/JSONString,'{&quot;CreateNotificationRq&quot;:'), '}}', concat(',', $Parse-Recipient2JSON/root,'}'))"/>
+            </JSONRq>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse other element 2 JSON">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>232</pd:x>
+        <pd:y>209</pd:y>
+        <config>
+            <element>
+                <xsd:element name="JSONString" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <JSONString>
+                <xsl:value-of select="TM:parseXMLtoJSON(concat(tib:substring-before-last(tib:render-xml($Start/root/CreateNotificationRq, 1), '&lt;Recipient>'), tib:substring-after-last(tib:render-xml($Start/root/CreateNotificationRq,1), '&lt;/Recipient>')),1)"/>
+            </JSONString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse Recipient2JSON">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>116</pd:x>
+        <pd:y>199</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="concat('&quot;Recipient&quot;:[&quot;',tib:substring-before-last(substring-after(tib:render-xml($Start/root/CreateNotificationRq,1), '&lt;Recipient>'), '&lt;/Recipient>'), '&quot;]')"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>601</pd:x>
+        <pd:y>59</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx4:CreateNotificationRs"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JSON-2-XML/XMLString"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Replace JSON Header">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>457</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <element>
+                <xsd:element name="JSONString" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <JSONString>
+                <xsl:value-of select="TM:stringReplace(tib:substring-before-last(substring-after($Call-LiberalAPI-Process/root/outputJson, '{&quot;Message&quot;:&quot;'), '&quot;,&quot;Version&quot;:&quot;&quot;}'), '\\\&quot;' ,'\&quot;')"/>
+            </JSONString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse Recipient2JSON</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Call LiberalAPI Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call LiberalAPI Process</pd:from>
+        <pd:to>Replace JSON Header</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Replace JSON Header</pd:from>
+        <pd:to>JSON 2 XML</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JSON 2 XML</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Recipient2JSON</pd:from>
+        <pd:to>Parse other element 2 JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:xpathDescription>Recipient &gt;1</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Start/root/CreateNotificationRq/Recipient)&gt;1</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse other element 2 JSON</pd:from>
+        <pd:to>Map JSON Rq</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map JSON Rq</pd:from>
+        <pd:to>Call LiberalAPI Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

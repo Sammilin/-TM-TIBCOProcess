@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.tibco.com/schemas/PLS_Parallels/XSD/PIS/Schema.xsd2">
+    <xsd:import namespace="http://www.tibco.com/schemas/PLS_Parallels/XSD/PIS/Schema.xsd2" schemaLocation="/XSD/PIS/AssignLicenseRq.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/PIS/AssignLicense.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="TenantID" type="xsd:string"/>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element ref="pfx:AssignLicenseRq"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>144</pd:startX>
+    <pd:startY>81</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>691</pd:endX>
+    <pd:endY>81</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1411984249380</pd:targetNamespace>
+    <pd:activity name="Call PIS API">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>575</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <processName>/ExternalServices/PIS/Call PIS API.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <HTTPMethod>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/PIS/AssignLicense/HttpMethod"/>
+                </HTTPMethod>
+                <RequestURI>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/ExternalServices/PIS/uriPrefix, $_globalVariables/ns:GlobalVariables/ExternalServices/PIS/AssignLicense/RequestURI)"/>
+                </RequestURI>
+                <TraceID>
+                    <xsl:value-of select="$Start/root/BWTraceID"/>
+                </TraceID>
+                <xsl:choose>
+                    <xsl:when test="count($Start/root/pfx:AssignLicenseRq/pfx:ServicePlans)>1">
+                        <PostBody>
+                            <xsl:value-of select="$Map-Request/root/RequestString"/>
+                        </PostBody>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <PostBody>
+                            <xsl:value-of select="$Maintain-Request/root/RequestString"/>
+                        </PostBody>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <TenantID>
+                    <xsl:value-of select="$Start/root/TenantID"/>
+                </TenantID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>402</pd:x>
+        <pd:y>277</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>559</pd:x>
+        <pd:y>277</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="pfx2:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns1:ErrorReport/Data/pfx2:Error)">
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/pfx2:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Maintain Request">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>496</pd:x>
+        <pd:y>196</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="RequestString" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <RequestString>
+                    <xsl:value-of select="concat(concat(substring-before(concat(substring-before($Remove-XSD-Header/root/JsonStr,':'), ':[',substring-after($Remove-XSD-Header/root/JsonStr, '&quot;ServicePlans&quot;:')),',&quot;CompanyID&quot;'), '],&quot;CompanyID&quot;'), substring-after($Remove-XSD-Header/root/JsonStr, '&quot;CompanyID&quot;'))"/>
+                </RequestString>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Request">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>423</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="RequestString" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <RequestString>
+                    <xsl:value-of select="tib:substring-before-last(substring-after($XML-to-JSON/JSONString, '{&quot;AssignLicenseRq&quot;:'), '}')"/>
+                </RequestString>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Remove XSD Header">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>357</pd:x>
+        <pd:y>196</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="JsonStr" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <JsonStr>
+                    <xsl:value-of select="tib:substring-before-last(substring-after($XML-to-JSON/JSONString, '{&quot;AssignLicenseRq&quot;:'), '}')"/>
+                </JsonStr>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="XML to JSON">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>254</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <element>
+                <xsd:element name="JSONString" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <JSONString>
+                <xsl:value-of select="TM:parseXMLtoJSON(tib:render-xml($Start/root/pfx:AssignLicenseRq, 0), 0)"/>
+            </JSONString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>XML to JSON</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call PIS API</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Request</pd:from>
+        <pd:to>Call PIS API</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>XML to JSON</pd:from>
+        <pd:to>Map Request</pd:to>
+        <pd:xpathDescription>count ServicePlans &gt;1</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Start/root/pfx:AssignLicenseRq/pfx:ServicePlans)&gt;1</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>XML to JSON</pd:from>
+        <pd:to>Remove XSD Header</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Remove XSD Header</pd:from>
+        <pd:to>Maintain Request</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Maintain Request</pd:from>
+        <pd:to>Call PIS API</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

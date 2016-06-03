@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.trendmicro.com/ESB/schemas/pls/efusion/QryLogRequest" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/messageHeader">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader" schemaLocation="/XSD/Common/messageheader.xsd"/>
+    <pd:name>Utilities/Logging/eFusionQueryLog/eFusionResend.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="RetryCount" type="xsd:int"/>
+                    <xsd:element name="RedeliveredQueue" type="xsd:string"/>
+                    <xsd:element ref="pfx:Message"/>
+                    <xsd:element name="Source" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="gold_id" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="from_datasource" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="to_datasource" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>148</pd:startX>
+    <pd:startY>77</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <isResend>
+                <xsl:value-of select="$Resend-Process/group/isResend"/>
+            </isResend>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="isResend" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>593</pd:endX>
+    <pd:endY>77</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1396422144235</pd:targetNamespace>
+    <pd:activity name="Insert Resend Fail Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>415</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <processName>/Utilities/Logging/eFusionQueryLog/QryLogSender.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:QryLogRequest>
+                <ns:TrackingID>
+                    <xsl:value-of select="$Start/Group/pfx:Message/pfx:RequestHeader/pfx:MessageKey"/>
+                </ns:TrackingID>
+                <xsl:if test="$Start/Group/Source">
+                    <ns:Content>
+                        <xsl:value-of select="$Start/Group/Source"/>
+                    </ns:Content>
+                </xsl:if>
+                <ns:MessageName>
+                    <xsl:value-of select="'ResendProcess'"/>
+                </ns:MessageName>
+                <xsl:if test="$Start/Group/from_datasource">
+                    <ns:FromSYSTEM>
+                        <xsl:value-of select="$Start/Group/from_datasource"/>
+                    </ns:FromSYSTEM>
+                </xsl:if>
+                <xsl:if test="$Start/Group/to_datasource">
+                    <ns:ToSYSTEM>
+                        <xsl:value-of select="$Start/Group/to_datasource"/>
+                    </ns:ToSYSTEM>
+                </xsl:if>
+                <xsl:if test="$Resend-Process/group/FailMsg">
+                    <ns:Event>
+                        <xsl:value-of select="$Resend-Process/group/FailMsg"/>
+                    </ns:Event>
+                </xsl:if>
+                <ns:TIMESTAMP>
+                    <xsl:value-of select="tib:current-dateTime-timezone(0,0)"/>
+                </ns:TIMESTAMP>
+            </ns:QryLogRequest>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Resend Msg">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>248</pd:x>
+        <pd:y>77</pd:y>
+        <config>
+            <processName>/Utilities/Logging/eFusionQueryLog/QryLogSender.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:QryLogRequest>
+                <ns:TrackingID>
+                    <xsl:value-of select="$Start/Group/pfx:Message/pfx:RequestHeader/pfx:MessageKey"/>
+                </ns:TrackingID>
+                <xsl:if test="$Start/Group/Source">
+                    <ns:Content>
+                        <xsl:value-of select="$Start/Group/Source"/>
+                    </ns:Content>
+                </xsl:if>
+                <ns:MessageName>
+                    <xsl:value-of select="'ResendProcess'"/>
+                </ns:MessageName>
+                <xsl:if test="$Start/Group/from_datasource">
+                    <ns:FromSYSTEM>
+                        <xsl:value-of select="$Start/Group/from_datasource"/>
+                    </ns:FromSYSTEM>
+                </xsl:if>
+                <xsl:if test="$Start/Group/to_datasource">
+                    <ns:ToSYSTEM>
+                        <xsl:value-of select="$Start/Group/to_datasource"/>
+                    </ns:ToSYSTEM>
+                </xsl:if>
+                <ns:Event>
+                    <xsl:value-of select="'Receive'"/>
+                </ns:Event>
+                <ns:TIMESTAMP>
+                    <xsl:value-of select="tib:current-dateTime-timezone(0, 0)"/>
+                </ns:TIMESTAMP>
+            </ns:QryLogRequest>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Resend Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>209</pd:y>
+        <config>
+            <processName>/Utilities/UndeliveryService/Resend Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <RetryCount>
+                    <xsl:value-of select="$Start/Group/RetryCount"/>
+                </RetryCount>
+                <RedeliveredQueue>
+                    <xsl:value-of select="$Start/Group/RedeliveredQueue"/>
+                </RedeliveredQueue>
+                <pfx:Message>
+                    <xsl:copy-of select="$Start/Group/pfx:Message/pfx:RequestHeader"/>
+                </pfx:Message>
+                <xsl:if test="$Start/Group/Source">
+                    <Source>
+                        <xsl:value-of select="$Start/Group/Source"/>
+                    </Source>
+                </xsl:if>
+                <xsl:if test="$Start/Group/gold_id">
+                    <gold_id>
+                        <xsl:value-of select="$Start/Group/gold_id"/>
+                    </gold_id>
+                </xsl:if>
+                <xsl:if test="$Start/Group/from_datasource">
+                    <from_datasource>
+                        <xsl:value-of select="$Start/Group/from_datasource"/>
+                    </from_datasource>
+                </xsl:if>
+                <xsl:if test="$Start/Group/to_datasource">
+                    <to_datasource>
+                        <xsl:value-of select="$Start/Group/to_datasource"/>
+                    </to_datasource>
+                </xsl:if>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Log Resend Msg</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Resend Msg</pd:from>
+        <pd:to>Resend Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Resend Process</pd:from>
+        <pd:to>Insert Resend Fail Log</pd:to>
+        <pd:xpathDescription>Resend Fail</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Resend-Process/group/FailMsg)&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert Resend Fail Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Resend Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

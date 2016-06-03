@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx="http://www.tibco.com/schemas/BWGINEI/resources/Schema/Schema.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/BWGINEI/resources/Schema/Schema.xsd" schemaLocation="/resources/Schema/Error Schema.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Utilities/EMSLookingProcess/EMS Looking Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="serverUrl" type="xsd:string"/>
+                    <xsd:element name="userName" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="password" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="queueName" type="xsd:string"/>
+                    <xsd:element name="selector" type="xsd:string"/>
+                    <xsd:element name="separator" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>163</pd:startX>
+    <pd:startY>66</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:copy-of select="$Java-Code/javaCodeActivityOutput/messageID"/>
+            <xsl:copy-of select="$Java-Code/javaCodeActivityOutput/xmlMsg"/>
+            <msgCount>
+                <xsl:value-of select="$Java-Code/javaCodeActivityOutput/msgCount"/>
+            </msgCount>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="messageID" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="xmlMsg" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="msgCount" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>403</pd:endX>
+    <pd:endY>65</pd:endY>
+    <pd:errorSchemas>
+        <Schema0 ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1246850262745</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>282</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <fileName>EMSLookingProcessJavaCode</fileName>
+            <packageName>Utilities.EMSLookingProcess.EMSLookingProcess</packageName>
+            <fullsource>package Utilities.EMSLookingProcess.EMSLookingProcess;
+import java.util.*;
+import java.io.*;
+import javax.jms.*;
+public class EMSLookingProcessJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String serverUrl = "";
+	protected String userName = "";
+	protected String password = "";
+	protected String queueName = "";
+	protected String selector = "";
+	protected String separator = "";
+	protected String[] messageID = null;
+	protected String[] xmlMsg = null;
+	protected int msgCount = 0;
+	public String getserverUrl() {
+		return serverUrl;
+	}
+	public void setserverUrl(String val) {
+		serverUrl = val;
+	}
+	public String getuserName() {
+		return userName;
+	}
+	public void setuserName(String val) {
+		userName = val;
+	}
+	public String getpassword() {
+		return password;
+	}
+	public void setpassword(String val) {
+		password = val;
+	}
+	public String getqueueName() {
+		return queueName;
+	}
+	public void setqueueName(String val) {
+		queueName = val;
+	}
+	public String getselector() {
+		return selector;
+	}
+	public void setselector(String val) {
+		selector = val;
+	}
+	public String getseparator() {
+		return separator;
+	}
+	public void setseparator(String val) {
+		separator = val;
+	}
+	public String[] getmessageID() {
+		return messageID;
+	}
+	public void setmessageID(String[] val) {
+		messageID = val;
+	}
+	public String[] getxmlMsg() {
+		return xmlMsg;
+	}
+	public void setxmlMsg(String[] val) {
+		xmlMsg = val;
+	}
+	public int getmsgCount() {
+		return msgCount;
+	}
+	public void setmsgCount(int val) {
+		msgCount = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public EMSLookingProcessJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String serverUrl
+	In  : String userName
+	In  : String password
+	In  : String queueName
+	In  : String selector
+	In  : String separator
+	Out : String[] messageID
+	Out : String[] xmlMsg
+	Out : int msgCount
+* Available Variables: DO NOT MODIFY *****/
+
+        /*System.out.println("QueueBrowser sample.");
+        System.out.println("Using server:   "+getserverUrl());
+        System.out.println("Browsing queue: "+getqueueName());*/
+        
+        StringBuffer objString = new StringBuffer();
+	StringBuffer objString2 = new StringBuffer();
+        
+        //try
+        //{
+            QueueConnectionFactory factory = new com.tibco.tibjms.TibjmsQueueConnectionFactory(getserverUrl());
+
+            QueueConnection connection = factory.createQueueConnection(getuserName(),getpassword());
+
+            QueueSession session = connection.createQueueSession(false,javax.jms.Session.AUTO_ACKNOWLEDGE);
+
+            javax.jms.Queue queue = session.createQueue(getqueueName());
+            
+            Message message = null;
+
+            connection.start();
+
+            /*
+             * create browser and browse what is there in the queue
+             */
+            //System.out.println("--- Browsing the queue.");
+            
+            QueueBrowser browser = session.createBrowser(queue,getselector());
+            
+            Enumeration msgs = browser.getEnumeration();
+            
+            int browseCount=0;
+            
+            while(msgs.hasMoreElements())
+            {
+            	browseCount++;
+		message = (Message)msgs.nextElement();
+                objString.append(((TextMessage)message).getText());
+		objString2.append(message.getJMSMessageID());
+                if(browseCount&gt;0){
+                	objString.append(getseparator());
+			objString2.append(getseparator());
+                }
+            }
+
+	    setmsgCount(browseCount);            
+            //System.out.println("--- No more messages in the queue.");
+
+            /*
+             * close all and quit
+             */
+            browser.close();
+
+            connection.close();
+            
+        /*}
+        catch(Exception e)
+        {
+            seterrorMsg(e.getMessage());
+        }*/
+
+	setxmlMsg(objString.toString().split(getseparator()));
+	setmessageID(objString2.toString().split(getseparator()));}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>serverUrl</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>userName</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>password</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>queueName</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>selector</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>separator</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>messageID</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>repeating</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>xmlMsg</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>repeating</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>msgCount</fieldName>
+                    <fieldType>int</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>EMSLookingProcessJavaCode</name>
+                    <byteCode>yv66vgAAADIAsQkAKgBjCQAqAGQJACoAZQkAKgBmCQAqAGcJACoAaAkAKgBpCQAqAGoJACoAawoAKwBsCABtBwBuCgAMAGwHAG8KACoAcAoADgBxCgAqAHIKACoAcwsAdAB1CwB2AHcKACoAeAsAeQB6CwB2AHsKACoAfAsAeQB9CwB+AH8LAIAAgQsAgACCBwCDBwCECwAeAIUKAAwAhgsAHQCHCgAqAIgKACoAiQsAfgCKCwB2AIoKAAwAiwoAjACNCgAqAI4KACoAjwcAkAcAkQEACXNlcnZlclVybAEAEkxqYXZhL2xhbmcvU3RyaW5nOwEACHVzZXJOYW1lAQAIcGFzc3dvcmQBAAlxdWV1ZU5hbWUBAAhzZWxlY3RvcgEACXNlcGFyYXRvcgEACW1lc3NhZ2VJRAEAE1tMamF2YS9sYW5nL1N0cmluZzsBAAZ4bWxNc2cBAAhtc2dDb3VudAEAAUkBAAxnZXRzZXJ2ZXJVcmwBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAAxzZXRzZXJ2ZXJVcmwBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAtnZXR1c2VyTmFtZQEAC3NldHVzZXJOYW1lAQALZ2V0cGFzc3dvcmQBAAtzZXRwYXNzd29yZAEADGdldHF1ZXVlTmFtZQEADHNldHF1ZXVlTmFtZQEAC2dldHNlbGVjdG9yAQALc2V0c2VsZWN0b3IBAAxnZXRzZXBhcmF0b3IBAAxzZXRzZXBhcmF0b3IBAAxnZXRtZXNzYWdlSUQBABUoKVtMamF2YS9sYW5nL1N0cmluZzsBAAxzZXRtZXNzYWdlSUQBABYoW0xqYXZhL2xhbmcvU3RyaW5nOylWAQAJZ2V0eG1sTXNnAQAJc2V0eG1sTXNnAQALZ2V0bXNnQ291bnQBAAMoKUkBAAtzZXRtc2dDb3VudAEABChJKVYBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAA1TdGFja01hcFRhYmxlBwCQBwBuBwCSBwCTBwCUBwCVBwCDBwCWBwCXAQAKRXhjZXB0aW9ucwcAmAEAClNvdXJjZUZpbGUBAB5FTVNMb29raW5nUHJvY2Vzc0phdmFDb2RlLmphdmEMACwALQwALgAtDAAvAC0MADAALQwAMQAtDAAyAC0MADMANAwANQA0DAA2ADcMAFIAUwEAAAEAFmphdmEvbGFuZy9TdHJpbmdCdWZmZXIBAC1jb20vdGliY28vdGliam1zL1RpYmptc1F1ZXVlQ29ubmVjdGlvbkZhY3RvcnkMADgAOQwAUgA9DAA+ADkMAEAAOQcAkgwAmQCaBwCTDACbAJwMAEIAOQcAlAwAnQCeDACfAFMMAEQAOQwAoAChBwCWDACiAKMHAJcMAKQApQwApgCnAQARamF2YXgvam1zL01lc3NhZ2UBABVqYXZheC9qbXMvVGV4dE1lc3NhZ2UMAKgAOQwAqQCqDACrADkMAEYAOQwAUABRDACsAFMMAK0AOQcArgwArwCwDABNAEsMAEoASwEAR1V0aWxpdGllcy9FTVNMb29raW5nUHJvY2Vzcy9FTVNMb29raW5nUHJvY2Vzcy9FTVNMb29raW5nUHJvY2Vzc0phdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAIGphdmF4L2ptcy9RdWV1ZUNvbm5lY3Rpb25GYWN0b3J5AQAZamF2YXgvam1zL1F1ZXVlQ29ubmVjdGlvbgEAFmphdmF4L2ptcy9RdWV1ZVNlc3Npb24BAA9qYXZheC9qbXMvUXVldWUBABZqYXZheC9qbXMvUXVldWVCcm93c2VyAQAVamF2YS91dGlsL0VudW1lcmF0aW9uAQATamF2YS9sYW5nL0V4Y2VwdGlvbgEAFWNyZWF0ZVF1ZXVlQ29ubmVjdGlvbgEAQShMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspTGphdmF4L2ptcy9RdWV1ZUNvbm5lY3Rpb247AQASY3JlYXRlUXVldWVTZXNzaW9uAQAcKFpJKUxqYXZheC9qbXMvUXVldWVTZXNzaW9uOwEAC2NyZWF0ZVF1ZXVlAQAlKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YXgvam1zL1F1ZXVlOwEABXN0YXJ0AQANY3JlYXRlQnJvd3NlcgEAPShMamF2YXgvam1zL1F1ZXVlO0xqYXZhL2xhbmcvU3RyaW5nOylMamF2YXgvam1zL1F1ZXVlQnJvd3NlcjsBAA5nZXRFbnVtZXJhdGlvbgEAGSgpTGphdmEvdXRpbC9FbnVtZXJhdGlvbjsBAA9oYXNNb3JlRWxl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</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <serverUrl>
+                    <xsl:value-of select="$Start/root/serverUrl"/>
+                </serverUrl>
+                <userName>
+                    <xsl:value-of select="$Start/root/userName"/>
+                </userName>
+                <xsl:if test="$Start/root/password">
+                    <password>
+                        <xsl:value-of select="$Start/root/password"/>
+                    </password>
+                </xsl:if>
+                <queueName>
+                    <xsl:value-of select="$Start/root/queueName"/>
+                </queueName>
+                <selector>
+                    <xsl:value-of select="$Start/root/selector"/>
+                </selector>
+                <separator>
+                    <xsl:value-of select="$Start/root/separator"/>
+                </separator>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>284</pd:x>
+        <pd:y>187</pd:y>
+        <config>
+            <faultName>Schema0</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <pfx2:Error>
+                        <pfx2:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx2:src>
+                        <pfx2:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx2:error_code>
+                        <pfx2:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx2:error_message>
+                        <pfx2:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx2:stack_trace>
+                    </pfx2:Error>
+                </data>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

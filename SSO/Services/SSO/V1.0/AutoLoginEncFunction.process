@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/SSO/V1.0/AutoLoginEncFunction.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="EncKey" type="xsd:string"/>
+                    <xsd:element name="AutoLogin">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="UserAccountName" type="xsd:string"/>
+                                <xsd:element name="Time" type="xsd:string"/>
+                                <xsd:element name="Target" type="xsd:string"/>
+                                <xsd:element name="CallbackURL" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="Enable" type="xsd:string" use="required"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>127</pd:startX>
+    <pd:startY>99</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Result>
+                <xsl:value-of select="$Java-Code/javaCodeActivityOutput/result"/>
+            </Result>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Result" type="xsd:base64Binary"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>452</pd:endX>
+    <pd:endY>97</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334659505583</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>286</pd:x>
+        <pd:y>97</pd:y>
+        <config>
+            <fileName>AutoLoginEncFunctionJavaCode</fileName>
+            <packageName>Services.SSO.V1_0.AutoLoginEncFunction</packageName>
+            <fullsource>package Services.SSO.V1_0.AutoLoginEncFunction;
+import java.util.*;
+import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.PublicKey;
+import java.security.cert.CertificateFactory;
+import javax.crypto.*;
+import javax.crypto.spec.*;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+public class AutoLoginEncFunctionJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String Enckey = "";
+	protected String loginText = "";
+	protected byte[] result = null;
+	protected String exception = "";
+	public String getEnckey() {
+		return Enckey;
+	}
+	public void setEnckey(String val) {
+		Enckey = val;
+	}
+	public String getloginText() {
+		return loginText;
+	}
+	public void setloginText(String val) {
+		loginText = val;
+	}
+	public byte[] getresult() {
+		return result;
+	}
+	public void setresult(byte[] val) {
+		result = val;
+	}
+	public String getexception() {
+		return exception;
+	}
+	public void setexception(String val) {
+		exception = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public AutoLoginEncFunctionJavaCode() {
+			
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String Enckey
+	In  : String loginText
+	Out : byte[] result
+	Out : String exception
+* Available Variables: DO NOT MODIFY *****/
+	Cipher cipher;
+	byte[] encrypted;
+	try{	
+	//String iv = "fedcba9876543210";
+	String ik = Enckey.substring(0, 16);
+	String iv = Enckey.substring(16, 32);
+		
+	IvParameterSpec ivspec;
+	KeyGenerator keygen;
+	ivspec = new IvParameterSpec(iv.getBytes());
+
+	keygen = KeyGenerator.getInstance("AES");
+	keygen.init(128);
+	SecretKeySpec keyspec = new SecretKeySpec(ik.getBytes(), "AES");
+	cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+	cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
+	encrypted = cipher.doFinal(getloginText().getBytes());
+	//encrypted = cipher.doFinal("&lt;AutoLogin enable=\"1\"&gt; 	&lt;UserAccountName&gt;customer01&lt;/UserAccountName&gt; 	&lt;Time&gt;2012/04/06 06:14:05&lt;/Time&gt; 	&lt;Target&gt;https://wfbs-svc-nabu-dev.trendmicro.com/wfbs-svc-tmsupport/?TenantID=5HlE8&lt;/Target&gt; &lt;/AutoLogin&gt;".getBytes());
+	
+	setresult(encrypted);
+	
+	}
+	catch(Exception e) {
+		 setexception(e.getMessage());
+	}
+	
+}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>result</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>exception</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>Enckey</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>loginText</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>AutoLoginEncFunctionJavaCode</name>
+                    <byteCode>yv66vgAAADIAZAkAGQA3CQAZADgJABkAOQkAGQA6CgAaADsIADwKAD0APgcAPwoAPQBACgAIAEEIAEIKAEMARAoAQwBFBwBGCgAOAEcIAEgKAEkASgoASQBLCgAZAEwKAEkATQoAGQBOBwBPCgAWAFAKABkAUQcAUgcAUwEABkVuY2tleQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEACWxvZ2luVGV4dAEABnJlc3VsdAEAAltCAQAJZXhjZXB0aW9uAQAJZ2V0RW5ja2V5AQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAJc2V0RW5ja2V5AQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAMZ2V0bG9naW5UZXh0AQAMc2V0bG9naW5UZXh0AQAJZ2V0cmVzdWx0AQAEKClbQgEACXNldHJlc3VsdAEABShbQilWAQAMZ2V0ZXhjZXB0aW9uAQAMc2V0ZXhjZXB0aW9uAQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQANU3RhY2tNYXBUYWJsZQcATwEACkV4Y2VwdGlvbnMBAApTb3VyY2VGaWxlAQAhQXV0b0xvZ2luRW5jRnVuY3Rpb25KYXZhQ29kZS5qYXZhDAAbABwMAB0AHAwAHgAfDAAgABwMAC8AMAEAAAcAVAwAVQBWAQAhamF2YXgvY3J5cHRvL3NwZWMvSXZQYXJhbWV0ZXJTcGVjDABXACoMAC8ALAEAA0FFUwcAWAwAWQBaDABbAFwBAB9qYXZheC9jcnlwdG8vc3BlYy9TZWNyZXRLZXlTcGVjDAAvAF0BABRBRVMvQ0JDL1BLQ1M1UGFkZGluZwcAXgwAWQBfDABbAGAMACcAIgwAYQBiDAArACwBABNqYXZhL2xhbmcvRXhjZXB0aW9uDABjACIMAC4AJgEAQ1NlcnZpY2VzL1NTTy9WMV8wL0F1dG9Mb2dpbkVuY0Z1bmN0aW9uL0F1dG9Mb2dpbkVuY0Z1bmN0aW9uSmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQAQamF2YS9sYW5nL1N0cmluZwEACXN1YnN0cmluZwEAFihJSSlMamF2YS9sYW5nL1N0cmluZzsBAAhnZXRCeXRlcwEAGWphdmF4L2NyeXB0by9LZXlHZW5lcmF0b3IBAAtnZXRJbnN0YW5jZQEALyhMamF2YS9sYW5nL1N0cmluZzspTGphdmF4L2NyeXB0by9LZXlHZW5lcmF0b3I7AQAEaW5pdAEABChJKVYBABcoW0JMamF2YS9sYW5nL1N0cmluZzspVgEAE2phdmF4L2NyeXB0by9DaXBoZXIBACkoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZheC9jcnlwdG8vQ2lwaGVyOwEAQihJTGphdmEvc2VjdXJpdHkvS2V5O0xqYXZhL3NlY3VyaXR5L3NwZWMvQWxnb3JpdGhtUGFyYW1ldGVyU3BlYzspVgEAB2RvRmluYWwBAAYoW0IpW0IBAApnZXRNZXNzYWdlACEAGQAaAAAABAAEABsAHAAAAAQAHQAcAAAABAAeAB8AAAAEACAAHAAAAAoAAQAhACIAAQAjAAAAHQABAAEAAAAFKrQAAbAAAAABACQAAAAGAAEAAAAXAAEAJQAmAAEAIwAAACIAAgACAAAABiortQABsQAAAAEAJAAAAAoAAgAAABoABQAbAAEAJwAiAAEAIwAAAB0AAQABAAAABSq0AAKwAAAAAQAkAAAABgABAAAAHQABACgAJgABACMAAAAiAAIAAgAAAAYqK7UAArEAAAABACQAAAAKAAIAAAAgAAUAIQABACkAKgABACMAAAAdAAEAAQAAAAUqtAADsAAAAAEAJAAAAAYAAQAAACMAAQArACwAAQAjAAAAIgACAAIAAAAGKiu1AAOxAAAAAQAkAAAACgACAAAAJgAFACcAAQAtACIAAQAjAAAAHQABAAEAAAAFKrQABLAAAAABACQAAAAGAAEAAAApAAEALgAmAAEAIwAAACIAAgACAAAABiortQAEsQAAAAEAJAAAAAoAAgAAACwABQAtAAEALwAwAAEAIwAAAEgAAgABAAAAHCq3AAUqEga1AAEqEga1AAIqAbUAAyoSBrUABLEAAAABACQAAAAaAAYAAAAvAAQAEgAKABMAEAAUABUAFQAbADEAAQAxADAAAgAjAAAA1AAEAAgAAABxKrQAAQMQELYAB04qtAABEBAQILYABzoEuwAIWRkEtgAJtwAKOgUSC7gADDoGGQYRAIC2AA27AA5ZLbYACRILtwAPOgcSELgAEUwrBBkHGQW2ABIrKrYAE7YACbYAFE0qLLYAFacADE4qLbYAF7YAGLEAAQAAAGQAZwAWAAIAJAAAADoADgAAAD0ACwA+ABgAQgAmAEQALQBFADUARgBEAEcASgBIAFMASQBfAEwAZABRAGcATwBoAFAAcABTADIAAAAJAAL3AGcHADMIADQAAAAEAAEAFgABADUAAAACADY=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <Enckey>
+                    <xsl:value-of select="$Start/root/EncKey"/>
+                </Enckey>
+                <loginText>
+                    <xsl:value-of select="tib:render-xml($Start/root/AutoLogin,true())"/>
+                </loginText>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>369</pd:x>
+        <pd:y>212</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3407872</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns="http://www.trendmicro.com/ESB/schemas/DBLogger"
+	 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	 xmlns:ns0="http://www.trendmicro.com/ESB/schemas/error"
+	 targetNamespace="http://www.trendmicro.com/ESB/schemas/DBLogger"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="error.xsd"/>
+	<xsd:element name="DBLogger">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="MessageHeader" type="TrendESBLogHeader"/>
+				<xsd:element name="MessageBody" type="TrendESBLogBody"/>
+				<xsd:element ref="ns0:Error" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="TrendESBLogHeader">
+		<xsd:sequence>
+			<xsd:element name="MessageKey" type="xsd:string"/>
+			<xsd:element name="ServiceName" type="xsd:string"/>
+			<xsd:element name="ServiceVersion" type="xsd:string"/>
+			<xsd:element name="SourceID" type="xsd:string"/>
+			<xsd:element name="SourceIP" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="RqTimestamp" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="RsTimestamp" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TrendESBLogBody">
+		<xsd:sequence>
+			<xsd:element name="Content" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

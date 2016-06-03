@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.tibco.com/schemas/PLSService/XSD/TechData/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD/TechData/BillingResponse.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/TechData/BillingResponse.xsd" schemaLocation="/XSD/TechData/BillingResponse.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/TechData/Schema.xsd" schemaLocation="/XSD/TechData/BillingRequest.xsd"/>
+    <pd:name>ExternalServices/StreamOne/SendBillingRequest.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element name="TenantID" type="xsd:string"/>
+                    <xsd:element ref="pfx:data"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>124</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:copy-of select="$Parse-XML/message"/>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx4:message"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>725</pd:endX>
+    <pd:endY>69</pd:endY>
+    <pd:errorSchemas>
+        <error ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1343635378907</pd:targetNamespace>
+    <pd:activity name="Convert To Json">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <element>
+                <xsd:element name="jsonStr" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <jsonStr>
+                <xsl:value-of select="tib:substring-before-last(substring-after(TM:parseXMLtoJSON(tib:render-xml($Start/group/pfx:data, 1, 0), 0),':'), '}')"/>
+            </jsonStr>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send HTTP Request">
+        <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+        <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+        <pd:x>445</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <serverhost>%%ExternalServices/StreamOne/API_Host%%</serverhost>
+            <useSsl>false</useSsl>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">/Certificates/.folder</ns0:cert>
+            </ns0:ssl>
+            <serverport/>
+            <proxyConnection>/ExternalServices/StreamOne/Proxy Configuration.httpProxy</proxyConnection>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+            <OutputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </OutputHeaders>
+        </config>
+        <pd:inputBindings>
+            <RequestActivityInput>
+                <Method>
+                    <xsl:value-of select="'POST'"/>
+                </Method>
+                <RequestURI>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/StreamOne/API_URI_Billing"/>
+                </RequestURI>
+                <PostData>
+                    <xsl:value-of select="concat('data=',TM:URLEncode($Convert-To-Json/jsonStr))"/>
+                </PostData>
+                <Headers>
+                    <Content-Type>
+                        <xsl:value-of select="'application/x-www-form-urlencoded'"/>
+                    </Content-Type>
+                </Headers>
+            </RequestActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>397</pd:x>
+        <pd:y>252</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>509</pd:x>
+        <pd:y>255</pd:y>
+        <config>
+            <faultName>error</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <xsl:if test="$_error/ns1:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <pfx2:Error>
+                        <pfx2:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx2:src>
+                        <pfx2:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx2:error_code>
+                        <pfx2:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx2:error_message>
+                        <pfx2:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx2:stack_trace>
+                    </pfx2:Error>
+                </data>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>617</pd:x>
+        <pd:y>67</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx4:message"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="concat(substring-before($Send-HTTP-Request/RequestActivityOutput/asciiContent, '&lt;/message>'), '&lt;/message>')"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Req">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>342</pd:x>
+        <pd:y>149</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="0"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="0"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="0"/>
+                </isDBLog>
+                <ns3:DBLogger>
+                    <ns3:MessageHeader>
+                        <ns3:MessageKey>
+                            <xsl:value-of select="$Start/group/BWTraceID"/>
+                        </ns3:MessageKey>
+                        <ns3:ServiceName>
+                            <xsl:value-of select="'Send Billing Request To StreamOne'"/>
+                        </ns3:ServiceName>
+                        <ns3:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns3:ServiceVersion>
+                        <ns3:SourceID>
+                            <xsl:value-of select="$Start/group/TenantID"/>
+                        </ns3:SourceID>
+                        <ns3:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns3:RqTimestamp>
+                    </ns3:MessageHeader>
+                    <ns3:MessageBody>
+                        <ns3:Content>
+                            <xsl:value-of select="$Convert-To-Json/jsonStr"/>
+                        </ns3:Content>
+                    </ns3:MessageBody>
+                </ns3:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Rsp">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>531</pd:x>
+        <pd:y>137</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="0"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="0"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="0"/>
+                </isDBLog>
+                <ns3:DBLogger>
+                    <ns3:MessageHeader>
+                        <ns3:MessageKey>
+                            <xsl:value-of select="$Start/group/BWTraceID"/>
+                        </ns3:MessageKey>
+                        <ns3:ServiceName>
+                            <xsl:value-of select="'Send Billing Request To StreamOne'"/>
+                        </ns3:ServiceName>
+                        <ns3:ServiceVersion>
+                            <xsl:value-of select="'V1.0'"/>
+                        </ns3:ServiceVersion>
+                        <ns3:SourceID>
+                            <xsl:value-of select="$Start/group/TenantID"/>
+                        </ns3:SourceID>
+                    </ns3:MessageHeader>
+                    <ns3:MessageBody>
+                        <ns3:Content>
+                            <xsl:value-of select="$Send-HTTP-Request/RequestActivityOutput/asciiContent"/>
+                        </ns3:Content>
+                    </ns3:MessageBody>
+                </ns3:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Convert To Json</pd:from>
+        <pd:to>Log Req</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send HTTP Request</pd:from>
+        <pd:to>Log Rsp</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Convert To Json</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Req</pd:from>
+        <pd:to>Send HTTP Request</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log Rsp</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

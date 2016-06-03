@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>Services/Cert/V1.0/SetCertInfo.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>107</pd:startX>
+    <pd:startY>88</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Result>
+                <xsl:value-of select="$Java-Code/javaCodeActivityOutput/ServiceName"/>
+            </Result>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endX>635</pd:endX>
+    <pd:endY>88</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334659505583</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>353</pd:x>
+        <pd:y>91</pd:y>
+        <config>
+            <fileName>SetCertInfoJavaCode</fileName>
+            <packageName>Services.Cert.V1_0.SetCertInfo</packageName>
+            <fullsource>package Services.Cert.V1_0.SetCertInfo;
+import java.io.*;
+import java.security.*;
+import java.security.cert.X509Certificate;
+import java.security.cert.CertificateFactory;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+public class SetCertInfoJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected byte[] Binaryfile = null;
+	protected String ServiceName = "";
+	protected String exception = "";
+	public byte[] getBinaryfile() {
+		return Binaryfile;
+	}
+	public void setBinaryfile(byte[] val) {
+		Binaryfile = val;
+	}
+	public String getServiceName() {
+		return ServiceName;
+	}
+	public void setServiceName(String val) {
+		ServiceName = val;
+	}
+	public String getexception() {
+		return exception;
+	}
+	public void setexception(String val) {
+		exception = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public SetCertInfoJavaCode() {
+			
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : byte[] Binaryfile
+	Out : String ServiceName
+	Out : String exception
+* Available Variables: DO NOT MODIFY *****/
+		try{
+		ByteArrayInputStream inStream = new ByteArrayInputStream(Binaryfile);
+		CertificateFactory cf = CertificateFactory.getInstance("X.509");
+		X509Certificate cert = (X509Certificate)cf.generateCertificate(inStream);
+		inStream.close();
+
+		String dn = cert.getSubjectDN().toString();
+		String[] info = dn.split(",");
+		for (int i=0; i&lt; info.length; i++){
+			String[] k = info[i].split("=");
+			String key = k[0].trim();
+			String val = k[1].trim();
+			
+			if (key.equals("CN")){
+				setServiceName(val);
+			}
+			
+		}
+
+	/*	PublicKey pk = cert.getPublicKey();
+		
+		byte[] data = enKey.getBytes();
+		
+		Cipher cipher = Cipher.getInstance("RSA");
+		cipher.init(Cipher.ENCRYPT_MODE, pk);
+
+		byte[] cipherData = cipher.doFinal(data);
+		BASE64Encoder base64encoder;
+		base64encoder = new BASE64Encoder();
+		base64encoder.encode(cipherData);
+		setresult(cipherData);
+*/
+		//return encrypted;
+	}
+	catch(Exception e) {
+		 setexception(e.getMessage());
+	}
+	
+}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>Binaryfile</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>ServiceName</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>exception</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>SetCertInfoJavaCode</name>
+                    <byteCode>yv66vgAAADIAZwkAGQA6CQAZADsJABkAPAoAGgA9CAA+BwA/CgAGAEAIAEEKAEIAQwoAQgBEBwBFCgAGAEYKAAsARwoAGgBICABJCgBKAEsIAEwKAEoATQgATgoASgBPCgAZAFAHAFEKABYAUgoAGQBTBwBUBwBVAQAKQmluYXJ5ZmlsZQEAAltCAQALU2VydmljZU5hbWUBABJMamF2YS9sYW5nL1N0cmluZzsBAAlleGNlcHRpb24BAA1nZXRCaW5hcnlmaWxlAQAEKClbQgEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAA1zZXRCaW5hcnlmaWxlAQAFKFtCKVYBAA5nZXRTZXJ2aWNlTmFtZQEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAOc2V0U2VydmljZU5hbWUBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAxnZXRleGNlcHRpb24BAAxzZXRleGNlcHRpb24BAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAA1TdGFja01hcFRhYmxlBwBUBwA/BwBWBwBFBwBXBwBYBwBRAQAKRXhjZXB0aW9ucwEAClNvdXJjZUZpbGUBABhTZXRDZXJ0SW5mb0phdmFDb2RlLmphdmEMABsAHAwAHQAeDAAfAB4MACwALQEAAAEAHGphdmEvaW8vQnl0ZUFycmF5SW5wdXRTdHJlYW0MACwAJQEABVguNTA5BwBWDABZAFoMAFsAXAEAImphdmEvc2VjdXJpdHkvY2VydC9YNTA5Q2VydGlmaWNhdGUMAF0ALQwAXgBfDABgACcBAAEsBwBXDABhAGIBAAE9DABjACcBAAJDTgwAZABlDAAoACkBABNqYXZhL2xhbmcvRXhjZXB0aW9uDABmACcMACsAKQEAMlNlcnZpY2VzL0NlcnQvVjFfMC9TZXRDZXJ0SW5mby9TZXRDZXJ0SW5mb0phdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAJWphdmEvc2VjdXJpdHkvY2VydC9DZXJ0aWZpY2F0ZUZhY3RvcnkBABBqYXZhL2xhbmcvU3RyaW5nAQATW0xqYXZhL2xhbmcvU3RyaW5nOwEAC2dldEluc3RhbmNlAQA7KExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9zZWN1cml0eS9jZXJ0L0NlcnRpZmljYXRlRmFjdG9yeTsBABNnZW5lcmF0ZUNlcnRpZmljYXRlAQA3KExqYXZhL2lvL0lucHV0U3RyZWFtOylMamF2YS9zZWN1cml0eS9jZXJ0L0NlcnRpZmljYXRlOwEABWNsb3NlAQAMZ2V0U3ViamVjdEROAQAbKClMamF2YS9zZWN1cml0eS9QcmluY2lwYWw7AQAIdG9TdHJpbmcBAAVzcGxpdAEAJyhMamF2YS9sYW5nL1N0cmluZzspW0xqYXZhL2xhbmcvU3RyaW5nOwEABHRyaW0BAAZlcXVhbHMBABUoTGphdmEvbGFuZy9PYmplY3Q7KVoBAApnZXRNZXNzYWdlACEAGQAaAAAAAwAEABsAHAAAAAQAHQAeAAAABAAfAB4AAAAIAAEAIAAhAAEAIgAAAB0AAQABAAAABSq0AAGwAAAAAQAjAAAABgABAAAAEAABACQAJQABACIAAAAiAAIAAgAAAAYqK7UAAbEAAAABACMAAAAKAAIAAAATAAUAFAABACYAJwABACIAAAAdAAEAAQAAAAUqtAACsAAAAAEAIwAAAAYAAQAAABYAAQAoACkAAQAiAAAAIgACAAIAAAAGKiu1AAKxAAAAAQAjAAAACgACAAAAGQAFABoAAQAqACcAAQAiAAAAHQABAAEAAAAFKrQAA7AAAAABACMAAAAGAAEAAAAcAAEAKwApAAEAIgAAACIAAgACAAAABiortQADsQAAAAEAIwAAAAoAAgAAAB8ABQAgAAEALAAtAAEAIgAAAD4AAgABAAAAFiq3AAQqAbUAASoSBbUAAioSBbUAA7EAAAABACMAAAAWAAUAAAAiAAQADAAJAA0ADwAOABUAJAABAC4ALQACACIAAAEPAAMACgAAAH27AAZZKrQAAbcAB0wSCLgACU0sK7YACsAAC04rtgAMLbYADbYADjoEGQQSD7YAEDoFAzYGFQYZBb6iADcZBRUGMhIRtgAQOgcZBwMytgASOggZBwQytgASOgkZCBITtgAUmQAJKhkJtgAVhAYBp//HpwAMTCortgAXtgAYsQABAAAAcABzABYAAgAjAAAARgARAAAALAAMAC0AEgAuABsALwAfADEAKAAyADEAMwA8ADQASAA1AFEANgBaADgAZAA5AGoAMwBwAE8AcwBNAHQATgB8AFEALwAAACwABf8ANAAHBwAwBwAxBwAyBwAzBwA0BwA1AQAANf8ABQABBwAwAABCBwA2CAA3AAAABAABABYAAQA4AAAAAgA5</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <Binaryfile>
+                    <xsl:value-of select="$GetCertVariable/Key/TIBCOBWCert"/>
+                </Binaryfile>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetCertVariable">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>226</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <variableConfig>/Services/Cert/V1.0/Shared Variable/AuthConfigVar.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="SetCertInfoVariable">
+        <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+        <pd:x>490</pd:x>
+        <pd:y>90</pd:y>
+        <config>
+            <variableConfig>/Services/Cert/V1.0/Shared Variable/CertInfo.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings>
+            <Subject>
+                <ServiceName>
+                    <xsl:value-of select="$Java-Code/javaCodeActivityOutput/ServiceName"/>
+                </ServiceName>
+            </Subject>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>450</pd:x>
+        <pd:y>242</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <xsl:if test="$Java-Code/javaCodeActivityOutput/exception">
+                    <message>
+                        <xsl:value-of select="$Java-Code/javaCodeActivityOutput/exception"/>
+                    </message>
+                </xsl:if>
+                <messageCode>
+                    <xsl:value-of select="&quot;excetion&quot;"/>
+                </messageCode>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetCertVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>SetCertInfoVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetCertVariable</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetCertInfoVariable</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>Exception Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Java-Code/javaCodeActivityOutput/exception) !=""</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

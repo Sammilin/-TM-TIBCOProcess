@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/PLSService/XSD/LMPI/V2.0/Schema.xsd6"
+	 targetNamespace="http://www.tibco.com/schemas/PLSService/XSD/LMPI/V2.0/Schema.xsd6"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="CreateSubscriptionRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="subscription_id" type="xs:string"/>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="enabled" type="xs:boolean"/>
+				<xs:element name="is_auto_renewal" type="xs:boolean"/>
+				<xs:element name="auto_renewal_month" type="xs:integer"/>
+				<xs:element name="expiration_notification" type="xs:integer"/>
+				<xs:element name="service_url" type="xs:string"/>
+				<xs:element name="licenses" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ac_code" type="xs:string"/>
+							<xs:element name="product_id" type="xs:string"/>
+							<xs:element name="version" type="xs:string"/>
+							<xs:element name="license_start_date" type="xs:date"/>
+							<xs:element name="license_expiration_date" type="xs:date"/>
+							<xs:element name="start_charge_date" type="xs:date"/>
+							<xs:element name="grace_period" type="xs:integer"/>
+							<xs:element name="units" type="xs:integer"/>
+							<xs:element name="enabled" type="xs:boolean"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

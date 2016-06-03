@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/AddSeatReq.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/AddSeatReq.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:include schemaLocation="ArrowSphere.xsd"/>
+	<xs:element name="AddSeatReq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="transaction_id" type="xs:string" minOccurs="0"/>
+				<xs:element name="po_number" type="xs:string" minOccurs="0"/>
+				<xs:element name="po_date" type="xs:string" minOccurs="0"/>
+				<xs:element name="disti_id" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="reseller_id" type="xs:string"/>
+				<xs:element name="customer_id" type="xs:string"/>
+				<xs:element name="payment_type" type="xs:string"/>
+				<xs:element name="items" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="sku">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="100"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="subscription_id" type="xs:string"/>
+							<xs:element name="end_user_unit_price" type="xs:decimal"/>
+							<xs:element name="end_user_total_price" type="xs:decimal"/>
+							<xs:element name="deal_code" type="xs:string" minOccurs="0"/>
+							<xs:element name="currency_code" type="xs:string"/>
+							<xs:element name="seats" type="xs:int"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

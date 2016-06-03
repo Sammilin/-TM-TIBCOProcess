@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="StreamOneResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="list_vendor_po" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="message" type="POResponseType" minOccurs="0"/>
+							<xs:element name="Error" type="ResponseError" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="POResponseType">
+		<xs:sequence>
+			<xs:element name="return" type="xs:string"/>
+			<xs:element name="count" type="xs:string"/>
+			<xs:element name="items" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="po_number" type="xs:string"/>
+									<xs:element name="sales_order_number" type="xs:string"/>
+									<xs:element name="order_total" type="xs:string"/>
+									<xs:element name="po_due_date" type="xs:string"/>
+									<xs:element name="marketplace_country" type="xs:string"/>
+									<xs:element name="reseller_id" type="xs:string"/>
+									<xs:element name="external_reseller_id" type="xs:string"/>
+									<xs:element name="TestRecord" type="xs:string"/>
+									<xs:element name="lineitems" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="lineitem" minOccurs="0" maxOccurs="unbounded">
+													<xs:complexType>
+														<xs:all>
+															<xs:element name="effective_date" type="xs:string"/>
+															<xs:element name="external_id" type="xs:string"/>
+															<xs:element name="item_id" type="xs:string"/>
+															<xs:element name="item_description" type="xs:string"/>
+															<xs:element name="product_sku" type="xs:string"/>
+															<xs:element name="qty" type="xs:string"/>
+															<xs:element name="item_amount" type="xs:string" minOccurs="0"/>
+															<xs:element name="item_total" type="xs:string"/>
+															<xs:element name="currency" type="xs:string"/>
+															<xs:element name="discount" type="xs:string" minOccurs="0"/>
+															<xs:element name="order_date" type="xs:string"/>
+															<xs:element name="item_status" type="xs:string"/>
+															<xs:element name="customer_id" type="xs:string"/>
+															<xs:element name="first_name" type="xs:string"/>
+															<xs:element name="last_name" type="xs:string"/>
+															<xs:element name="email" type="xs:string"/>
+															<xs:element name="address1" type="xs:string"/>
+															<xs:element name="address2" type="xs:string"/>
+															<xs:element name="city" type="xs:string"/>
+															<xs:element name="state" type="xs:string"/>
+															<xs:element name="zip" type="xs:string"/>
+															<xs:element name="country" type="xs:string"/>
+														</xs:all>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResponseError">
+		<xs:sequence>
+			<xs:element name="return" type="xs:string"/>
+			<xs:element name="error" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

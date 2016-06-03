@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Utilities/Logging/Log File/Security Check.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="isHTTP" type="xsd:boolean"/>
+                    <xsd:element name="logContent" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>135</pd:startX>
+    <pd:startY>80</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <OutputContent>
+                <xsl:value-of select="$Replace-Json-Format-String/root/filterContent"/>
+            </OutputContent>
+            <TraceID>
+                <xsl:value-of select="if (tib:trim(substring-before(substring-after($Replace-Json-Format-String/root/filterContent, &quot;&lt;ns0:MessageKey>&quot;), &quot;&lt;/ns0:MessageKey>&quot;)) =&quot;&quot;)&#xA; then &#xA;TM:getGUID() &#xA;else &#xA;substring-before(substring-after($Replace-Json-Format-String/root/filterContent, &quot;&lt;ns0:MessageKey>&quot;), &quot;&lt;/ns0:MessageKey>&quot;)"/>
+            </TraceID>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="OutputContent" type="xsd:string"/>
+                    <xsd:element name="TraceID" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>704</pd:endX>
+    <pd:endY>88</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1337937006172</pd:targetNamespace>
+    <pd:activity name="Replace Json Format String">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>567</pd:x>
+        <pd:y>96</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="filterContent" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:choose>
+                    <xsl:when test="$Start/root/isHTTP = &quot;false&quot;">
+                        <filterContent>
+                            <xsl:value-of select="TM:stringReplace(TM:stringReplace($Start/root/logContent,'\\&quot;', '&quot;'),concat('&quot;(?i)(',$_globalVariables/ns:GlobalVariables/Utilities/Logging/LogFile/SecurityKey,')&quot;:&quot;',$_globalVariables/ns:GlobalVariables/Utilities/Logging/LogFile/SecurityRegExp,'&quot;'),&quot;*****&quot;)"/>
+                        </filterContent>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <filterContent>
+                            <xsl:value-of select="TM:stringReplace(TM:stringReplace($filterContent/AccumulatedOutput/root[$i]/checkContent,'\\&quot;', '&quot;'),concat('&quot;(?i)(',$_globalVariables/ns:GlobalVariables/Utilities/Logging/LogFile/SecurityKey,')&quot;:&quot;',$_globalVariables/ns:GlobalVariables/Utilities/Logging/LogFile/SecurityRegExp,'&quot;'),&quot;*****&quot;)"/>
+                        </filterContent>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>525</pd:x>
+        <pd:y>355</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Split Security Keyword">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>200</pd:x>
+        <pd:y>231</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="keyword" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="var" select="tib:tokenize($_globalVariables/ns:GlobalVariables/Utilities/Logging/LogFile/SecurityKey,&quot;|&quot;)"/>
+            <root>
+                <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$var">
+                    <keyword>
+                        <xsl:value-of select="."/>
+                    </keyword>
+                </xsl:for-each>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>311</pd:x>
+        <pd:y>155</pd:y>
+        <pd:width>153</pd:width>
+        <pd:height>154</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Split-Security-Keyword/root/keyword</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>filterContent</pd:outSlot>
+            <pd:activityOutputName>Map Data</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Map Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Map Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>383</pd:x>
+            <pd:y>242</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="checkContent" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:when test="$i=1">
+                            <checkContent>
+                                <xsl:value-of select="TM:stringReplace($Start/root/logContent,concat('([\w]*)(?i)(',$cu/keyword,')+(.*)/([\w]*):?(?i)(',$cu/keyword,')+'),&quot;****&quot;)"/>
+                            </checkContent>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <checkContent>
+                                <xsl:value-of select="TM:stringReplace($filterContent/AccumulatedOutput/root[$i - 1]/checkContent,concat('([\w]*)(?i)(',$cu/keyword,')+(.*)/([\w]*):?(?i)(',$cu/keyword,')+'),&quot;****&quot;)"/>
+                            </checkContent>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>375</pd:x>
+        <pd:y>355</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Replace Json Format String</pd:to>
+        <pd:xpathDescription>Non Http</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/isHTTP = "false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Replace Json Format String</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Split Security Keyword</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Split Security Keyword</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Replace Json Format String</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

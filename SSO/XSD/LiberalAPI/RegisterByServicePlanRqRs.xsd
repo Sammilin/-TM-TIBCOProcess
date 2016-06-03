@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:include schemaLocation="LicenseKey.xsd"/>
+	<xs:element name="RegisterByServicePlanRqRs">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="RegisterByServicePlanRq">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CompanyID" type="xs:string"/>
+							<xs:element name="ServicePlanID" type="xs:string"/>
+							<xs:element name="Volume" type="xs:int"/>
+							<xs:element name="LicenseStartDate" type="xs:date" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RegisterByServicePlanRs">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EntitlementID" type="xs:string"/>
+							<xs:element name="CompanyID" type="xs:string"/>
+							<xs:element name="ProductProfileID" type="xs:string"/>
+							<xs:element name="ProductName" type="xs:string"/>
+							<xs:element name="EventID" type="xs:string"/>
+							<xs:element name="EventName" type="xs:string"/>
+							<xs:element name="SubscriptionID" type="xs:string"/>
+							<xs:element name="LicenseKey" type="LicenseKey" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

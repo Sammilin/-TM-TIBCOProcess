@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns6="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns7="http://schemas.tibco.com/bw/plugins/http/5.0/cio" xmlns:pfx="http://www.tibco.com/schemas/PLSService_SVN/XSD/PartnerAPI/Schema.xsd" xmlns:ns8="http://schemas.tibco.com/bw/plugins/http/5.0/httpExceptions" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/messageHeader" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/schemas/PLS_ingram/XSD/LMPI/V2.0/ServiceHeader.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService_SVN/XSD/PartnerAPI/Schema.xsd" schemaLocation="/XSD/PartnerAPI/IsValidRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd" schemaLocation="/XSD/LiberalAPI/LiberalErrorOutputHeader.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLS_ingram/XSD/LMPI/V2.0/ServiceHeader.xsd" schemaLocation="/XSD/LMPI/V2.0/ServiceHeader.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/LMPI/Call LMPI_API Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element name="LMPIAPIURI" type="xsd:string"/>
+                    <xsd:element name="jsonMessage" type="xsd:string"/>
+                    <xsd:element name="jsonMessageForLog" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="HttpMethod" type="xsd:string"/>
+                    <xsd:element name="SourceID" type="xsd:string" minOccurs="0"/>
+                    <xsd:element ref="pfx4:Header"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>67</pd:startX>
+    <pd:startY>123</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:choose>
+                <xsl:when test="exists($Call-LMPI_API-SSL)">
+                    <outputJson>
+                        <xsl:value-of select="$Call-LMPI_API-SSL/root/outputContent"/>
+                    </outputJson>
+                    <ContentType>
+                        <xsl:value-of select="$Call-LMPI_API-SSL/root/headerContentType"/>
+                    </ContentType>
+                </xsl:when>
+                <xsl:otherwise>
+                    <outputJson>
+                        <xsl:value-of select="$Call-LMPI_API-nonSSL/root/outputContent"/>
+                    </outputJson>
+                    <ContentType>
+                        <xsl:value-of select="$Call-LMPI_API-nonSSL/root/headerContentType"/>
+                    </ContentType>
+                </xsl:otherwise>
+            </xsl:choose>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="outputJson" type="xsd:string"/>
+                    <xsd:element name="ContentType" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>847</pd:endX>
+    <pd:endY>224</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334304367576</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>276</pd:x>
+        <pd:y>420</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>430</pd:x>
+        <pd:y>421</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <messageCode>
+                    <xsl:value-of select="'Error'"/>
+                </messageCode>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Generate-Error-1/pfx2:Error)">
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error_Generate-Error-1/pfx2:Error/pfx2:src"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error_Generate-Error-1/pfx2:Error/pfx2:error_code"/>
+                                </pfx2:error_code>
+                                <xsl:choose>
+                                    <xsl:when test="exists($_error_Generate-Error-1/pfx2:Error)">
+                                        <pfx2:error_message>
+                                            <xsl:value-of select="$_error_Generate-Error-1/pfx2:Error/pfx2:error_message"/>
+                                        </pfx2:error_message>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <pfx2:error_message>
+                                            <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                                        </pfx2:error_message>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error_Generate-Error-1/pfx2:Error/pfx2:stack_trace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="&quot;InternalException&quot;"/>
+                                </pfx2:error_code>
+                                <xsl:choose>
+                                    <xsl:when test="exists($_error_Generate-Error-1/pfx2:Error)">
+                                        <pfx2:error_message>
+                                            <xsl:value-of select="$_error_Generate-Error-1/pfx2:Error/pfx2:error_message"/>
+                                        </pfx2:error_message>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <pfx2:error_message>
+                                            <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                                        </pfx2:error_message>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Rs Logging">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>688</pd:x>
+        <pd:y>220</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="true()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="false()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <ns3:DBLogger>
+                    <ns3:MessageHeader>
+                        <ns3:MessageKey>
+                            <xsl:value-of select="$Start/root/BWTraceID"/>
+                        </ns3:MessageKey>
+                        <ns3:ServiceName>
+                            <xsl:value-of select="'Call LMPIAPI'"/>
+                        </ns3:ServiceName>
+                        <ns3:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns3:ServiceVersion>
+                        <ns3:SourceID>
+                            <xsl:value-of select="$Start/root/SourceID"/>
+                        </ns3:SourceID>
+                        <ns3:SourceIP>
+                            <xsl:value-of select="TM:getIPAddress()"/>
+                        </ns3:SourceIP>
+                        <ns3:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns3:RqTimestamp>
+                        <ns3:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns3:RsTimestamp>
+                    </ns3:MessageHeader>
+                    <ns3:MessageBody>
+                        <xsl:choose>
+                            <xsl:when test="exists($Call-LMPI_API-SSL)">
+                                <ns3:Content>
+                                    <xsl:value-of select="concat(&quot;status=&quot;, $Call-LMPI_API-SSL/root/statusLine,&quot;,content=&quot;,$Call-LMPI_API-SSL/root/outputContent)"/>
+                                </ns3:Content>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <ns3:Content>
+                                    <xsl:value-of select="concat(&quot;status=&quot;, $Call-LMPI_API-nonSSL/root/statusLine,&quot;,content=&quot;,$Call-LMPI_API-nonSSL/root/outputContent)"/>
+                                </ns3:Content>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ns3:MessageBody>
+                </ns3:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Rq Logging">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>241</pd:x>
+        <pd:y>248</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="true()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="false()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <ns3:DBLogger>
+                    <ns3:MessageHeader>
+                        <ns3:MessageKey>
+                            <xsl:value-of select="$Start/root/BWTraceID"/>
+                        </ns3:MessageKey>
+                        <ns3:ServiceName>
+                            <xsl:value-of select="'Call LMPIAPI'"/>
+                        </ns3:ServiceName>
+                        <ns3:ServiceVersion>
+                            <xsl:value-of select="&quot;V2.0&quot;"/>
+                        </ns3:ServiceVersion>
+                        <ns3:SourceID>
+                            <xsl:value-of select="$Start/root/SourceID"/>
+                        </ns3:SourceID>
+                        <ns3:SourceIP>
+                            <xsl:value-of select="TM:getIPAddress()"/>
+                        </ns3:SourceIP>
+                        <ns3:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns3:RqTimestamp>
+                        <ns3:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns3:RsTimestamp>
+                    </ns3:MessageHeader>
+                    <ns3:MessageBody>
+                        <ns3:Content>
+                            <xsl:value-of select="tib:render-xml($Map-Request-4-Log/Request, 1,1)"/>
+                        </ns3:Content>
+                    </ns3:MessageBody>
+                </ns3:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Request 4 Log">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>74</pd:x>
+        <pd:y>249</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Request">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Host" type="xsd:string"/>
+                            <xsd:element name="Method" type="xsd:string"/>
+                            <xsd:element name="URL" type="xsd:string"/>
+                            <xsd:element name="PostData" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="TraceID" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Request>
+                <Host>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/ExternalServices/LMPI/V2.0/host"/>
+                </Host>
+                <Method>
+                    <xsl:value-of select="$Start/root/HttpMethod"/>
+                </Method>
+                <URL>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/ExternalServices/LMPI/V2.0/uriPrefix,$Start/root/LMPIAPIURI)"/>
+                </URL>
+                <PostData>
+                    <xsl:value-of select="$Start/root/jsonMessage"/>
+                </PostData>
+                <TraceID>
+                    <xsl:value-of select="$Start/root/BWTraceID"/>
+                </TraceID>
+            </Request>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call-LMPI_API-SSL">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>362</pd:x>
+        <pd:y>102</pd:y>
+        <config>
+            <processName>/ExternalServices/LMPI/Call LMPI_API SSL.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <BWTraceID>
+                    <xsl:value-of select="$Start/root/BWTraceID"/>
+                </BWTraceID>
+                <LMPIAPIURI>
+                    <xsl:value-of select="$Start/root/LMPIAPIURI"/>
+                </LMPIAPIURI>
+                <jsonMessage>
+                    <xsl:value-of select="$Start/root/jsonMessage"/>
+                </jsonMessage>
+                <xsl:if test="$Start/root/jsonMessageForLog">
+                    <jsonMessageForLog>
+                        <xsl:value-of select="$Start/root/jsonMessageForLog"/>
+                    </jsonMessageForLog>
+                </xsl:if>
+                <HttpMethod>
+                    <xsl:value-of select="$Start/root/HttpMethod"/>
+                </HttpMethod>
+                <TimeStamp>
+                    <xsl:value-of select="621355968000000000 +( tib:timestamp()*10000)"/>
+                </TimeStamp>
+                <xsl:copy-of select="$Start/root/pfx4:Header"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call-LMPI_API-nonSSL">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>375</pd:x>
+        <pd:y>343</pd:y>
+        <config>
+            <processName>/ExternalServices/LMPI/Call LMPI_API nonSSL.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <BWTraceID>
+                    <xsl:value-of select="$Start/root/BWTraceID"/>
+                </BWTraceID>
+                <LMPIAPIURI>
+                    <xsl:value-of select="$Start/root/LMPIAPIURI"/>
+                </LMPIAPIURI>
+                <jsonMessage>
+                    <xsl:value-of select="$Start/root/jsonMessage"/>
+                </jsonMessage>
+                <xsl:if test="$Start/root/jsonMessageForLog">
+                    <jsonMessageForLog>
+                        <xsl:value-of select="$Start/root/jsonMessageForLog"/>
+                    </jsonMessageForLog>
+                </xsl:if>
+                <HttpMethod>
+                    <xsl:value-of select="$Start/root/HttpMethod"/>
+                </HttpMethod>
+                <TimeStamp>
+                    <xsl:value-of select="621355968000000000 +( tib:timestamp()*10000)"/>
+                </TimeStamp>
+                <xsl:copy-of select="$Start/root/pfx4:Header"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>500</pd:x>
+        <pd:y>222</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns:ErrorReport/Data/*" element="pfx2:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns:ErrorReport/Data)">
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/Data/pfx2:Error/pfx2:src"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/Data/pfx2:Error/pfx2:error_code"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/Data/pfx2:Error/pfx2:error_message"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/Data/pfx2:Error/pfx2:stack_trace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/ProcessStack"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Rs Logging</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Rq Logging</pd:from>
+        <pd:to>Call-LMPI_API-nonSSL</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Request 4 Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Request 4 Log</pd:from>
+        <pd:to>Rq Logging</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Rq Logging</pd:from>
+        <pd:to>Call-LMPI_API-SSL</pd:to>
+        <pd:xpathDescription>isSSL</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>lower-case($_globalVariables/ns1:GlobalVariables/ExternalServices/LMPI/V2.0/isSSL) = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call-LMPI_API-SSL</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call-LMPI_API-nonSSL</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call-LMPI_API-SSL</pd:from>
+        <pd:to>Rs Logging</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call-LMPI_API-nonSSL</pd:from>
+        <pd:to>Rs Logging</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

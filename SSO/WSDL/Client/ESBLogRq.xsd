@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/ESBService/WSDL/Client/Schema.xsd"
+	 xmlns:ns1="http://www.trendmicro.com/ESB/schemas/messageBody"
+	 xmlns:ns2="http://www.trendmicro.com/ESB/schemas/messageHeader"
+	 targetNamespace="http://www.tibco.com/schemas/ESBService/WSDL/Client/Schema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.trendmicro.com/ESB/schemas/messageHeader" schemaLocation="../../XSD/Common/messageheader.xsd"/>
+	<xs:element name="Message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RqMessageheader" type="ns2:RequestHeader"/>
+				<xs:element name="RqMessageBody">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="MessageKey" type="xs:string"/>
+							<xs:element name="filter" type="column" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="column">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

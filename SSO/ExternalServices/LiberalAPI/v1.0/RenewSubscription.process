@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/SubscriptionReq.xsd" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd4" xmlns:pfx4="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx2="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/SubscriptionRes.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/RenewRs.xsd" xmlns:pfx6="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Renew.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/SubscriptionReq.xsd" schemaLocation="/XSD/LiberalAPI/SubscriptionReq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSSERVICE/XSD/ArrowSphere/SubscriptionRes.xsd" schemaLocation="/XSD/LiberalAPI/SubscriptionRes.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd4" schemaLocation="/XSD/ArrowSphere/RenewRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Renew.xsd" schemaLocation="/XSD/LiberalAPI/RenewRq.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/RenewRs.xsd" schemaLocation="/XSD/LiberalAPI/RenewRs.xsd"/>
+    <pd:name>ExternalServices/LiberalAPI/v1.0/RenewSubscription.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="tenantID" type="xsd:string"/>
+                    <xsd:element name="BWTraceId" type="xsd:string"/>
+                    <xsd:element ref="pfx6:RenewRq"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>105</pd:startX>
+    <pd:startY>131</pd:startY>
+    <pd:returnBindings>
+        <RenewRs>
+            <SubscriptionID>
+                <xsl:value-of select="$Parse-XML/RenewRs/SubscriptionID"/>
+            </SubscriptionID>
+            <OwnerCompanyID>
+                <xsl:value-of select="$Parse-XML/RenewRs/OwnerCompanyID"/>
+            </OwnerCompanyID>
+            <ServiceID>
+                <xsl:value-of select="$Parse-XML/RenewRs/ServiceID"/>
+            </ServiceID>
+            <DCCode>
+                <xsl:value-of select="$Parse-XML/RenewRs/DCCode"/>
+            </DCCode>
+            <LicensePeriodMonth>
+                <xsl:value-of select="$Parse-XML/RenewRs/LicensePeriodMonth"/>
+            </LicensePeriodMonth>
+            <AutoExtensionMonth>
+                <xsl:value-of select="$Parse-XML/RenewRs/AutoExtensionMonth"/>
+            </AutoExtensionMonth>
+            <IsAutoReNew>
+                <xsl:value-of select="$Parse-XML/RenewRs/IsAutoReNew"/>
+            </IsAutoReNew>
+            <ActivationType>
+                <xsl:value-of select="$Parse-XML/RenewRs/ActivationType"/>
+            </ActivationType>
+            <Enable>
+                <xsl:value-of select="$Parse-XML/RenewRs/Enable"/>
+            </Enable>
+            <ContractType>
+                <xsl:value-of select="$Parse-XML/RenewRs/ContractType"/>
+            </ContractType>
+            <PriceType>
+                <xsl:value-of select="$Parse-XML/RenewRs/PriceType"/>
+            </PriceType>
+            <ChargeableMonth>
+                <xsl:value-of select="$Parse-XML/RenewRs/ChargeableMonth"/>
+            </ChargeableMonth>
+            <IsDelegation>
+                <xsl:value-of select="$Parse-XML/RenewRs/IsDelegation"/>
+            </IsDelegation>
+            <ChannelID>
+                <xsl:value-of select="$Parse-XML/RenewRs/ChannelID"/>
+            </ChannelID>
+            <SalesType>
+                <xsl:value-of select="$Parse-XML/RenewRs/SalesType"/>
+            </SalesType>
+            <LicenseKey>
+                <ActCode>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/ActCode"/>
+                </ActCode>
+                <Enabled>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/Enabled"/>
+                </Enabled>
+                <PID>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/PID"/>
+                </PID>
+                <BuCode>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/BuCode"/>
+                </BuCode>
+                <VersionType>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/VersionType"/>
+                </VersionType>
+                <SalesType>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/SalesType"/>
+                </SalesType>
+                <Volume>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/Volume"/>
+                </Volume>
+                <LicenseStartDate>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/LicenseStartDate"/>
+                </LicenseStartDate>
+                <StartChargeDate>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/StartChargeDate"/>
+                </StartChargeDate>
+                <LicenseEndDate>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/LicenseEndDate"/>
+                </LicenseEndDate>
+                <GracePeriod>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/GracePeriod"/>
+                </GracePeriod>
+                <LastModifyDate>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/LastModifyDate"/>
+                </LastModifyDate>
+                <PriceType>
+                    <xsl:value-of select="$Parse-XML/RenewRs/LicenseKey/PriceType"/>
+                </PriceType>
+            </LicenseKey>
+            <ServicePlanName>
+                <xsl:value-of select="$Parse-XML/RenewRs/ServicePlanName"/>
+            </ServicePlanName>
+            <ExpNotification>
+                <xsl:value-of select="$Parse-XML/RenewRs/ExpNotification"/>
+            </ExpNotification>
+        </RenewRs>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx7:RenewRs"/>
+    <pd:endX>880</pd:endX>
+    <pd:endY>135</pd:endY>
+    <pd:errorSchemas>
+        <errorMessage ref="pfx3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1363835239933</pd:targetNamespace>
+    <pd:activity name="Map Json Request Body">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>258</pd:x>
+        <pd:y>139</pd:y>
+        <config>
+            <element>
+                <xsd:element name="RequestBody" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <RequestBody>
+                <xsl:value-of select="tib:substring-before-last(substring-after(TM:parseXMLtoJSON(tib:render-xml($Start/root/pfx6:RenewRq),0), &quot;:&quot;), &quot;}&quot;)"/>
+            </RequestBody>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Liberal Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>392</pd:x>
+        <pd:y>137</pd:y>
+        <config>
+            <processName>/ExternalServices/LiberalAPI/v1.0/Call LiberalAPI Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <tenantID>
+                    <xsl:value-of select="$Start/root/tenantID"/>
+                </tenantID>
+                <BWTraceID>
+                    <xsl:value-of select="$Start/root/BWTraceId"/>
+                </BWTraceID>
+                <LiberalAPIURI>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/RenewSubscription/ResourceURI"/>
+                </LiberalAPIURI>
+                <jsonMessage>
+                    <xsl:value-of select="$Map-Json-Request-Body/RequestBody"/>
+                </jsonMessage>
+                <HttpMethod>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/RenewSubscription/HttpMethod"/>
+                </HttpMethod>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>517</pd:x>
+        <pd:y>131</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="TM:stringReplace(tib:substring-before-last(substring-after($Call-Liberal-Process/root/outputJson, '{&quot;Message&quot;:&quot;'), '&quot;,&quot;Version&quot;:&quot;&quot;}'), '\\\&quot;' ,'\&quot;')"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JsonToXmlString">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>643</pd:x>
+        <pd:y>131</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="concat('&lt;RenewRs>', TM:parseJSONtoXML($Map-Data/root, 1),'&lt;/RenewRs>')"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>771</pd:x>
+        <pd:y>130</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx7:RenewRs"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$JsonToXmlString/root"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>270</pd:x>
+        <pd:y>315</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>445</pd:x>
+        <pd:y>318</pd:y>
+        <config>
+            <faultName>errorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <pfx3:Error>
+                        <pfx3:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx3:src>
+                        <pfx3:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx3:error_code>
+                        <pfx3:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx3:error_message>
+                        <pfx3:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx3:stack_trace>
+                    </pfx3:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Json Request Body</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Json Request Body</pd:from>
+        <pd:to>Call Liberal Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Liberal Process</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>JsonToXmlString</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JsonToXmlString</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

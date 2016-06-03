@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/ErrorProperties.xsd" xmlns:ns3="http://www.tibco.com/schemas/PLSService/XSD/Common/Schema.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/OAuthKeyProperties.xsd" xmlns:pfx2="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/OAuthKeyProperties.xsd" schemaLocation="/XSD/Common/OAuthKeyProperties.xsd"/>
+    <pd:name>Utilities/OAuth/V1.0/SecureKeyMapping.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="MartketPlace" type="xsd:string"/>
+                    <xsd:element name="Product" type="xsd:string"/>
+                    <xsd:element name="TenantID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>79</pd:startX>
+    <pd:startY>87</pd:startY>
+    <pd:returnBindings>
+        <group>
+            <OAuthKeyProperties>
+                <xsl:for-each select="$Map-Data/group/OAuthKeyProperties/Rows">
+                    <Rows>
+                        <TenantSource>
+                            <xsl:value-of select="TenantSource"/>
+                        </TenantSource>
+                        <MartketPlace>
+                            <xsl:value-of select="MartketPlace"/>
+                        </MartketPlace>
+                        <TenantID>
+                            <xsl:value-of select="TenantID"/>
+                        </TenantID>
+                        <xsl:for-each select="Info">
+                            <Info>
+                                <Product>
+                                    <xsl:value-of select="Product"/>
+                                </Product>
+                                <ConsumerSecuret>
+                                    <xsl:value-of select="ConsumerSecuret"/>
+                                </ConsumerSecuret>
+                                <ConsumerKey>
+                                    <xsl:value-of select="ConsumerKey"/>
+                                </ConsumerKey>
+                            </Info>
+                        </xsl:for-each>
+                    </Rows>
+                </xsl:for-each>
+            </OAuthKeyProperties>
+        </group>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="group">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx3:OAuthKeyProperties" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>508</pd:endX>
+    <pd:endY>86</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1364180743372</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>279</pd:x>
+        <pd:y>237</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>433</pd:x>
+        <pd:y>237</pd:y>
+        <config>
+            <faultName>errorReport</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns2:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </data>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetVariable">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>209</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <variableConfig>/Utilities/OAuth/V1.0/ShareVariable/Shared Variable.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>360</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <element>
+                <xsd:element name="group">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element ref="pfx3:OAuthKeyProperties"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <xsl:variable name="var" select="$GetVariable/OAuthKeyProperties/Rows[upper-case(./Info[1]/Product)=upper-case($Start/root/Product)]"/>
+            <group>
+                <OAuthKeyProperties>
+                    <xsl:for-each select="$var">
+                        <Rows>
+                            <TenantSource>
+                                <xsl:value-of select="TenantSource"/>
+                            </TenantSource>
+                            <MartketPlace>
+                                <xsl:value-of select="MartketPlace"/>
+                            </MartketPlace>
+                            <TenantID>
+                                <xsl:value-of select="TenantID"/>
+                            </TenantID>
+                            <xsl:for-each select="Info">
+                                <Info>
+                                    <Product>
+                                        <xsl:value-of select="Product"/>
+                                    </Product>
+                                    <ConsumerSecuret>
+                                        <xsl:value-of select="ConsumerSecuret"/>
+                                    </ConsumerSecuret>
+                                    <ConsumerKey>
+                                        <xsl:value-of select="ConsumerKey"/>
+                                    </ConsumerKey>
+                                </Info>
+                            </xsl:for-each>
+                        </Rows>
+                    </xsl:for-each>
+                </OAuthKeyProperties>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetVariable</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

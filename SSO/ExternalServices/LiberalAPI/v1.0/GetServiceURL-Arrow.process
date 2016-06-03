@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.tibco.com/schemas/PLSService_SVN/XSD/PartnerAPI/Schema.xsd" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx3="http://www.trendmicro.com/PLS/PartnerAPI/Schemas" xmlns:pfx2="http://www.tibco.com/schemas/PLSService_SVN/XSD/PartnerAPI/Schema.xsd2">
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService_SVN/XSD/PartnerAPI/Schema.xsd" schemaLocation="/XSD/PartnerAPI/IsValidRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService_SVN/XSD/PartnerAPI/Schema.xsd2" schemaLocation="/XSD/PartnerAPI/CreateCompanyRequest.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PLS/PartnerAPI/Schemas" schemaLocation="/XSD/PartnerAPI/DisableBindingRequest.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/LiberalAPI/v1.0/GetServiceURL-Arrow.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="tenantID" type="xsd:string"/>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element name="ServiceName" type="xsd:string"/>
+                    <xsd:element name="ComapnyGUID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>137</pd:startX>
+    <pd:startY>138</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <ServiceURL>
+                <xsl:value-of select="&quot;https://wfbs-svc-nabu-dev.trendmicro.com/trend-wfbssvc-35/?TenantID=NX0DJ&quot;"/>
+            </ServiceURL>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ServiceURL" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>806</pd:endX>
+    <pd:endY>138</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="ns1:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334304367576</pd:targetNamespace>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>571</pd:x>
+        <pd:y>272</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <data>
+                    <ns1:Error>
+                        <ns1:src>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                        </ns1:src>
+                        <ns1:error_code>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                        </ns1:error_code>
+                        <ns1:error_message>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                        </ns1:error_message>
+                        <ns1:stack_trace>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                        </ns1:stack_trace>
+                    </ns1:Error>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>415</pd:x>
+        <pd:y>270</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

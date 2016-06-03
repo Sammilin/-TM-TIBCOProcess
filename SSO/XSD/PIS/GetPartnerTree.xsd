@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="GetPartnerTree">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="GetPartnerTreeRq"/>
+				<xs:element ref="GetPartnerTreeRs"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetPartnerTreeRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TenantID" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Response">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="PartnerCompanyName" type="xs:string"/>
+				<xs:element name="PartnerCompanyID" type="xs:string"/>
+				<xs:element name="RoleID" type="xs:string"/>
+				<xs:element name="PID" type="xs:string"/>
+				<xs:element name="ChannelID" type="xs:string"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetPartnerTreeRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Response" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

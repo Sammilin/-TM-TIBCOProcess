@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/PLSService/XSD/LMPI Proxy/V2.2/Customer.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/PLSService/XSD/LMPI Proxy/V2.2/Customer.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="LMPI_Customer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Creeate" type="xs:string"/>
+				<xs:element name="query">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="queryRq" type="QueryRqType"/>
+							<xs:element name="queryRs" type="QueryRsType"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="update" type="xs:string"/>
+				<xs:element name="subscription" type="xs:string"/>
+				<xs:element name="user" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="QueryRqType">
+		<xs:sequence>
+			<xs:element name="user_modified_start" type="xs:string" form="qualified"/>
+			<xs:element name="user_modified_end" type="xs:string" form="qualified"/>
+			<xs:element name="page" type="xs:int" default="1" minOccurs="0"/>
+			<xs:element name="limit" type="xs:int" default="25" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QueryRsType">
+		<xs:sequence>
+			<xs:element name="paging">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="total" type="xs:int"/>
+						<xs:element name="limit" type="xs:int"/>
+						<xs:element name="page" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="users" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="user_id" type="xs:string"/>
+						<xs:element name="customer_id" type="xs:string"/>
+						<xs:element name="status" type="xs:int"/>
+						<xs:element name="login_name">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="4"/>
+									<xs:maxLength value="25"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="first_name">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="last_name" type="xs:string"/>
+						<xs:element name="email">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="128"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="time_zone" type="xs:string"/>
+						<xs:element name="language" type="xs:string"/>
+						<xs:element name="phone">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="area_code" type="xs:string"/>
+									<xs:element name="number" type="xs:string"/>
+									<xs:element name="extension" type="xs:string"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpdateRqType">
+		<xs:sequence>
+			<xs:element name="customer_id" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx="http://www.tibco.com/schemas/APACB2B/XSD/Common/Properties.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/schemas/APACB2B/XSD/Common/MailInfoSchema.xsd" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx5="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailProperties.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.trendmicro.com/ESB/FRS/schemas/MailProperties.xsd" xmlns:pfx3="http://www.tibco.com/schemas/APACB2B/XSD/Common/MailProperties.xsd" xmlns:pfx2="http://www.tibco.com/namespaces/tnt/plugins/file/v2">
+    <xsd:import namespace="http://www.tibco.com/schemas/APACB2B/XSD/Common/Properties.xsd" schemaLocation="/XSD/Common/Properties.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailProperties.xsd" schemaLocation="/XSD/Common/MailProperties.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/Cert/V1.0/LoadCertProperties.process</pd:name>
+    <pd:startName>onStartup</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="onStartup">
+        <pd:type>com.tibco.pe.core.OnStartupEventSource</pd:type>
+        <pd:resourceType>ae.activities.onStartup</pd:resourceType>
+        <pd:x>71</pd:x>
+        <pd:y>78</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>691</pd:endX>
+    <pd:endY>83</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1287385829649</pd:targetNamespace>
+    <pd:activity name="SetVariable">
+        <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+        <pd:x>423</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <variableConfig>/Services/Cert/V1.0/Shared Variable/AuthConfigVar.sharedvariable</variableConfig>
+            <showResult>true</showResult>
+        </config>
+        <pd:inputBindings>
+            <Key>
+                <PrivateKey>
+                    <xsl:value-of select="$GetPrivateKeyStore/root/BinaryKey"/>
+                </PrivateKey>
+                <SSOCert>
+                    <xsl:value-of select="$GetBinarySSOCert/root/BinaryKey"/>
+                </SSOCert>
+                <TIBCOBWCert>
+                    <xsl:value-of select="$GetBinaryTIBCOBWCert/root/BinaryKey"/>
+                </TIBCOBWCert>
+            </Key>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>494</pd:x>
+        <pd:y>258</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <fault>localname=ValidationException namespace=http://schemas.tibco.com/bw/plugins/xml/5.0/xmlExceptions</fault>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GetPrivateKeyStore">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>228</pd:x>
+        <pd:y>75</pd:y>
+        <config>
+            <processName>/Services/Cert/V1.0/GetBinaryPrivateKeyStore.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GetBinarySSOCert">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>234</pd:x>
+        <pd:y>189</pd:y>
+        <config>
+            <processName>/Services/Cert/V1.0/GetBinarySSOCert.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="SetCertInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>546</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <processName>/Services/Cert/V1.0/SetCertInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetBinaryTIBCOBWCert">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>239</pd:x>
+        <pd:y>314</pd:y>
+        <config>
+            <processName>/Services/Cert/V1.0/GetBinaryTIBCOBWCert.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="SetLogging">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>635</pd:x>
+        <pd:y>256</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns1:ErrorReport/Data/*" element="ns4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="0"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="1"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="0"/>
+                </isDBLog>
+                <MailSubject>
+                    <xsl:value-of select="concat(&quot;[&quot;,$_globalVariables/ns:GlobalVariables/ESBBW/Environment,&quot;-&quot;,$_globalVariables/ns:GlobalVariables/Domain,&quot;]&quot;,&#xA;&quot;Load  Cert Properties Error&quot;)"/>
+                </MailSubject>
+                <ns12:DBLogger>
+                    <ns12:MessageHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="concat('TIBCOBW',tib:format-dateTime('yyyyMMddHHmmssSSS', current-dateTime()))"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="&quot;LoadCert&quot;"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="''"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="'TechData'"/>
+                        </ns12:SourceID>
+                        <ns12:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns12:RqTimestamp>
+                    </ns12:MessageHeader>
+                    <ns12:MessageBody>
+                        <ns12:Content>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ns12:Content>
+                    </ns12:MessageBody>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns1:ErrorReport/Data)">
+                            <xsl:copy-of select="$_error/ns1:ErrorReport/Data/ns4:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns4:Error>
+                                <ns4:src>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                                </ns4:src>
+                                <ns4:error_code>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                                </ns4:error_code>
+                                <ns4:error_message>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                                </ns4:error_message>
+                                <ns4:stack_trace>
+                                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                                </ns4:stack_trace>
+                            </ns4:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns12:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SetVariable</pd:from>
+        <pd:to>SetCertInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>SetLogging</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>onStartup</pd:from>
+        <pd:to>GetPrivateKeyStore</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>onStartup</pd:from>
+        <pd:to>GetBinarySSOCert</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetPrivateKeyStore</pd:from>
+        <pd:to>SetVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetBinarySSOCert</pd:from>
+        <pd:to>SetVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetCertInfo</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>onStartup</pd:from>
+        <pd:to>GetBinaryTIBCOBWCert</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetBinaryTIBCOBWCert</pd:from>
+        <pd:to>SetVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetLogging</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

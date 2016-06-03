@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://schemas.tibco.com/bw/plugins/java/5.0/javaExceptions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>ExternalServices/SCO/v1.0/GenerateAuthHeader.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="resourceURI" type="xsd:string"/>
+                    <xsd:element name="httpMethod" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <todayStr>
+                <xsl:value-of select="$GetHeader/javaCodeActivityOutput/h_today"/>
+            </todayStr>
+            <authStr>
+                <xsl:value-of select="$GetHeader/javaCodeActivityOutput/h_auth"/>
+            </authStr>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="todayStr" type="xsd:string"/>
+                    <xsd:element name="authStr" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas>
+        <error ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1366268733307</pd:targetNamespace>
+    <pd:activity name="GetHeader">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>292</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <fileName>GenerateAuthHeaderGetHeader</fileName>
+            <packageName>ExternalServices.SCO.v1_0.GenerateAuthHeader</packageName>
+            <fullsource>package ExternalServices.SCO.v1_0.GenerateAuthHeader;
+import java.util.*;
+import java.io.*;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import org.apache.commons.codec.digest.DigestUtils;
+
+public class GenerateAuthHeaderGetHeader{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String key = "";
+	protected String scoUserName = "";
+	protected String resourcePath = "";
+	protected String httpMethod = "";
+	protected String h_today = "";
+	protected String h_auth = "";
+	public String getkey() {
+		return key;
+	}
+	public void setkey(String val) {
+		key = val;
+	}
+	public String getscoUserName() {
+		return scoUserName;
+	}
+	public void setscoUserName(String val) {
+		scoUserName = val;
+	}
+	public String getresourcePath() {
+		return resourcePath;
+	}
+	public void setresourcePath(String val) {
+		resourcePath = val;
+	}
+	public String gethttpMethod() {
+		return httpMethod;
+	}
+	public void sethttpMethod(String val) {
+		httpMethod = val;
+	}
+	public String geth_today() {
+		return h_today;
+	}
+	public void seth_today(String val) {
+		h_today = val;
+	}
+	public String geth_auth() {
+		return h_auth;
+	}
+	public void seth_auth(String val) {
+		h_auth = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public GenerateAuthHeaderGetHeader() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String key
+	In  : String scoUserName
+	In  : String resourcePath
+	In  : String httpMethod
+	Out : String h_today
+	Out : String h_auth
+* Available Variables: DO NOT MODIFY *****/
+
+final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z",Locale.ENGLISH);
+sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+h_today =  sdf.format(new Date());
+String payload = key + h_today+ httpMethod + resourcePath;
+h_auth = scoUserName+":"+DigestUtils.sha1Hex(payload);
+}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>key</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>scoUserName</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>resourcePath</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>httpMethod</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>h_today</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>h_auth</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>GenerateAuthHeaderGetHeader</name>
+                    <byteCode>yv66vgAAADIAZgkAGQA5CQAZADoJABkAOwkAGQA8CQAZAD0JABkAPgoAGgA/CABABwBBCABCCQBDAEQKAAkARQgARgoARwBICgAJAEkHAEoKABAAPwoACQBLBwBMCgATAD8KABMATQoAEwBOCABPCgBQAFEHAFIHAFMBAANrZXkBABJMamF2YS9sYW5nL1N0cmluZzsBAAtzY29Vc2VyTmFtZQEADHJlc291cmNlUGF0aAEACmh0dHBNZXRob2QBAAdoX3RvZGF5AQAGaF9hdXRoAQAGZ2V0a2V5AQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAGc2V0a2V5AQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAOZ2V0c2NvVXNlck5hbWUBAA5zZXRzY29Vc2VyTmFtZQEAD2dldHJlc291cmNlUGF0aAEAD3NldHJlc291cmNlUGF0aAEADWdldGh0dHBNZXRob2QBAA1zZXRodHRwTWV0aG9kAQAKZ2V0aF90b2RheQEACnNldGhfdG9kYXkBAAlnZXRoX2F1dGgBAAlzZXRoX2F1dGgBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwBUAQAKU291cmNlRmlsZQEAIEdlbmVyYXRlQXV0aEhlYWRlckdldEhlYWRlci5qYXZhDAAbABwMAB0AHAwAHgAcDAAfABwMACAAHAwAIQAcDAAyADMBAAABABpqYXZhL3RleHQvU2ltcGxlRGF0ZUZvcm1hdAEAG0VFRSwgZGQgTU1NIHl5eXkgSEg6bW06c3MgWgcAVQwAVgBXDAAyAFgBAANHTVQHAFkMAFoAWwwAXABdAQAOamF2YS91dGlsL0RhdGUMAF4AXwEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyDABgAGEMAGIAIwEAAToHAGMMAGQAZQEASEV4dGVybmFsU2VydmljZXMvU0NPL3YxXzAvR2VuZXJhdGVBdXRoSGVhZGVyL0dlbmVyYXRlQXV0aEhlYWRlckdldEhlYWRlcgEAEGphdmEvbGFuZy9PYmplY3QBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQAQamF2YS91dGlsL0xvY2FsZQEAB0VOR0xJU0gBABJMamF2YS91dGlsL0xvY2FsZTsBACcoTGphdmEvbGFuZy9TdHJpbmc7TGphdmEvdXRpbC9Mb2NhbGU7KVYBABJqYXZhL3V0aWwvVGltZVpvbmUBAAtnZXRUaW1lWm9uZQEAKChMamF2YS9sYW5nL1N0cmluZzspTGphdmEvdXRpbC9UaW1lWm9uZTsBAAtzZXRUaW1lWm9uZQEAFyhMamF2YS91dGlsL1RpbWVab25lOylWAQAGZm9ybWF0AQAkKExqYXZhL3V0aWwvRGF0ZTspTGphdmEvbGFuZy9TdHJpbmc7AQAGYXBwZW5kAQAtKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZ0J1aWxkZXI7AQAIdG9TdHJpbmcBACtvcmcvYXBhY2hlL2NvbW1vbnMvY29kZWMvZGlnZXN0L0RpZ2VzdFV0aWxzAQAHc2hhMUhleAEAJihMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmc7ACEAGQAaAAAABgAEABsAHAAAAAQAHQAcAAAABAAeABwAAAAEAB8AHAAAAAQAIAAcAAAABAAhABwAAAAOAAEAIgAjAAEAJAAAAB0AAQABAAAABSq0AAGwAAAAAQAlAAAABgABAAAAEgABACYAJwABACQAAAAiAAIAAgAAAAYqK7UAAbEAAAABACUAAAAKAAIAAAAVAAUAFgABACgAIwABACQAAAAdAAEAAQAAAAUqtAACsAAAAAEAJQAAAAYAAQAAABgAAQApACcAAQAkAAAAIgACAAIAAAAGKiu1AAKxAAAAAQAlAAAACgACAAAAGwAFABwAAQAqACMAAQAkAAAAHQABAAEAAAAFKrQAA7AAAAABACUAAAAGAAEAAAAeAAEAKwAnAAEAJAAAACIAAgACAAAABiortQADsQAAAAEAJQAAAAoAAgAAACEABQAiAAEALAAjAAEAJAAAAB0AAQABAAAABSq0AASwAAAAAQAlAAAABgABAAAAJAABAC0AJwABACQAAAAiAAIAAgAAAAYqK7UABLEAAAABACUAAAAKAAIAAAAnAAUAKAABAC4AIwABACQAAAAdAAEAAQAAAAUqtAAFsAAAAAEAJQAAAAYAAQAAACoAAQAvACcAAQAkAAAAIgACAAIAAAAGKiu1AAWxAAAAAQAlAAAACgACAAAALQAFAC4AAQAwACMAAQAkAAAAHQABAAEAAAAFKrQABrAAAAABACUAAAAGAAEAAAAwAAEAMQAnAAEAJAAAACIAAgACAAAABiortQAGsQAAAAEAJQAAAAoAAgAAADMABQA0AAEAMgAzAAEAJAAAAF0AAgABAAAAKSq3AAcqEgi1AAEqEgi1AAIqEgi1AAMqEgi1AAQqEgi1AAUqEgi1AAaxAAAAAQAlAAAAIgAIAAAANgAEAAsACgAMABAADQAWAA4AHAAPACIAEAAoADcAAQA0ADMAAgAkAAAAmgAEAAMAAABuuwAJWRIKsgALtwAMTCsSDbgADrYADyoruwAQWbcAEbYAErUABbsAE1m3ABQqtAABtgAVKrQABbYAFSq0AAS2ABUqtAADtgAVtgAWTSq7ABNZtwAUKrQAArYAFRIXtgAVLLgAGLYAFbYAFrUABrEAAAABACUAAAAaAAYAAABCAA0AQwAWAEQAJQBFAEwARgBtAEcANQAAAAQAAQA2AAEANwAAAAIAOA==</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <key>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/SCO/scoKey"/>
+                </key>
+                <scoUserName>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/SCO/scoUserName"/>
+                </scoUserName>
+                <resourcePath>
+                    <xsl:value-of select="$Start/root/resourceURI"/>
+                </resourcePath>
+                <httpMethod>
+                    <xsl:value-of select="$Start/root/httpMethod"/>
+                </httpMethod>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>291</pd:x>
+        <pd:y>198</pd:y>
+        <config>
+            <faultName>error</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="tib:render-xml($_error_GetHeader/ns1:InvocationException, 1,1)"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </data>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetHeader</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetHeader</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetHeader</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-6750208</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

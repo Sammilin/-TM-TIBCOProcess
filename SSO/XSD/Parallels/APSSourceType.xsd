@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/PLSService/XSD/Parallels/APSType,xsd"
+	 targetNamespace="http://www.tibco.com/schemas/PLSService/XSD/Parallels/APSType,xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="APSSourceType">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="APSSourceAddressPortalType" type="APSSourceAddressPortalType"/>
+				<xs:element name="APSSourceAccountType" type="APSSourceAccountType"/>
+				<xs:element name="APSSourceApsType" type="APSSourceApsType"/>
+				<xs:element name="APSSourceSubscriptionType" type="APSSourceWfbssType"/>
+				<xs:element name="APSSourceWfbssType" type="APSSourceUserType"/>
+				<xs:element name="APSSourceUserType" type="APSSourceUserType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="APSSourceAccountType">
+		<xs:sequence>
+			<xs:element name="aps">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="type" type="xs:string"/>
+						<xs:element name="id" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="id" type="xs:string"/>
+			<xs:element name="companyName" type="xs:string"/>
+			<xs:element name="addressPostal" type="APSSourceAddressPortalType"/>
+			<xs:element name="users" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSourceApsType">
+		<xs:sequence>
+			<xs:element name="type" type="xs:string"/>
+			<xs:element name="id" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSourceGlobalType">
+		<xs:sequence>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="environment" type="xs:string"/>
+			<xs:element name="access_token" type="xs:string"/>
+			<xs:element name="secret_key" type="xs:string"/>
+			<xs:element name="tenant_id" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSourceSubscriptionType">
+		<xs:sequence>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="subscriptionId" type="xs:string"/>
+			<xs:element name="trial" type="xs:boolean"/>
+			<xs:element name="disabled" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSourceWfbssType">
+		<xs:sequence>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="service_plan_id" type="xs:string"/>
+			<xs:element name="user" type="APSSourceUserType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSourceUserType">
+		<xs:sequence>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="subscriptionId" type="xs:string"/>
+			<xs:element name="userId" type="xs:string"/>
+			<xs:element name="login" type="xs:string"/>
+			<xs:element name="password" type="xs:string"/>
+			<xs:element name="email" type="xs:string"/>
+			<xs:element name="givenName" type="xs:string"/>
+			<xs:element name="additionalName" type="xs:string"/>
+			<xs:element name="familyName" type="xs:string"/>
+			<xs:element name="fullName" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element name="organizationName" type="xs:string"/>
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="addressPostal" type="APSSourceAddressPortalType"/>
+			<xs:element name="telVoice" type="xs:string"/>
+			<xs:element name="telHome" type="xs:string"/>
+			<xs:element name="telWork" type="xs:string"/>
+			<xs:element name="telCell" type="xs:string"/>
+			<xs:element name="telFax" type="xs:string"/>
+			<xs:element name="telPager" type="xs:string"/>
+			<xs:element name="tz" type="xs:string"/>
+			<xs:element name="note" type="xs:string"/>
+			<xs:element name="url" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSourceAddressPortalType">
+		<xs:sequence>
+			<xs:element name="postOfficeBox" type="xs:string"/>
+			<xs:element name="extendedAddress" type="xs:string"/>
+			<xs:element name="streetAddress" type="xs:string"/>
+			<xs:element name="locality" type="xs:string"/>
+			<xs:element name="region" type="xs:string"/>
+			<xs:element name="postalCode" type="xs:string"/>
+			<xs:element name="countryName" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

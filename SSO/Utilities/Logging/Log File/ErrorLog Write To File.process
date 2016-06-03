@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns13="http://www.tibco.com/pe/WriteToLogActivitySchema">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Utilities/Logging/Log File/ErrorLog Write To File.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>125</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Logging/DestinationQueue/ErrorMessage%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>607</pd:endX>
+    <pd:endY>90</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1336977880102</pd:targetNamespace>
+    <pd:activity name="Write File">
+        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+        <pd:x>391</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <encoding>text</encoding>
+            <compressFile>None</compressFile>
+            <append>true</append>
+            <createMissingDirectories>true</createMissingDirectories>
+        </config>
+        <pd:inputBindings>
+            <ns2:WriteActivityInputTextClass>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/Utilities/Logging/LogFile/LogFilePath,&#xA;$_globalVariables/ns1:GlobalVariables/Utilities/Logging/LogFile/prefixError,&#xA;tib:format-date(&quot;yyyy-MM-dd&quot;,current-date()),&#xA;&quot;_&quot;,$Security-Check/root/TraceID,&#xA;&quot;.log&quot;)"/>
+                </fileName>
+                <textContent>
+                    <xsl:value-of select="$Security-Check/root/OutputContent"/>
+                </textContent>
+                <addLineSeparator>
+                    <xsl:value-of select="1"/>
+                </addLineSeparator>
+            </ns2:WriteActivityInputTextClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Security Check">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>280</pd:x>
+        <pd:y>92</pd:y>
+        <config>
+            <processName>/Utilities/Logging/Log File/Security Check.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <isHTTP>
+                    <xsl:value-of select="false()"/>
+                </isHTTP>
+                <logContent>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                </logContent>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>481</pd:x>
+        <pd:y>214</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="ns4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="false()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="true()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <MailSubject>
+                    <xsl:value-of select="&quot;PartnerIntegration ErrorLog Fail&quot;"/>
+                </MailSubject>
+                <ns12:DBLogger>
+                    <ns12:MessageHeader>
+                        <ns12:MessageKey>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/BWTraceID"/>
+                        </ns12:MessageKey>
+                        <ns12:ServiceName>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/TenantID"/>
+                        </ns12:ServiceName>
+                        <ns12:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns12:ServiceVersion>
+                        <ns12:SourceID>
+                            <xsl:value-of select="&quot;PartnerIntegration&quot;"/>
+                        </ns12:SourceID>
+                        <ns12:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns12:RqTimestamp>
+                        <ns12:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns12:RsTimestamp>
+                    </ns12:MessageHeader>
+                    <ns12:MessageBody>
+                        <ns12:Content>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                        </ns12:Content>
+                    </ns12:MessageBody>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error/ns3:ErrorReport/Data)">
+                            <xsl:copy-of select="$_error/ns3:ErrorReport/Data/ns4:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns4:Error>
+                                <ns4:src>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                                </ns4:src>
+                                <ns4:error_code>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                                </ns4:error_code>
+                                <ns4:error_message>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                                </ns4:error_message>
+                                <ns4:stack_trace>
+                                    <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                                </ns4:stack_trace>
+                            </ns4:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ns12:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>355</pd:x>
+        <pd:y>208</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>497</pd:x>
+        <pd:y>90</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns13:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;LogFileName=&quot;,$_globalVariables/ns1:GlobalVariables/Utilities/Logging/LogFile/LogFilePath,&#xA;$_globalVariables/ns1:GlobalVariables/Utilities/Logging/LogFile/prefixError,&#xA;tib:format-date(&quot;yyyy-MM-dd&quot;,current-date()),&#xA;&quot;_&quot;,$Security-Check/root/TraceID,&#xA;&quot;.log&quot;)"/>
+                </message>
+            </ns13:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Security Check</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write File</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Security Check</pd:from>
+        <pd:to>Write File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Call Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Error Handling Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

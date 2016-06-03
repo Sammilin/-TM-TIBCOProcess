@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd7" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>TestData/Process Definition.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="param" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1438771757506</pd:targetNamespace>
+    <pd:activity name="GetDCSelectionResult">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>300</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <processName>/ExternalServices/LiberalAPI/v1.0/GetDCSelectionResult.process</processName>
+            <processNameXPath>if ($Start/root/param =1) then "abc"  else ""</processNameXPath>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <TenantID>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </TenantID>
+                <BWTraceID>
+                    <xsl:value-of select="&quot;&quot;"/>
+                </BWTraceID>
+                <ns:GetDCSelectionResultRq>
+                    <ns:CompanyID>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </ns:CompanyID>
+                    <ns:ServiceID>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </ns:ServiceID>
+                </ns:GetDCSelectionResultRq>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetDCSelectionResult</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetDCSelectionResult</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

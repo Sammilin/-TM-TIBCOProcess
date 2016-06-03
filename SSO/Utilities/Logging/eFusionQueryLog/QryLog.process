@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/pls/efusion/QryLogRequest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/pls/efusion/QryLogRequest" schemaLocation="/Utilities/Logging/eFusionQueryLog/QryLogRequest.xsd"/>
+    <pd:name>Utilities/Logging/eFusionQueryLog/QryLog.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>67</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Logging/eFusionQueryLog/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx:QryLogRequest"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>452</pd:endX>
+    <pd:endY>79</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1366358084245</pd:targetNamespace>
+    <pd:activity name="EmailNotifyService">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>286</pd:x>
+        <pd:y>183</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SubjectMessage>
+                    <xsl:value-of select="'Insert eFusion QueryLog Error - DB'"/>
+                </SubjectMessage>
+                <DetailStackTrace>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                </DetailStackTrace>
+                <ns3:MailInfo>
+                    <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest/pfx:TrackingID">
+                        <ns3:MessageKey>
+                            <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest/pfx:TrackingID"/>
+                        </ns3:MessageKey>
+                    </xsl:if>
+                    <ns3:ServiceName>
+                        <xsl:value-of select="&quot;efusion Query Log&quot;"/>
+                    </ns3:ServiceName>
+                    <ns3:ServiceVersion>
+                        <xsl:value-of select="&quot;V1.0&quot;"/>
+                    </ns3:ServiceVersion>
+                    <ns3:AttachFile>
+                        <ns3:AttachContent>
+                            <ns3:content-disposition>
+                                <xsl:value-of select="&quot;attachment; filename=Request.xml&quot;"/>
+                            </ns3:content-disposition>
+                            <ns3:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns3:content-type>
+                            <ns3:content-transfer-encoding>
+                                <xsl:value-of select="'base64'"/>
+                            </ns3:content-transfer-encoding>
+                            <ns3:textContent>
+                                <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest)"/>
+                            </ns3:textContent>
+                        </ns3:AttachContent>
+                    </ns3:AttachFile>
+                </ns3:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>403</pd:x>
+        <pd:y>184</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Utilities/Logging/eFusionQueryLog/BackupQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <InDataxsdString ref="pfx:QryLogRequest"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <Body>
+                    <xsl:copy-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>251</pd:x>
+        <pd:y>82</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/Resources/Database/eFusion.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;INSERT INTO eFusionQueryLog (TrackingID,Content,MessageName,FromSYSTEM,ToSYSTEM,Event,ErrorMSG,TIMESTAMP) VALUES('&quot;,&#xA;$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest/pfx:TrackingID,&quot;','&quot;,&#xA;TM:stringReplace($JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest/pfx:Content, &quot;'&quot;, &quot;’&quot;),&quot;','&quot;,&#xA;$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest/pfx:MessageName,&quot;','&quot;, &#xA;$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest/pfx:FromSYSTEM,&quot;','&quot;,&#xA;$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest/pfx:ToSYSTEM,&quot;','&quot;,&#xA;$JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest/pfx:Event,&quot;','&quot;,&#xA;TM:stringReplace($JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest/pfx:ErrorMSG, &quot;'&quot;, &quot;’&quot;),&quot;','&quot;,&#xA;tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss.SSS&quot;, $JMS-Queue-Receiver/ns:ActivityOutput/Body/pfx:QryLogRequest/pfx:TIMESTAMP) , &quot;')&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>EmailNotifyService</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>EmailNotifyService</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

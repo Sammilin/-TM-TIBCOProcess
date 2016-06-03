@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="GetTier2InfoRqRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="GetTier2InfoRq"/>
+				<xs:element ref="GetTier2InfoRs"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetTier2InfoRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="loginName" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetTier2InfoRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="traceId" type="xs:string"/>
+				<xs:element name="QueryResellerProfileByLoginNameRs">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="CompanyID" type="xs:string"/>
+							<xs:element name="TenantID" type="xs:string"/>
+							<xs:element name="LoginName" type="xs:string"/>
+							<xs:element name="MemberID" type="xs:string"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

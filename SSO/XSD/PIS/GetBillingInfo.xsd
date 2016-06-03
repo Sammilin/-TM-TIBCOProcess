@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="GetBillingInfo">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="GetBillingInfoRq"/>
+				<xs:element ref="GetBillingInfoRs"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetBillingInfoRq">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="VendorID" type="xs:string"/>
+				<xs:element name="ReportStartDate" type="xs:dateTime"/>
+				<xs:element name="ReportEndDate" type="xs:dateTime"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetBillingInfoRs">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="PartnerCompany" type="xs:string"/>
+				<xs:element name="PartnerCompanyID" type="xs:string"/>
+				<xs:element name="BillingReportID" type="xs:string"/>
+				<xs:element name="ReportCycleStartDate" type="xs:dateTime"/>
+				<xs:element name="ReportCycleEndDate" type="xs:dateTime"/>
+				<xs:element name="TotalAmount" type="xs:decimal"/>
+				<xs:element name="Currency" type="xs:string"/>
+				<xs:element ref="ProductProfiles"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ProductProfiles">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProductProfile" type="ProductProfileType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ProductProfileType">
+		<xs:all>
+			<xs:element name="ProductName" type="xs:string" minOccurs="0"/>
+			<xs:element name="RPIC" type="xs:string" minOccurs="0"/>
+			<xs:element name="SKU" type="xs:string" minOccurs="0"/>
+			<xs:element name="Unit" type="xs:string" minOccurs="0"/>
+			<xs:element name="UnitPrice" type="xs:string" minOccurs="0"/>
+			<xs:element name="Qty" type="xs:string" minOccurs="0"/>
+			<xs:element name="Discount" type="xs:string" minOccurs="0"/>
+			<xs:element name="TotalPrice" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

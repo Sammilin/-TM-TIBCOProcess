@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:impl="http://service.globalsaas.com/soap/" xmlns:tns="http://service.globalsaas.com/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd1="http://service.globalsaas.com/soap/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="SSOService" targetNamespace="http://service.globalsaas.com/soap/">
+    <types>
+        <xsd:schema elementFormDefault="qualified" targetNamespace="http://service.globalsaas.com/soap/">
+            <xsd:complexType name="ServiceException">
+                <xsd:sequence>
+                    <xsd:element name="message" nillable="true" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ValidationException">
+                <xsd:complexContent>
+                    <xsd:extension base="tns:ServiceException"/>
+                </xsd:complexContent>
+            </xsd:complexType>
+            <xsd:complexType name="InternalException">
+                <xsd:complexContent>
+                    <xsd:extension base="tns:ServiceException"/>
+                </xsd:complexContent>
+            </xsd:complexType>
+            <xsd:complexType name="AuthenticationException">
+                <xsd:complexContent>
+                    <xsd:extension base="tns:ServiceException"/>
+                </xsd:complexContent>
+            </xsd:complexType>
+            <xsd:complexType name="InvalidSessionException">
+                <xsd:complexContent>
+                    <xsd:extension base="tns:ServiceException"/>
+                </xsd:complexContent>
+            </xsd:complexType>
+            <xsd:complexType name="LoginInput">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="Timestamp" nillable="false" type="xsd:dateTime"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="RealmName" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="UserName" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="PassWord" nillable="false" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="LoginOutput">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="SessionId" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="ValidTo" nillable="false" type="xsd:dateTime"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="LogoutInput">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="SessionId" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="Timestamp" nillable="false" type="xsd:dateTime"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="LogoutOutput">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="TimestampOfLastLogin" nillable="false" type="xsd:dateTime"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="login" type="tns:LoginInput"/>
+            <xsd:element name="loginResponse" type="tns:LoginOutput"/>
+            <xsd:element name="logout" type="tns:LogoutInput"/>
+            <xsd:element name="logoutResponse" type="tns:LogoutOutput"/>
+            <xsd:element name="ValidationException" type="tns:ValidationException"/>
+            <xsd:element name="InternalException" type="tns:InternalException"/>
+            <xsd:element name="AuthenticationException" type="tns:AuthenticationException"/>
+            <xsd:element name="InvalidSessionException" type="tns:InvalidSessionException"/>
+        </xsd:schema>
+    </types>
+    <message name="LoginRequest">
+        <part element="tns:login" name="login"/>
+    </message>
+    <message name="LoginResponse">
+        <part element="tns:loginResponse" name="loginResponse"/>
+    </message>
+    <message name="LogoutRequest">
+        <part element="tns:logout" name="logout"/>
+    </message>
+    <message name="LogoutResponse">
+        <part element="tns:logoutResponse" name="logoutResponse"/>
+    </message>
+    <message name="ValidationException">
+        <part element="tns:ValidationException" name="ValidationException"/>
+    </message>
+    <message name="InternalException">
+        <part element="tns:InternalException" name="InternalException"/>
+    </message>
+    <message name="AuthenticationException">
+        <part element="tns:AuthenticationException" name="AuthenticationException"/>
+    </message>
+    <message name="InvalidSessionException">
+        <part element="tns:InvalidSessionException" name="InvalidSessionException"/>
+    </message>
+    <portType name="SSOServicePortType">
+        <operation name="Login">
+            <input message="tns:LoginRequest"/>
+            <output message="tns:LoginResponse"/>
+            <fault message="tns:ValidationException" name="ValidationException"/>
+            <fault message="tns:InternalException" name="InternalException"/>
+            <fault message="tns:AuthenticationException" name="AuthenticationException"/>
+        </operation>
+        <operation name="Logout">
+            <input message="tns:LogoutRequest"/>
+            <output message="tns:LogoutResponse"/>
+            <fault message="tns:ValidationException" name="ValidationException"/>
+            <fault message="tns:InvalidSessionException" name="InvalidSessionException"/>
+            <fault message="tns:InternalException" name="InternalException"/>
+        </operation>
+    </portType>
+    <binding name="SSOServiceBinding" type="tns:SSOServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="Login">
+            <soap:operation soapAction="urn://SSOService#Login"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+            <fault name="ValidationException">
+                <soap:fault name="ValidationException" use="literal"/>
+            </fault>
+            <fault name="InternalException">
+                <soap:fault name="InternalException" use="literal"/>
+            </fault>
+            <fault name="AuthenticationException">
+                <soap:fault name="AuthenticationException" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="Logout">
+            <soap:operation soapAction="urn://SSOService#Logout"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+            <fault name="ValidationException">
+                <soap:fault name="ValidationException" use="literal"/>
+            </fault>
+            <fault name="InternalException">
+                <soap:fault name="InternalException" use="literal"/>
+            </fault>
+            <fault name="InvalidSessionException">
+                <soap:fault name="InvalidSessionException" use="literal"/>
+            </fault>
+        </operation>
+    </binding>
+    <service name="SSOService">
+        <port binding="tns:SSOServiceBinding" name="SSOServicePort">
+            <soap:address location="http://localhost:8080/sso-axis/services/SSOServicePort"/>
+        </port>
+    </service>
+</definitions>

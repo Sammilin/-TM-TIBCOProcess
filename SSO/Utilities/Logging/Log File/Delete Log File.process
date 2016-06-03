@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/DBLogger">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Utilities/Logging/Log File/Delete Log File.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>117</pd:x>
+        <pd:y>194</pd:y>
+        <config>
+            <StartTime>1338955200000</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>1</TimeInterval>
+            <FrequencyIndex>Day</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>858</pd:endX>
+    <pd:endY>210</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1338973104852</pd:targetNamespace>
+    <pd:activity name="List Files">
+        <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
+        <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
+        <pd:x>238</pd:x>
+        <pd:y>194</pd:y>
+        <config>
+            <mode>only-files</mode>
+        </config>
+        <pd:inputBindings>
+            <ns1:ListFilesActivityConfig>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/Utilities/Logging/LogFile/LogFilePath,&quot;*.log&quot;)"/>
+                </fileName>
+            </ns1:ListFilesActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>309</pd:x>
+        <pd:y>58</pd:y>
+        <pd:width>353</pd:width>
+        <pd:height>297</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$List-Files/ns1:ListFilesActivityOutput/files/fileInfo</pd:over>
+            <pd:iterationElementSlot>cu</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>compare</pd:outSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:xpathDescription/>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Remove File</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Log</pd:to>
+            <pd:xpathDescription>over 7 days</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>tib:compare-date(substring($cu/fileInfo/lastModified, 0, 11),tib:add-to-date(tib:format-date("yyyy-MM-dd",current-date()), 0, 0,$_globalVariables/ns:GlobalVariables/Utilities/Logging/LogFile/deleteLogDays)) &lt;1</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log</pd:from>
+            <pd:to>Remove File</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Remove File">
+            <pd:type>com.tibco.plugin.file.FileRemoveActivity</pd:type>
+            <pd:resourceType>ae.activities.FileRemoveActivity</pd:resourceType>
+            <pd:x>556</pd:x>
+            <pd:y>273</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns1:RemoveActivityInputClass>
+                    <fileName>
+                        <xsl:value-of select="$cu/fileInfo/fullName"/>
+                    </fileName>
+                </ns1:RemoveActivityInputClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Log">
+            <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+            <pd:resourceType>ae.activities.log</pd:resourceType>
+            <pd:x>458</pd:x>
+            <pd:y>271</pd:y>
+            <config>
+                <role>User</role>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInput>
+                    <message>
+                        <xsl:value-of select="concat(&quot;filedate=&quot;, substring($cu/fileInfo/lastModified, 0, 11),&quot;,checkDate=&quot;,tib:add-to-date(tib:format-date(&quot;yyyy-MM-dd&quot;,current-date()), 0, 0,$_globalVariables/ns:GlobalVariables/Utilities/Logging/LogFile/deleteLogDays),&quot;,status=&quot;,tib:compare-date(substring($cu/fileInfo/lastModified, 0, 11),tib:add-to-date(tib:format-date(&quot;yyyy-MM-dd&quot;,current-date()), 0, 0,-7)) &lt;1)"/>
+                    </message>
+                </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>451</pd:x>
+            <pd:y>151</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>548</pd:x>
+        <pd:y>384</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Call Error Handling Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>697</pd:x>
+        <pd:y>391</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="ns4:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="false()"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="true()"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="false()"/>
+                </isDBLog>
+                <MailSubject>
+                    <xsl:value-of select="&quot;PartnerIntegration Error&quot;"/>
+                </MailSubject>
+                <ns5:DBLogger>
+                    <ns5:MessageHeader>
+                        <ns5:MessageKey>
+                            <xsl:value-of select="TM:getGUID()"/>
+                        </ns5:MessageKey>
+                        <ns5:ServiceName>
+                            <xsl:value-of select="&quot;Log&quot;"/>
+                        </ns5:ServiceName>
+                        <ns5:ServiceVersion>
+                            <xsl:value-of select="&quot;V1.0&quot;"/>
+                        </ns5:ServiceVersion>
+                        <ns5:SourceID>
+                            <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/ESBBW/Environment,&quot;-BW&quot;)"/>
+                        </ns5:SourceID>
+                        <ns5:RqTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns5:RqTimestamp>
+                        <ns5:RsTimestamp>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </ns5:RsTimestamp>
+                    </ns5:MessageHeader>
+                    <ns5:MessageBody>
+                        <ns5:Content>
+                            <xsl:value-of select="&quot;Delete Log ShareFolder  Error&quot;"/>
+                        </ns5:Content>
+                    </ns5:MessageBody>
+                    <ns4:Error>
+                        <ns4:src>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                        </ns4:src>
+                        <ns4:error_code>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                        </ns4:error_code>
+                        <ns4:error_message>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                        </ns4:error_message>
+                        <ns4:stack_trace>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                        </ns4:stack_trace>
+                    </ns4:Error>
+                </ns5:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log-1">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>727</pd:x>
+        <pd:y>211</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns0:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/Utilities/Logging/LogFile/LogFilePath,&quot;*.log&quot;)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="&quot;Check Delete Folder&quot;"/>
+                </msgCode>
+            </ns0:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>List Files</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>List Files</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Log-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Call Error Handling Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Error Handling Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

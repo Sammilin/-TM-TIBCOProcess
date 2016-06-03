@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/SSO/V1.0/SSOEnEnKeyFunction.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="enKey" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>106</pd:startX>
+    <pd:startY>92</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Result>
+                <xsl:value-of select="$Java-Code/javaCodeActivityOutput/result"/>
+            </Result>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Result" type="xsd:base64Binary"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>455</pd:endX>
+    <pd:endY>93</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334659505583</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>334</pd:x>
+        <pd:y>92</pd:y>
+        <config>
+            <fileName>SSOEnEnKeyFunctionJavaCode</fileName>
+            <packageName>Services.SSO.V1_0.SSOEnEnKeyFunction</packageName>
+            <fullsource>package Services.SSO.V1_0.SSOEnEnKeyFunction;
+import java.util.*;
+import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.PublicKey;
+import java.security.cert.CertificateFactory;
+import javax.crypto.*;
+import javax.crypto.spec.*;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import java.security.cert.X509Certificate;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+public class SSOEnEnKeyFunctionJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected byte[] Binaryfile = null;
+	protected String enKey = "";
+	protected byte[] result = null;
+	protected String exception = "";
+	public byte[] getBinaryfile() {
+		return Binaryfile;
+	}
+	public void setBinaryfile(byte[] val) {
+		Binaryfile = val;
+	}
+	public String getenKey() {
+		return enKey;
+	}
+	public void setenKey(String val) {
+		enKey = val;
+	}
+	public byte[] getresult() {
+		return result;
+	}
+	public void setresult(byte[] val) {
+		result = val;
+	}
+	public String getexception() {
+		return exception;
+	}
+	public void setexception(String val) {
+		exception = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public SSOEnEnKeyFunctionJavaCode() {
+			
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : byte[] Binaryfile
+	In  : String enKey
+	Out : byte[] result
+	Out : String exception
+* Available Variables: DO NOT MODIFY *****/
+		try{
+		ByteArrayInputStream inStream = new ByteArrayInputStream(Binaryfile);
+		CertificateFactory cf = CertificateFactory.getInstance("X.509");
+		X509Certificate cert = (X509Certificate)cf.generateCertificate(inStream);
+		inStream.close();
+
+		PublicKey pk = cert.getPublicKey();
+		
+		byte[] data = enKey.getBytes();
+		
+		Cipher cipher = Cipher.getInstance("RSA");
+		cipher.init(Cipher.ENCRYPT_MODE, pk);
+
+		byte[] cipherData = cipher.doFinal(data);
+		BASE64Encoder base64encoder;
+		base64encoder = new BASE64Encoder();
+		base64encoder.encode(cipherData);
+		setresult(cipherData);
+		//return encrypted;
+	}
+	catch(Exception e) {
+		 setexception(e.getMessage());
+	}
+	
+}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>result</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>exception</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>Binaryfile</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>enKey</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>SSOEnEnKeyFunctionJavaCode</name>
+                    <byteCode>yv66vgAAADIAagkAGwA5CQAbADoJABsAOwkAGwA8CgAcAD0IAD4HAD8KAAcAQAgAQQoAQgBDCgBCAEQHAEUKAAcARgoADABHCgBIAEkIAEoKAEsATAoASwBNCgBLAE4HAE8KABQAPQoAFABQCgAbAFEHAFIKABgAUwoAGwBUBwBVBwBWAQAKQmluYXJ5ZmlsZQEAAltCAQAFZW5LZXkBABJMamF2YS9sYW5nL1N0cmluZzsBAAZyZXN1bHQBAAlleGNlcHRpb24BAA1nZXRCaW5hcnlmaWxlAQAEKClbQgEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAA1zZXRCaW5hcnlmaWxlAQAFKFtCKVYBAAhnZXRlbktleQEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAIc2V0ZW5LZXkBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAlnZXRyZXN1bHQBAAlzZXRyZXN1bHQBAAxnZXRleGNlcHRpb24BAAxzZXRleGNlcHRpb24BAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAA1TdGFja01hcFRhYmxlBwBSAQAKRXhjZXB0aW9ucwEAClNvdXJjZUZpbGUBAB9TU09FbkVuS2V5RnVuY3Rpb25KYXZhQ29kZS5qYXZhDAAdAB4MAB8AIAwAIQAeDAAiACAMADEAMgEAAAEAHGphdmEvaW8vQnl0ZUFycmF5SW5wdXRTdHJlYW0MADEAKAEABVguNTA5BwBXDABYAFkMAFoAWwEAImphdmEvc2VjdXJpdHkvY2VydC9YNTA5Q2VydGlmaWNhdGUMAFwAMgwAXQBeBwBfDABgACQBAANSU0EHAGEMAFgAYgwAYwBkDABlAGYBABZzdW4vbWlzYy9CQVNFNjRFbmNvZGVyDABnAGgMAC4AKAEAE2phdmEvbGFuZy9FeGNlcHRpb24MAGkAKgwAMAAsAQA/U2VydmljZXMvU1NPL1YxXzAvU1NPRW5FbktleUZ1bmN0aW9uL1NTT0VuRW5LZXlGdW5jdGlvbkphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAJWphdmEvc2VjdXJpdHkvY2VydC9DZXJ0aWZpY2F0ZUZhY3RvcnkBAAtnZXRJbnN0YW5jZQEAOyhMamF2YS9sYW5nL1N0cmluZzspTGphdmEvc2VjdXJpdHkvY2VydC9DZXJ0aWZpY2F0ZUZhY3Rvcnk7AQATZ2VuZXJhdGVDZXJ0aWZpY2F0ZQEANyhMamF2YS9pby9JbnB1dFN0cmVhbTspTGphdmEvc2VjdXJpdHkvY2VydC9DZXJ0aWZpY2F0ZTsBAAVjbG9zZQEADGdldFB1YmxpY0tleQEAGygpTGphdmEvc2VjdXJpdHkvUHVibGljS2V5OwEAEGphdmEvbGFuZy9TdHJpbmcBAAhnZXRCeXRlcwEAE2phdmF4L2NyeXB0by9DaXBoZXIBACkoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZheC9jcnlwdG8vQ2lwaGVyOwEABGluaXQBABcoSUxqYXZhL3NlY3VyaXR5L0tleTspVgEAB2RvRmluYWwBAAYoW0IpW0IBAAZlbmNvZGUBABYoW0IpTGphdmEvbGFuZy9TdHJpbmc7AQAKZ2V0TWVzc2FnZQAhABsAHAAAAAQABAAdAB4AAAAEAB8AIAAAAAQAIQAeAAAABAAiACAAAAAKAAEAIwAkAAEAJQAAAB0AAQABAAAABSq0AAGwAAAAAQAmAAAABgABAAAAGAABACcAKAABACUAAAAiAAIAAgAAAAYqK7UAAbEAAAABACYAAAAKAAIAAAAbAAUAHAABACkAKgABACUAAAAdAAEAAQAAAAUqtAACsAAAAAEAJgAAAAYAAQAAAB4AAQArACwAAQAlAAAAIgACAAIAAAAGKiu1AAKxAAAAAQAmAAAACgACAAAAIQAFACIAAQAtACQAAQAlAAAAHQABAAEAAAAFKrQAA7AAAAABACYAAAAGAAEAAAAkAAEALgAoAAEAJQAAACIAAgACAAAABiortQADsQAAAAEAJgAAAAoAAgAAACcABQAoAAEALwAqAAEAJQAAAB0AAQABAAAABSq0AASwAAAAAQAmAAAABgABAAAAKgABADAALAABACUAAAAiAAIAAgAAAAYqK7UABLEAAAABACYAAAAKAAIAAAAtAAUALgABADEAMgABACUAAABHAAIAAQAAABsqtwAFKgG1AAEqEga1AAIqAbUAAyoSBrUABLEAAAABACYAAAAaAAYAAAAwAAQAEwAJABQADwAVABQAFgAaADIAAQAzADIAAgAlAAAA1QADAAkAAABquwAHWSq0AAG3AAhMEgm4AApNLCu2AAvAAAxOK7YADS22AA46BCq0AAK2AA86BRIQuAAROgYZBgQZBLYAEhkGGQW2ABM6B7sAFFm3ABU6CBkIGQe2ABZXKhkHtgAXpwAMTCortgAZtgAasQABAAAAXQBgABgAAgAmAAAAQgAQAAAAOwAMADwAEgA9ABsAPgAfAEAAJQBCAC4ARAA1AEUAPQBHAEYASQBPAEoAVwBLAF0AUABgAE4AYQBPAGkAUgA0AAAACQAC9wBgBwA1CAA2AAAABAABABgAAQA3AAAAAgA4</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <Binaryfile>
+                    <xsl:value-of select="$GetVariable/Key/SSOCert"/>
+                </Binaryfile>
+                <enKey>
+                    <xsl:value-of select="$Start/root/enKey"/>
+                </enKey>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetVariable">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>214</pd:x>
+        <pd:y>93</pd:y>
+        <config>
+            <variableConfig>/Services/Cert/V1.0/Shared Variable/AuthConfigVar.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>270</pd:x>
+        <pd:y>196</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>412</pd:x>
+        <pd:y>198</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput>
+                <data>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/ProcessStack"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </data>
+            </pfx2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetVariable</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

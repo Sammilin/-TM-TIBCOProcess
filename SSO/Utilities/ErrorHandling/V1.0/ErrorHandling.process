@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.tibco.com/schemas/OrderCreation/XSD/Common/MailInfoSchema.xsd" xmlns:ns="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:pfx="http://www.trendmicro.com/ESB/schemas/error">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Utilities/ErrorHandling/V1.0/ErrorHandling.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="TraceID" type="xsd:string"/>
+                    <xsd:element name="ErrorCode" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Detail" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="DisplayDetail" type="xsd:boolean"/>
+                    <xsd:element name="ServiceName" type="xsd:string"/>
+                    <xsd:element name="ServiceVersion" type="xsd:string"/>
+                    <xsd:element name="SourceID" type="xsd:string"/>
+                    <xsd:element name="inputContent" type="xsd:string"/>
+                    <xsd:element name="src" type="xsd:string"/>
+                    <xsd:element ref="pfx:Error"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <xsl:choose>
+                <xsl:when test="exists($_error_ErrorMapping/pfx:Error)">
+                    <ErrorCode>
+                        <xsl:value-of select="'60010'"/>
+                    </ErrorCode>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ErrorCode>
+                        <xsl:value-of select="$ErrorMapping/ErrorResponse/code"/>
+                    </ErrorCode>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:choose>
+                <xsl:when test="exists($_error_ErrorMapping/pfx:Error)">
+                    <ErrorMessage>
+                        <xsl:value-of select="'MissingConfigurationFile'"/>
+                    </ErrorMessage>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ErrorMessage>
+                        <xsl:value-of select="$ErrorMapping/ErrorResponse/message"/>
+                    </ErrorMessage>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:choose>
+                <xsl:when test="exists($_error_ErrorMapping/pfx:Error)">
+                    <Detail>
+                        <xsl:value-of select="'Missing configuration file.'"/>
+                    </Detail>
+                </xsl:when>
+                <xsl:otherwise>
+                    <Detail>
+                        <xsl:value-of select="$ErrorMapping/ErrorResponse/detail"/>
+                    </Detail>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:choose>
+                <xsl:when test="$Start/root/DisplayDetail='true' or $Start/root/DisplayDetail=1">
+                    <xsl:copy-of select="$Start/root/pfx:Error"/>
+                </xsl:when>
+                <xsl:otherwise/>
+            </xsl:choose>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ErrorCode" type="xsd:string"/>
+                    <xsd:element name="ErrorMessage" type="xsd:string"/>
+                    <xsd:element name="Detail" type="xsd:string"/>
+                    <xsd:element ref="pfx:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>450</pd:endX>
+    <pd:endY>63</pd:endY>
+    <pd:errorSchemas>
+        <errorReport ref="pfx:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1404301622262</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>298</pd:x>
+        <pd:y>198</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ErrorMapping">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>366</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/Utilities/ErrorHandling/V1.0/ErrorMapping.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:choose>
+                    <xsl:when test="contains($Start/root/ErrorCode, '[NonLiberalError]')">
+                        <InputErrorCode>
+                            <xsl:value-of select="'[NonLiberalError]'"/>
+                        </InputErrorCode>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:if test="$Start/root/ErrorCode">
+                            <InputErrorCode>
+                                <xsl:value-of select="$Start/root/ErrorCode"/>
+                            </InputErrorCode>
+                        </xsl:if>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="$Start/root/Detail">
+                    <detail>
+                        <xsl:value-of select="$Start/root/Detail"/>
+                    </detail>
+                </xsl:if>
+                <trace_id>
+                    <xsl:value-of select="$Start/root/TraceID"/>
+                </trace_id>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SetLogging">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>250</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/Utilities/Logging/SetLogging.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <isPartnerAPI>
+                    <xsl:value-of select="0"/>
+                </isPartnerAPI>
+                <isErrorLog>
+                    <xsl:value-of select="1"/>
+                </isErrorLog>
+                <isDBLog>
+                    <xsl:value-of select="0"/>
+                </isDBLog>
+                <MailSubject>
+                    <xsl:value-of select="concat('BW Process error at:',$Start/root/src)"/>
+                </MailSubject>
+                <pfx2:DBLogger>
+                    <pfx2:MessageHeader>
+                        <pfx2:MessageKey>
+                            <xsl:value-of select="$Start/root/TraceID"/>
+                        </pfx2:MessageKey>
+                        <pfx2:ServiceName>
+                            <xsl:value-of select="$Start/root/ServiceName"/>
+                        </pfx2:ServiceName>
+                        <pfx2:ServiceVersion>
+                            <xsl:value-of select="$Start/root/ServiceVersion"/>
+                        </pfx2:ServiceVersion>
+                        <pfx2:SourceID>
+                            <xsl:value-of select="$Start/root/SourceID"/>
+                        </pfx2:SourceID>
+                    </pfx2:MessageHeader>
+                    <pfx2:MessageBody>
+                        <pfx2:Content>
+                            <xsl:value-of select="$Start/root/inputContent"/>
+                        </pfx2:Content>
+                    </pfx2:MessageBody>
+                    <pfx:Error>
+                        <pfx:src>
+                            <xsl:value-of select="$Start/root/pfx:Error/pfx:src"/>
+                        </pfx:src>
+                        <pfx:error_code>
+                            <xsl:value-of select="$Start/root/pfx:Error/pfx:error_code"/>
+                        </pfx:error_code>
+                        <pfx:error_message>
+                            <xsl:value-of select="$Start/root/pfx:Error/pfx:error_message"/>
+                        </pfx:error_message>
+                        <pfx:stack_trace>
+                            <xsl:value-of select="$Start/root/pfx:Error/pfx:stack_trace"/>
+                        </pfx:stack_trace>
+                    </pfx:Error>
+                </pfx2:DBLogger>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="EmailNotifyService">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>445</pd:x>
+        <pd:y>196</pd:y>
+        <config>
+            <processName>/Utilities/MailNotify/EmailNotifyService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SubjectMessage>
+                    <xsl:value-of select="&quot;Mapping Error Fail&quot;"/>
+                </SubjectMessage>
+                <DetailStackTrace>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                </DetailStackTrace>
+                <ns4:MailInfo>
+                    <xsl:if test="$Start/root/TraceID">
+                        <ns4:MessageKey>
+                            <xsl:value-of select="$Start/root/TraceID"/>
+                        </ns4:MessageKey>
+                    </xsl:if>
+                    <ns4:ServiceName>
+                        <xsl:value-of select="$Start/root/ServiceName"/>
+                    </ns4:ServiceName>
+                    <ns4:ServiceVersion>
+                        <xsl:value-of select="$Start/root/ServiceVersion"/>
+                    </ns4:ServiceVersion>
+                    <ns4:AttachFile>
+                        <ns4:AttachContent>
+                            <ns4:content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment; filename=&quot;,$Start/root/TraceID,&quot;.xml&quot;)"/>
+                            </ns4:content-disposition>
+                            <ns4:content-type>
+                                <xsl:value-of select="'text/xml; charset=utf-8'"/>
+                            </ns4:content-type>
+                            <ns4:textContent>
+                                <xsl:value-of select="tib:render-xml($Start/root, 1)"/>
+                            </ns4:textContent>
+                        </ns4:AttachContent>
+                    </ns4:AttachFile>
+                </ns4:MailInfo>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SetLogging</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetLogging</pd:from>
+        <pd:to>ErrorMapping</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorMapping</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>EmailNotifyService</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>EmailNotifyService</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx1="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns21="http://service.globalsaas.com/soap/" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.trendmicro.com/ESB/schemas/error" xmlns:ns6="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns7="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd7" xmlns:pfx="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns2="http://schemas.tibco.com/bw/plugins/jms/5.0/jmsExceptions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.trendmicro.com/ESB/schemas/DBLogger" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns61="http://www.trendmicro.com/PLS/PartnerAPI/Schemas" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd"/>
+    <pd:name>Services/SSO/V1.0/SSO Process.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>75</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/SSO/DestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>717</pd:endX>
+    <pd:endY>412</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Variable0>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="SSOFlag" type="xsd:string" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Variable0>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1334722625288</pd:targetNamespace>
+    <pd:activity name="Get JMS Queue Message">
+        <pd:type>com.tibco.plugin.jms.JMSQueueGetMessageActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueGetMessageActivity</pd:resourceType>
+        <pd:x>221</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>2</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/SSO/SessionDestinationQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+            <OutDataxsdString>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Username" type="xsd:string"/>
+                            <xsd:element name="auth_token" type="xsd:string"/>
+                            <xsd:element name="CompanyID" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ServiceID" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="TargetUrl" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </OutDataxsdString>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <timeout>
+                    <xsl:value-of select="5"/>
+                </timeout>
+                <selector>
+                    <xsl:value-of select="concat(&quot;JMSCorrelationID='&quot;, $Parse-Query-String/root/auth_token,&quot;'&quot;)"/>
+                </selector>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply to JMS Message">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>716</pd:x>
+        <pd:y>250</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <xsl:choose>
+                        <xsl:when test="exists($Map-Data/root/HtmlSignXML)">
+                            <HTTPStatus>
+                                <xsl:value-of select="'200'"/>
+                            </HTTPStatus>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="string-length($Parse-Query-String/root/log_off_url)>0">
+                                    <HTTPStatus>
+                                        <xsl:value-of select="'301'"/>
+                                    </HTTPStatus>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <HTTPStatus>
+                                        <xsl:value-of select="'401'"/>
+                                    </HTTPStatus>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </OtherProperties>
+                <xsl:choose>
+                    <xsl:when test="exists($Map-Data/root/HtmlSignXML)">
+                        <Body>
+                            <xsl:value-of select="concat('{&quot;htmlBody&quot;:&quot;',TM:URLEncode($Map-Data/root/HtmlSignXML),'&quot;}')"/>
+                        </Body>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:choose>
+                            <xsl:when test="string-length($Parse-Query-String/root/log_off_url)>0">
+                                <Body>
+                                    <xsl:value-of select="concat('{&quot;htmlBody&quot;:&quot;',TM:URLEncode(concat('&lt;html>&lt;head>&lt;script language=&quot;JavaScript&quot;>window.location.replace(&quot;'&#xA;,$Parse-Query-String/root/log_off_url&#xA;,'&quot;)&lt;/script>&lt;/head>&lt;/html>')),'&quot;}')"/>
+                                </Body>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <Body>
+                                    <xsl:value-of select="concat('{',$OutputTimeOut/root/JSON, '}')"/>
+                                </Body>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>225</pd:x>
+        <pd:y>247</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>605</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="HtmlSignXML" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <HtmlSignXML>
+                    <xsl:value-of select="concat('&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot; lang=&quot;en&quot;>&lt;head>&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;/>&lt;title>Loading&lt;/title>&lt;/head>&lt;body onload=&quot;document.forms[0].submit()&quot;>&lt;table style=&quot;margin-top: 90px;&quot; align=&quot;center&quot;>&lt;tbody>&lt;tr>&lt;td>&lt;img src=&quot;',&#xA;TM:stringReplace($_globalVariables/ns1:GlobalVariables/Services/SSO/SSODomian, $_globalVariables/ns1:GlobalVariables/Services/SSO/TenantIDTemplate, $JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/TenantID)&#xA;,'/simplesaml/slo/img/loading.gif&quot;/>&lt;/td>&lt;/tr>&lt;/tbody>&lt;/table>&lt;form method=&quot;POST&quot; action=&quot;',TM:stringReplace($_globalVariables/ns1:GlobalVariables/Services/SSO/SSOURL,$_globalVariables/ns1:GlobalVariables/Services/SSO/TenantIDTemplate, $JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/TenantID),'&quot; >&lt;input name=&quot;SAMLRequest&quot; value=&quot;',tib:string-to-base64($Generate-SAML-Request/SAMLRequest),'&quot; type=&quot;hidden&quot;/>&lt;/form>&lt;/body>&lt;/html>')"/>
+                </HtmlSignXML>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>240</pd:x>
+        <pd:y>405</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>336</pd:x>
+        <pd:y>405</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="exists($_error/ns3:ErrorReport/Data)">
+                    <pfx3:ActivityInput>
+                        <message>
+                            <xsl:value-of select="tib:render-xml($_error/ns3:ErrorReport/Data, 1, 1)"/>
+                        </message>
+                        <xsl:if test="$_error/ns3:ErrorReport/MsgCode">
+                            <msgCode>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </msgCode>
+                        </xsl:if>
+                    </pfx3:ActivityInput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <pfx3:ActivityInput>
+                        <message>
+                            <xsl:value-of select="tib:render-xml($Catch, 1, 1)"/>
+                        </message>
+                        <xsl:if test="$_error/ns3:ErrorReport/MsgCode">
+                            <msgCode>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </msgCode>
+                        </xsl:if>
+                    </pfx3:ActivityInput>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Reply-to-JMS-Message-1">
+        <pd:type>com.tibco.plugin.jms.JMSReplyActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSReplyActivity</pd:resourceType>
+        <pd:x>599</pd:x>
+        <pd:y>411</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+                <EventSource>JMS Queue Receiver</EventSource>
+            </ConfigurableHeaders>
+            <ApplicationProperties>/Resources/JMS/SOAP Client JMS Properties.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <OtherProperties>
+                    <HTTPStatus>
+                        <xsl:value-of select="'401'"/>
+                    </HTTPStatus>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="concat('{',$ErrorMessage/root/JSON, '}')"/>
+                </Body>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate SAML Request">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>487</pd:x>
+        <pd:y>144</pd:y>
+        <config>
+            <processName>/Services/SSO/V1.0/Generate SAML Request.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:choose>
+                    <xsl:when test="tib:trim($Get-JMS-Queue-Message/ns:ActivityOutput/Body/root/Username)=&quot;&quot;">
+                        <UserAccountName>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </UserAccountName>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <UserAccountName>
+                            <xsl:value-of select="$Get-JMS-Queue-Message/ns:ActivityOutput/Body/root/Username"/>
+                        </UserAccountName>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="tib:trim($Get-JMS-Queue-Message/ns:ActivityOutput/Body/root/TargetUrl) !=''">
+                        <Target>
+                            <xsl:value-of select="$Get-JMS-Queue-Message/ns:ActivityOutput/Body/root/TargetUrl"/>
+                        </Target>
+                    </xsl:when>
+                    <xsl:when test="tib:trim($Call-Get-ServiceURL/GetDCSelectionResultRs/TargetServiceUrl) !=''">
+                        <Target>
+                            <xsl:value-of select="$Call-Get-ServiceURL/GetDCSelectionResultRs/TargetServiceUrl"/>
+                        </Target>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <Target>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </Target>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <TenantID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/TenantID"/>
+                </TenantID>
+                <xsl:choose>
+                    <xsl:when test="$Parse-Query-String/root/log_off_url = '1'">
+                        <CallbackURL>
+                            <xsl:value-of select="''"/>
+                        </CallbackURL>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <CallbackURL>
+                            <xsl:value-of select="$Parse-Query-String/root/log_off_url"/>
+                        </CallbackURL>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Get ServiceURL">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>364</pd:x>
+        <pd:y>142</pd:y>
+        <config>
+            <processName>/ExternalServices/LiberalAPI/v1.0/GetDCSelectionResult.process</processName>
+            <processNameXPath>if (lower-case($JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/PartnerName)="arrowsphere")
+ then  "/Services/ArrowSphere/Login/V1.0/GetServiceURL.process"
+else 
+""</processNameXPath>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <TenantID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/TenantID"/>
+                </TenantID>
+                <BWTraceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/BWTraceID"/>
+                </BWTraceID>
+                <ns7:GetDCSelectionResultRq>
+                    <ns7:CompanyID>
+                        <xsl:value-of select="$Parse-Query-String/root/CompanyID"/>
+                    </ns7:CompanyID>
+                    <ns7:ServiceID>
+                        <xsl:value-of select="$Parse-Query-String/root/ServiceID"/>
+                    </ns7:ServiceID>
+                </ns7:GetDCSelectionResultRq>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse Query String">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>92</pd:x>
+        <pd:y>182</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="auth_token" type="xsd:string"/>
+                            <xsd:element name="log_off_url" type="xsd:string"/>
+                            <xsd:element name="CompanyID" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ServiceID" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <auth_token>
+                    <xsl:value-of select="tib:tokenize(tib:tokenize($JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/QueryString, &quot;&amp;&quot;)[1], &quot;=&quot;)[2]"/>
+                </auth_token>
+                <log_off_url>
+                    <xsl:value-of select="tib:tokenize(tib:tokenize($JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/QueryString, &quot;&amp;&quot;)[2], &quot;=&quot;)[2]"/>
+                </log_off_url>
+                <CompanyID>
+                    <xsl:value-of select="tib:tokenize(tib:tokenize($JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/QueryString, &quot;&amp;&quot;)[3], &quot;=&quot;)[2]"/>
+                </CompanyID>
+                <ServiceID>
+                    <xsl:value-of select="tib:tokenize(tib:tokenize($JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/QueryString, &quot;&amp;&quot;)[4], &quot;=&quot;)[2]"/>
+                </ServiceID>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>868</pd:x>
+        <pd:y>240</pd:y>
+        <config>
+            <ConfirmEvent>Get JMS Queue Message</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>708</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <variableName>Variable0</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SSOFlag>
+                    <xsl:value-of select="&quot;true&quot;"/>
+                </SSOFlag>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log-1">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>602</pd:x>
+        <pd:y>174</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Generate-SAML-Request/SAMLRequest"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="&quot;SAMLLog&quot;"/>
+                </msgCode>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrorHandling">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>453</pd:x>
+        <pd:y>402</pd:y>
+        <config>
+            <processName>/Utilities/ErrorHandling/V1.0/ErrorHandling.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns3:ErrorReport/Data/*" element="ns5:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <root>
+                <TraceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/BWTraceID"/>
+                </TraceID>
+                <xsl:choose>
+                    <xsl:when test="exists($_error_Get-JMS-Queue-Message/ActivityErrors)">
+                        <ErrorCode>
+                            <xsl:value-of select="&quot;JMSConnectionError&quot;"/>
+                        </ErrorCode>
+                    </xsl:when>
+                    <xsl:when test="exists($_error_Call-Get-ServiceURL/ns5:Error)">
+                        <ErrorCode>
+                            <xsl:value-of select="$_error_Call-Get-ServiceURL/ns5:Error/ns5:error_code"/>
+                        </ErrorCode>
+                    </xsl:when>
+                    <xsl:when test="exists($_error_Generate-SAML-Request/ns5:Error)">
+                        <ErrorCode>
+                            <xsl:value-of select="&quot;GenerateSAMLError&quot;"/>
+                        </ErrorCode>
+                    </xsl:when>
+                    <xsl:otherwise/>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($_error_Generate-SAML-Request/ns5:Error)">
+                        <xsl:if test="$_error_Generate-SAML-Request/ns5:Error/ns5:error_message">
+                            <Detail>
+                                <xsl:value-of select="$_error_Generate-SAML-Request/ns5:Error/ns5:error_message"/>
+                            </Detail>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise/>
+                </xsl:choose>
+                <DisplayDetail>
+                    <xsl:value-of select="1"/>
+                </DisplayDetail>
+                <ServiceName>
+                    <xsl:value-of select="&quot;SSO&quot;"/>
+                </ServiceName>
+                <ServiceVersion>
+                    <xsl:value-of select="&quot;V1.0&quot;"/>
+                </ServiceVersion>
+                <SourceID>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/x-source"/>
+                </SourceID>
+                <inputContent>
+                    <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/Body"/>
+                </inputContent>
+                <xsl:choose>
+                    <xsl:when test="exists($_error/ns3:ErrorReport/Data) and exists($_error/ns3:ErrorReport/Data/ns5:Error)">
+                        <src>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/Data/ns5:Error/ns5:src"/>
+                        </src>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <src>
+                            <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                        </src>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($_error/ns3:ErrorReport/Data) and exists($_error/ns3:ErrorReport/Data/ns5:Error)">
+                        <xsl:copy-of select="$_error/ns3:ErrorReport/Data/ns5:Error"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns5:Error>
+                            <ns5:src>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/ProcessStack"/>
+                            </ns5:src>
+                            <ns5:error_code>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/MsgCode"/>
+                            </ns5:error_code>
+                            <ns5:error_message>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/Msg"/>
+                            </ns5:error_message>
+                            <ns5:stack_trace>
+                                <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                            </ns5:stack_trace>
+                        </ns5:Error>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>343</pd:x>
+        <pd:y>308</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx:ActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrorMapping">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>430</pd:x>
+        <pd:y>245</pd:y>
+        <config>
+            <processName>/Utilities/ErrorHandling/V1.0/ErrorMapping.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <InputErrorCode>
+                    <xsl:value-of select="&quot;TokenIsExpired&quot;"/>
+                </InputErrorCode>
+                <detail>
+                    <xsl:value-of select="&quot;Token Time Out&quot;"/>
+                </detail>
+                <xsl:if test="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/BWTraceID">
+                    <trace_id>
+                        <xsl:value-of select="$JMS-Queue-Receiver/ns:ActivityOutput/OtherProperties/BWTraceID"/>
+                    </trace_id>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrorMessage">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>515</pd:x>
+        <pd:y>493</pd:y>
+        <config>
+            <processName>/Services/ShareProcess/ErrorMessage.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <error>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Call-Get-ServiceURL/ns5:Error)">
+                            <API>
+                                <xsl:value-of select="&quot;GetDCSelectionResult&quot;"/>
+                            </API>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <API>
+                                <xsl:value-of select="&quot;SSO&quot;"/>
+                            </API>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <errorCode>
+                        <xsl:value-of select="$ErrorHandling/root/ErrorMessage"/>
+                    </errorCode>
+                    <errorMsg>
+                        <xsl:value-of select="$ErrorHandling/root/Detail"/>
+                    </errorMsg>
+                    <statusCode>
+                        <xsl:value-of select="$ErrorHandling/root/ErrorCode"/>
+                    </statusCode>
+                </error>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OutputTimeOut">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>563</pd:x>
+        <pd:y>245</pd:y>
+        <config>
+            <processName>/Services/ShareProcess/ErrorMessage.process</processName>
+        </config>
+        <pd:inputBindings>
+            <group>
+                <error>
+                    <API>
+                        <xsl:value-of select="&quot;SSO&quot;"/>
+                    </API>
+                    <errorCode>
+                        <xsl:value-of select="$ErrorMapping/ErrorResponse/message"/>
+                    </errorCode>
+                    <errorMsg>
+                        <xsl:value-of select="$ErrorMapping/ErrorResponse/detail"/>
+                    </errorMsg>
+                    <statusCode>
+                        <xsl:value-of select="$ErrorMapping/ErrorResponse/code"/>
+                    </statusCode>
+                </error>
+            </group>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Get JMS Queue Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get JMS Queue Message</pd:from>
+        <pd:to>Call Get ServiceURL</pd:to>
+        <pd:xpathDescription>Call ServiceURL</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Parse-Query-String/root/CompanyID) !=''</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get JMS Queue Message</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-52429</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>ErrorMapping</pd:to>
+        <pd:xpathDescription>timeout</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($_error_Get-JMS-Queue-Message/ActivityErrors/pfx2:ActivityTimedOutException)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>ErrorHandling</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply-to-JMS-Message-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Generate SAML Request</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Get ServiceURL</pd:from>
+        <pd:to>Generate SAML Request</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Parse Query String</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Query String</pd:from>
+        <pd:to>Get JMS Queue Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Reply to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Reply to JMS Message</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:xpathDescription>SSO Success</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Variable0/root/SSOFlag="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get JMS Queue Message</pd:from>
+        <pd:to>Generate SAML Request</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Generate SAML Request</pd:from>
+        <pd:to>Log-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-1</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorHandling</pd:from>
+        <pd:to>ErrorMessage</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorMapping</pd:from>
+        <pd:to>OutputTimeOut</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorMessage</pd:from>
+        <pd:to>Reply-to-JMS-Message-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OutputTimeOut</pd:from>
+        <pd:to>Reply to JMS Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

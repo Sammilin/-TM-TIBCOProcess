@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+
+	<!-- edited with XMLSpy v2005 U (http://www.xmlspy.com) by any (Ru-Board) -->
+	<xsd:element name="mail">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="to" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="cc" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="bcc" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="subject" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="MailBody" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="AttachFile" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="AttachContent" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="content-disposition" type="xsd:string"/>
+										<xsd:element name="content-type" type="xsd:string"/>
+										<xsd:element name="content-transfer-encoding" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="binaryContent" type="xsd:base64Binary" minOccurs="0"/>
+										<xsd:element name="textContent" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="fileName" type="xsd:string" minOccurs="0"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

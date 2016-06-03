@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:include schemaLocation="ArrowSphere.xsd"/>
+	<xs:element name="RenewRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="transaction_id" type="xs:string"/>
+				<xs:element name="po_number" type="xs:string"/>
+				<xs:element name="po_date" type="xs:string"/>
+				<xs:element name="is_auto_renewal" type="xs:string"/>
+				<xs:element name="disti_id" type="xs:string"/>
+				<xs:element name="reseller_id" type="xs:string"/>
+				<xs:element name="customer_id" type="xs:string"/>
+				<xs:element name="payment_type" type="xs:string"/>
+				<xs:element name="items" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="sku" type="xs:string"/>
+							<xs:element name="subscription_id" type="xs:string"/>
+							<xs:element name="end_user_unit_price" type="xs:string"/>
+							<xs:element name="end_user_total_price" type="xs:string"/>
+							<xs:element name="deal_code" type="xs:string" minOccurs="0"/>
+							<xs:element name="currency_code" type="xs:string"/>
+							<xs:element name="seats" type="xs:string"/>
+							<xs:element name="additional_seats" type="xs:string" minOccurs="0"/>
+							<xs:element name="additional_seats_sku" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

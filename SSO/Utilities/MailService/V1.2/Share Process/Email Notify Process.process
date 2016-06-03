@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx11="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/Mail Schema1.2.xsd" xmlns:pfx10="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.3.xsd" xmlns:pfx="http://xmlns.tibco.com/encodings/mime" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns3="http://xmlns.tibco.com/body" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/resources/Schema/Mail Schema1.1.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.1.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.0.xsd" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx9="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.2.xsd" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/Mail Schema1.1.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.1.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.1.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Configuration/Schema/Mail Schema1.1.xsd" schemaLocation="/Configuration/Schema/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resources/Schema/Mail Schema1.1.xsd" schemaLocation="/resources/Schema/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Schema/Mail Schema1.1.xsd" schemaLocation="/resource/Schema/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.3.xsd" schemaLocation="/resource/Mail Schema1.3.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.2.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/Mail Schema1.2.xsd" schemaLocation="/XSD/Common/Mail Schema1.2.xsd"/>
+    <pd:name>Utilities/MailService/V1.2/Share Process/Email Notify Process.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx11:mail"/>
+    <pd:startX>151</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>529</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1242200652794</pd:targetNamespace>
+    <pd:activity name="Send Notify Mail">
+        <pd:type>com.tibco.plugin.mail.MailPubActivity</pd:type>
+        <pd:resourceType>ae.activities.MailActivityResource</pd:resourceType>
+        <pd:x>372</pd:x>
+        <pd:y>129</pd:y>
+        <config>
+            <newMimeSupport>true</newMimeSupport>
+            <inputOutputVersion>5.2.0</inputOutputVersion>
+            <host>%%Utilities/MailNotify/MailServer%%</host>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns2:mailActivityInput>
+                <from>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/From"/>
+                </from>
+                <to>
+                    <xsl:value-of select="$Start/mail/to"/>
+                </to>
+                <cc>
+                    <xsl:value-of select="$Start/mail/cc"/>
+                </cc>
+                <bcc>
+                    <xsl:value-of select="$Start/mail/bcc"/>
+                </bcc>
+                <subject>
+                    <xsl:value-of select="$Start/mail/subject"/>
+                </subject>
+                <sentdate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </sentdate>
+                <ns3:bodyElement>
+                    <bodyText>
+                        <xsl:value-of select="$Start/mail/MailBody"/>
+                    </bodyText>
+                </ns3:bodyElement>
+                <Headers>
+                    <Content-Type>
+                        <xsl:value-of select="'multipart/mixed; type=&quot;text/html&quot;; charset=BIG5'"/>
+                    </Content-Type>
+                </Headers>
+                <xsl:if test="exists($Start/mail/AttachFile)">
+                    <xsl:for-each select="$Start/mail/AttachFile">
+                        <pfx:mimeEnvelopeElement>
+                            <xsl:for-each select="AttachContent">
+                                <mimePart>
+                                    <mimeHeaders>
+                                        <content-disposition>
+                                            <xsl:value-of select="content-disposition"/>
+                                        </content-disposition>
+                                        <content-type>
+                                            <xsl:value-of select="content-type"/>
+                                        </content-type>
+                                        <xsl:if test="content-transfer-encoding">
+                                            <content-transfer-encoding>
+                                                <xsl:value-of select="content-transfer-encoding"/>
+                                            </content-transfer-encoding>
+                                        </xsl:if>
+                                    </mimeHeaders>
+                                    <xsl:choose>
+                                        <xsl:when test="exists(current()/textContent)">
+                                            <textContent>
+                                                <xsl:value-of select="textContent"/>
+                                            </textContent>
+                                        </xsl:when>
+                                        <xsl:when test="exists(current()/fileName)">
+                                            <fileName>
+                                                <xsl:value-of select="fileName"/>
+                                            </fileName>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <binaryContent>
+                                                <xsl:value-of select="binaryContent"/>
+                                            </binaryContent>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </mimePart>
+                            </xsl:for-each>
+                        </pfx:mimeEnvelopeElement>
+                    </xsl:for-each>
+                </xsl:if>
+            </ns2:mailActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Write System Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Start/mail, 1)"/>
+                </message>
+            </pfx2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Error System Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>376</pd:x>
+        <pd:y>259</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx2:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(current-dateTime() , &quot; &quot;,$Start/mail/subject,&quot; Send Notify Mail Failed!!!&quot;,&quot;  &quot;,&#xA;$_error/ns1:ErrorReport/MsgCode,&quot;,   &quot;,$_error/ns1:ErrorReport/Msg)"/>
+                </message>
+            </pfx2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Notify Mail No Attachement">
+        <pd:type>com.tibco.plugin.mail.MailPubActivity</pd:type>
+        <pd:resourceType>ae.activities.MailActivityResource</pd:resourceType>
+        <pd:x>247</pd:x>
+        <pd:y>341</pd:y>
+        <config>
+            <newMimeSupport>true</newMimeSupport>
+            <inputOutputVersion>5.2.0</inputOutputVersion>
+            <host>%%Utilities/MailNotify/MailServer%%</host>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns2:mailActivityInput>
+                <from>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/From"/>
+                </from>
+                <to>
+                    <xsl:value-of select="$Start/mail/to"/>
+                </to>
+                <cc>
+                    <xsl:value-of select="$Start/mail/cc"/>
+                </cc>
+                <bcc>
+                    <xsl:value-of select="$Start/mail/bcc"/>
+                </bcc>
+                <subject>
+                    <xsl:value-of select="$Start/mail/subject"/>
+                </subject>
+                <sentdate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </sentdate>
+                <ns3:bodyElement>
+                    <bodyText>
+                        <xsl:value-of select="$Start/mail/MailBody"/>
+                    </bodyText>
+                </ns3:bodyElement>
+                <Headers>
+                    <Content-Type>
+                        <xsl:value-of select="'text/html; type=&quot;text/html&quot;; charset=UTF-8'"/>
+                    </Content-Type>
+                </Headers>
+            </ns2:mailActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>528</pd:x>
+        <pd:y>333</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Write System Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Notify Mail</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write System Log</pd:from>
+        <pd:to>Send Notify Mail</pd:to>
+        <pd:xpathDescription>SendMailOn</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/SendMailOn = "true" and exists($Start/mail/AttachFile/AttachContent)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Notify Mail</pd:from>
+        <pd:to>Send Error System Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Error System Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write System Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>SendMailOff</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write System Log</pd:from>
+        <pd:to>Send Notify Mail No Attachement</pd:to>
+        <pd:xpathDescription>No Attachement</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns:GlobalVariables/Utilities/MailNotify/SendMailOn = "true" and not(exists($Start/mail/AttachFile/AttachContent))</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Notify Mail No Attachement</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Notify Mail No Attachement</pd:from>
+        <pd:to>Send Error System Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

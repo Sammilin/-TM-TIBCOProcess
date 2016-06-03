@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="ChangeSeat">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ChangeSeatRq"/>
+				<xs:element ref="ChangeSeatRs"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ChangeSeatRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="isTier2" type="xs:string"/>
+							<xs:element name="tier2TenentId" type="xs:string"/>
+							<xs:element name="seats" type="xs:int"/>
+							<xs:element name="subscriptionId" type="xs:string"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ChangeSeatRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UpdateSubscription" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Result" type="xs:int"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="traceId" type="xs:string"/>
+				<xs:element name="error" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="statusCode" type="xs:string"/>
+							<xs:element name="API" type="xs:string"/>
+							<xs:element name="errorCode" type="xs:string"/>
+							<xs:element name="errorMsg" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

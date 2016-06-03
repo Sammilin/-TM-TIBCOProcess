@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="APSService">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="SuspendEndCustomer">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="SuspendEndCustomerRq"/>
+							<xs:element ref="SuspendEndCustomerRs"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ProvisionEndCustomer">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="ProvisionEndCustomerRq"/>
+							<xs:element ref="ProvisionEndCustomerRs"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PartnerSubscribe">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="PartnerSubscribeRq"/>
+							<xs:element ref="PartnerSubscribeRs"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="GetServicePlan">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="GetServicePlanRq"/>
+							<xs:element ref="GetServicePlanRs"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="error" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ProvisionEndCustomerRq">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="aps" type="APSSourceApsType"/>
+				<xs:element name="account" type="APSSourceAccountType"/>
+				<xs:element name="globals" type="APSSourceGlobalType"/>
+				<xs:element name="subscription" type="APSSourceSubscriptionType"/>
+				<xs:element name="wfbss" type="APSSourceWfbssType"/>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="isTier2Customer" type="xs:boolean" minOccurs="0"/>
+							<xs:element name="tier2TenentId" type="xs:string" minOccurs="0"/>
+							<xs:element name="language" type="xs:string"/>
+							<xs:element name="parentRole" type="xs:string" minOccurs="0"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PartnerSubscribeRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="aps" type="APSSourceApsType"/>
+				<xs:element name="account" type="APSSourceAccountType"/>
+				<xs:element name="globals" type="APSSourceGlobalType"/>
+				<xs:element name="subscription" type="APSSourceSubscriptionType"/>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="accountRole" type="xs:string"/>
+							<xs:element name="language" type="xs:string"/>
+							<xs:element name="accountInfo">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="aps" type="APSSourceApsType"/>
+										<xs:element name="userId" type="xs:string"/>
+										<xs:element name="login" type="xs:string"/>
+										<xs:element name="password" type="xs:string"/>
+										<xs:element name="email" type="xs:string"/>
+										<xs:element name="givenName" type="xs:string"/>
+										<xs:element name="additionalName" type="xs:string"/>
+										<xs:element name="familyName" type="xs:string"/>
+										<xs:element name="fullName" type="xs:string"/>
+										<xs:element name="displayName" type="xs:string"/>
+										<xs:element name="organizationName" type="xs:string"/>
+										<xs:element name="title" type="xs:string"/>
+										<xs:element name="addressPostal" type="APSSourceAddressPortalType"/>
+										<xs:element name="telVoice" type="xs:string"/>
+										<xs:element name="telHome" type="xs:string"/>
+										<xs:element name="telWork" type="xs:string"/>
+										<xs:element name="telCell" type="xs:string"/>
+										<xs:element name="telFax" type="xs:string"/>
+										<xs:element name="telPager" type="xs:string"/>
+										<xs:element name="tz" type="xs:string"/>
+										<xs:element name="note" type="xs:string"/>
+										<xs:element name="url" type="xs:string"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="APSSourceAccountType">
+		<xs:all>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="id" type="xs:string"/>
+			<xs:element name="companyName" type="xs:string"/>
+			<xs:element name="addressPostal" type="APSSourceAddressPortalType"/>
+			<xs:element name="users" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceApsType">
+		<xs:all>
+			<xs:element name="type" type="xs:string"/>
+			<xs:element name="id" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceGlobalType">
+		<xs:all>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="environment" type="xs:string"/>
+			<xs:element name="access_token" type="xs:string"/>
+			<xs:element name="secret_key" type="xs:string"/>
+			<xs:element name="tenant_id" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceSubscriptionType">
+		<xs:all>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="subscriptionId" type="xs:string"/>
+			<xs:element name="trial" type="xs:boolean"/>
+			<xs:element name="disabled" type="xs:boolean"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceWfbssType">
+		<xs:all>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="service_plan_id" type="xs:string"/>
+			<xs:element name="user" type="APSSourceUserType"/>
+			<xs:element name="seats" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceUserType">
+		<xs:all>
+			<xs:element name="aps" type="APSSourceApsType"/>
+			<xs:element name="subscriptionId" type="xs:string"/>
+			<xs:element name="userId" type="xs:string"/>
+			<xs:element name="login" type="xs:string"/>
+			<xs:element name="password" type="xs:string"/>
+			<xs:element name="email" type="xs:string"/>
+			<xs:element name="givenName" type="xs:string"/>
+			<xs:element name="additionalName" type="xs:string"/>
+			<xs:element name="familyName" type="xs:string"/>
+			<xs:element name="fullName" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element name="organizationName" type="xs:string"/>
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="addressPostal" type="APSSourceAddressPortalType"/>
+			<xs:element name="telVoice" type="xs:string"/>
+			<xs:element name="telHome" type="xs:string"/>
+			<xs:element name="telWork" type="xs:string"/>
+			<xs:element name="telCell" type="xs:string"/>
+			<xs:element name="telFax" type="xs:string"/>
+			<xs:element name="telPager" type="xs:string"/>
+			<xs:element name="tz" type="xs:string"/>
+			<xs:element name="note" type="xs:string"/>
+			<xs:element name="url" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceAddressPortalType">
+		<xs:all>
+			<xs:element name="postOfficeBox" type="xs:string"/>
+			<xs:element name="extendedAddress" type="xs:string"/>
+			<xs:element name="streetAddress" type="xs:string"/>
+			<xs:element name="locality" type="xs:string"/>
+			<xs:element name="region" type="xs:string"/>
+			<xs:element name="postalCode" type="xs:string"/>
+			<xs:element name="countryName" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="APSSourceErrorType">
+		<xs:sequence>
+			<xs:element name="API" type="xs:string"/>
+			<xs:element name="errorCode" type="xs:string"/>
+			<xs:element name="errorMsg" type="xs:string"/>
+			<xs:element name="statusCode" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ProvisionEndCustomerRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="traceId" type="xs:string"/>
+				<xs:element name="CreateCustomerCompany" type="CreateCustomerCompanyType" minOccurs="0"/>
+				<xs:element name="RegisterByServicePlan" type="RegisterByServicePlanType" minOccurs="0"/>
+				<xs:element name="ByAccountNameOrLoginEmail" minOccurs="0">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="TMUniqueId" type="xs:string"/>
+							<xs:element name="GlobalId" type="xs:string"/>
+							<xs:element name="LoginId" type="xs:string"/>
+							<xs:element name="LoginEmail" type="xs:string"/>
+							<xs:element name="LoginFlag" type="xs:string"/>
+							<xs:element name="Status" type="xs:string"/>
+							<xs:element name="TenantId" type="xs:string"/>
+							<xs:element name="DisplayId" type="xs:string"/>
+							<xs:element name="RoleId" type="xs:string"/>
+							<xs:element name="Language" type="xs:string"/>
+							<xs:element name="TimeZone" type="xs:string"/>
+							<xs:element name="DefaultUrl" type="xs:string"/>
+							<xs:element name="IsTempAccount" type="xs:string"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="GetPartnerTreeInfo" minOccurs="0">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="CompanyID" type="xs:string"/>
+							<xs:element name="CompanyName" type="xs:string"/>
+							<xs:element name="RoleID" type="xs:string"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="GetAvailableServicePlans" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ServicePlans" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="ServicePlanID" type="xs:string" minOccurs="0"/>
+										<xs:element name="ServicePlanName" type="xs:string" minOccurs="0"/>
+										<xs:element name="VendorCompanyID" type="xs:string" minOccurs="0"/>
+										<xs:element name="ServiceID" type="xs:string" minOccurs="0"/>
+										<xs:element name="ServiceName" type="xs:string" minOccurs="0"/>
+										<xs:element name="DCCode" type="xs:string" minOccurs="0"/>
+										<xs:element name="LicensePeriodMonth" type="xs:string" minOccurs="0"/>
+										<xs:element name="DaysToExpire" type="xs:string" minOccurs="0"/>
+										<xs:element name="AutoExtensionMonth" type="xs:string" minOccurs="0"/>
+										<xs:element name="IsAutoReNew" type="xs:string" minOccurs="0"/>
+										<xs:element name="ActivationType" type="xs:string" minOccurs="0"/>
+										<xs:element name="Enabled" type="xs:string" minOccurs="0"/>
+										<xs:element name="ContractType" type="xs:string" minOccurs="0"/>
+										<xs:element name="PriceType" type="xs:string" minOccurs="0"/>
+										<xs:element name="ChargeableMonth" type="xs:string" minOccurs="0"/>
+										<xs:element name="ChannelID" type="xs:string" minOccurs="0"/>
+										<xs:element name="SalesType" type="xs:string" minOccurs="0"/>
+										<xs:element name="VersionType" type="xs:string" minOccurs="0"/>
+										<xs:element name="BUName" type="xs:string" minOccurs="0"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="GetAccountProfile" minOccurs="0">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="GlobalID" type="xs:string" minOccurs="0"/>
+							<xs:element name="TMuniqueID" type="xs:string" minOccurs="0"/>
+							<xs:element name="LoginName" type="xs:string" minOccurs="0"/>
+							<xs:element name="ContactEmail" type="xs:string" minOccurs="0"/>
+							<xs:element name="FirstName" type="xs:string" minOccurs="0"/>
+							<xs:element name="LastName" type="xs:string" minOccurs="0"/>
+							<xs:element name="TimeZone" type="xs:string" minOccurs="0"/>
+							<xs:element name="Language" type="xs:string" minOccurs="0"/>
+							<xs:element name="PhoneAreaCode" type="xs:string" minOccurs="0"/>
+							<xs:element name="PhoneNumber" type="xs:string" minOccurs="0"/>
+							<xs:element name="PhoneExtension" type="xs:string" minOccurs="0"/>
+							<xs:element name="UserRole" type="xs:string" minOccurs="0"/>
+							<xs:element name="SSO_Status" type="xs:string" minOccurs="0"/>
+							<xs:element name="Polaris_Status" type="xs:string" minOccurs="0"/>
+							<xs:element name="IsViewPrivacy" type="xs:string" minOccurs="0"/>
+							<xs:element name="CompanyID" type="xs:string" minOccurs="0"/>
+							<xs:element name="ChannelID" type="xs:string" minOccurs="0"/>
+							<xs:element name="CreateBy" type="xs:string" minOccurs="0"/>
+							<xs:element name="CreateTime" type="xs:string" minOccurs="0"/>
+							<xs:element name="ModifyBy" type="xs:string" minOccurs="0"/>
+							<xs:element name="ModifyTime" type="xs:string" minOccurs="0"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="url" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CreateCustomerCompanyType">
+		<xs:sequence>
+			<xs:element name="Account" minOccurs="0">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="CompanyID" type="xs:string" minOccurs="0"/>
+						<xs:element name="GlobalID" type="xs:string" minOccurs="0"/>
+						<xs:element name="LoginName" type="xs:string" minOccurs="0"/>
+						<xs:element name="PhoneExtension" type="xs:string" minOccurs="0"/>
+						<xs:element name="ContactEmail" type="xs:string" minOccurs="0"/>
+						<xs:element name="SSO_Status" type="xs:string" minOccurs="0"/>
+						<xs:element name="ModifyTime" type="xs:string" minOccurs="0"/>
+						<xs:element name="PhoneNumber" type="xs:string" minOccurs="0"/>
+						<xs:element name="Polaris_Status" type="xs:string" minOccurs="0"/>
+						<xs:element name="IsViewPrivacy" type="xs:string" minOccurs="0"/>
+						<xs:element name="LastName" type="xs:string" minOccurs="0"/>
+						<xs:element name="TMuniqueID" type="xs:string" minOccurs="0"/>
+						<xs:element name="ModifyBy" type="xs:string" minOccurs="0"/>
+						<xs:element name="UserRole" type="xs:string" minOccurs="0"/>
+						<xs:element name="ChannelID" type="xs:string" minOccurs="0"/>
+						<xs:element name="CreateTime" type="xs:string" minOccurs="0"/>
+						<xs:element name="CreateBy" type="xs:string" minOccurs="0"/>
+						<xs:element name="FirstName" type="xs:string" minOccurs="0"/>
+						<xs:element name="PhoneAreaCode" type="xs:string" minOccurs="0"/>
+						<xs:element name="Language" type="xs:string" minOccurs="0"/>
+						<xs:element name="TimeZone" type="xs:string" minOccurs="0"/>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Company" minOccurs="0">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="GC" type="xs:string" minOccurs="0"/>
+						<xs:element name="ParentCompanyID" type="xs:string" minOccurs="0"/>
+						<xs:element name="CompanyID" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressState" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressCity" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressStreet" type="xs:string" minOccurs="0"/>
+						<xs:element name="RoleID" type="xs:string" minOccurs="0"/>
+						<xs:element name="ModifyTime" type="xs:string" minOccurs="0"/>
+						<xs:element name="Note" type="xs:string" minOccurs="0"/>
+						<xs:element name="CreateByCompanyID" type="xs:string" minOccurs="0"/>
+						<xs:element name="CompanyName" type="xs:string" minOccurs="0"/>
+						<xs:element name="WLRefCompanyID" type="xs:string" minOccurs="0"/>
+						<xs:element name="ModifyBy" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressPostalCode" type="xs:string" minOccurs="0"/>
+						<xs:element name="Status" type="xs:string" minOccurs="0"/>
+						<xs:element name="ChannelID" type="xs:string" minOccurs="0"/>
+						<xs:element name="CreateTime" type="xs:string" minOccurs="0"/>
+						<xs:element name="CreateBy" type="xs:string" minOccurs="0"/>
+						<xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+						<xs:element name="TenantID" type="xs:string" minOccurs="0"/>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RegisterByServicePlanType">
+		<xs:sequence>
+			<xs:element name="EventName" type="xs:string" minOccurs="0"/>
+			<xs:element name="CompanyID" type="xs:string" minOccurs="0"/>
+			<xs:element name="SubscriptionID" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntitlementID" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProductName" type="xs:string" minOccurs="0"/>
+			<xs:element name="EventID" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProductProfileID" type="xs:string" minOccurs="0"/>
+			<xs:element name="LicenseKey" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="LicenseType" type="xs:string" minOccurs="0"/>
+						<xs:element name="ContractType" type="xs:string" minOccurs="0"/>
+						<xs:element name="Grace_Period" type="xs:string" minOccurs="0"/>
+						<xs:element name="ActivationCode" type="xs:string" minOccurs="0"/>
+						<xs:element name="Volume" type="xs:string" minOccurs="0"/>
+						<xs:element name="LicenseExpirationDate" type="xs:string" minOccurs="0"/>
+						<xs:element name="ProductID" type="xs:string" minOccurs="0"/>
+						<xs:element name="NotBundled" type="xs:string" minOccurs="0"/>
+						<xs:element name="VersionType" type="xs:string" minOccurs="0"/>
+						<xs:element name="LicenseStartDate" type="xs:string" minOccurs="0"/>
+						<xs:element name="BUCode" type="xs:string" minOccurs="0"/>
+						<xs:element name="SalesType" type="xs:string" minOccurs="0"/>
+						<xs:element name="Enable" type="xs:string" minOccurs="0"/>
+						<xs:element name="PriceType" type="xs:string" minOccurs="0"/>
+						<xs:element name="LicenseRegistrationStatus" type="xs:string" minOccurs="0"/>
+						<xs:element name="LastModifyDate" type="xs:string" minOccurs="0"/>
+						<xs:element name="LicenseChargeDate" type="xs:string" minOccurs="0"/>
+						<xs:element name="LicensekeyHistory" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="MergeFrom" type="xs:string" minOccurs="0"/>
+									<xs:element name="ConverFrom" type="xs:string" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PartnerSubscribeRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="traceId" type="xs:string"/>
+				<xs:element name="CreatePartnerCompany" type="CreatePartnerCompanyType" minOccurs="0"/>
+				<xs:element name="url" type="xs:string" minOccurs="0"/>
+				<xs:element ref="error" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CreatePartnerCompanyType">
+		<xs:sequence>
+			<xs:element name="Account">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="CompanyID" type="xs:string" minOccurs="0"/>
+						<xs:element name="GlobalID" type="xs:string" minOccurs="0"/>
+						<xs:element name="LoginName" type="xs:string" minOccurs="0"/>
+						<xs:element name="PhoneExtension" type="xs:string" minOccurs="0"/>
+						<xs:element name="ContactEmail" type="xs:string" minOccurs="0"/>
+						<xs:element name="SSO_Status" type="xs:string" minOccurs="0"/>
+						<xs:element name="ModifyTime" type="xs:string" minOccurs="0"/>
+						<xs:element name="PhoneNumber" type="xs:string" minOccurs="0"/>
+						<xs:element name="Polaris_Status" type="xs:string" minOccurs="0"/>
+						<xs:element name="IsViewPrivacy" type="xs:string" minOccurs="0"/>
+						<xs:element name="LastName" type="xs:string" minOccurs="0"/>
+						<xs:element name="TMuniqueID" type="xs:string" minOccurs="0"/>
+						<xs:element name="ModifyBy" type="xs:string" minOccurs="0"/>
+						<xs:element name="UserRole" type="xs:string" minOccurs="0"/>
+						<xs:element name="ChannelID" type="xs:string" minOccurs="0"/>
+						<xs:element name="CreateTime" type="xs:string" minOccurs="0"/>
+						<xs:element name="CreateBy" type="xs:string" minOccurs="0"/>
+						<xs:element name="FirstName" type="xs:string" minOccurs="0"/>
+						<xs:element name="PhoneAreaCode" type="xs:string" minOccurs="0"/>
+						<xs:element name="Language" type="xs:string" minOccurs="0"/>
+						<xs:element name="TimeZone" type="xs:string" minOccurs="0"/>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Company">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="GC" type="xs:string" minOccurs="0"/>
+						<xs:element name="ParentCompanyID" type="xs:string" minOccurs="0"/>
+						<xs:element name="CompanyID" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressState" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressCity" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressStreet" type="xs:string" minOccurs="0"/>
+						<xs:element name="RoleID" type="xs:string" minOccurs="0"/>
+						<xs:element name="ModifyTime" type="xs:string" minOccurs="0"/>
+						<xs:element name="Note" type="xs:string" minOccurs="0"/>
+						<xs:element name="CreateByCompanyID" type="xs:string" minOccurs="0"/>
+						<xs:element name="CompanyName" type="xs:string" minOccurs="0"/>
+						<xs:element name="WLRefCompanyID" type="xs:string" minOccurs="0"/>
+						<xs:element name="ModifyBy" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressPostalCode" type="xs:string" minOccurs="0"/>
+						<xs:element name="Status" type="xs:string" minOccurs="0"/>
+						<xs:element name="ChannelID" type="xs:string" minOccurs="0"/>
+						<xs:element name="CreateTime" type="xs:string" minOccurs="0"/>
+						<xs:element name="CreateBy" type="xs:string" minOccurs="0"/>
+						<xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+						<xs:element name="TenantID" type="xs:string" minOccurs="0"/>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="apiErrorType">
+		<xs:sequence>
+			<xs:element name="API" type="xs:string"/>
+			<xs:element name="errorCode" type="xs:string"/>
+			<xs:element name="errorMsg" type="xs:string"/>
+			<xs:element name="statusCode" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="error" type="apiErrorType"/>
+	<xs:complexType name="GetAvailableServicePlansType">
+		<xs:sequence>
+			<xs:element name="ServicesPlans" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="ServicePlanID" type="xs:string"/>
+						<xs:element name="ServicePlanName" type="xs:string"/>
+						<xs:element name="VendorCompanyID" type="xs:string"/>
+						<xs:element name="ServiceID" type="xs:string"/>
+						<xs:element name="ServiceName" type="xs:string"/>
+						<xs:element name="DCCode" type="xs:string"/>
+						<xs:element name="LicensePeriodMonth" type="xs:int"/>
+						<xs:element name="DaysToExpire" type="xs:int"/>
+						<xs:element name="AutoExtensionMonth" type="xs:int"/>
+						<xs:element name="IsAutoReNew" type="xs:int"/>
+						<xs:element name="ActivationType" type="xs:int"/>
+						<xs:element name="Enabled" type="xs:int"/>
+						<xs:element name="ContractType" type="xs:string"/>
+						<xs:element name="PriceType" type="xs:string"/>
+						<xs:element name="ChargeableMonth" type="xs:int"/>
+						<xs:element name="ChannelID" type="xs:string"/>
+						<xs:element name="SalesType" type="xs:string"/>
+						<xs:element name="VersionType" type="xs:string"/>
+						<xs:element name="BUName" type="xs:string" minOccurs="0"/>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GetServicePlanRs">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="traceId" type="xs:string"/>
+				<xs:element name="GetAvailableServicePlans" type="GetAvailableServicePlansType" minOccurs="0"/>
+				<xs:element ref="error" minOccurs="0"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetServicePlanRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="isTier2" type="xs:string"/>
+							<xs:element name="tier2TenantId" type="xs:string"/>
+							<xs:element name="companyId" type="xs:string"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SuspendEndCustomerRq">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="aps" type="APSSourceApsType"/>
+				<xs:element name="LMPSubscription">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="subscription_id" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="statusChange" type="xs:int"/>
+							<xs:element name="LED" type="xs:string"/>
+							<xs:element name="isTier2" type="xs:string"/>
+							<xs:element name="tier2TenentId" type="xs:string"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SuspendEndCustomerRs">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="UpdateSubscription" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Result" type="xs:int"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="traceId" type="xs:string" minOccurs="0"/>
+				<xs:element ref="error" minOccurs="0"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

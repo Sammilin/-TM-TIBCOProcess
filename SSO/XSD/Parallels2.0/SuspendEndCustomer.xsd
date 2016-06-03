@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="SuspendEndCustomer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SuspendEndCustomerRq"/>
+				<xs:element ref="SuspendEndCustomerRs"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SuspendEndCustomerRq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="integrationParameters">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="isTier2" type="xs:string" minOccurs="0"/>
+							<xs:element name="tier2TenentId" type="xs:string" minOccurs="0"/>
+							<xs:element name="statusChange" type="xs:int" minOccurs="0"/>
+							<xs:element name="LED" type="xs:dateTime" minOccurs="0"/>
+							<xs:element name="subscriptionId" type="xs:string" minOccurs="0"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SuspendEndCustomerRs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="UpdateSubscription" minOccurs="0"/>
+				<xs:element name="traceId" type="xs:string"/>
+				<xs:element ref="error" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UpdateSubscription">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="xs:int"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="error">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="statusCode" type="xs:string"/>
+				<xs:element name="API" type="xs:string"/>
+				<xs:element name="errorCode" type="xs:string"/>
+				<xs:element name="errorMsg" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

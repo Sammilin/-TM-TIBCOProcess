@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://www.tibco.com/schemas/PLSService_SVN/XSD/PartnerAPI/Schema.xsd" xmlns:ns2="http://xmlns.tibco.com/bw/activity/xml/render/bytesEnvelope/2003/05" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/schemas/PLSService/XSD/PartnerAPI/Schema.xsd2" xmlns:ns4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns3="http://www.trendmicro.com/ESB/schemas/error" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/RegisterByServicePlanResponse.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/schemas/PLSService/XSD/LiberalAPI/Schema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.trendmicro.com/PLS/PartnerAPI/Schemas" xmlns:pfx2="http://www.tibco.com/schemas/PLSService_SVN/XSD/PartnerAPI/Schema.xsd2" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/RegisterByServicePlanRequest.xsd">
+    <xsd:import namespace="http://www.trendmicro.com/PLS/PartnerAPI/Schemas" schemaLocation="/XSD/PartnerAPI/CreateCompanyRequest.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/PLS/PartnerAPI/Schemas" schemaLocation="/XSD/PartnerAPI/CreateCompanyResponse.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/RegisterByServicePlanRequest.xsd" schemaLocation="/XSD/LiberalAPI/RegisterByServicePlanRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/LiberalAPI/RegisterByServicePlanResponse.xsd" schemaLocation="/XSD/LiberalAPI/RegisterByServicePlanResponse.xsd"/>
+    <pd:name>ExternalServices/LiberalAPI/v1.0/RegisterByServicePlan.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="tenantID" type="xsd:string"/>
+                    <xsd:element name="BWTraceID" type="xsd:string"/>
+                    <xsd:element ref="pfx6:RegisterByServicePlanRq"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>62</pd:startX>
+    <pd:startY>132</pd:startY>
+    <pd:returnBindings>
+        <xsl:for-each select="$Parse-XML/RegisterByServicePlanRs">
+            <RegisterByServicePlanRs>
+                <xsl:if test="EventName">
+                    <EventName>
+                        <xsl:value-of select="EventName"/>
+                    </EventName>
+                </xsl:if>
+                <xsl:if test="CompanyID">
+                    <CompanyID>
+                        <xsl:value-of select="CompanyID"/>
+                    </CompanyID>
+                </xsl:if>
+                <xsl:if test="SubscriptionID">
+                    <SubscriptionID>
+                        <xsl:value-of select="SubscriptionID"/>
+                    </SubscriptionID>
+                </xsl:if>
+                <xsl:if test="EntitlementID">
+                    <EntitlementID>
+                        <xsl:value-of select="EntitlementID"/>
+                    </EntitlementID>
+                </xsl:if>
+                <xsl:if test="ProductName">
+                    <ProductName>
+                        <xsl:value-of select="ProductName"/>
+                    </ProductName>
+                </xsl:if>
+                <xsl:if test="EventID">
+                    <EventID>
+                        <xsl:value-of select="EventID"/>
+                    </EventID>
+                </xsl:if>
+                <xsl:if test="ProductProfileID">
+                    <ProductProfileID>
+                        <xsl:value-of select="ProductProfileID"/>
+                    </ProductProfileID>
+                </xsl:if>
+                <xsl:for-each select="LicenseKey">
+                    <LicenseKey>
+                        <xsl:if test="LicenseType">
+                            <LicenseType>
+                                <xsl:value-of select="LicenseType"/>
+                            </LicenseType>
+                        </xsl:if>
+                        <xsl:if test="ContractType">
+                            <ContractType>
+                                <xsl:value-of select="ContractType"/>
+                            </ContractType>
+                        </xsl:if>
+                        <xsl:if test="Grace_Period">
+                            <Grace_Period>
+                                <xsl:value-of select="Grace_Period"/>
+                            </Grace_Period>
+                        </xsl:if>
+                        <xsl:if test="ActivationCode">
+                            <ActivationCode>
+                                <xsl:value-of select="ActivationCode"/>
+                            </ActivationCode>
+                        </xsl:if>
+                        <xsl:if test="Volume">
+                            <Volume>
+                                <xsl:value-of select="Volume"/>
+                            </Volume>
+                        </xsl:if>
+                        <xsl:if test="LicenseExpirationDate">
+                            <LicenseExpirationDate>
+                                <xsl:value-of select="LicenseExpirationDate"/>
+                            </LicenseExpirationDate>
+                        </xsl:if>
+                        <xsl:if test="ProductID">
+                            <ProductID>
+                                <xsl:value-of select="ProductID"/>
+                            </ProductID>
+                        </xsl:if>
+                        <xsl:if test="NotBundled">
+                            <NotBundled>
+                                <xsl:value-of select="NotBundled"/>
+                            </NotBundled>
+                        </xsl:if>
+                        <xsl:if test="VersionType">
+                            <VersionType>
+                                <xsl:value-of select="VersionType"/>
+                            </VersionType>
+                        </xsl:if>
+                        <xsl:if test="LicenseStartDate">
+                            <LicenseStartDate>
+                                <xsl:value-of select="LicenseStartDate"/>
+                            </LicenseStartDate>
+                        </xsl:if>
+                        <xsl:if test="BUCode">
+                            <BUCode>
+                                <xsl:value-of select="BUCode"/>
+                            </BUCode>
+                        </xsl:if>
+                        <xsl:if test="SalesType">
+                            <SalesType>
+                                <xsl:value-of select="SalesType"/>
+                            </SalesType>
+                        </xsl:if>
+                        <xsl:if test="Enable">
+                            <Enable>
+                                <xsl:value-of select="Enable"/>
+                            </Enable>
+                        </xsl:if>
+                        <xsl:if test="PriceType">
+                            <PriceType>
+                                <xsl:value-of select="PriceType"/>
+                            </PriceType>
+                        </xsl:if>
+                        <xsl:if test="LicenseRegistrationStatus">
+                            <LicenseRegistrationStatus>
+                                <xsl:value-of select="LicenseRegistrationStatus"/>
+                            </LicenseRegistrationStatus>
+                        </xsl:if>
+                        <xsl:if test="LastModifyDate">
+                            <LastModifyDate>
+                                <xsl:value-of select="LastModifyDate"/>
+                            </LastModifyDate>
+                        </xsl:if>
+                        <xsl:if test="LicenseChargeDate">
+                            <LicenseChargeDate>
+                                <xsl:value-of select="LicenseChargeDate"/>
+                            </LicenseChargeDate>
+                        </xsl:if>
+                        <xsl:for-each select="LicensekeyHistory">
+                            <LicensekeyHistory>
+                                <xsl:if test="MergeFrom">
+                                    <MergeFrom>
+                                        <xsl:value-of select="MergeFrom"/>
+                                    </MergeFrom>
+                                </xsl:if>
+                                <xsl:if test="ConverFrom">
+                                    <ConverFrom>
+                                        <xsl:value-of select="ConverFrom"/>
+                                    </ConverFrom>
+                                </xsl:if>
+                            </LicensekeyHistory>
+                        </xsl:for-each>
+                    </LicenseKey>
+                </xsl:for-each>
+            </RegisterByServicePlanRs>
+        </xsl:for-each>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx5:RegisterByServicePlanRs"/>
+    <pd:endX>609</pd:endX>
+    <pd:endY>129</pd:endY>
+    <pd:errorSchemas>
+        <errorMessage ref="ns3:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334304367576</pd:targetNamespace>
+    <pd:activity name="Map Json Request Body">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>178</pd:x>
+        <pd:y>142</pd:y>
+        <config>
+            <element>
+                <xsd:element name="RequestBody" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <RequestBody>
+                <xsl:value-of select="tib:substring-before-last(substring-after(TM:parseXMLtoJSON(tib:render-xml($Start/root/RegisterByServicePlanRq),0), ':'), '}')"/>
+            </RequestBody>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call LiberalAPI Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>299</pd:x>
+        <pd:y>140</pd:y>
+        <config>
+            <processName>/ExternalServices/LiberalAPI/v1.0/Call LiberalAPI Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <tenantID>
+                    <xsl:value-of select="$Start/root/tenantID"/>
+                </tenantID>
+                <BWTraceID>
+                    <xsl:value-of select="$Start/root/BWTraceID"/>
+                </BWTraceID>
+                <LiberalAPIURI>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/RegisterByServicePlan/RequestURI"/>
+                </LiberalAPIURI>
+                <jsonMessage>
+                    <xsl:value-of select="$Map-Json-Request-Body/RequestBody"/>
+                </jsonMessage>
+                <HttpMethod>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/ExternalServices/LiberalAPI/v1.0/RegisterByServicePlan/HttpMethod"/>
+                </HttpMethod>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>510</pd:x>
+        <pd:y>131</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx5:RegisterByServicePlanRs"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Map-Data-1/root"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>208</pd:x>
+        <pd:y>264</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>356</pd:x>
+        <pd:y>266</pd:y>
+        <config>
+            <faultName>errorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <xsl:if test="$_error/ns5:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns5:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns5:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns5:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Call-LiberalAPI-Process/ns3:Error)">
+                            <xsl:copy-of select="$_error_Call-LiberalAPI-Process/ns3:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <ns3:Error>
+                                <ns3:src>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/ProcessStack"/>
+                                </ns3:src>
+                                <ns3:error_code>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/MsgCode"/>
+                                </ns3:error_code>
+                                <ns3:error_message>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/Msg"/>
+                                </ns3:error_message>
+                                <ns3:stack_trace>
+                                    <xsl:value-of select="$_error/ns5:ErrorReport/StackTrace"/>
+                                </ns3:stack_trace>
+                            </ns3:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map-Data-1">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>484</pd:x>
+        <pd:y>224</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="concat('&lt;RegisterByServicePlanRs>', TM:parseJSONtoXML($Map-Data-2/root, 1),'&lt;/RegisterByServicePlanRs>')"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map-Data-2">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>405</pd:x>
+        <pd:y>131</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="TM:stringReplace(tib:substring-before-last(substring-after($Call-LiberalAPI-Process/root/outputJson, '{&quot;Message&quot;:&quot;'), '&quot;,&quot;Version&quot;:&quot;&quot;}'), '\\\&quot;' ,'\&quot;')"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Map Json Request Body</pd:from>
+        <pd:to>Call LiberalAPI Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Json Request Body</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call LiberalAPI Process</pd:from>
+        <pd:to>Map-Data-2</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map-Data-2</pd:from>
+        <pd:to>Map-Data-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map-Data-1</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

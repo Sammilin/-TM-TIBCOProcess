@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:ns0="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd3"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/PLSService/XSD/ArrowSphere/Schema.xsd3" schemaLocation="ArrowSphere.xsd"/>
+	<xs:element name="ProvisionRequest">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="transaction_id" type="xs:string"/>
+				<xs:element name="po_number" type="xs:string"/>
+				<xs:element name="po_date" type="xs:string"/>
+				<xs:element name="disti_id" type="xs:string"/>
+				<xs:element name="reseller" type="ns0:resellerType"/>
+				<xs:element name="customer" type="ns0:customerType"/>
+				<xs:element name="items">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="item">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="sku" type="xs:string"/>
+										<xs:element name="end_user_unit_price" type="xs:decimal"/>
+										<xs:element name="end_user_total_price" type="xs:decimal"/>
+										<xs:element name="end_user_discounted_price" type="xs:decimal" minOccurs="0"/>
+										<xs:element name="promo_code_discount" type="xs:decimal" minOccurs="0"/>
+										<xs:element name="promo_code" type="xs:string" minOccurs="0"/>
+										<xs:element name="currency_code" type="xs:string"/>
+										<xs:element name="seats" type="xs:integer"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="www.tibco.com/plugin/Timer" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://xmlns.tibco.com/encodings/mime" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx="http://xmlns.tibco.com/body">
+    <pd:name>Utilities/Logging/Log File/GetTodayLog from EMAIL.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>75</pd:startX>
+    <pd:startY>87</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>620</pd:endX>
+    <pd:endY>85</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1340781973165</pd:targetNamespace>
+    <pd:activity name="Log-1">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>526</pd:x>
+        <pd:y>85</pd:y>
+        <config>
+            <role>User</role>
+            <suppressHeader>false</suppressHeader>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Mail has been sent with attachment&quot;"/>
+                </message>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="List Files">
+        <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
+        <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
+        <pd:x>301</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <mode>files-and-directories</mode>
+        </config>
+        <pd:inputBindings>
+            <ns12:ListFilesActivityConfig>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/Utilities/Logging/LogFile/LogFilePath,tib:format-date(&quot;yyyy-MM-dd&quot;,current-date()),&quot;\*.log&quot;)"/>
+                </fileName>
+            </ns12:ListFilesActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Copy File">
+        <pd:type>com.tibco.plugin.file.FileCopyActivity</pd:type>
+        <pd:resourceType>ae.activities.FileCopyActivity</pd:resourceType>
+        <pd:x>177</pd:x>
+        <pd:y>85</pd:y>
+        <config>
+            <overwrite>true</overwrite>
+            <createMissingDirectories>true</createMissingDirectories>
+        </config>
+        <pd:inputBindings>
+            <ns12:CopyActivityConfig>
+                <fromFileName>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/Utilities/Logging/LogFile/LogFilePath,&quot;*&quot;,tib:format-date(&quot;yyyy-MM-dd&quot;,current-date()),&quot;*.log&quot;)"/>
+                </fromFileName>
+                <toFileName>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/Utilities/Logging/LogFile/LogFilePath,tib:format-date(&quot;yyyy-MM-dd&quot;,current-date()))"/>
+                </toFileName>
+            </ns12:CopyActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Log-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>List Files</pd:from>
+        <pd:to>Log-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Copy File</pd:from>
+        <pd:to>List Files</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Copy File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

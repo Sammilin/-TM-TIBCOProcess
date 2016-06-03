@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/Mail Schema1.2.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.1.xsd" xmlns:pfx2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/Mail Schema1.1.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/resource/Mail Schema1.1.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD/Common/Mail Schema1.2.xsd" schemaLocation="/XSD/Common/Mail Schema1.2.xsd"/>
+    <pd:name>Utilities/MailService/V1.2/Mail Batch Filter Process.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>132</pd:x>
+        <pd:y>73</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>mail.batch</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <_sequenceKey>pfx2:ActivityOutput/JMSHeaders/pfx2:JMSPriority</_sequenceKey>
+            <ConnectionReference>/Resources/JMS/JMS Connection.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx4:mail"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>618</pd:endX>
+    <pd:endY>74</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:partners/>
+    <pd:targetNamespace>http://xmlns.example.com/1257819519911</pd:targetNamespace>
+    <pd:activity name="GetLastSubjectList">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>259</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <variableConfig>/Utilities/MailService/V1.2/ShareVar/BatchSubjectList.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="UpdateLastSubjectList">
+        <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+        <pd:x>370</pd:x>
+        <pd:y>191</pd:y>
+        <config>
+            <variableConfig>/Utilities/MailService/V1.2/ShareVar/BatchSubjectList.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <group>
+                    <xsl:for-each select="$GetLastSubjectList/root/group/subject">
+                        <subject>
+                            <xsl:value-of select="."/>
+                        </subject>
+                    </xsl:for-each>
+                    <subject>
+                        <xsl:value-of select="$JMS-Queue-Receiver/pfx2:ActivityOutput/Body/mail/subject"/>
+                    </subject>
+                </group>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Call Send Mail Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>487</pd:x>
+        <pd:y>200</pd:y>
+        <config>
+            <processName>/Utilities/MailService/V1.2/Share Process/Email Notify Process.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$JMS-Queue-Receiver/pfx2:ActivityOutput/Body/mail"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CheckSpam">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>365</pd:x>
+        <pd:y>73</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Call Timer Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>613</pd:x>
+        <pd:y>194</pd:y>
+        <config>
+            <processName>/Utilities/MailService/V1.2/Share Process/Spam Mail Timer Batch.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <interval>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/SpamInterval"/>
+                </interval>
+                <subject>
+                    <xsl:value-of select="$JMS-Queue-Receiver/pfx2:ActivityOutput/Body/mail/subject"/>
+                </subject>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>GetLastSubjectList</pd:from>
+        <pd:to>CheckSpam</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CheckSpam</pd:from>
+        <pd:to>UpdateLastSubjectList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Send Mail Process</pd:from>
+        <pd:to>Call Timer Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Timer Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>GetLastSubjectList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CheckSpam</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>Spam</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($GetLastSubjectList/root/group/subject[.=$JMS-Queue-Receiver/pfx2:ActivityOutput/Body/mail/subject])</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateLastSubjectList</pd:from>
+        <pd:to>Call Send Mail Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

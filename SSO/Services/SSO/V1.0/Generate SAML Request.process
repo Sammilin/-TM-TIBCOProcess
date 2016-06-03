@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:TM2="java://com.trendmicro.getTIBCOGlobalVariable" xmlns:TM="java://com.trendmicro.TMBWUtilities" xmlns:pfx="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.trendmicro.com/ESB/schemas/error" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="urn:oasis:names:tc:SAML:2.0:protocol" schemaLocation="/XSD/Common/SAML2.0.xsd"/>
+    <xsd:import namespace="http://www.trendmicro.com/ESB/schemas/error" schemaLocation="/XSD/Common/error.xsd"/>
+    <pd:name>Services/SSO/V1.0/Generate SAML Request.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="UserAccountName" type="xsd:string"/>
+                    <xsd:element name="Target" type="xsd:string"/>
+                    <xsd:element name="TenantID" type="xsd:string"/>
+                    <xsd:element name="CallbackURL" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>100</pd:startX>
+    <pd:startY>98</pd:startY>
+    <pd:returnBindings>
+        <SAMLRequest>
+            <xsl:value-of select="$Java-Code/javaCodeActivityOutput/SAMLRequest"/>
+        </SAMLRequest>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="SAMLRequest" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>773</pd:endX>
+    <pd:endY>97</pd:endY>
+    <pd:errorSchemas>
+        <ErrorMessage ref="pfx2:Error"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1334633769019</pd:targetNamespace>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>404</pd:x>
+        <pd:y>98</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <renderDefaultPrefix>false</renderDefaultPrefix>
+            <term ref="pfx:AuthnRequest"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:AuthnRequest>
+                <xsl:attribute name="ID">
+                    <xsl:value-of select="TM:getGUID()"/>
+                </xsl:attribute>
+                <xsl:attribute name="Version">
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/SSO/SAML/SAMLVersion"/>
+                </xsl:attribute>
+                <xsl:attribute name="IssueInstant">
+                    <xsl:value-of select="tib:current-dateTime-timezone(0, 0)"/>
+                </xsl:attribute>
+                <xsl:attribute name="Destination">
+                    <xsl:value-of select="TM:stringReplace($_globalVariables/ns1:GlobalVariables/Services/SSO/SAML/SSODestinationURL, $_globalVariables/ns1:GlobalVariables/Services/SSO/SAML/SSOTenantIDTemplate, $Start/root/TenantID)"/>
+                </xsl:attribute>
+                <xsl:attribute name="ForceAuthn">
+                    <xsl:value-of select="false()"/>
+                </xsl:attribute>
+                <xsl:attribute name="IsPassive">
+                    <xsl:value-of select="false()"/>
+                </xsl:attribute>
+                <xsl:attribute name="ProtocolBinding">
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/SSO/SAML/ProtocolBinding"/>
+                </xsl:attribute>
+                <xsl:attribute name="AssertionConsumerServiceURL">
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/SSO/SAML/AssertionConsumerURL"/>
+                </xsl:attribute>
+                <xsl:attribute name="ProviderName">
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/SSO/SAML/ProviderName"/>
+                </xsl:attribute>
+                <ns:Issuer>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/SSO/SAML/SAMLIssuer"/>
+                </ns:Issuer>
+                <pfx:Extensions>
+                    <AutoLogin>
+                        <xsl:value-of select="$AutoLoginEncFunction/root/Result"/>
+                    </AutoLogin>
+                    <EncKey>
+                        <xsl:value-of select="$SSOEnEnKeyFunction/root/Result"/>
+                    </EncKey>
+                    <Language>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Services/SSO/SAML/Language"/>
+                    </Language>
+                    <IsSupportWildCard>
+                        <xsl:value-of select="&quot;True&quot;"/>
+                    </IsSupportWildCard>
+                </pfx:Extensions>
+                <pfx:NameIDPolicy>
+                    <xsl:attribute name="AllowCreate">
+                        <xsl:value-of select="true()"/>
+                    </xsl:attribute>
+                </pfx:NameIDPolicy>
+            </pfx:AuthnRequest>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AutoLoginEncFunction">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>271</pd:x>
+        <pd:y>99</pd:y>
+        <config>
+            <processName>/Services/SSO/V1.0/AutoLoginEncFunction.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <EncKey>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Key/EncKey"/>
+                </EncKey>
+                <AutoLogin>
+                    <xsl:attribute name="Enable">
+                        <xsl:value-of select="&quot;TRUE&quot;"/>
+                    </xsl:attribute>
+                    <UserAccountName>
+                        <xsl:value-of select="$Start/root/UserAccountName"/>
+                    </UserAccountName>
+                    <Time>
+                        <xsl:value-of select="tib:format-dateTime('yyyy/MM/dd HH:mm:ss',tib:current-dateTime-timezone(0,0))"/>
+                    </Time>
+                    <Target>
+                        <xsl:value-of select="$Start/root/Target"/>
+                    </Target>
+                    <xsl:if test="$Start/root/CallbackURL">
+                        <CallbackURL>
+                            <xsl:value-of select="$Start/root/CallbackURL"/>
+                        </CallbackURL>
+                    </xsl:if>
+                </AutoLogin>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SSOEnEnKeyFunction">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>277</pd:x>
+        <pd:y>204</pd:y>
+        <config>
+            <processName>/Services/SSO/V1.0/SSOEnEnKeyFunction.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <enKey>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Key/EncKey"/>
+                </enKey>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>634</pd:x>
+        <pd:y>97</pd:y>
+        <config>
+            <fullsource>package Services.SSO.V1_0.GenerateSAMLRequest;
+import java.io.*;
+
+import java.security.*;
+import java.security.cert.X509Certificate;
+import java.util.*;
+
+import javax.xml.crypto.dsig.*;
+import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.keyinfo.*;
+import javax.xml.crypto.dsig.spec.*;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.*;
+
+public class GenerateSAMLRequestJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected byte[] SAMLString = null;
+	protected byte[] PKeyStore = null;
+	protected String KeyPassword = "";
+	protected String SAMLRequest = "";
+	protected String exception = "";
+	public byte[] getSAMLString() {
+		return SAMLString;
+	}
+	public void setSAMLString(byte[] val) {
+		SAMLString = val;
+	}
+	public byte[] getPKeyStore() {
+		return PKeyStore;
+	}
+	public void setPKeyStore(byte[] val) {
+		PKeyStore = val;
+	}
+	public String getKeyPassword() {
+		return KeyPassword;
+	}
+	public void setKeyPassword(String val) {
+		KeyPassword = val;
+	}
+	public String getSAMLRequest() {
+		return SAMLRequest;
+	}
+	public void setSAMLRequest(String val) {
+		SAMLRequest = val;
+	}
+	public String getexception() {
+		return exception;
+	}
+	public void setexception(String val) {
+		exception = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public GenerateSAMLRequestJavaCode() {
+	}
+	@SuppressWarnings(value={"unchecked"})
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : byte[] SAMLString
+	In  : byte[] PKeyStore
+	In  : String KeyPassword
+	Out : String SAMLRequest
+	Out : String exception
+* Available Variables: DO NOT MODIFY *****/
+	try{
+		ByteArrayInputStream is = new ByteArrayInputStream(getSAMLString());
+		// Instantiate the document to be signed
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		dbFactory.setNamespaceAware(true);
+		Document doc = dbFactory
+			       .newDocumentBuilder()
+			       .parse(is);
+
+		// prepare signature factory
+		String providerName = System.getProperty(
+					   "jsr105Provider", 
+					   "org.jcp.xml.dsig.internal.dom.XMLDSigRI"
+				      );
+
+		final XMLSignatureFactory sigFactory = XMLSignatureFactory.getInstance(
+						       "DOM",
+						       (Provider) Class.forName(providerName).newInstance()
+						 );
+
+		Node sigParent = null;
+		String referenceURI = null;
+		List transforms = null;
+		
+		sigParent = doc.getDocumentElement();
+		referenceURI = ""; // Empty string means whole document
+		
+		transforms = Collections.singletonList(
+					sigFactory.newTransform(
+					    Transform.ENVELOPED, 
+					    (TransformParameterSpec) null
+					));
+		
+		is = new ByteArrayInputStream(getPKeyStore());
+		KeyStore ks = KeyStore.getInstance("JKS");
+		ks.load(is, getKeyPassword().toCharArray());
+
+		PrivateKey privateKey = (PrivateKey) ks.getKey("1", getKeyPassword()
+				.toCharArray());
+		
+		X509Certificate cert = (X509Certificate) ks.getCertificate("1");
+
+		// Create a Reference to the enveloped document
+		Reference ref = sigFactory.newReference(
+				    referenceURI,
+				    sigFactory.newDigestMethod(DigestMethod.SHA1, null),
+				    transforms,
+				    null, 
+				    null
+				);
+
+		// Create the SignedInfo
+		SignedInfo signedInfo = sigFactory.newSignedInfo(
+					    sigFactory.newCanonicalizationMethod(
+						CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, 
+						(C14NMethodParameterSpec) null
+					    ), 
+					    sigFactory.newSignatureMethod(
+						SignatureMethod.RSA_SHA1, 
+						null
+					    ),
+					    Collections.singletonList(ref)
+					);
+
+		// Create a KeyValue containing the RSA PublicKey 
+		KeyInfoFactory keyInfoFactory = sigFactory.getKeyInfoFactory();
+		
+		List x509Content = new ArrayList();
+		x509Content.add(cert.getSubjectX500Principal().getName());
+		x509Content.add(cert);
+		
+		X509Data xd = keyInfoFactory.newX509Data(x509Content);
+		KeyInfo ki = keyInfoFactory.newKeyInfo(Collections.singletonList(xd));
+
+		// Create a DOMSignContext and specify the RSA PrivateKey and
+		// location of the resulting XMLSignature's parent element
+		DOMSignContext dsc = new DOMSignContext(
+					 privateKey, 
+					 sigParent
+				     );
+
+		// Create the XMLSignature (but don't sign it yet)
+		//XMLSignature signature = sigFactory.newXMLSignature(signedInfo, keyInfo);
+		XMLSignature signature = sigFactory.newXMLSignature(signedInfo, ki);
+
+		// Marshal, generate (and sign) the enveloped signature
+		signature.sign(dsc);
+		
+		// output the resulting document
+		Transformer trans = TransformerFactory.newInstance()
+	      .newTransformer();
+		
+		/*OutputStream os = new FileOutputStream(outputFile);
+		trans.transform(new DOMSource(doc), new StreamResult(os));
+		*/
+		
+		StringWriter stringWriter = new StringWriter();
+		Result result = new StreamResult(stringWriter);
+		trans.transform(new DOMSource(doc), result);
+        	setSAMLRequest(stringWriter.getBuffer().toString().replaceAll("\r\n", ""));
+		stringWriter.close();
+	}catch(Exception e){
+		setexception(e.getMessage());
+	}
+}
+}
+</fullsource>
+            <fileName>GenerateSAMLRequestJavaCode</fileName>
+            <packageName>Services.SSO.V1_0.GenerateSAMLRequest</packageName>
+            <outputData>
+                <row>
+                    <fieldName>SAMLRequest</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>exception</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>SAMLString</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>PKeyStore</fieldName>
+                    <fieldType>binary</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>KeyPassword</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>GenerateSAMLRequestJavaCode</name>
+                    <byteCode>yv66vgAAADIBIQkATgBvCQBOAHAJAE4AcQkATgByCQBOAHMKAE8AdAgAdQcAdgoATgB3CgAIAHgKAHkAegoAeQB7CgB5AHwKAH0AfggAfwgAgAoAgQCCCACDCgCEAIUKAIQAhgcAhwoAiACJCwCKAIsIAIwHAI0KAIgAjgoAjwCQCgBOAJEIAJIKAJMAlAoATgCVCgCWAJcKAJMAmAgAmQoAkwCaBwCbCgCTAJwHAJ0IAJ4KAIgAnwoAiACgCAChBwCiCgCIAKMIAKQKAIgApQoAiACmCgCIAKcHAKgKADEAdAoAJgCpCgCqAKsLAKwArQoArgCvCgCuALAHALEKADgAsgoAiACzCwC0ALUKALYAtwoAtgC4BwC5CgA+AHQHALoKAEAAuwcAvAoAQgC9CgC+AL8KAD4AwAoAwQDCCADDCgCWAMQKAE4AxQoAPgDGBwDHCgBLAMgKAE4AyQcAygcAywEAClNBTUxTdHJpbmcBAAJbQgEACVBLZXlTdG9yZQEAC0tleVBhc3N3b3JkAQASTGphdmEvbGFuZy9TdHJpbmc7AQALU0FNTFJlcXVlc3QBAAlleGNlcHRpb24BAA1nZXRTQU1MU3RyaW5nAQAEKClbQgEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAA1zZXRTQU1MU3RyaW5nAQAFKFtCKVYBAAxnZXRQS2V5U3RvcmUBAAxzZXRQS2V5U3RvcmUBAA5nZXRLZXlQYXNzd29yZAEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAOc2V0S2V5UGFzc3dvcmQBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAA5nZXRTQU1MUmVxdWVzdAEADnNldFNBTUxSZXF1ZXN0AQAMZ2V0ZXhjZXB0aW9uAQAMc2V0ZXhjZXB0aW9uAQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQANU3RhY2tNYXBUYWJsZQcAxwEACkV4Y2VwdGlvbnMBAApTb3VyY2VGaWxlAQAgR2VuZXJhdGVTQU1MUmVxdWVzdEphdmFDb2RlLmphdmEMAFAAUQwAUgBRDABTAFQMAFUAVAwAVgBUDABnAGgBAAABABxqYXZhL2lvL0J5dGVBcnJheUlucHV0U3RyZWFtDABXAFgMAGcAXAcAzAwAzQDODADPANAMANEA0gcA0wwA1ADVAQAOanNyMTA1UHJvdmlkZXIBACdvcmcuamNwLnhtbC5kc2lnLmludGVybmFsLmRvbS5YTUxEU2lnUkkHANYMANcA2AEAA0RPTQcA2QwA2gDbDADNANwBABZqYXZhL3NlY3VyaXR5L1Byb3ZpZGVyBwDdDADeAN8HAOAMAOEA4gEANWh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyNlbnZlbG9wZWQtc2lnbmF0dXJlAQAxamF2YXgveG1sL2NyeXB0by9kc2lnL3NwZWMvVHJhbnNmb3JtUGFyYW1ldGVyU3BlYwwA4wDkBwDlDADmAOcMAF0AWAEAA0pLUwcA6AwA3gDpDABfAGAHAOoMAOsA7AwA7QDuAQABMQwA7wDwAQAYamF2YS9zZWN1cml0eS9Qcml2YXRlS2V5DADxAPIBACJqYXZhL3NlY3VyaXR5L2NlcnQvWDUwOUNlcnRpZmljYXRlAQAmaHR0cDovL3d3dy53My5vcmcvMjAwMC8wOS94bWxkc2lnI3NoYTEMAPMA9AwA9QD2AQA8aHR0cDovL3d3dy53My5vcmcvVFIvMjAwMS9SRUMteG1sLWMxNG4tMjAwMTAzMTUjV2l0aENvbW1lbnRzAQAyamF2YXgveG1sL2NyeXB0by9kc2lnL3NwZWMvQzE0Tk1ldGhvZFBhcmFtZXRlclNwZWMMAPcA+AEAKmh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyNyc2Etc2hhMQwA+QD6DAD7APwMAP0A/gEAE2phdmEvdXRpbC9BcnJheUxpc3QMAP8BAAcBAQwBAgBgBwEDDAEEAQUHAQYMAQcBCAwBCQEKAQAoamF2YXgveG1sL2NyeXB0by9kc2lnL2RvbS9ET01TaWduQ29udGV4dAwAZwELDAEMAQ0HAQ4MAQ8BEAcBEQwAzQESDAETARQBABRqYXZhL2lvL1N0cmluZ1dyaXRlcgEAJ2phdmF4L3htbC90cmFuc2Zvcm0vc3RyZWFtL1N0cmVhbVJlc3VsdAwAZwEVAQAhamF2YXgveG1sL3RyYW5zZm9ybS9kb20vRE9NU291cmNlDABnARYHARcMARgBGQwBGgEbBwEcDAEdAGABAAINCgwBHgDYDABkAGIMAR8AaAEAE2phdmEvbGFuZy9FeGNlcHRpb24MASAAYAwAZgBiAQBBU2VydmljZXMvU1NPL1YxXzAvR2VuZXJhdGVTQU1MUmVxdWVzdC9HZW5lcmF0ZVNBTUxSZXF1ZXN0SmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQAoamF2YXgveG1sL3BhcnNlcnMvRG9jdW1lbnRCdWlsZGVyRmFjdG9yeQEAC25ld0luc3RhbmNlAQAsKClMamF2YXgveG1sL3BhcnNlcnMvRG9jdW1lbnRCdWlsZGVyRmFjdG9yeTsBABFzZXROYW1lc3BhY2VBd2FyZQEABChaKVYBABJuZXdEb2N1bWVudEJ1aWxkZXIBACUoKUxqYXZheC94bWwvcGFyc2Vycy9Eb2N1bWVudEJ1aWxkZXI7AQAhamF2YXgveG1sL3BhcnNlcnMvRG9jdW1lbnRCdWlsZGVyAQAFcGFyc2UBAC0oTGphdmEvaW8vSW5wdXRTdHJlYW07KUxvcmcvdzNjL2RvbS9Eb2N1bWVudDsBABBqYXZhL2xhbmcvU3lzdGVtAQALZ2V0UHJvcGVydHkBADgoTGphdmEvbGFuZy9TdHJpbmc7TGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nOwEAD2phdmEvbGFuZy9DbGFzcwEAB2Zvck5hbWUBACUoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvQ2xhc3M7AQAUKClMamF2YS9sYW5nL09iamVjdDsBAClqYXZheC94bWwvY3J5cHRvL2RzaWcvWE1MU2lnbmF0dXJlRmFjdG9yeQEAC2dldEluc3RhbmNlAQBXKExqYXZhL2xhbmcvU3RyaW5nO0xqYXZhL3NlY3VyaXR5L1Byb3ZpZGVyOylMamF2YXgveG1sL2NyeXB0by9kc2lnL1hNTFNpZ25hdHVyZUZhY3Rvcnk7AQAUb3JnL3czYy9kb20vRG9jdW1lbnQBABJnZXREb2N1bWVudEVsZW1lbnQBABcoKUxvcmcvdzNjL2RvbS9FbGVtZW50OwEADG5ld1RyYW5zZm9ybQEAaChMamF2YS9sYW5nL1N0cmluZztMamF2YXgveG1sL2NyeXB0by9kc2lnL3NwZWMvVHJhbnNmb3JtUGFyYW1ldGVyU3BlYzspTGphdmF4L3htbC9jcnlwdG8vZHNpZy9UcmFuc2Zvcm07AQAVamF2YS91dGlsL0NvbGxlY3Rpb25zAQANc2luZ2xldG9uTGlzdAEAJChMamF2YS9sYW5nL09iamVjdDspTGphdmEvdXRpbC9MaXN0OwEAFmphdmEvc2VjdXJpdHkvS2V5U3RvcmUBACwoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL3NlY3VyaXR5L0tleVN0b3JlOwEAEGphdmEvbGFuZy9TdHJpbmcBAAt0b0NoYXJBcnJheQEABCgpW0MBAARsb2FkAQAaKExqYXZhL2lvL0lucHV0U3RyZWFtO1tDKVYBAAZnZXRLZXkBACkoTGphdmEvbGFuZy9TdHJpbmc7W0MpTGphdmEvc2VjdXJpdHkvS2V5OwEADmdldENlcnRpZmljYXRlAQA0KExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9zZWN1cml0eS9jZXJ0L0NlcnRpZmljYXRlOwEAD25ld0RpZ2VzdE1ldGhvZAEAbihMamF2YS9sYW5nL1N0cmluZztMamF2YXgveG1sL2NyeXB0by9kc2lnL3NwZWMvRGlnZXN0TWV0aG9kUGFyYW1ldGVyU3BlYzspTGphdmF4L3htbC9jcnlwdG8vZHNpZy9EaWdlc3RNZXRob2Q7AQAMbmV3UmVmZXJlbmNlAQCNKExqYXZhL2xhbmcvU3RyaW5nO0xqYXZheC94bWwvY3J5cHRvL2RzaWcvRGlnZXN0TWV0aG9kO0xqYXZhL3V0aWwvTGlzdDtMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspTGphdmF4L3htbC9jcnlwdG8vZHNpZy9SZWZlcmVuY2U7AQAZbmV3Q2Fub25pY2FsaXphdGlvbk1ldGhvZAEAdihMamF2YS9sYW5nL1N0cmluZztMamF2YXgveG1sL2NyeXB0by9kc2lnL3NwZWMvQzE0Tk1ldGhvZFBhcmFtZXRlclNwZWM7KUxqYXZheC94bWwvY3J5cHRvL2RzaWcvQ2Fub25pY2FsaXphdGlvbk1ldGhvZDsBABJuZXdTaWduYXR1cmVNZXRob2QBAHQoTGphdmEvbGFuZy9TdHJpbmc7TGphdmF4L3htbC9jcnlwdG8vZHNpZy9zcGVjL1NpZ25hdHVyZU1ldGhvZFBhcmFtZXRlclNwZWM7KUxqYXZheC94bWwvY3J5cHRvL2RzaWcvU2lnbmF0dXJlTWV0aG9kOwEADW5ld1NpZ25lZEluZm8BAIkoTGphdmF4L3htbC9jcnlwdG8vZHNpZy9DYW5vbmljYWxpemF0aW9uTWV0aG9kO0xqYXZheC94bWwvY3J5cHRvL2RzaWcvU2lnbmF0dXJlTWV0aG9kO0xqYXZhL3V0aWwvTGlzdDspTGphdmF4L3htbC9jcnlwdG8vZHNpZy9TaWduZWRJbmZvOwEAEWdldEtleUluZm9GYWN0b3J5AQAwKClMamF2YXgveG1sL2NyeXB0by9kc2lnL2tleWluZm8vS2V5SW5mb0ZhY3Rvcnk7AQAXZ2V0U3ViamVjdFg1MDBQcmluY2lwYWwBACooKUxqYXZheC9zZWN1cml0eS9hdXRoL3g1MDAvWDUwMFByaW5jaXBhbDsBACZqYXZheC9zZWN1cml0eS9hdXRoL3g1MDAvWDUwMFByaW5jaXBhbAEAB2dldE5hbWUBAA5qYXZhL3V0aWwvTGlzdAEAA2FkZAEAFShMamF2YS9sYW5nL09iamVjdDspWgEALGphdmF4L3htbC9jcnlwdG8vZHNpZy9rZXlpbmZvL0tleUluZm9GYWN0b3J5AQALbmV3WDUwOURhdGEBADooTGphdmEvdXRpbC9MaXN0OylMamF2YXgveG1sL2NyeXB0by9kc2lnL2tleWluZm8vWDUwOURhdGE7AQAKbmV3S2V5SW5mbwEAOShMamF2YS91dGlsL0xpc3Q7KUxqYXZheC94bWwvY3J5cHRvL2RzaWcva2V5aW5mby9LZXlJbmZvOwEAKChMamF2YS9zZWN1cml0eS9LZXk7TG9yZy93M2MvZG9tL05vZGU7KVYBAA9uZXdYTUxTaWduYXR1cmUBAG8oTGphdmF4L3htbC9jcnlwdG8vZHNpZy9TaWduZWRJbmZvO0xqYXZheC94bWwvY3J5cHRvL2RzaWcva2V5aW5mby9LZXlJbmZvOylMamF2YXgveG1sL2NyeXB0by9kc2lnL1hNTFNpZ25hdHVyZTsBACJqYXZheC94bWwvY3J5cHRvL2RzaWcvWE1MU2lnbmF0dXJlAQAEc2lnbgEAKShMamF2YXgveG1sL2NyeXB0by9kc2lnL1hNTFNpZ25Db250ZXh0OylWAQAmamF2YXgveG1sL3RyYW5zZm9ybS9UcmFuc2Zvcm1lckZhY3RvcnkBACooKUxqYXZheC94bWwvdHJhbnNmb3JtL1RyYW5zZm9ybWVyRmFjdG9yeTsBAA5uZXdUcmFuc2Zvcm1lcgEAIygpTGphdmF4L3htbC90cmFuc2Zvcm0vVHJhbnNmb3JtZXI7AQATKExqYXZhL2lvL1dyaXRlcjspVgEAFShMb3JnL3czYy9kb20vTm9kZTspVgEAH2phdmF4L3htbC90cmFuc2Zvcm0vVHJhbnNmb3JtZXIBAAl0cmFuc2Zvcm0BADsoTGphdmF4L3htbC90cmFuc2Zvcm0vU291cmNlO0xqYXZheC94bWwvdHJhbnNmb3JtL1Jlc3VsdDspVgEACWdldEJ1ZmZlcgEAGigpTGphdmEvbGFuZy9TdHJpbmdCdWZmZXI7AQAWamF2YS9sYW5nL1N0cmluZ0J1ZmZlcgEACHRvU3RyaW5nAQAKcmVwbGFjZUFsbAEABWNsb3NlAQAKZ2V0TWVzc2FnZQAhAE4ATwAAAAUABABQAFEAAAAEAFIAUQAAAAQAUwBUAAAABABVAFQAAAAEAFYAVAAAAAwAAQBXAFgAAQBZAAAAHQABAAEAAAAFKrQAAbAAAAABAFoAAAAGAAEAAAAbAAEAWwBcAAEAWQAAACIAAgACAAAABiortQABsQAAAAEAWgAAAAoAAgAAAB4ABQAfAAEAXQBYAAEAWQAAAB0AAQABAAAABSq0AAKwAAAAAQBaAAAABgABAAAAIQABAF4AXAABAFkAAAAiAAIAAgAAAAYqK7UAArEAAAABAFoAAAAKAAIAAAAkAAUAJQABAF8AYAABAFkAAAAdAAEAAQAAAAUqtAADsAAAAAEAWgAAAAYAAQAAACcAAQBhAGIAAQBZAAAAIgACAAIAAAAGKiu1AAOxAAAAAQBaAAAACgACAAAAKgAFACsAAQBjAGAAAQBZAAAAHQABAAEAAAAFKrQABLAAAAABAFoAAAAGAAEAAAAtAAEAZABiAAEAWQAAACIAAgACAAAABiortQAEsQAAAAEAWgAAAAoAAgAAADAABQAxAAEAZQBgAAEAWQAAAB0AAQABAAAABSq0AAWwAAAAAQBaAAAABgABAAAAMwABAGYAYgABAFkAAAAiAAIAAgAAAAYqK7UABbEAAAABAFoAAAAKAAIAAAA2AAUANwABAGcAaAABAFkAAABRAAIAAQAAACEqtwAGKgG1AAEqAbUAAioSB7UAAyoSB7UABCoSB7UABbEAAAABAFoAAAAeAAcAAAA5AAQAFQAJABYADgAXABQAGAAaABkAIAA6AAEAaQBoAAIAWQAAAkQABgAXAAABgbsACFkqtgAJtwAKTLgAC00sBLYADCy2AA0rtgAOThIPEhC4ABE6BBISGQS4ABO2ABTAABW4ABY6BQE6BgE6BwE6CC25ABcBADoGEgc6BxkFEhgBwAAZtgAauAAbOgi7AAhZKrYAHLcACkwSHbgAHjoJGQkrKrYAH7YAILYAIRkJEiIqtgAftgAgtgAjwAAkOgoZCRIitgAlwAAmOgsZBRkHGQUSJwG2ACgZCAEBtgApOgwZBRkFEioBwAArtgAsGQUSLQG2AC4ZDLgAG7YALzoNGQW2ADA6DrsAMVm3ADI6DxkPGQu2ADO2ADS5ADUCAFcZDxkLuQA1AgBXGQ4ZD7YANjoQGQ4ZELgAG7YANzoRuwA4WRkKGQa3ADk6EhkFGQ0ZEbYAOjoTGRMZErkAOwIAuAA8tgA9OhS7AD5ZtwA/OhW7AEBZGRW3AEE6FhkUuwBCWS23AEMZFrYARCoZFbYARbYARhJHEge2AEi2AEkZFbYASqcADEwqK7YATLYATbEAAQAAAXQBdwBLAAIAWgAAAJoAJgAAAEUADABHABAASAAVAEkAHgBOACcAUwA5AFgAPABZAD8AWgBCAFwASgBdAE4AXwBeAGUAagBmAHEAZwB+AGkAkQBsAJ0AbwCyAHgA0QCFANgAhwDhAIgA8QCJAPsAiwEEAIwBEACQAR0AlwEoAJoBMQCdATkApAFCAKUBTQCmAVwApwFvAKgBdACrAXcAqQF4AKoBgACsAGoAAAAJAAL3AXcHAGsIAGwAAAAEAAEASwABAG0AAAACAG4=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <SAMLString>
+                    <xsl:value-of select="tib:string-to-base64(TM:stringReplace(TM:stringReplace($Render-XML/xmlString,&quot;ns0&quot;,&quot;samlp&quot;),&quot;ns1&quot;,&quot;saml&quot;))"/>
+                </SAMLString>
+                <PKeyStore>
+                    <xsl:value-of select="$GetVariable/Key/PrivateKey"/>
+                </PKeyStore>
+                <KeyPassword>
+                    <xsl:value-of select="TM2:getGlobalVar(&quot;tibco.clientVar.Key/Password&quot;)"/>
+                </KeyPassword>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GetVariable">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>515</pd:x>
+        <pd:y>99</pd:y>
+        <config>
+            <variableConfig>/Services/Cert/V1.0/Shared Variable/AuthConfigVar.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>422</pd:x>
+        <pd:y>245</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>613</pd:x>
+        <pd:y>247</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$_error/ns2:ErrorReport/Data/*" element="pfx2:Error"/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($_error_Generate-SMAL-Exception/pfx2:Error)">
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error_Generate-SMAL-Exception/pfx2:Error/pfx2:error_code"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error_Generate-SMAL-Exception/pfx2:Error/pfx2:error_message"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:when>
+                        <xsl:when test="exists($_error/ns2:ErrorReport/Data/pfx2:Error)">
+                            <xsl:copy-of select="$_error/ns2:ErrorReport/Data/pfx2:Error"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:Error>
+                                <pfx2:src>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                                </pfx2:src>
+                                <pfx2:error_code>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                                </pfx2:error_code>
+                                <pfx2:error_message>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                                </pfx2:error_message>
+                                <pfx2:stack_trace>
+                                    <xsl:value-of select="$_error/ns2:ErrorReport/ProcessStack"/>
+                                </pfx2:stack_trace>
+                            </pfx2:Error>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate SMAL Exception">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>736</pd:x>
+        <pd:y>188</pd:y>
+        <config>
+            <faultName>ErrorMessage</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <data>
+                    <pfx2:Error>
+                        <pfx2:src>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx2:src>
+                        <pfx2:error_code>
+                            <xsl:value-of select="&quot;Generate SMAL Exception&quot;"/>
+                        </pfx2:error_code>
+                        <pfx2:error_message>
+                            <xsl:value-of select="$Java-Code/javaCodeActivityOutput/exception"/>
+                        </pfx2:error_message>
+                        <pfx2:stack_trace>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </pfx2:stack_trace>
+                    </pfx2:Error>
+                </data>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>AutoLoginEncFunction</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>GetVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AutoLoginEncFunction</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SSOEnEnKeyFunction</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SSOEnEnKeyFunction</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetVariable</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>Generate SMAL Exception</pd:to>
+        <pd:xpathDescription>Exception</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-3407821</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Java-Code/javaCodeActivityOutput/exception)</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>
